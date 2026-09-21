@@ -1,34 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Kalshi Dashboard</title>
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+>
+
+<title>Position Ledger — Kalshi Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsrsasign@11.1.0/lib/jsrsasign-all-min.js"></script>
 
 <style>
+
 :root{
   --bg:#08090b;
   --card:#111317;
   --card2:#15181d;
-  --border:#252a31;
+  --border:#292e36;
   --text:#f3f4f6;
-  --muted:#8b929d;
+  --muted:#9299a5;
   --gold:#e7c56b;
   --green:#50d890;
   --red:#ff6868;
-  --blue:#6fa8ff;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
+html,
 body{
   margin:0;
+  padding:0;
   background:var(--bg);
   color:var(--text);
-  font-family:Inter,Arial,sans-serif;
-  padding:20px;
+}
+
+body{
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  padding:
+    max(18px,env(safe-area-inset-top))
+    max(12px,env(safe-area-inset-right))
+    max(25px,env(safe-area-inset-bottom))
+    max(12px,env(safe-area-inset-left));
 }
 
 .wrap{
@@ -39,9 +63,10 @@ body{
 h1{
   margin:0;
   font-size:28px;
+  font-weight:850;
 }
 
-.sub{
+.subtitle{
   color:var(--muted);
   margin-top:5px;
   font-size:13px;
@@ -50,90 +75,9 @@ h1{
 .card{
   background:var(--card);
   border:1px solid var(--border);
-  border-radius:16px;
+  border-radius:17px;
   padding:18px;
   margin-top:16px;
-}
-
-label{
-  display:block;
-  color:var(--muted);
-  font-size:12px;
-  margin-bottom:7px;
-}
-
-input,textarea,select{
-  width:100%;
-  background:#0b0d10;
-  color:white;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:12px;
-  font-size:14px;
-  outline:none;
-}
-
-textarea{
-  min-height:170px;
-  font-family:monospace;
-  resize:vertical;
-}
-
-button{
-  border:0;
-  border-radius:10px;
-  padding:12px 18px;
-  background:var(--gold);
-  color:#111;
-  font-weight:800;
-  cursor:pointer;
-  margin-top:12px;
-}
-
-button.secondary{
-  background:#252a31;
-  color:white;
-}
-
-.status{
-  margin-top:12px;
-  font-size:13px;
-  color:var(--muted);
-}
-
-.status.ok{color:var(--green)}
-.status.err{color:var(--red)}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-top:16px;
-}
-
-.stat{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:16px;
-}
-
-.stat-label{
-  color:var(--muted);
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
-
-.stat-value{
-  font-size:24px;
-  font-weight:800;
-  margin-top:7px;
-}
-
-.section-title{
-  font-size:18px;
-  font-weight:800;
 }
 
 .section-head{
@@ -143,52 +87,161 @@ button.secondary{
   gap:10px;
 }
 
-.position{
+.section-title{
+  font-size:18px;
+  font-weight:850;
+}
+
+label{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:7px;
+}
+
+input,
+textarea{
+  width:100%;
+  background:#0b0d10;
+  color:white;
   border:1px solid var(--border);
+  border-radius:11px;
+  padding:13px;
+  font-size:15px;
+  outline:none;
+}
+
+input:focus,
+textarea:focus{
+  border-color:var(--gold);
+}
+
+textarea{
+  min-height:190px;
+  resize:vertical;
+  font-family:monospace;
+  font-size:13px;
+  line-height:1.45;
+}
+
+button{
+  border:0;
+  border-radius:11px;
+  min-height:48px;
+  padding:13px 18px;
+  margin-top:12px;
+  font-size:15px;
+  font-weight:850;
+  cursor:pointer;
+}
+
+.primary{
+  background:var(--gold);
+  color:#111;
+}
+
+.secondary{
+  background:#292e36;
+  color:white;
+}
+
+button:active{
+  transform:scale(.98);
+}
+
+.status{
+  margin-top:13px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.4;
+}
+
+.status.ok{
+  color:var(--green);
+}
+
+.status.err{
+  color:var(--red);
+}
+
+.warning{
+  margin-top:13px;
+  padding:13px;
+  border-radius:11px;
+  background:#211c0d;
+  border:1px solid #5a4a1c;
+  color:var(--gold);
+  font-size:12px;
+  line-height:1.45;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin-top:16px;
+}
+
+.stat{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:16px;
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+}
+
+.stat-value{
+  margin-top:7px;
+  font-size:22px;
+  font-weight:850;
+  overflow-wrap:anywhere;
+}
+
+.position{
   background:var(--card2);
+  border:1px solid var(--border);
   border-radius:13px;
   padding:15px;
   margin-top:10px;
 }
 
 .position-title{
-  font-weight:800;
+  font-size:15px;
+  font-weight:850;
+  overflow-wrap:anywhere;
 }
 
 .row{
   display:flex;
   justify-content:space-between;
-  gap:12px;
-  margin-top:7px;
+  gap:15px;
+  margin-top:8px;
   color:var(--muted);
   font-size:13px;
 }
 
 .value{
   color:white;
-  font-weight:700;
+  font-weight:750;
+  text-align:right;
+}
+
+.count,
+.small{
+  color:var(--muted);
+  font-size:11px;
 }
 
 .empty{
   color:var(--muted);
   text-align:center;
-  padding:25px;
-}
-
-.small{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:8px;
-}
-
-.warning{
-  background:#211c0d;
-  border:1px solid #5a4a1c;
-  color:#e7c56b;
-  padding:12px;
-  border-radius:10px;
-  font-size:12px;
-  margin-top:12px;
+  padding:25px 10px;
 }
 
 .hidden{
@@ -196,105 +249,261 @@ button.secondary{
 }
 
 @media(max-width:700px){
+
   body{
-    padding:12px;
-  }
-
-  .grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .stat-value{
-    font-size:20px;
+    padding-left:10px;
+    padding-right:10px;
   }
 
   h1{
-    font-size:23px;
+    font-size:24px;
   }
+
+  .grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .stat{
+    padding:14px;
+  }
+
+  .stat-value{
+    font-size:19px;
+  }
+
+  button{
+    width:100%;
+  }
+
 }
+
 </style>
 </head>
+
 
 <body>
 
 <div class="wrap">
 
   <h1>Position Ledger</h1>
-  <div class="sub">Kalshi Dashboard</div>
 
-  <!-- CONNECTION -->
+  <div class="subtitle">
+    Kalshi Dashboard
+  </div>
+
+
+  <!-- =========================
+       CONNECTION
+  ========================== -->
+
   <div class="card">
 
-    <div class="section-title">Kalshi Connection</div>
+    <div class="section-title">
+      Kalshi Connection
+    </div>
 
-    <div style="margin-top:15px">
-      <label>API Key ID</label>
+
+    <div style="margin-top:16px">
+
+      <label>
+        API Key ID
+      </label>
+
       <input
         id="apiKeyId"
         value="018ba5a0-f7e4-4ee3-865b-84ec1602d591"
-        readonly
+        autocomplete="off"
       >
+
     </div>
 
-    <div style="margin-top:15px">
-      <label>Kalshi Private Key (.pem)</label>
+
+    <div style="margin-top:16px">
+
+      <label>
+        Kalshi Private Key (.pem)
+      </label>
+
       <textarea
         id="privateKey"
-        placeholder="-----BEGIN PRIVATE KEY-----
-Paste your Kalshi private key here
------END PRIVATE KEY-----"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="Paste your Kalshi private key here..."
       ></textarea>
+
     </div>
+
 
     <div class="warning">
-      Your private key is only kept in this browser page while it is open.
-      Do NOT paste your private key into the GitHub code itself.
+
+      Your private key is only used by this page to sign your
+      Kalshi requests.
+
+      <br><br>
+
+      Do NOT put your private key into the GitHub code.
+
+      <br><br>
+
+      Do NOT send your private key to anyone.
+
     </div>
 
-    <button onclick="connectKalshi()">Connect to Kalshi</button>
-    <button class="secondary" onclick="disconnectKalshi()">Disconnect</button>
 
-    <div id="status" class="status">Not connected</div>
+    <button
+      class="primary"
+      onclick="connectKalshi()"
+    >
+      Connect to Kalshi
+    </button>
+
+
+    <button
+      class="secondary"
+      onclick="disconnectKalshi()"
+    >
+      Disconnect
+    </button>
+
+
+    <div
+      id="status"
+      class="status"
+    >
+      Not connected
+    </div>
 
   </div>
 
-  <!-- SUMMARY -->
-  <div id="dashboard" class="hidden">
+
+  <!-- =========================
+       DASHBOARD
+  ========================== -->
+
+  <div
+    id="dashboard"
+    class="hidden"
+  >
+
 
     <div class="grid">
 
-      <div class="stat">
-        <div class="stat-label">Cash</div>
-        <div id="cash" class="stat-value">$0.00</div>
-      </div>
 
       <div class="stat">
-        <div class="stat-label">Position Value</div>
-        <div id="positionValue" class="stat-value">$0.00</div>
+
+        <div class="stat-label">
+          Cash
+        </div>
+
+        <div
+          id="cash"
+          class="stat-value"
+        >
+          $0.00
+        </div>
+
       </div>
 
-      <div class="stat">
-        <div class="stat-label">Total Equity</div>
-        <div id="equity" class="stat-value">$0.00</div>
-      </div>
 
       <div class="stat">
-        <div class="stat-label">Session P&L</div>
-        <div id="pnl" class="stat-value">$0.00</div>
+
+        <div class="stat-label">
+          Position Value
+        </div>
+
+        <div
+          id="positionValue"
+          class="stat-value"
+        >
+          $0.00
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Total Equity
+        </div>
+
+        <div
+          id="equity"
+          class="stat-value"
+        >
+          $0.00
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Session P&L
+        </div>
+
+        <div
+          id="pnl"
+          class="stat-value"
+        >
+          $0.00
+        </div>
+
       </div>
 
     </div>
 
-    <!-- POSITIONS -->
+
+    <!-- =========================
+         POSITIONS
+    ========================== -->
+
     <div class="card">
 
       <div class="section-head">
-        <div class="section-title">Open Positions</div>
-        <div id="positionCount" class="small">0</div>
+
+        <div class="section-title">
+          Open Positions
+        </div>
+
+        <div
+          id="positionCount"
+          class="count"
+        >
+          0 open
+        </div>
+
       </div>
 
+
       <div id="positions">
-        <div class="empty">Loading positions...</div>
+
+        <div class="empty">
+          Loading positions...
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         LAST UPDATE
+    ========================== -->
+
+    <div class="card">
+
+      <div class="section-title">
+        Connection
+      </div>
+
+      <div
+        id="lastUpdate"
+        class="small"
+        style="margin-top:8px"
+      >
+        Waiting for update...
       </div>
 
     </div>
@@ -303,132 +512,461 @@ Paste your Kalshi private key here
 
 </div>
 
+
 <script>
 
-const API_BASE = "https://external-api.kalshi.com";
-const API_PREFIX = "/trade-api/v2";
+/* =====================================================
+   KALSHI CONFIG
+===================================================== */
 
-let privateKeyPem = "";
+const API_BASE =
+  "https://api.elections.kalshi.com";
+
+const API_PREFIX =
+  "/trade-api/v2";
+
+
+/* =====================================================
+   APP STATE
+===================================================== */
+
+let privateKeyObject = null;
+
 let connected = false;
+
 let startingEquity = null;
+
 let refreshTimer = null;
 
 
-/* -------------------------------------------------------
-   HELPERS
-------------------------------------------------------- */
+/* =====================================================
+   STATUS
+===================================================== */
 
-function money(value){
-  const n = Number(value || 0);
+function setStatus(
+  message,
+  type = ""
+){
 
-  return new Intl.NumberFormat("en-US",{
-    style:"currency",
-    currency:"USD"
-  }).format(n);
+  const element =
+    document.getElementById("status");
+
+  element.textContent =
+    message;
+
+  element.className =
+    "status " + type;
 }
 
-function setStatus(text,type=""){
-  const el = document.getElementById("status");
 
-  el.textContent = text;
-  el.className = "status " + type;
+/* =====================================================
+   MONEY
+===================================================== */
+
+function money(
+  value
+){
+
+  return new Intl.NumberFormat(
+    "en-US",
+    {
+      style:"currency",
+      currency:"USD"
+    }
+  ).format(
+    Number(value || 0)
+  );
+
 }
 
 
-/* -------------------------------------------------------
-   KALSHI SIGNING
-------------------------------------------------------- */
+/* =====================================================
+   NORMALIZE PEM
+===================================================== */
 
-function cleanPem(pem){
-  return pem
-    .replace(/\r/g,"")
-    .trim();
-}
+function normalizePrivateKey(
+  pem
+){
 
-async function makeSignature(timestamp, method, path){
+  pem =
+    String(pem || "")
+      .replace(/\r/g,"")
+      .trim();
 
-  if(!privateKeyPem){
-    throw new Error("Private key is missing.");
+
+  /*
+    If the user pasted the entire PEM,
+    leave it alone.
+  */
+
+  if(
+    pem.includes(
+      "-----BEGIN"
+    )
+  ){
+
+    return pem;
+
   }
+
+
+  /*
+    Some phone copy/paste operations
+    can accidentally omit the BEGIN line.
+
+    If the key ends in RSA PRIVATE KEY,
+    reconstruct PKCS#1 PEM.
+  */
+
+  if(
+    pem.includes(
+      "-----END RSA PRIVATE KEY-----"
+    )
+  ){
+
+    const body =
+      pem
+        .replace(
+          "-----END RSA PRIVATE KEY-----",
+          ""
+        )
+        .replace(
+          /\s+/g,
+          ""
+        );
+
+    return (
+      "-----BEGIN RSA PRIVATE KEY-----\n" +
+      body +
+      "\n-----END RSA PRIVATE KEY-----"
+    );
+
+  }
+
+
+  /*
+    PKCS#8
+  */
+
+  if(
+    pem.includes(
+      "-----END PRIVATE KEY-----"
+    )
+  ){
+
+    const body =
+      pem
+        .replace(
+          "-----END PRIVATE KEY-----",
+          ""
+        )
+        .replace(
+          /\s+/g,
+          ""
+        );
+
+    return (
+      "-----BEGIN PRIVATE KEY-----\n" +
+      body +
+      "\n-----END PRIVATE KEY-----"
+    );
+
+  }
+
+
+  /*
+    If there are no PEM headers at all,
+    try to determine which format it is.
+
+    The user should normally paste
+    the complete PEM file.
+  */
+
+  const body =
+    pem.replace(
+      /\s+/g,
+      ""
+    );
+
+
+  if(
+    body.length > 100
+  ){
+
+    /*
+      Default to PKCS#8.
+      KEYUTIL can reject it if incorrect,
+      and we'll show a clear error.
+    */
+
+    return (
+      "-----BEGIN PRIVATE KEY-----\n" +
+      body +
+      "\n-----END PRIVATE KEY-----"
+    );
+
+  }
+
+
+  return pem;
+
+}
+
+
+/* =====================================================
+   LOAD RSA KEY
+===================================================== */
+
+function loadPrivateKey(
+  pem
+){
+
+  const normalized =
+    normalizePrivateKey(
+      pem
+    );
+
+
+  if(
+    !normalized
+  ){
+
+    throw new Error(
+      "Private key is empty."
+    );
+
+  }
+
+
+  try{
+
+    const key =
+      KEYUTIL.getKey(
+        normalized
+      );
+
+
+    if(!key){
+
+      throw new Error(
+        "No key found."
+      );
+
+    }
+
+
+    return key;
+
+  }catch(error){
+
+    console.error(
+      "PRIVATE KEY ERROR:",
+      error
+    );
+
+
+    throw new Error(
+      "Could not read the private key. Paste the complete .pem file."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   SIGN REQUEST
+===================================================== */
+
+function createSignature(
+  method,
+  requestPath
+){
+
+  if(
+    !privateKeyObject
+  ){
+
+    throw new Error(
+      "Private key is not loaded."
+    );
+
+  }
+
+
+  /*
+    Kalshi signing:
+
+    timestamp
+    +
+    HTTP METHOD
+    +
+    /trade-api/v2/path
+
+    Query parameters are removed.
+  */
+
+  const timestamp =
+    Date.now().toString();
+
+
+  const pathWithoutQuery =
+    requestPath
+      .split("?")[0];
+
+
+  const fullPath =
+    API_PREFIX +
+    pathWithoutQuery;
+
 
   const message =
     timestamp +
     method.toUpperCase() +
-    path;
+    fullPath;
+
 
   try{
 
-    const sig = new KJUR.crypto.Signature({
-      alg:"SHA256withRSAandMGF1"
-    });
+    const signatureHex =
+      privateKeyObject.signPSS(
+        message,
+        "sha256",
+        -1
+      );
 
-    sig.init({
-      d: privateKeyPem,
-      padding: "PSS",
-      saltLength: 32
-    });
 
-    sig.updateString(message);
+    const signature =
+      hextob64(
+        signatureHex
+      );
 
-    const hex = sig.sign();
 
-    return hextob64(hex);
+    return {
+      timestamp,
+      signature
+    };
+
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "SIGN ERROR:",
+      error
+    );
+
 
     throw new Error(
-      "Could not sign request. Make sure you pasted the complete Kalshi private key."
+      "RSA-PSS signing failed."
     );
+
   }
+
 }
 
 
-/* -------------------------------------------------------
-   API REQUEST
-------------------------------------------------------- */
+/* =====================================================
+   KALSHI REQUEST
+===================================================== */
 
-async function kalshiRequest(path, options={}){
+async function kalshiRequest(
+  requestPath,
+  options = {}
+){
 
-  const method = (options.method || "GET").toUpperCase();
+  const method =
+    (
+      options.method ||
+      "GET"
+    ).toUpperCase();
 
-  const timestamp = Date.now().toString();
 
-  const signature = await makeSignature(
-    timestamp,
-    method,
-    API_PREFIX + path
-  );
+  const keyId =
+    document
+      .getElementById(
+        "apiKeyId"
+      )
+      .value
+      .trim();
 
-  const headers = {
-    "Content-Type":"application/json",
-    "KALSHI-ACCESS-KEY":
-      document.getElementById("apiKeyId").value.trim(),
-    "KALSHI-ACCESS-SIGNATURE":signature,
-    "KALSHI-ACCESS-TIMESTAMP":timestamp
-  };
 
-  const response = await fetch(
-    API_BASE + API_PREFIX + path,
-    {
-      method,
-      headers,
-      body:options.body
-    }
-  );
+  if(!keyId){
 
-  const text = await response.text();
+    throw new Error(
+      "API Key ID is missing."
+    );
 
-  let data;
-
-  try{
-    data = JSON.parse(text);
-  }catch{
-    data = {};
   }
 
-  if(!response.ok){
+
+  const auth =
+    createSignature(
+      method,
+      requestPath
+    );
+
+
+  const headers = {
+
+    "Content-Type":
+      "application/json",
+
+    "Accept":
+      "application/json",
+
+    "KALSHI-ACCESS-KEY":
+      keyId,
+
+    "KALSHI-ACCESS-SIGNATURE":
+      auth.signature,
+
+    "KALSHI-ACCESS-TIMESTAMP":
+      auth.timestamp
+
+  };
+
+
+  const url =
+    API_BASE +
+    API_PREFIX +
+    requestPath;
+
+
+  const response =
+    await fetch(
+      url,
+      {
+        method,
+        headers,
+        body:
+          options.body ||
+          undefined
+      }
+    );
+
+
+  const text =
+    await response.text();
+
+
+  let data = {};
+
+
+  try{
+
+    data =
+      JSON.parse(text);
+
+  }catch{
+
+    data = {};
+
+  }
+
+
+  if(
+    !response.ok
+  ){
 
     const message =
       data?.message ||
@@ -436,160 +974,327 @@ async function kalshiRequest(path, options={}){
       text ||
       `HTTP ${response.status}`;
 
+
     throw new Error(
       `${response.status}: ${message}`
     );
+
   }
 
+
   return data;
+
 }
 
 
-/* -------------------------------------------------------
+/* =====================================================
    CONNECT
-------------------------------------------------------- */
+===================================================== */
 
 async function connectKalshi(){
 
-  const key =
-    document.getElementById("privateKey").value.trim();
+  const pem =
+    document
+      .getElementById(
+        "privateKey"
+      )
+      .value
+      .trim();
 
-  if(!key){
+
+  if(!pem){
+
     setStatus(
       "Paste your Kalshi private key first.",
       "err"
     );
+
     return;
+
   }
 
-  privateKeyPem = cleanPem(key);
-
-  setStatus("Connecting...");
 
   try{
 
-    const balance =
-      await kalshiRequest("/portfolio/balance");
+    setStatus(
+      "Loading private key..."
+    );
 
-    connected = true;
+
+    privateKeyObject =
+      loadPrivateKey(
+        pem
+      );
+
+
+    setStatus(
+      "Testing Kalshi connection..."
+    );
+
+
+    const balance =
+      await kalshiRequest(
+        "/portfolio/balance"
+      );
+
+
+    connected =
+      true;
+
 
     document
-      .getElementById("dashboard")
-      .classList.remove("hidden");
+      .getElementById(
+        "dashboard"
+      )
+      .classList
+      .remove(
+        "hidden"
+      );
 
-    const equity = getEquity(balance);
 
-    startingEquity = equity;
+    startingEquity =
+      getEquity(
+        balance
+      );
+
+
+    updateBalance(
+      balance
+    );
+
 
     setStatus(
       "Connected successfully.",
       "ok"
     );
 
+
     await refreshDashboard();
 
-    clearInterval(refreshTimer);
+
+    clearInterval(
+      refreshTimer
+    );
+
 
     refreshTimer =
-      setInterval(refreshDashboard,10000);
+      setInterval(
+        refreshDashboard,
+        10000
+      );
+
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
 
-    connected = false;
+
+    connected =
+      false;
+
+
+    privateKeyObject =
+      null;
+
 
     document
-      .getElementById("dashboard")
-      .classList.add("hidden");
+      .getElementById(
+        "dashboard"
+      )
+      .classList
+      .add(
+        "hidden"
+      );
+
 
     setStatus(
-      "Load failed: " + error.message,
+      "Load failed: " +
+      error.message,
       "err"
     );
+
   }
+
 }
 
 
-/* -------------------------------------------------------
+/* =====================================================
    DISCONNECT
-------------------------------------------------------- */
+===================================================== */
 
 function disconnectKalshi(){
 
-  connected = false;
-  privateKeyPem = "";
-  startingEquity = null;
+  connected =
+    false;
 
-  clearInterval(refreshTimer);
 
-  document.getElementById("privateKey").value = "";
+  privateKeyObject =
+    null;
+
+
+  startingEquity =
+    null;
+
+
+  clearInterval(
+    refreshTimer
+  );
+
 
   document
-    .getElementById("dashboard")
-    .classList.add("hidden");
+    .getElementById(
+      "privateKey"
+    )
+    .value =
+    "";
 
-  setStatus("Disconnected");
+
+  document
+    .getElementById(
+      "dashboard"
+    )
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  setStatus(
+    "Disconnected"
+  );
+
 }
 
 
-/* -------------------------------------------------------
+/* =====================================================
+   EQUITY
+===================================================== */
+
+function getEquity(
+  balance
+){
+
+  const cash =
+    Number(
+      balance?.balance ||
+      0
+    ) / 100;
+
+
+  const portfolio =
+    Number(
+      balance?.portfolio_value ||
+      0
+    ) / 100;
+
+
+  return (
+    cash +
+    portfolio
+  );
+
+}
+
+
+/* =====================================================
    BALANCE
-------------------------------------------------------- */
+===================================================== */
 
-function getEquity(balance){
-
-  const cash =
-    Number(balance?.balance || 0) / 100;
-
-  const portfolio =
-    Number(balance?.portfolio_value || 0) / 100;
-
-  return cash + portfolio;
-}
-
-
-function updateBalance(balance){
+function updateBalance(
+  balance
+){
 
   const cash =
-    Number(balance?.balance || 0) / 100;
+    Number(
+      balance?.balance ||
+      0
+    ) / 100;
+
 
   const portfolio =
-    Number(balance?.portfolio_value || 0) / 100;
+    Number(
+      balance?.portfolio_value ||
+      0
+    ) / 100;
+
 
   const equity =
-    cash + portfolio;
+    cash +
+    portfolio;
 
-  document.getElementById("cash").textContent =
-    money(cash);
 
-  document.getElementById("positionValue").textContent =
-    money(portfolio);
+  document
+    .getElementById(
+      "cash"
+    )
+    .textContent =
+    money(
+      cash
+    );
 
-  document.getElementById("equity").textContent =
-    money(equity);
 
-  if(startingEquity !== null){
+  document
+    .getElementById(
+      "positionValue"
+    )
+    .textContent =
+    money(
+      portfolio
+    );
+
+
+  document
+    .getElementById(
+      "equity"
+    )
+    .textContent =
+    money(
+      equity
+    );
+
+
+  if(
+    startingEquity !== null
+  ){
 
     const pnl =
-      equity - startingEquity;
+      equity -
+      startingEquity;
 
-    const el =
-      document.getElementById("pnl");
 
-    el.textContent =
-      (pnl >= 0 ? "+" : "") +
-      money(pnl);
+    const element =
+      document
+        .getElementById(
+          "pnl"
+        );
 
-    el.style.color =
-      pnl >= 0 ? "var(--green)" : "var(--red)";
+
+    element.textContent =
+      (
+        pnl >= 0
+          ? "+"
+          : ""
+      ) +
+      money(
+        pnl
+      );
+
+
+    element.style.color =
+      pnl >= 0
+        ? "var(--green)"
+        : "var(--red)";
+
   }
+
 }
 
 
-/* -------------------------------------------------------
+/* =====================================================
    POSITIONS
-------------------------------------------------------- */
+===================================================== */
 
 async function loadPositions(){
 
@@ -598,107 +1303,185 @@ async function loadPositions(){
       "/portfolio/positions?limit=200&count_filter=position"
     );
 
-  return data.positions || [];
-}
 
+  /*
+    Kalshi responses may expose positions
+    as market_positions.
 
-function positionTitle(position){
+    Support both forms.
+  */
 
-  return (
-    position.market_ticker ||
-    position.ticker ||
-    "Unknown Market"
-  );
-}
+  if(
+    Array.isArray(
+      data.positions
+    )
+  ){
 
+    return data.positions;
 
-function renderPositions(positions){
-
-  const container =
-    document.getElementById("positions");
-
-  document.getElementById("positionCount").textContent =
-    positions.length + " open";
-
-  if(!positions.length){
-
-    container.innerHTML =
-      `<div class="empty">No open positions.</div>`;
-
-    return;
   }
 
-  container.innerHTML =
-    positions.map(position => {
 
-      const ticker =
-        position.market_ticker ||
-        position.ticker ||
-        "Unknown";
+  if(
+    Array.isArray(
+      data.market_positions
+    )
+  ){
 
-      const positionCount =
-        Number(
-          position.position ||
-          position.quantity ||
-          0
-        );
+    return data.market_positions;
 
-      const marketExposure =
-        Number(
-          position.market_exposure ||
-          position.market_exposure_dollars ||
-          0
-        ) / 100;
+  }
 
-      const realized =
-        Number(
-          position.realized_pnl ||
-          position.realized_pnl_dollars ||
-          0
-        ) / 100;
 
-      return `
-        <div class="position">
+  return [];
 
-          <div class="position-title">
-            ${escapeHtml(ticker)}
-          </div>
-
-          <div class="row">
-            <span>Position</span>
-            <span class="value">
-              ${positionCount}
-            </span>
-          </div>
-
-          <div class="row">
-            <span>Market Exposure</span>
-            <span class="value">
-              ${money(marketExposure)}
-            </span>
-          </div>
-
-          <div class="row">
-            <span>Realized P&L</span>
-            <span class="value">
-              ${money(realized)}
-            </span>
-          </div>
-
-        </div>
-      `;
-
-    }).join("");
 }
 
 
-/* -------------------------------------------------------
+/* =====================================================
+   RENDER POSITIONS
+===================================================== */
+
+function renderPositions(
+  positions
+){
+
+  const container =
+    document
+      .getElementById(
+        "positions"
+      );
+
+
+  document
+    .getElementById(
+      "positionCount"
+    )
+    .textContent =
+    positions.length +
+    " open";
+
+
+  if(
+    positions.length === 0
+  ){
+
+    container.innerHTML =
+      `
+      <div class="empty">
+        No open positions.
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    positions
+      .map(
+        position => {
+
+          const ticker =
+            position.market_ticker ||
+            position.ticker ||
+            "Unknown Market";
+
+
+          const positionSize =
+            Number(
+              position.position ||
+              0
+            );
+
+
+          const exposure =
+            Number(
+              position.market_exposure ||
+              0
+            ) / 100;
+
+
+          const realized =
+            Number(
+              position.realized_pnl ||
+              0
+            ) / 100;
+
+
+          return `
+
+          <div class="position">
+
+            <div class="position-title">
+              ${escapeHtml(ticker)}
+            </div>
+
+
+            <div class="row">
+
+              <span>
+                Position
+              </span>
+
+              <span class="value">
+                ${positionSize}
+              </span>
+
+            </div>
+
+
+            <div class="row">
+
+              <span>
+                Market Exposure
+              </span>
+
+              <span class="value">
+                ${money(exposure)}
+              </span>
+
+            </div>
+
+
+            <div class="row">
+
+              <span>
+                Realized P&L
+              </span>
+
+              <span class="value">
+                ${money(realized)}
+              </span>
+
+            </div>
+
+          </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =====================================================
    REFRESH
-------------------------------------------------------- */
+===================================================== */
 
 async function refreshDashboard(){
 
-  if(!connected) return;
+  if(
+    !connected
+  ){
+
+    return;
+
+  }
+
 
   try{
 
@@ -707,43 +1490,92 @@ async function refreshDashboard(){
         "/portfolio/balance"
       );
 
-    updateBalance(balance);
+
+    updateBalance(
+      balance
+    );
+
 
     const positions =
       await loadPositions();
 
-    renderPositions(positions);
+
+    renderPositions(
+      positions
+    );
+
+
+    const time =
+      new Date()
+        .toLocaleTimeString();
+
+
+    document
+      .getElementById(
+        "lastUpdate"
+      )
+      .textContent =
+      "Last updated: " +
+      time;
+
 
     setStatus(
       "Connected • Updated " +
-      new Date().toLocaleTimeString(),
+      time,
       "ok"
     );
 
+
   }catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
+
 
     setStatus(
-      "Refresh failed: " + error.message,
+      "Refresh failed: " +
+      error.message,
       "err"
     );
+
   }
+
 }
 
 
-/* -------------------------------------------------------
-   HTML ESCAPE
-------------------------------------------------------- */
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
-function escapeHtml(value){
+function escapeHtml(
+  value
+){
 
-  return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+  return String(
+    value
+  )
+  .replaceAll(
+    "&",
+    "&amp;"
+  )
+  .replaceAll(
+    "<",
+    "&lt;"
+  )
+  .replaceAll(
+    ">",
+    "&gt;"
+  )
+  .replaceAll(
+    '"',
+    "&quot;"
+  )
+  .replaceAll(
+    "'",
+    "&#039;"
+  );
+
 }
 
 </script>
