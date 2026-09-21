@@ -1,0 +1,4516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+/>
+
+<title>Position Ledger — Kalshi Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+/* =========================================================
+   ROOT
+   ========================================================= */
+
+:root {
+  --bg: #0a0a09;
+  --panel: #11110f;
+  --panel-2: #151512;
+  --line: #252521;
+  --hairline: #1c1c19;
+
+  --text: #f1f0e9;
+  --muted: #85847d;
+  --dim: #5c5b56;
+
+  --gold: #d7b66a;
+  --gold-soft: #a88d4d;
+
+  --yes: #6fba83;
+  --no: #d46f6f;
+
+  --green: #71c78a;
+  --red: #d87878;
+  --yellow: #d6b85f;
+  --orange: #d89152;
+
+  --font-main: Inter, Arial, sans-serif;
+  --font-display: Georgia, serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+
+  font-family: var(--font-main);
+
+  padding:
+    env(safe-area-inset-top)
+    env(safe-area-inset-right)
+    env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.container {
+  width: min(1180px, calc(100% - 28px));
+  margin: 0 auto;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+header {
+  padding: 34px 0 25px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 30px;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin-top: 6px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.connection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dim);
+}
+
+.dot.online {
+  background: var(--green);
+  box-shadow: 0 0 8px rgba(113,199,138,.35);
+}
+
+.dot.error {
+  background: var(--red);
+}
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
+
+.controls {
+  margin-top: 22px;
+
+  display: grid;
+  grid-template-columns:
+    minmax(180px, 1fr)
+    minmax(130px, 180px)
+    auto;
+
+  gap: 10px;
+}
+
+.input,
+.select,
+.button {
+  width: 100%;
+
+  min-height: 44px;
+
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+
+  color: var(--text);
+
+  padding: 11px 12px;
+
+  outline: none;
+}
+
+.input:focus,
+.select:focus {
+  border-color: var(--gold-soft);
+}
+
+.button {
+  background: var(--gold);
+  color: #14130f;
+  border-color: var(--gold);
+
+  font-weight: 700;
+}
+
+.button.secondary {
+  background: transparent;
+  color: var(--gold);
+}
+
+/* =========================================================
+   API PANEL
+   ========================================================= */
+
+.api-panel {
+  margin-top: 18px;
+
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+
+  padding: 15px;
+}
+
+.api-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 10px;
+}
+
+.api-title-left {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+
+  color: var(--gold);
+}
+
+.api-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.api-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 9px;
+}
+
+.api-note {
+  margin-top: 9px;
+
+  color: var(--dim);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.summary {
+  margin-top: 25px;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 9px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+
+  padding: 16px;
+}
+
+.card-label {
+  color: var(--muted);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.card-value {
+  margin-top: 8px;
+
+  font-family: var(--font-mono);
+  font-size: 20px;
+}
+
+.card-value.green {
+  color: var(--green);
+}
+
+.card-value.red {
+  color: var(--red);
+}
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+section {
+  margin-top: 30px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+}
+
+.position-count {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   PNL
+   ========================================================= */
+
+.pnl-panel {
+  display: none;
+
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+
+  padding: 15px;
+}
+
+.pnl-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 15px;
+}
+
+.pnl-number {
+  font-family: var(--font-mono);
+  font-size: 24px;
+}
+
+.pnl-percent {
+  margin-top: 4px;
+
+  font-family: var(--font-mono);
+  font-size: 10px;
+
+  color: var(--muted);
+}
+
+.pnl-meta {
+  text-align: right;
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+
+  color: var(--muted);
+}
+
+.chart-wrap {
+  height: 190px;
+  margin-top: 15px;
+}
+
+/* =========================================================
+   POSITIONS
+   ========================================================= */
+
+.positions {
+  display: grid;
+  gap: 8px;
+}
+
+.position {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    90px
+    90px
+    100px;
+
+  gap: 10px;
+
+  align-items: center;
+
+  background: var(--panel);
+  border: 1px solid var(--hairline);
+
+  border-radius: 6px;
+
+  padding: 13px;
+}
+
+.position-title {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.position-sub {
+  margin-top: 4px;
+
+  color: var(--muted);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.position-number {
+  text-align: right;
+
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.empty {
+  background: var(--panel);
+  border: 1px solid var(--hairline);
+
+  padding: 22px;
+
+  color: var(--muted);
+
+  font-family: var(--font-mono);
+  font-size: 10px;
+
+  text-align: center;
+}
+
+/* =========================================================
+   NFL SCHEDULE
+   ========================================================= */
+
+.nfl-section {
+  margin-top: 30px;
+}
+
+.nfl-day {
+  margin-bottom: 18px;
+}
+
+.nfl-day-title {
+  color: var(--gold);
+
+  font-family: var(--font-mono);
+  font-size: 10px;
+
+  letter-spacing: .08em;
+  text-transform: uppercase;
+
+  margin-bottom: 8px;
+}
+
+.nfl-games {
+  display: grid;
+  gap: 8px;
+}
+
+.nfl-game {
+  background: var(--panel);
+  border: 1px solid var(--hairline);
+
+  border-radius: 7px;
+
+  overflow: hidden;
+}
+
+.nfl-game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px 13px;
+
+  border-bottom: 1px solid var(--hairline);
+}
+
+.nfl-matchup-name {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.nfl-time {
+  color: var(--muted);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.nfl-status {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.nfl-status.live {
+  color: var(--green);
+}
+
+.nfl-status.final {
+  color: var(--muted);
+}
+
+.nfl-status.scheduled {
+  color: var(--gold);
+}
+
+/* =========================================================
+   MARKET GRID
+   ========================================================= */
+
+.market-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 7px;
+
+  padding: 9px;
+}
+
+.market-box {
+  background: var(--panel-2);
+  border: 1px solid var(--hairline);
+
+  border-radius: 5px;
+
+  padding: 10px;
+}
+
+.market-label {
+  color: var(--muted);
+
+  font-family: var(--font-mono);
+  font-size: 8px;
+
+  text-transform: uppercase;
+  letter-spacing: .08em;
+
+  margin-bottom: 7px;
+}
+
+.market-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto
+    auto
+    auto;
+
+  gap: 7px;
+
+  align-items: center;
+
+  min-height: 25px;
+}
+
+.market-row + .market-row {
+  border-top: 1px solid var(--hairline);
+  margin-top: 5px;
+  padding-top: 5px;
+}
+
+.market-side {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 10px;
+}
+
+.market-price {
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.bid {
+  color: var(--yes);
+}
+
+.ask {
+  color: var(--no);
+}
+
+.take {
+  color: var(--gold);
+}
+
+.freshness {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  font-family: var(--font-mono);
+  font-size: 8px;
+
+  color: var(--muted);
+}
+
+.fresh-dot {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: var(--dim);
+}
+
+.fresh-dot.fresh {
+  background: var(--green);
+}
+
+.fresh-dot.stale {
+  background: var(--yellow);
+}
+
+.fresh-dot.old {
+  background: var(--orange);
+}
+
+/* =========================================================
+   UNABATED
+   ========================================================= */
+
+.unabated-box {
+  margin: 0 9px 9px;
+
+  background: #0d0d0b;
+
+  border: 1px solid #29271f;
+
+  border-radius: 6px;
+
+  padding: 11px;
+}
+
+.unabated-header {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 9px;
+}
+
+.unabated-title {
+  color: var(--gold);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.unabated-freshness {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: var(--muted);
+
+  font-family: var(--font-mono);
+  font-size: 8px;
+}
+
+.unabated-line {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    85px
+    85px
+    90px;
+
+  gap: 8px;
+
+  align-items: center;
+
+  min-height: 28px;
+}
+
+.unabated-line + .unabated-line {
+  border-top: 1px solid var(--hairline);
+
+  margin-top: 5px;
+  padding-top: 5px;
+}
+
+.unabated-type {
+  color: var(--muted);
+
+  font-family: var(--font-mono);
+  font-size: 8px;
+
+  text-transform: uppercase;
+}
+
+.unabated-price {
+  font-family: var(--font-mono);
+  font-size: 10px;
+
+  text-align: right;
+}
+
+.unabated-prob {
+  font-family: var(--font-mono);
+  font-size: 9px;
+
+  color: var(--muted);
+
+  text-align: right;
+}
+
+.edge {
+  text-align: right;
+
+  font-family: var(--font-mono);
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+.edge.positive {
+  color: var(--green);
+}
+
+.edge.negative {
+  color: var(--red);
+}
+
+.edge.neutral {
+  color: var(--muted);
+}
+
+.edge-label {
+  color: var(--dim);
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+}
+
+.alt-list {
+  margin-top: 7px;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 5px;
+}
+
+.alt {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+
+  padding: 4px 6px;
+
+  color: var(--muted);
+
+  font-family: var(--font-mono);
+  font-size: 8px;
+}
+
+.unabated-error {
+  color: var(--orange);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+
+  line-height: 1.5;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+  padding: 40px 0 60px;
+
+  color: var(--dim);
+
+  font-family: var(--font-mono);
+  font-size: 8px;
+
+  line-height: 1.6;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .market-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .unabated-line {
+    grid-template-columns:
+      minmax(0, 1fr)
+      75px
+      70px
+      80px;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .container {
+    width: min(100% - 18px, 1180px);
+  }
+
+  header {
+    padding-top: 22px;
+  }
+
+  .header-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .brand {
+    font-size: 25px;
+  }
+
+  .controls {
+    grid-template-columns: 1fr;
+  }
+
+  .api-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .card {
+    padding: 13px;
+  }
+
+  .card-value {
+    font-size: 16px;
+  }
+
+  .position {
+    grid-template-columns: 1fr 80px;
+  }
+
+  .position-number {
+    text-align: right;
+  }
+
+  .nfl-game-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .unabated-line {
+    grid-template-columns: 1fr 70px 70px;
+
+    row-gap: 4px;
+  }
+
+  .unabated-line .edge {
+    grid-column: 2 / span 2;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+  <div class="header-row">
+
+    <div>
+      <div class="brand">
+        Position Ledger
+      </div>
+
+      <div class="subtitle">
+        Kalshi × NFL × Unabated
+      </div>
+    </div>
+
+    <div class="connection">
+      <span id="connectionDot" class="dot"></span>
+      <span id="connectionText">
+        Disconnected
+      </span>
+    </div>
+
+  </div>
+
+  <div class="controls">
+
+    <input
+      id="apiKey"
+      class="input"
+      type="text"
+      placeholder="Kalshi API Key ID"
+      value=""
+      autocomplete="off"
+    >
+
+    <select id="environment" class="select">
+
+      <option value="prod">
+        Production
+      </option>
+
+      <option value="demo">
+        Demo
+      </option>
+
+    </select>
+
+    <button
+      id="connectBtn"
+      class="button"
+    >
+      Connect
+    </button>
+
+  </div>
+
+</header>
+
+
+<!-- =======================================================
+     UNABATED API
+     ======================================================= -->
+
+<section class="api-panel">
+
+  <div class="api-title">
+
+    <div class="api-title-left">
+      Unabated API
+    </div>
+
+    <div class="api-status">
+
+      <span
+        id="unabatedDot"
+        class="dot"
+      ></span>
+
+      <span id="unabatedStatus">
+        Not connected
+      </span>
+
+    </div>
+
+  </div>
+
+  <div class="api-grid">
+
+    <input
+      id="unabatedKey"
+      class="input"
+      type="password"
+      placeholder="Unabated API Key"
+      autocomplete="off"
+    >
+
+    <button
+      id="unabatedBtn"
+      class="button secondary"
+    >
+      Load Unabated
+    </button>
+
+  </div>
+
+  <div class="api-note">
+
+    Your Unabated key stays in this page's memory and is not sent to
+    Kalshi. Do not publish this HTML with a private API key embedded in it.
+
+    Unabated Line availability depends on your API/feed access.
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     SUMMARY
+     ======================================================= -->
+
+<section>
+
+  <div class="summary">
+
+    <div class="card">
+
+      <div class="card-label">
+        Cash
+      </div>
+
+      <div
+        id="cashValue"
+        class="card-value"
+      >
+        —
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-label">
+        Positions
+      </div>
+
+      <div
+        id="positionValue"
+        class="card-value"
+      >
+        —
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-label">
+        Equity
+      </div>
+
+      <div
+        id="equityValue"
+        class="card-value"
+      >
+        —
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-label">
+        Session P&L
+      </div>
+
+      <div
+        id="summaryPnl"
+        class="card-value"
+      >
+        —
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     PNL
+     ======================================================= -->
+
+<section
+  id="pnlPanel"
+  class="pnl-panel"
+>
+
+  <div class="pnl-top">
+
+    <div>
+
+      <div
+        id="pnlValue"
+        class="pnl-number"
+      >
+        $0.00
+      </div>
+
+      <div
+        id="pnlPercent"
+        class="pnl-percent"
+      >
+        0.00%
+      </div>
+
+    </div>
+
+    <div
+      id="pnlUpdated"
+      class="pnl-meta"
+    >
+      Waiting for data
+    </div>
+
+  </div>
+
+  <div class="chart-wrap">
+
+    <canvas id="pnlChart"></canvas>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     POSITIONS
+     ======================================================= -->
+
+<section>
+
+  <div class="section-head">
+
+    <div class="section-title">
+      Open Positions
+    </div>
+
+    <div
+      id="positionCount"
+      class="position-count"
+    >
+      0
+    </div>
+
+  </div>
+
+  <div id="positions">
+
+    <div class="empty">
+      Connect to Kalshi to load positions.
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     NFL
+     ======================================================= -->
+
+<section class="nfl-section">
+
+  <div class="section-head">
+
+    <div class="section-title">
+      NFL Schedule
+    </div>
+
+    <div
+      id="nflWeek"
+      class="position-count"
+    >
+      Current Week
+    </div>
+
+  </div>
+
+  <div id="nflSchedule">
+
+    <div class="empty">
+      Loading NFL schedule…
+    </div>
+
+  </div>
+
+</section>
+
+
+<div class="footer">
+
+  Kalshi prices are exchange prices. Unabated prices are informational
+  reference prices. Edge is calculated as the difference between the
+  Unabated implied probability and the Kalshi take price.
+
+  <br><br>
+
+  This dashboard uses session P&L, not a complete historical realized/
+  unrealized P&L ledger.
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+const $ = id =>
+  document.getElementById(id);
+
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+function money(value) {
+
+  const number = Number(value || 0);
+
+  return number.toLocaleString(
+    "en-US",
+    {
+      style: "currency",
+      currency: "USD"
+    }
+  );
+
+}
+
+
+function pct(value) {
+
+  return (
+    Number(value || 0) * 100
+  ).toFixed(1) + "%";
+
+}
+
+
+function americanToProbability(american) {
+
+  const a = Number(american);
+
+  if (!Number.isFinite(a) || a === 0) {
+    return null;
+  }
+
+  if (a > 0) {
+    return 100 / (a + 100);
+  }
+
+  return (-a) / ((-a) + 100);
+
+}
+
+
+function probabilityToAmerican(probability) {
+
+  const p = Number(probability);
+
+  if (
+    !Number.isFinite(p) ||
+    p <= 0 ||
+    p >= 1
+  ) {
+    return null;
+  }
+
+  if (p >= .5) {
+
+    return Math.round(
+      -100 * p / (1 - p)
+    );
+
+  }
+
+  return Math.round(
+    100 * (1 - p) / p
+  );
+
+}
+
+
+function formatAmerican(value) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    !Number.isFinite(Number(value))
+  ) {
+    return "—";
+  }
+
+  const n = Number(value);
+
+  return n > 0
+    ? "+" + n
+    : String(n);
+
+}
+
+
+function kalshiPriceToProbability(cents) {
+
+  const n = Number(cents);
+
+  if (
+    !Number.isFinite(n) ||
+    n <= 0 ||
+    n >= 100
+  ) {
+    return null;
+  }
+
+  return n / 100;
+
+}
+
+
+function formatKalshiPrice(cents) {
+
+  if (
+    cents === null ||
+    cents === undefined ||
+    !Number.isFinite(Number(cents))
+  ) {
+    return "—";
+  }
+
+  return Number(cents).toFixed(0) + "¢";
+
+}
+
+
+function ageSeconds(dateValue) {
+
+  if (!dateValue) {
+    return Infinity;
+  }
+
+  const time =
+    new Date(dateValue).getTime();
+
+  if (!Number.isFinite(time)) {
+    return Infinity;
+  }
+
+  return Math.max(
+    0,
+    (Date.now() - time) / 1000
+  );
+
+}
+
+
+function freshnessClass(seconds) {
+
+  if (seconds <= 30) {
+    return "fresh";
+  }
+
+  if (seconds <= 60) {
+    return "stale";
+  }
+
+  return "old";
+
+}
+
+
+function freshnessHtml(dateValue) {
+
+  const seconds =
+    ageSeconds(dateValue);
+
+  const cls =
+    freshnessClass(seconds);
+
+  let label;
+
+  if (seconds === Infinity) {
+    label = "unknown";
+  }
+
+  else if (seconds < 1) {
+    label = "now";
+  }
+
+  else if (seconds < 60) {
+    label =
+      Math.floor(seconds) + "s";
+  }
+
+  else {
+    label =
+      Math.floor(seconds / 60) + "m";
+  }
+
+  return `
+    <span class="freshness">
+      <span class="fresh-dot ${cls}"></span>
+      ${label}
+    </span>
+  `;
+
+}
+
+
+/* =========================================================
+   KALSHI CONFIG
+   ========================================================= */
+
+const KALSHI_BASE = {
+
+  prod:
+    "https://api.elections.kalshi.com",
+
+  demo:
+    "https://demo-api.kalshi.co"
+
+};
+
+
+const KALSHI_PREFIX =
+  "/trade-api/v2";
+
+
+let kalshiApiKey = "";
+
+let kalshiPrivateKey = "";
+
+let currentEnvironment = "prod";
+
+let sessionStartEquity = null;
+
+let pnlHistory = [];
+
+let pnlChart = null;
+
+
+/* =========================================================
+   IMPORTANT:
+   RSA-PSS SIGNING
+   ========================================================= */
+
+async function importPrivateKey(pem) {
+
+  const clean =
+    pem
+      .replace(
+        /-----BEGIN PRIVATE KEY-----/g,
+        ""
+      )
+      .replace(
+        /-----END PRIVATE KEY-----/g,
+        ""
+      )
+      .replace(/\s/g, "");
+
+  const binary =
+    atob(clean);
+
+  const bytes =
+    new Uint8Array(
+      binary.length
+    );
+
+  for (
+    let i = 0;
+    i < binary.length;
+    i++
+  ) {
+    bytes[i] =
+      binary.charCodeAt(i);
+  }
+
+  return crypto.subtle.importKey(
+    "pkcs8",
+    bytes.buffer,
+    {
+      name: "RSA-PSS",
+      hash: "SHA-256"
+    },
+    false,
+    ["sign"]
+  );
+
+}
+
+
+async function signKalshi(
+  method,
+  path
+) {
+
+  if (!kalshiPrivateKey) {
+    return null;
+  }
+
+  const key =
+    await importPrivateKey(
+      kalshiPrivateKey
+    );
+
+  const timestamp =
+    Date.now().toString();
+
+  const message =
+    timestamp +
+    method.toUpperCase() +
+    path;
+
+  const signature =
+    await crypto.subtle.sign(
+      {
+        name: "RSA-PSS",
+        saltLength: 32
+      },
+      key,
+      new TextEncoder().encode(
+        message
+      )
+    );
+
+  let binary = "";
+
+  const bytes =
+    new Uint8Array(
+      signature
+    );
+
+  bytes.forEach(
+    b => {
+      binary +=
+        String.fromCharCode(b);
+    }
+  );
+
+  return {
+
+    timestamp,
+
+    signature:
+      btoa(binary)
+
+  };
+
+}
+
+
+/* =========================================================
+   KALSHI REQUEST
+   ========================================================= */
+
+async function kalshiFetch(
+  path,
+  options = {}
+) {
+
+  const method =
+    options.method || "GET";
+
+  const base =
+    KALSHI_BASE[
+      currentEnvironment
+    ];
+
+  const fullPath =
+    KALSHI_PREFIX + path;
+
+  const signed =
+    await signKalshi(
+      method,
+      fullPath
+    );
+
+  const headers = {
+
+    "Content-Type":
+      "application/json",
+
+  };
+
+  if (kalshiApiKey) {
+
+    headers[
+      "KALSHI-ACCESS-KEY"
+    ] =
+      kalshiApiKey;
+
+  }
+
+  if (signed) {
+
+    headers[
+      "KALSHI-ACCESS-TIMESTAMP"
+    ] =
+      signed.timestamp;
+
+    headers[
+      "KALSHI-ACCESS-SIGNATURE"
+    ] =
+      signed.signature;
+
+  }
+
+  const response =
+    await fetch(
+      base + fullPath,
+      {
+        ...options,
+        headers: {
+          ...headers,
+          ...(options.headers || {})
+        }
+      }
+    );
+
+  if (!response.ok) {
+
+    const text =
+      await response.text();
+
+    throw new Error(
+      "Kalshi " +
+      response.status +
+      ": " +
+      text.slice(0, 250)
+    );
+
+  }
+
+  return response.json();
+
+}
+
+
+/* =========================================================
+   CONNECT
+   ========================================================= */
+
+$("connectBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      kalshiApiKey =
+        $("apiKey").value.trim();
+
+      currentEnvironment =
+        $("environment").value;
+
+      /*
+       * Private key can be added here if your
+       * existing dashboard has it.
+       *
+       * For this combined version the field is
+       * intentionally not exposed in the UI yet.
+       */
+
+      if (!kalshiApiKey) {
+
+        setConnection(
+          false,
+          "Enter Kalshi API Key ID"
+        );
+
+        return;
+
+      }
+
+      try {
+
+        setConnection(
+          true,
+          "Connecting…"
+        );
+
+        await refreshDashboard();
+
+        setConnection(
+          true,
+          "Connected"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        setConnection(
+          false,
+          error.message
+        );
+
+      }
+
+    }
+  );
+
+
+function setConnection(
+  online,
+  text
+) {
+
+  $("connectionDot")
+    .className =
+      "dot " +
+      (
+        online
+          ? "online"
+          : "error"
+      );
+
+  $("connectionText")
+    .textContent =
+      text;
+
+}
+
+
+/* =========================================================
+   BALANCE
+   ========================================================= */
+
+async function loadBalance() {
+
+  const data =
+    await kalshiFetch(
+      "/portfolio/balance"
+    );
+
+  const balance =
+    data.balance || 0;
+
+  const portfolio =
+    data.portfolio_value || 0;
+
+  const equity =
+    balance + portfolio;
+
+  $("cashValue")
+    .textContent =
+      money(balance / 100);
+
+  $("positionValue")
+    .textContent =
+      money(portfolio / 100);
+
+  $("equityValue")
+    .textContent =
+      money(equity / 100);
+
+  return equity / 100;
+
+}
+
+
+/* =========================================================
+   POSITIONS
+   ========================================================= */
+
+async function loadPositions() {
+
+  const data =
+    await kalshiFetch(
+      "/portfolio/positions?limit=200&count_filter=position"
+    );
+
+  const positions =
+    data.market_positions ||
+    data.positions ||
+    [];
+
+  $("positionCount")
+    .textContent =
+      positions.length +
+      " position" +
+      (
+        positions.length === 1
+          ? ""
+          : "s"
+      );
+
+  if (!positions.length) {
+
+    $("positions").innerHTML = `
+      <div class="empty">
+        No open positions.
+      </div>
+    `;
+
+    return;
+
+  }
+
+  const rows = [];
+
+  for (const position of positions) {
+
+    const ticker =
+      position.ticker ||
+      position.market_ticker ||
+      "";
+
+    let market = null;
+
+    try {
+
+      market =
+        await kalshiFetch(
+          "/markets/" +
+          encodeURIComponent(ticker)
+        );
+
+    }
+
+    catch {}
+
+    const title =
+      market?.market?.title ||
+      market?.title ||
+      ticker;
+
+    const positionValue =
+      Number(
+        position.market_exposure ||
+        position.position_value ||
+        0
+      );
+
+    const qty =
+      Number(
+        position.position ||
+        position.count ||
+        0
+      );
+
+    rows.push(`
+
+      <div class="position">
+
+        <div>
+
+          <div class="position-title">
+            ${escapeHtml(title)}
+          </div>
+
+          <div class="position-sub">
+            ${escapeHtml(ticker)}
+          </div>
+
+        </div>
+
+        <div class="position-number">
+          ${qty}
+        </div>
+
+        <div class="position-number">
+          ${money(positionValue / 100)}
+        </div>
+
+        <div class="position-number">
+          ${position.realized_pnl !== undefined
+            ? money(Number(position.realized_pnl) / 100)
+            : "—"
+          }
+        </div>
+
+      </div>
+
+    `);
+
+  }
+
+  $("positions").innerHTML =
+    rows.join("");
+
+}
+
+
+/* =========================================================
+   PNL
+   ========================================================= */
+
+function updatePnl(equity) {
+
+  if (
+    sessionStartEquity === null
+  ) {
+
+    sessionStartEquity =
+      equity;
+
+  }
+
+  const pnl =
+    equity -
+    sessionStartEquity;
+
+  const percent =
+    sessionStartEquity
+      ? pnl / sessionStartEquity
+      : 0;
+
+  $("pnlValue")
+    .textContent =
+      (
+        pnl >= 0
+          ? "+"
+          : ""
+      ) +
+      money(pnl);
+
+  $("pnlPercent")
+    .textContent =
+      (
+        percent >= 0
+          ? "+"
+          : ""
+      ) +
+      (percent * 100).toFixed(2) +
+      "%";
+
+  $("summaryPnl")
+    .textContent =
+      (
+        pnl >= 0
+          ? "+"
+          : ""
+      ) +
+      money(pnl);
+
+  $("summaryPnl")
+    .className =
+      "card-value " +
+      (
+        pnl >= 0
+          ? "green"
+          : "red"
+      );
+
+  $("pnlValue")
+    .style.color =
+      pnl >= 0
+        ? "var(--green)"
+        : "var(--red)";
+
+  pnlHistory.push({
+
+    time:
+      new Date(),
+
+    value:
+      pnl
+
+  });
+
+  if (pnlHistory.length > 360) {
+
+    pnlHistory =
+      pnlHistory.slice(
+        -360
+      );
+
+  }
+
+  renderPnlChart();
+
+  $("pnlUpdated")
+    .textContent =
+      "Updated " +
+      new Date()
+        .toLocaleTimeString();
+
+  $("pnlPanel")
+    .style.display =
+      "block";
+
+}
+
+
+function renderPnlChart() {
+
+  const ctx =
+    $("pnlChart")
+      .getContext("2d");
+
+  const labels =
+    pnlHistory.map(
+      item =>
+        item.time.toLocaleTimeString()
+    );
+
+  const values =
+    pnlHistory.map(
+      item =>
+        item.value
+    );
+
+  if (pnlChart) {
+
+    pnlChart.data.labels =
+      labels;
+
+    pnlChart.data.datasets[0].data =
+      values;
+
+    pnlChart.update(
+      "none"
+    );
+
+    return;
+
+  }
+
+  pnlChart =
+    new Chart(
+      ctx,
+      {
+
+        type: "line",
+
+        data: {
+
+          labels,
+
+          datasets: [{
+
+            data: values,
+
+            borderColor:
+              "#d7b66a",
+
+            backgroundColor:
+              "rgba(215,182,106,.08)",
+
+            fill: true,
+
+            tension: .25,
+
+            pointRadius: 0,
+
+            borderWidth: 1.5
+
+          }]
+
+        },
+
+        options: {
+
+          responsive: true,
+
+          maintainAspectRatio:
+            false,
+
+          plugins: {
+
+            legend: {
+              display: false
+            }
+
+          },
+
+          scales: {
+
+            x: {
+              display: false
+            },
+
+            y: {
+
+              ticks: {
+
+                color:
+                  "#85847d",
+
+                font: {
+                  size: 9
+                }
+
+              },
+
+              grid: {
+
+                color:
+                  "#1c1c19"
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   NFL HELPERS
+   ========================================================= */
+
+function getCurrentWeekDates() {
+
+  const now =
+    new Date();
+
+  const monday =
+    new Date(now);
+
+  const day =
+    monday.getDay();
+
+  const daysSinceMonday =
+    day === 0
+      ? 6
+      : day - 1;
+
+  monday.setDate(
+    monday.getDate() -
+    daysSinceMonday
+  );
+
+  monday.setHours(
+    0, 0, 0, 0
+  );
+
+  const nextMonday =
+    new Date(monday);
+
+  nextMonday.setDate(
+    nextMonday.getDate() + 7
+  );
+
+  return {
+    start: monday,
+    end: nextMonday
+  };
+
+}
+
+
+function formatNFLDate(date) {
+
+  return date
+    .toISOString()
+    .slice(0, 10)
+    .replaceAll("-", "");
+
+}
+
+
+function formatNFLTime(
+  dateString
+) {
+
+  return new Date(
+    dateString
+  ).toLocaleTimeString(
+    [],
+    {
+      hour: "numeric",
+      minute: "2-digit"
+    }
+  );
+
+}
+
+
+function formatNFLDay(
+  dateString
+) {
+
+  return new Date(
+    dateString
+  ).toLocaleDateString(
+    [],
+    {
+      weekday: "long",
+      month: "short",
+      day: "numeric"
+    }
+  );
+
+}
+
+
+function getNFLStatus(game) {
+
+  const state =
+    game.status?.type?.state ||
+    "";
+
+  const detail =
+    game.status?.type?.detail ||
+    "";
+
+  if (state === "in") {
+
+    return {
+
+      text:
+        detail ||
+        "LIVE",
+
+      className:
+        "live"
+
+    };
+
+  }
+
+  if (
+    state === "post" ||
+    state === "final"
+  ) {
+
+    return {
+
+      text:
+        "FINAL",
+
+      className:
+        "final"
+
+    };
+
+  }
+
+  return {
+
+    text:
+      formatNFLTime(
+        game.date
+      ),
+
+    className:
+      "scheduled"
+
+  };
+
+}
+
+
+/* =========================================================
+   TEAM NORMALIZATION
+   ========================================================= */
+
+const NFL_ALIASES = {
+
+  "LAR":
+    ["LAR", "LA", "RAMS", "LOSANGELESRAMS"],
+
+  "LA":
+    ["LAR", "LA", "RAMS", "LOSANGELESRAMS"],
+
+  "LAC":
+    ["LAC", "LA", "CHARGERS", "LOSANGELESCHARGERS"],
+
+  "WSH":
+    ["WSH", "WAS", "WASHINGTON"],
+
+  "WAS":
+    ["WSH", "WAS", "WASHINGTON"],
+
+  "JAX":
+    ["JAX", "JAC", "JAGUARS", "JACKSONVILLE"],
+
+  "LV":
+    ["LV", "LVR", "RAIDERS", "LASVEGAS"],
+
+  "SF":
+    ["SF", "49ERS", "SANFRANCISCO"],
+
+  "TB":
+    ["TB", "TAMPA", "BUCCANEERS"],
+
+  "NE":
+    ["NE", "PATRIOTS", "NEWENGLAND"],
+
+  "NO":
+    ["NO", "SAINTS", "NEWORLEANS"],
+
+  "GB":
+    ["GB", "PACKERS", "GREENBAY"],
+
+  "KC":
+    ["KC", "CHIEFS", "KANSASCITY"],
+
+  "NYG":
+    ["NYG", "GIANTS", "NEWYORKGIANTS"],
+
+  "NYJ":
+    ["NYJ", "JETS", "NEWYORKJETS"]
+
+};
+
+
+function normalizeTeam(
+  value
+) {
+
+  return String(value || "")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "");
+
+}
+
+
+function teamMatches(
+  a,
+  b
+) {
+
+  const x =
+    normalizeTeam(a);
+
+  const y =
+    normalizeTeam(b);
+
+  if (!x || !y) {
+    return false;
+  }
+
+  if (x === y) {
+    return true;
+  }
+
+  for (
+    const values of
+    Object.values(NFL_ALIASES)
+  ) {
+
+    if (
+      values.includes(x) &&
+      values.includes(y)
+    ) {
+
+      return true;
+
+    }
+
+  }
+
+  return false;
+
+}
+
+
+/* =========================================================
+   LOAD NFL
+   ========================================================= */
+
+let nflGames = [];
+
+async function loadNFLSchedule() {
+
+  try {
+
+    $("nflSchedule").innerHTML = `
+      <div class="empty">
+        Loading NFL schedule…
+      </div>
+    `;
+
+    const {
+      start,
+      end
+    } =
+      getCurrentWeekDates();
+
+    const url =
+      "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard" +
+      "?dates=" +
+      formatNFLDate(start) +
+      "-" +
+      formatNFLDate(end);
+
+    const response =
+      await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(
+        "NFL schedule unavailable."
+      );
+    }
+
+    const data =
+      await response.json();
+
+    nflGames =
+      data.events || [];
+
+    nflGames.sort(
+      (a, b) =>
+        new Date(a.date) -
+        new Date(b.date)
+    );
+
+    renderNFLGames();
+
+  }
+
+  catch (error) {
+
+    console.error(error);
+
+    $("nflSchedule").innerHTML = `
+      <div class="empty">
+        Unable to load NFL schedule.
+      </div>
+    `;
+
+  }
+
+}
+
+
+function renderNFLGames() {
+
+  if (!nflGames.length) {
+
+    $("nflSchedule").innerHTML = `
+      <div class="empty">
+        No NFL games found.
+      </div>
+    `;
+
+    return;
+
+  }
+
+  const groups = {};
+
+  nflGames.forEach(
+    game => {
+
+      const date =
+        new Date(game.date);
+
+      const key =
+        date.toLocaleDateString(
+          "en-US",
+          {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+          }
+        );
+
+      if (!groups[key]) {
+        groups[key] = [];
+      }
+
+      groups[key].push(game);
+
+    }
+  );
+
+
+  let html = "";
+
+
+  Object.values(groups)
+    .forEach(
+      games => {
+
+        const first =
+          games[0];
+
+        html += `
+
+          <div class="nfl-day">
+
+            <div class="nfl-day-title">
+              ${formatNFLDay(first.date)}
+            </div>
+
+            <div class="nfl-games">
+        `;
+
+
+        games.forEach(
+          game => {
+
+            html +=
+              renderNFLGame(
+                game
+              );
+
+          }
+        );
+
+
+        html += `
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    );
+
+
+  $("nflSchedule")
+    .innerHTML =
+      html;
+
+}
+
+
+function renderNFLGame(
+  game
+) {
+
+  const competitors =
+    game.competitions?.[0]
+      ?.competitors || [];
+
+  if (
+    competitors.length < 2
+  ) {
+    return "";
+  }
+
+  const away =
+    competitors.find(
+      t =>
+        t.homeAway === "away"
+    ) ||
+    competitors[1];
+
+  const home =
+    competitors.find(
+      t =>
+        t.homeAway === "home"
+    ) ||
+    competitors[0];
+
+  const status =
+    getNFLStatus(game);
+
+  const awayName =
+    away.team?.abbreviation ||
+    away.team?.shortDisplayName ||
+    away.team?.displayName ||
+    "";
+
+  const homeName =
+    home.team?.abbreviation ||
+    home.team?.shortDisplayName ||
+    home.team?.displayName ||
+    "";
+
+  return `
+
+    <div
+      class="nfl-game"
+      data-away="${escapeHtml(awayName)}"
+      data-home="${escapeHtml(homeName)}"
+    >
+
+      <div class="nfl-game-header">
+
+        <div class="nfl-matchup-name">
+
+          ${escapeHtml(awayName)}
+          @
+          ${escapeHtml(homeName)}
+
+          ${
+            away.score !== undefined &&
+            home.score !== undefined
+              ? `
+                ${escapeHtml(
+                  away.score
+                )}
+                -
+                ${escapeHtml(
+                  home.score
+                )}
+              `
+              : ""
+          }
+
+        </div>
+
+        <div
+          class="nfl-status ${status.className}"
+        >
+          ${escapeHtml(status.text)}
+        </div>
+
+      </div>
+
+
+      <div class="market-grid">
+
+        ${renderMarketBox(
+          "Sides",
+          "side",
+          awayName,
+          homeName
+        )}
+
+        ${renderMarketBox(
+          "Totals",
+          "total",
+          awayName,
+          homeName
+        )}
+
+        ${renderMarketBox(
+          "Moneyline",
+          "moneyline",
+          awayName,
+          homeName
+        )}
+
+      </div>
+
+
+      <div
+        class="unabated-box"
+        data-unabated-card
+      >
+
+        <div class="unabated-header">
+
+          <div class="unabated-title">
+            Unabated Line
+          </div>
+
+          <div
+            class="unabated-freshness"
+          >
+            Waiting…
+          </div>
+
+        </div>
+
+        <div class="unabated-content">
+
+          <div class="unabated-error">
+            Waiting for Unabated data…
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function renderMarketBox(
+  label,
+  type,
+  awayName,
+  homeName
+) {
+
+  return `
+
+    <div
+      class="market-box"
+      data-market-box="${type}"
+    >
+
+      <div class="market-label">
+        ${label}
+      </div>
+
+      <div class="market-placeholder">
+
+        <div class="market-row">
+
+          <div class="market-side">
+            ${escapeHtml(awayName)}
+          </div>
+
+          <div class="market-price">
+            —
+          </div>
+
+          <div class="market-price">
+            —
+          </div>
+
+          <div>
+            ${freshnessHtml()}
+          </div>
+
+        </div>
+
+        <div class="market-row">
+
+          <div class="market-side">
+            ${escapeHtml(homeName)}
+          </div>
+
+          <div class="market-price">
+            —
+          </div>
+
+          <div class="market-price">
+            —
+          </div>
+
+          <div>
+            ${freshnessHtml()}
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   UNABATED
+   ========================================================= */
+
+let unabatedKey = "";
+
+let unabatedGames = [];
+
+let unabatedSources = [];
+
+let unabatedBetTypes = [];
+
+let unabatedTeams = [];
+
+
+$("unabatedBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      unabatedKey =
+        $("unabatedKey")
+          .value
+          .trim();
+
+      if (!unabatedKey) {
+
+        setUnabatedStatus(
+          false,
+          "Enter API key"
+        );
+
+        return;
+
+      }
+
+      try {
+
+        setUnabatedStatus(
+          true,
+          "Loading…"
+        );
+
+        await loadUnabated();
+
+        setUnabatedStatus(
+          true,
+          "Connected"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Unabated:",
+          error
+        );
+
+        setUnabatedStatus(
+          false,
+          error.message
+        );
+
+      }
+
+    }
+  );
+
+
+function setUnabatedStatus(
+  online,
+  text
+) {
+
+  $("unabatedDot")
+    .className =
+      "dot " +
+      (
+        online
+          ? "online"
+          : "error"
+      );
+
+  $("unabatedStatus")
+    .textContent =
+      text;
+
+}
+
+
+/* =========================================================
+   UNABATED REQUEST
+   ========================================================= */
+
+async function unabatedFetch(
+  path
+) {
+
+  if (!unabatedKey) {
+    throw new Error(
+      "Unabated API key missing."
+    );
+  }
+
+  const response =
+    await fetch(
+      "https://data.unabated.com" +
+      path,
+      {
+
+        headers: {
+
+          "X-API-KEY":
+            unabatedKey,
+
+          "Accept":
+            "application/json"
+
+        }
+
+      }
+    );
+
+  if (!response.ok) {
+
+    const text =
+      await response.text();
+
+    throw new Error(
+      "Unabated " +
+      response.status +
+      ": " +
+      text.slice(0, 250)
+    );
+
+  }
+
+  return response.json();
+
+}
+
+
+/* =========================================================
+   UNABATED DATA
+   ========================================================= */
+
+async function loadUnabated() {
+
+  /*
+   * These endpoints are intentionally loaded dynamically.
+   * That lets us find the Unabated Line source instead of
+   * hardcoding an unknown marketSourceId.
+   */
+
+  const [
+    odds,
+    sources,
+    betTypes
+  ] =
+    await Promise.all([
+
+      unabatedFetch(
+        "/market/nfl/straight/odds"
+      ),
+
+      unabatedFetch(
+        "/market/nfl/straight/sources"
+      ),
+
+      unabatedFetch(
+        "/bettype"
+      )
+
+    ]);
+
+
+  unabatedSources =
+    extractArray(
+      sources
+    );
+
+
+  unabatedBetTypes =
+    extractArray(
+      betTypes
+    );
+
+
+  unabatedGames =
+    parseUnabatedOdds(
+      odds
+    );
+
+
+  renderUnabatedIntoNFL();
+
+}
+
+
+/* =========================================================
+   GENERIC ARRAY EXTRACTOR
+   ========================================================= */
+
+function extractArray(
+  data
+) {
+
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  if (!data || typeof data !== "object") {
+    return [];
+  }
+
+  for (
+    const value of
+    Object.values(data)
+  ) {
+
+    if (Array.isArray(value)) {
+      return value;
+    }
+
+  }
+
+  return [];
+
+}
+
+
+/* =========================================================
+   BET TYPE CLASSIFICATION
+   ========================================================= */
+
+function getBetTypeName(
+  betTypeId
+) {
+
+  const item =
+    unabatedBetTypes.find(
+      type =>
+        String(
+          type.id ??
+          type.betTypeId
+        ) ===
+        String(betTypeId)
+    );
+
+  return (
+    item?.name ||
+    item?.description ||
+    ""
+  ).toLowerCase();
+
+}
+
+
+function classifyBetType(
+  market
+) {
+
+  const name =
+    getBetTypeName(
+      market.betTypeId
+    );
+
+  if (
+    name.includes("moneyline") ||
+    name.includes("money line")
+  ) {
+
+    return "moneyline";
+
+  }
+
+  if (
+    name.includes("spread")
+  ) {
+
+    return "side";
+
+  }
+
+  if (
+    name.includes("total") ||
+    name.includes("over/under") ||
+    name.includes("over under")
+  ) {
+
+    return "total";
+
+  }
+
+  return null;
+
+}
+
+
+/* =========================================================
+   FIND UNABATED LINE SOURCE
+   ========================================================= */
+
+function findUnabatedLineSource() {
+
+  const candidates =
+    unabatedSources.filter(
+      source => {
+
+        const name =
+          (
+            source.name ||
+            source.sourceName ||
+            ""
+          ).toLowerCase();
+
+        return (
+          name.includes("unabated") &&
+          name.includes("line")
+        );
+
+      }
+    );
+
+  return candidates[0] || null;
+
+}
+
+
+/* =========================================================
+   PARSE UNABATED ODDS
+   ========================================================= */
+
+function parseUnabatedOdds(
+  data
+) {
+
+  const output = [];
+
+  const odds =
+    data?.odds ||
+    data;
+
+  const nfl =
+    odds?.nfl ||
+    odds?.NFL;
+
+  const periodTypes =
+    nfl?.periodTypes ||
+    {};
+
+  /*
+   * The API documentation nests game data under:
+   *
+   * odds -> nfl -> periodTypes -> game ->
+   * pregame/live -> marketKey
+   */
+
+  const gameGroup =
+    periodTypes.game ||
+    periodTypes.Game ||
+    {};
+
+  Object.values(gameGroup)
+    .forEach(
+      period => {
+
+        Object.values(
+          period || {}
+        )
+        .forEach(
+          market =>
+            collectUnabatedMarket(
+              market,
+              output
+            )
+        );
+
+      }
+    );
+
+
+  /*
+   * Some API responses may use a flatter
+   * structure. Catch those too.
+   */
+
+  if (!output.length) {
+
+    recursivelyFindMarkets(
+      data,
+      output
+    );
+
+  }
+
+
+  return mergeUnabatedMarkets(
+    output
+  );
+
+}
+
+
+function collectUnabatedMarket(
+  market,
+  output
+) {
+
+  if (
+    !market ||
+    typeof market !== "object"
+  ) {
+    return;
+  }
+
+  if (
+    !market.eventId ||
+    !market.betTypeId
+  ) {
+    return;
+  }
+
+  const type =
+    classifyBetType(
+      market
+    );
+
+  if (!type) {
+    return;
+  }
+
+  output.push({
+    ...market,
+    marketType: type
+  });
+
+}
+
+
+function recursivelyFindMarkets(
+  object,
+  output
+) {
+
+  if (
+    !object ||
+    typeof object !== "object"
+  ) {
+    return;
+  }
+
+  if (
+    object.eventId &&
+    object.betTypeId &&
+    object.sides
+  ) {
+
+    const type =
+      classifyBetType(
+        object
+      );
+
+    if (type) {
+
+      output.push({
+        ...object,
+        marketType: type
+      });
+
+    }
+
+  }
+
+
+  Object.values(object)
+    .forEach(
+      value => {
+
+        if (
+          value &&
+          typeof value === "object"
+        ) {
+
+          recursivelyFindMarkets(
+            value,
+            output
+          );
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   MERGE DUPLICATES
+   ========================================================= */
+
+function mergeUnabatedMarkets(
+  markets
+) {
+
+  const map =
+    new Map();
+
+  markets.forEach(
+    market => {
+
+      const key =
+        [
+          market.eventId,
+          market.betTypeId,
+          market.betSubType ||
+            ""
+        ].join("|");
+
+      if (!map.has(key)) {
+
+        map.set(
+          key,
+          market
+        );
+
+      }
+
+    }
+  );
+
+  return Array.from(
+    map.values()
+  );
+
+}
+
+
+/* =========================================================
+   TEAM EXTRACTION
+   ========================================================= */
+
+function getEventTeams(
+  market
+) {
+
+  const teams =
+    market.eventTeams;
+
+  if (
+    Array.isArray(teams)
+  ) {
+
+    return teams;
+
+  }
+
+  if (
+    teams &&
+    typeof teams === "object"
+  ) {
+
+    return Object.values(
+      teams
+    );
+
+  }
+
+  return [];
+
+}
+
+
+function marketTeamNames(
+  market
+) {
+
+  const teams =
+    getEventTeams(
+      market
+    );
+
+  return teams.map(
+    team =>
+      team.abbreviation ||
+      team.name ||
+      team.displayName ||
+      team.teamName ||
+      ""
+  );
+
+}
+
+
+/* =========================================================
+   MATCH UNABATED GAME TO ESPN
+   ========================================================= */
+
+function findMatchingNFLGame(
+  market
+) {
+
+  const names =
+    marketTeamNames(
+      market
+    );
+
+  if (names.length < 2) {
+    return null;
+  }
+
+  return nflGames.find(
+    game => {
+
+      const competitors =
+        game.competitions?.[0]
+          ?.competitors || [];
+
+      if (
+        competitors.length < 2
+      ) {
+        return false;
+      }
+
+      const away =
+        competitors.find(
+          t =>
+            t.homeAway ===
+            "away"
+        );
+
+      const home =
+        competitors.find(
+          t =>
+            t.homeAway ===
+            "home"
+        );
+
+      if (!away || !home) {
+        return false;
+      }
+
+      const awayName =
+        away.team?.abbreviation ||
+        away.team?.shortDisplayName ||
+        away.team?.displayName ||
+        "";
+
+      const homeName =
+        home.team?.abbreviation ||
+        home.team?.shortDisplayName ||
+        home.team?.displayName ||
+        "";
+
+      const direct =
+        (
+          teamMatches(
+            names[0],
+            awayName
+          ) &&
+          teamMatches(
+            names[1],
+            homeName
+          )
+        );
+
+      const reverse =
+        (
+          teamMatches(
+            names[0],
+            homeName
+          ) &&
+          teamMatches(
+            names[1],
+            awayName
+          )
+        );
+
+      if (
+        !direct &&
+        !reverse
+      ) {
+        return false;
+      }
+
+      if (
+        market.eventStart
+      ) {
+
+        const diff =
+          Math.abs(
+            new Date(
+              market.eventStart
+            ).getTime() -
+            new Date(
+              game.date
+            ).getTime()
+          );
+
+        /*
+         * Six-hour tolerance prevents matching
+         * teams from different games.
+         */
+
+        if (
+          diff >
+          6 * 60 * 60 * 1000
+        ) {
+
+          return false;
+
+        }
+
+      }
+
+      return true;
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   UNABATED SIDE DATA
+   ========================================================= */
+
+function getSourceLines(
+  market
+) {
+
+  const source =
+    findUnabatedLineSource();
+
+  if (!source) {
+    return [];
+  }
+
+  const sourceId =
+    String(
+      source.id ??
+      source.marketSourceId ??
+      source.sourceId
+    );
+
+  const result = [];
+
+  const sides =
+    market.sides || {};
+
+  Object.values(sides)
+    .forEach(
+      side => {
+
+        const lines =
+          side.marketSourceLines ||
+          [];
+
+        lines.forEach(
+          line => {
+
+            const lineSourceId =
+              String(
+                line.marketSourceId ??
+                line.sourceId ??
+                ""
+              );
+
+            if (
+              lineSourceId ===
+              sourceId
+            ) {
+
+              result.push({
+
+                ...line,
+
+                side:
+
+                  side.sideName ||
+                  side.name ||
+                  side.label ||
+                  side.teamName ||
+                  "",
+
+                sideObject:
+                  side
+
+              });
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+  return result;
+
+}
+
+
+/* =========================================================
+   UNABATED IMPLIED PROBABILITY
+   ========================================================= */
+
+function getUnabatedProbability(
+  line
+) {
+
+  return americanToProbability(
+    line.price
+  );
+
+}
+
+
+/* =========================================================
+   KALSHI TAKE EDGE
+   ========================================================= */
+
+function calculateEdge(
+  fairProbability,
+  takeCents
+) {
+
+  const takeProbability =
+    kalshiPriceToProbability(
+      takeCents
+    );
+
+  if (
+    fairProbability === null ||
+    takeProbability === null
+  ) {
+
+    return null;
+
+  }
+
+  /*
+   * Edge is expressed in percentage points.
+   *
+   * Example:
+   *
+   * Unabated fair = 55%
+   * Kalshi take   = 51%
+   *
+   * Edge = +4.0 percentage points
+   */
+
+  return (
+    fairProbability -
+    takeProbability
+  );
+
+}
+
+
+function edgeHtml(
+  edge
+) {
+
+  if (
+    edge === null ||
+    !Number.isFinite(edge)
+  ) {
+
+    return `
+      <div class="edge neutral">
+        —
+      </div>
+    `;
+
+  }
+
+  const percent =
+    edge * 100;
+
+  const cls =
+    percent > .1
+      ? "positive"
+      : percent < -.1
+        ? "negative"
+        : "neutral";
+
+  return `
+
+    <div
+      class="edge ${cls}"
+    >
+
+      ${
+        percent >= 0
+          ? "+"
+          : ""
+      }
+
+      ${percent.toFixed(1)}%
+
+      <div class="edge-label">
+        edge
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   RENDER UNABATED
+   ========================================================= */
+
+function renderUnabatedIntoNFL() {
+
+  document
+    .querySelectorAll(
+      "[data-unabated-card]"
+    )
+    .forEach(
+      card => {
+
+        const gameEl =
+          card.closest(
+            ".nfl-game"
+          );
+
+        const away =
+          gameEl.dataset.away;
+
+        const home =
+          gameEl.dataset.home;
+
+
+        const matching =
+          unabatedGames.filter(
+            market => {
+
+              const game =
+                findMatchingNFLGame(
+                  market
+                );
+
+              if (!game) {
+                return false;
+              }
+
+              const competitors =
+                game.competitions?.[0]
+                  ?.competitors || [];
+
+              const awayTeam =
+                competitors.find(
+                  t =>
+                    t.homeAway ===
+                    "away"
+                );
+
+              const homeTeam =
+                competitors.find(
+                  t =>
+                    t.homeAway ===
+                    "home"
+                );
+
+              return (
+                teamMatches(
+                  away,
+                  awayTeam?.team?.abbreviation
+                ) &&
+                teamMatches(
+                  home,
+                  homeTeam?.team?.abbreviation
+                )
+              );
+
+            }
+          );
+
+
+        renderUnabatedCard(
+          card,
+          matching
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   RENDER ONE UNABATED CARD
+   ========================================================= */
+
+function renderUnabatedCard(
+  card,
+  markets
+) {
+
+  const content =
+    card.querySelector(
+      ".unabated-content"
+    );
+
+  const freshness =
+    card.querySelector(
+      ".unabated-freshness"
+    );
+
+
+  if (!markets.length) {
+
+    content.innerHTML = `
+
+      <div class="unabated-error">
+
+        No matching Unabated Line data found.
+
+        <br>
+
+        Your API plan may not expose the
+        Unabated Line source.
+
+      </div>
+
+    `;
+
+    freshness.innerHTML =
+      freshnessHtml();
+
+    return;
+
+  }
+
+
+  let rows = [];
+
+  let newestDate = null;
+
+
+  markets.forEach(
+    market => {
+
+      const lines =
+        getSourceLines(
+          market
+        );
+
+      lines.forEach(
+        line => {
+
+          const fair =
+            getUnabatedProbability(
+              line
+            );
+
+          const kalshi =
+            findKalshiTakeForLine(
+              card,
+              market,
+              line
+            );
+
+          const edge =
+            calculateEdge(
+              fair,
+              kalshi
+            );
+
+
+          const modified =
+            line.modifiedOn ||
+            market.modifiedOn;
+
+          if (
+            modified &&
+            (
+              !newestDate ||
+              new Date(modified) >
+              new Date(newestDate)
+            )
+          ) {
+
+            newestDate =
+              modified;
+
+          }
+
+
+          const points =
+            line.points !== null &&
+            line.points !== undefined
+              ? line.points
+              : "";
+
+
+          rows.push(`
+
+            <div class="unabated-line">
+
+              <div>
+
+                <div class="unabated-type">
+
+                  ${escapeHtml(
+                    market.marketType
+                  )}
+
+                  ${
+                    points !== ""
+                      ? " " +
+                        escapeHtml(
+                          String(points)
+                        )
+                      : ""
+                  }
+
+                </div>
+
+                <div
+                  class="market-side"
+                >
+                  ${escapeHtml(
+                    line.side ||
+                    ""
+                  )}
+                </div>
+
+              </div>
+
+
+              <div
+                class="unabated-price"
+              >
+
+                ${formatAmerican(
+                  line.price
+                )}
+
+              </div>
+
+
+              <div
+                class="unabated-prob"
+              >
+
+                ${
+                  fair !== null
+                    ? pct(fair)
+                    : "—"
+                }
+
+              </div>
+
+
+              ${
+                edgeHtml(
+                  edge
+                )
+              }
+
+            </div>
+
+          `);
+
+        }
+
+      );
+
+    }
+  );
+
+
+  if (!rows.length) {
+
+    content.innerHTML = `
+
+      <div class="unabated-error">
+
+        Unabated Line source detected,
+        but no current line was returned.
+
+      </div>
+
+    `;
+
+  }
+
+  else {
+
+    content.innerHTML =
+      rows.join("");
+
+  }
+
+
+  freshness.innerHTML =
+    freshnessHtml(
+      newestDate
+    );
+
+}
+
+
+/* =========================================================
+   KALSHI MARKET MATCHING
+   ========================================================= */
+
+let kalshiMarkets = [];
+
+
+function findKalshiTakeForLine(
+  card,
+  unabatedMarket,
+  line
+) {
+
+  if (!kalshiMarkets.length) {
+    return null;
+  }
+
+  const nflGame =
+    card.closest(
+      ".nfl-game"
+    );
+
+  const away =
+    nflGame?.dataset.away;
+
+  const home =
+    nflGame?.dataset.home;
+
+
+  const relevant =
+    kalshiMarkets.filter(
+      market =>
+        marketMatchesGame(
+          market,
+          away,
+          home
+        )
+    );
+
+
+  if (!relevant.length) {
+    return null;
+  }
+
+
+  const type =
+    unabatedMarket.marketType;
+
+
+  const market =
+    relevant.find(
+      market =>
+        kalshiMarketType(
+          market
+        ) === type
+    );
+
+
+  if (!market) {
+    return null;
+  }
+
+
+  /*
+   * For a YES/NO Kalshi contract, the ask is
+   * the "take price".
+   *
+   * This function returns the YES ask by default.
+   */
+
+  const yesAsk =
+    Number(
+      market.yes_ask
+    );
+
+  if (
+    Number.isFinite(yesAsk) &&
+    yesAsk > 0
+  ) {
+
+    return yesAsk;
+
+  }
+
+
+  const noAsk =
+    Number(
+      market.no_ask
+    );
+
+  if (
+    Number.isFinite(noAsk) &&
+    noAsk > 0
+  ) {
+
+    /*
+     * If we're taking NO, compare against
+     * the complementary fair probability.
+     */
+
+    const fair =
+      getUnabatedProbability(
+        line
+      );
+
+    if (
+      fair !== null
+    ) {
+
+      return (
+        100 *
+        (1 - fair)
+      );
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+function kalshiMarketType(
+  market
+) {
+
+  const text =
+    (
+      market.title ||
+      market.subtitle ||
+      market.ticker ||
+      ""
+    ).toLowerCase();
+
+
+  if (
+    text.includes("moneyline") ||
+    text.includes("money line")
+  ) {
+
+    return "moneyline";
+
+  }
+
+
+  if (
+    text.includes("spread") ||
+    text.includes("points")
+  ) {
+
+    return "side";
+
+  }
+
+
+  if (
+    text.includes("total") ||
+    text.includes("over") ||
+    text.includes("under")
+  ) {
+
+    return "total";
+
+  }
+
+
+  return null;
+
+}
+
+
+function marketMatchesGame(
+  market,
+  away,
+  home
+) {
+
+  const text =
+    normalizeTeam(
+      (
+        market.title ||
+        market.subtitle ||
+        market.ticker ||
+        ""
+      )
+    );
+
+
+  const awayNorm =
+    normalizeTeam(
+      away
+    );
+
+  const homeNorm =
+    normalizeTeam(
+      home
+    );
+
+
+  return (
+    text.includes(
+      awayNorm
+    ) &&
+    text.includes(
+      homeNorm
+    )
+  );
+
+}
+
+
+/* =========================================================
+   LOAD KALSHI NFL MARKETS
+   ========================================================= */
+
+async function loadKalshiMarkets() {
+
+  try {
+
+    const data =
+      await kalshiFetch(
+        "/markets?status=open&limit=1000"
+      );
+
+    kalshiMarkets =
+      data.markets || [];
+
+    renderKalshiMarkets();
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Kalshi markets:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   RENDER KALSHI MARKETS
+   ========================================================= */
+
+function renderKalshiMarkets() {
+
+  document
+    .querySelectorAll(
+      ".nfl-game"
+    )
+    .forEach(
+      gameEl => {
+
+        const away =
+          gameEl.dataset.away;
+
+        const home =
+          gameEl.dataset.home;
+
+
+        const markets =
+          kalshiMarkets.filter(
+            market =>
+              marketMatchesGame(
+                market,
+                away,
+                home
+              )
+          );
+
+
+        const boxes =
+          gameEl.querySelectorAll(
+            "[data-market-box]"
+          );
+
+
+        boxes.forEach(
+          box => {
+
+            const type =
+              box.dataset.marketBox;
+
+            const matching =
+              markets.filter(
+                market =>
+                  kalshiMarketType(
+                    market
+                  ) === type
+              );
+
+
+            renderKalshiBox(
+              box,
+              matching
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+function renderKalshiBox(
+  box,
+  markets
+) {
+
+  if (!markets.length) {
+
+    box.querySelector(
+      ".market-placeholder"
+    ).innerHTML = `
+
+      <div class="market-row">
+
+        <div class="market-side">
+          No market
+        </div>
+
+        <div>
+          —
+        </div>
+
+        <div>
+          —
+        </div>
+
+        <div>
+          ${freshnessHtml()}
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const rows = [];
+
+
+  markets
+    .slice(0, 4)
+    .forEach(
+      market => {
+
+        const title =
+          market.title ||
+          market.subtitle ||
+          market.ticker ||
+          "Market";
+
+
+        const bid =
+          market.yes_bid;
+
+        const ask =
+          market.yes_ask;
+
+
+        const updated =
+          market.updated_time ||
+          market.updated_at ||
+          market.last_updated;
+
+
+        rows.push(`
+
+          <div class="market-row">
+
+            <div
+              class="market-side"
+              title="${escapeHtml(title)}"
+            >
+
+              ${escapeHtml(title)}
+
+            </div>
+
+            <div
+              class="market-price bid"
+            >
+
+              ${formatKalshiPrice(
+                bid
+              )}
+
+            </div>
+
+            <div
+              class="market-price ask"
+            >
+
+              ${formatKalshiPrice(
+                ask
+              )}
+
+            </div>
+
+            <div>
+
+              ${freshnessHtml(
+                updated
+              )}
+
+            </div>
+
+          </div>
+
+        `);
+
+      }
+    );
+
+
+  box.querySelector(
+    ".market-placeholder"
+  ).innerHTML =
+    rows.join("");
+
+}
+
+
+/* =========================================================
+   REFRESH DASHBOARD
+   ========================================================= */
+
+async function refreshDashboard() {
+
+  const equity =
+    await loadBalance();
+
+  await loadPositions();
+
+  updatePnl(
+    equity
+  );
+
+  await loadKalshiMarkets();
+
+}
+
+
+/* =========================================================
+   AUTO REFRESH
+   ========================================================= */
+
+setInterval(
+  async () => {
+
+    if (!kalshiApiKey) {
+      return;
+    }
+
+    try {
+
+      const equity =
+        await loadBalance();
+
+      await loadPositions();
+
+      updatePnl(
+        equity
+      );
+
+      await loadKalshiMarkets();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Kalshi refresh:",
+        error
+      );
+
+    }
+
+  },
+  10000
+);
+
+
+/*
+ * Unabated REST polling is intentionally slower.
+ * Do not hammer the API.
+ */
+
+setInterval(
+  async () => {
+
+    if (!unabatedKey) {
+      return;
+    }
+
+    try {
+
+      await loadUnabated();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Unabated refresh:",
+        error
+      );
+
+      setUnabatedStatus(
+        false,
+        error.message
+      );
+
+    }
+
+  },
+  15000
+);
+
+
+/* =========================================================
+   START NFL
+   ========================================================= */
+
+loadNFLSchedule();
+
+
+setInterval(
+  loadNFLSchedule,
+  60000
+);
+
+</script>
+
+</body>
+</html>
