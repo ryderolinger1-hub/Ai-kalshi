@@ -2,30 +2,42 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Position Ledger — Kalshi Dashboard</title>
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   background:#080b10;
   color:#f5f7fa;
   font-family:Arial,Helvetica,sans-serif;
 }
+
 .container{
   width:min(1200px,94%);
   margin:auto;
   padding:30px 0 60px;
 }
+
 header{
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-bottom:25px;
 }
-h1{margin:0;font-size:30px}
-.subtitle{color:#8d96a5;margin-top:6px}
+
+h1{
+  margin:0;
+  font-size:30px;
+}
+
+.subtitle{
+  color:#8d96a5;
+  margin-top:6px;
+}
+
 .status{
   padding:8px 13px;
   border-radius:20px;
@@ -33,26 +45,35 @@ h1{margin:0;font-size:30px}
   color:#72f5a5;
   font-size:13px;
 }
+
 .cards{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:14px;
   margin-bottom:20px;
 }
+
 .card{
   background:#10151d;
   border:1px solid #202733;
   border-radius:14px;
   padding:18px;
 }
+
 .label{
   color:#8d96a5;
   font-size:13px;
   margin-bottom:8px;
 }
-.value{font-size:25px;font-weight:700}
+
+.value{
+  font-size:25px;
+  font-weight:700;
+}
+
 .green{color:#4ade80}
 .red{color:#fb7185}
+
 .panel{
   background:#10151d;
   border:1px solid #202733;
@@ -60,59 +81,105 @@ h1{margin:0;font-size:30px}
   padding:20px;
   margin-bottom:20px;
 }
+
 .panel-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-bottom:16px;
 }
-.panel-title{font-size:19px;font-weight:700}
-.small{color:#8d96a5;font-size:12px}
+
+.panel-title{
+  font-size:19px;
+  font-weight:700;
+}
+
+.small{
+  color:#8d96a5;
+  font-size:12px;
+}
+
 canvas{
   width:100%;
   height:240px;
   display:block;
 }
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse}
+
+.table-wrap{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
 th,td{
   padding:13px 10px;
   border-bottom:1px solid #202733;
   text-align:left;
   white-space:nowrap;
 }
+
 th{
   color:#8d96a5;
   font-size:12px;
   text-transform:uppercase;
 }
-td{font-size:14px}
+
+td{
+  font-size:14px;
+}
+
 .nfl-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:14px;
 }
+
 .nfl-card{
   background:#0b1017;
   border:1px solid #202733;
   border-radius:13px;
   padding:16px;
 }
+
 .nfl-title{
   font-weight:700;
   font-size:16px;
   margin-bottom:12px;
+  line-height:1.4;
 }
+
+.nfl-date{
+  color:#8d96a5;
+  font-size:12px;
+  margin-bottom:12px;
+}
+
 .nfl-row{
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-top:8px;
 }
-.nfl-team{color:#cbd5e1}
-.nfl-price{font-weight:700}
-.yes{color:#4ade80}
-.no{color:#fb7185}
+
+.nfl-team{
+  color:#cbd5e1;
+}
+
+.nfl-price{
+  font-weight:700;
+}
+
+.yes{
+  color:#4ade80;
+}
+
+.no{
+  color:#fb7185;
+}
+
 .progress{
   width:100%;
   height:6px;
@@ -121,21 +188,40 @@ td{font-size:14px}
   overflow:hidden;
   margin-top:12px;
 }
+
 .progress-bar{
   height:100%;
   background:#4ade80;
   border-radius:10px;
 }
-.error{color:#fb7185;font-size:14px}
-.loading{color:#8d96a5}
+
+.error{
+  color:#fb7185;
+  font-size:14px;
+}
+
+.loading{
+  color:#8d96a5;
+}
 
 @media(max-width:900px){
-  .cards{grid-template-columns:repeat(2,1fr)}
-  .nfl-grid{grid-template-columns:1fr}
+  .cards{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .nfl-grid{
+    grid-template-columns:1fr;
+  }
 }
+
 @media(max-width:600px){
-  .cards{grid-template-columns:1fr}
-  h1{font-size:24px}
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  h1{
+    font-size:24px;
+  }
 }
 </style>
 </head>
@@ -145,55 +231,120 @@ td{font-size:14px}
 <div class="container">
 
 <header>
+
   <div>
     <h1>Position Ledger</h1>
-    <div class="subtitle">Kalshi trading dashboard</div>
+    <div class="subtitle">
+      Kalshi trading dashboard
+    </div>
   </div>
 
-  <div class="status" id="status">
+  <div
+    class="status"
+    id="status"
+  >
     Connecting...
   </div>
+
 </header>
+
+
+<!-- ACCOUNT -->
 
 <div class="cards">
 
   <div class="card">
-    <div class="label">Available Balance</div>
-    <div class="value" id="balance">$0.00</div>
+    <div class="label">
+      Available Balance
+    </div>
+
+    <div
+      class="value"
+      id="balance"
+    >
+      $0.00
+    </div>
   </div>
 
-  <div class="card">
-    <div class="label">Portfolio Value</div>
-    <div class="value" id="portfolio">$0.00</div>
-  </div>
 
   <div class="card">
-    <div class="label">Total Account Value</div>
-    <div class="value" id="total">$0.00</div>
+    <div class="label">
+      Portfolio Value
+    </div>
+
+    <div
+      class="value"
+      id="portfolio"
+    >
+      $0.00
+    </div>
   </div>
 
+
   <div class="card">
-    <div class="label">Live P/L</div>
-    <div class="value" id="pnl">$0.00</div>
+    <div class="label">
+      Total Account Value
+    </div>
+
+    <div
+      class="value"
+      id="total"
+    >
+      $0.00
+    </div>
+  </div>
+
+
+  <div class="card">
+    <div class="label">
+      Live P/L
+    </div>
+
+    <div
+      class="value"
+      id="pnl"
+    >
+      $0.00
+    </div>
   </div>
 
 </div>
 
+
+<!-- CHART -->
+
 <div class="panel">
 
   <div class="panel-header">
-    <div class="panel-title">Live P/L</div>
-    <div class="small" id="lastUpdated">Waiting for data...</div>
+
+    <div class="panel-title">
+      Live P/L
+    </div>
+
+    <div
+      class="small"
+      id="lastUpdated"
+    >
+      Waiting for data...
+    </div>
+
   </div>
 
   <canvas id="pnlChart"></canvas>
 
 </div>
 
+
+<!-- POSITIONS -->
+
 <div class="panel">
 
   <div class="panel-header">
-    <div class="panel-title">Open Positions</div>
+
+    <div class="panel-title">
+      Open Positions
+    </div>
+
   </div>
 
   <div class="table-wrap">
@@ -201,6 +352,7 @@ td{font-size:14px}
     <table>
 
       <thead>
+
         <tr>
           <th>Market</th>
           <th>Position</th>
@@ -209,14 +361,20 @@ td{font-size:14px}
           <th>Current</th>
           <th>P/L</th>
         </tr>
+
       </thead>
 
       <tbody id="positionsBody">
+
         <tr>
-          <td colspan="6" class="loading">
+          <td
+            colspan="6"
+            class="loading"
+          >
             Loading positions...
           </td>
         </tr>
+
       </tbody>
 
     </table>
@@ -225,55 +383,79 @@ td{font-size:14px}
 
 </div>
 
+
+<!-- NFL -->
+
 <div class="panel">
 
   <div class="panel-header">
 
-    <div class="panel-title">
-      NFL Markets
+    <div>
+
+      <div class="panel-title">
+        NFL Markets
+      </div>
+
+      <div class="small">
+        Today through the next 6 days
+      </div>
+
     </div>
 
-    <div class="small">
-      Today → next 6 days
+    <div
+      class="small"
+      id="nflCount"
+    >
+      Loading...
     </div>
 
   </div>
 
-  <div id="nflStatus" class="loading">
+
+  <div
+    id="nflStatus"
+    class="loading"
+  >
     Loading NFL markets...
   </div>
 
-  <div id="nflGrid" class="nfl-grid"></div>
+
+  <div
+    id="nflGrid"
+    class="nfl-grid"
+  ></div>
 
 </div>
 
 </div>
+
 
 <script>
 
-/* =========================================================
+/* ========================================================
    WORKER
-========================================================= */
+======================================================== */
 
 const WORKER_BASE =
   "https://worker1.ryderolinger1.workers.dev";
 
+
 const PORTFOLIO_URL =
-  WORKER_BASE + "/api/portfolio";
+  WORKER_BASE +
+  "/api/portfolio";
+
 
 const NFL_URL =
-  WORKER_BASE + "/api/nfl";
+  WORKER_BASE +
+  "/api/nfl";
 
 
-/* =========================================================
+/* ========================================================
    STORAGE
-========================================================= */
+======================================================== */
 
 const HISTORY_KEY =
   "kalshi_pl_history_v1";
-
-const BASELINE_KEY =
-  "kalshi_pl_baseline_v1";
 
 
 function getHistory(){
@@ -281,7 +463,9 @@ function getHistory(){
   try{
 
     return JSON.parse(
-      localStorage.getItem(HISTORY_KEY) || "[]"
+      localStorage.getItem(
+        HISTORY_KEY
+      ) || "[]"
     );
 
   }catch{
@@ -303,13 +487,15 @@ function saveHistory(history){
 }
 
 
-/* =========================================================
+/* ========================================================
    HELPERS
-========================================================= */
+======================================================== */
 
 function money(value){
 
-  return Number(value || 0).toLocaleString(
+  return Number(
+    value || 0
+  ).toLocaleString(
     "en-US",
     {
       style:"currency",
@@ -322,35 +508,48 @@ function money(value){
 
 function cents(value){
 
-  return Number(value || 0) / 100;
+  return Number(
+    value || 0
+  ) / 100;
 
 }
 
 
 function escapeHtml(value){
 
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+  return String(
+    value ?? ""
+  )
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
 
 }
 
 
 function formatDate(value){
 
-  if(!value) return "—";
-
-  const d = new Date(value);
-
-  if(Number.isNaN(d.getTime()))
+  if(!value){
     return "—";
+  }
+
+  const d =
+    new Date(value);
+
+  if(
+    Number.isNaN(
+      d.getTime()
+    )
+  ){
+    return "—";
+  }
 
   return d.toLocaleString(
     "en-US",
     {
+      weekday:"short",
       month:"short",
       day:"numeric",
       hour:"numeric",
@@ -361,9 +560,9 @@ function formatDate(value){
 }
 
 
-/* =========================================================
+/* ========================================================
    PORTFOLIO
-========================================================= */
+======================================================== */
 
 async function loadPortfolio(){
 
@@ -371,14 +570,23 @@ async function loadPortfolio(){
 
     const response =
       await fetch(
-        PORTFOLIO_URL + "?t=" + Date.now(),
-        {cache:"no-store"}
+        PORTFOLIO_URL +
+        "?t=" +
+        Date.now(),
+        {
+          cache:"no-store"
+        }
       );
+
 
     const data =
       await response.json();
 
-    if(!response.ok || !data.ok){
+
+    if(
+      !response.ok ||
+      !data.ok
+    ){
 
       throw new Error(
         JSON.stringify(data)
@@ -389,7 +597,8 @@ async function loadPortfolio(){
 
     const balance =
       cents(
-        data.balance?.balance || 0
+        data.balance?.balance ||
+        0
       );
 
 
@@ -397,66 +606,83 @@ async function loadPortfolio(){
       Array.isArray(
         data.positions?.market_positions
       )
-        ? data.positions.market_positions
-        : (
-          Array.isArray(
-            data.positions?.positions
-          )
-            ? data.positions.positions
-            : []
-        );
+      ? data.positions.market_positions
+      : [];
 
 
     let portfolioValue = 0;
+
     let totalPnl = 0;
 
 
-    positions.forEach(p => {
+    positions.forEach(
+      p => {
 
-      const marketValue =
-        Number(
-          p.market_value ||
-          p.market_value_cents ||
-          p.market_exposure ||
-          0
-        );
+        const marketValue =
+          Number(
+            p.market_value ||
+            p.market_value_cents ||
+            p.market_exposure ||
+            0
+          );
 
-      const pnl =
-        Number(
-          p.unrealized_pnl ??
-          p.realized_pnl ??
-          p.pnl ??
-          0
-        );
 
-      portfolioValue +=
-        cents(marketValue);
+        const pnl =
+          Number(
+            p.unrealized_pnl ??
+            p.realized_pnl ??
+            p.pnl ??
+            0
+          );
 
-      totalPnl +=
-        cents(pnl);
 
-    });
+        portfolioValue +=
+          cents(
+            marketValue
+          );
+
+
+        totalPnl +=
+          cents(
+            pnl
+          );
+
+      }
+    );
 
 
     const total =
-      balance + portfolioValue;
+      balance +
+      portfolioValue;
 
 
-    document.getElementById("balance")
-      .textContent = money(balance);
+    document.getElementById(
+      "balance"
+    ).textContent =
+      money(balance);
 
-    document.getElementById("portfolio")
-      .textContent = money(portfolioValue);
 
-    document.getElementById("total")
-      .textContent = money(total);
+    document.getElementById(
+      "portfolio"
+    ).textContent =
+      money(portfolioValue);
+
+
+    document.getElementById(
+      "total"
+    ).textContent =
+      money(total);
 
 
     const pnlElement =
-      document.getElementById("pnl");
+      document.getElementById(
+        "pnl"
+      );
+
 
     pnlElement.textContent =
       money(totalPnl);
+
 
     pnlElement.className =
       "value " +
@@ -467,22 +693,9 @@ async function loadPortfolio(){
       );
 
 
-    if(
-      localStorage.getItem(
-        BASELINE_KEY
-      ) === null
-    ){
-
-      localStorage.setItem(
-        BASELINE_KEY,
-        String(total)
-      );
-
-    }
-
-
     const history =
       getHistory();
+
 
     history.push({
       time:Date.now(),
@@ -505,30 +718,41 @@ async function loadPortfolio(){
     );
 
 
-    document.getElementById("status")
-      .textContent = "Live";
+    document.getElementById(
+      "status"
+    ).textContent =
+      "Live";
 
-    document.getElementById("lastUpdated")
-      .textContent =
-        "Updated " +
-        new Date().toLocaleTimeString();
+
+    document.getElementById(
+      "lastUpdated"
+    ).textContent =
+      "Updated " +
+      new Date()
+        .toLocaleTimeString();
 
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "Portfolio error:",
+      error
+    );
 
-    document.getElementById("status")
-      .textContent = "Error";
+
+    document.getElementById(
+      "status"
+    ).textContent =
+      "Error";
 
   }
 
 }
 
 
-/* =========================================================
+/* ========================================================
    POSITIONS
-========================================================= */
+======================================================== */
 
 function renderPositions(
   positions
@@ -556,95 +780,97 @@ function renderPositions(
 
 
   body.innerHTML =
-    positions.map(p => {
+    positions.map(
+      p => {
 
-      const ticker =
-        p.ticker ||
-        p.market_ticker ||
-        "—";
-
-
-      const side =
-        p.side ||
-        "—";
+        const ticker =
+          p.ticker ||
+          p.market_ticker ||
+          "—";
 
 
-      const quantity =
-        Number(
-          p.position ??
-          p.quantity ??
-          0
-        );
+        const side =
+          p.side ||
+          "—";
 
 
-      const avg =
-        cents(
-          p.average_price ??
-          p.avg_price ??
-          0
-        );
+        const quantity =
+          Number(
+            p.position ??
+            p.quantity ??
+            0
+          );
 
 
-      const current =
-        cents(
-          p.current_price ??
-          p.market_price ??
-          p.last_price ??
-          0
-        );
+        const avg =
+          cents(
+            p.average_price ??
+            p.avg_price ??
+            0
+          );
 
 
-      const pnl =
-        cents(
-          p.unrealized_pnl ??
-          p.realized_pnl ??
-          p.pnl ??
-          0
-        );
+        const current =
+          cents(
+            p.current_price ??
+            p.market_price ??
+            p.last_price ??
+            0
+          );
 
 
-      return `
-        <tr>
+        const pnl =
+          cents(
+            p.unrealized_pnl ??
+            p.realized_pnl ??
+            p.pnl ??
+            0
+          );
 
-          <td>
-            ${escapeHtml(ticker)}
-          </td>
 
-          <td>
-            ${escapeHtml(side)}
-          </td>
+        return `
+          <tr>
 
-          <td>
-            ${quantity}
-          </td>
+            <td>
+              ${escapeHtml(ticker)}
+            </td>
 
-          <td>
-            ${money(avg)}
-          </td>
+            <td>
+              ${escapeHtml(side)}
+            </td>
 
-          <td>
-            ${money(current)}
-          </td>
+            <td>
+              ${quantity}
+            </td>
 
-          <td class="${
-            pnl >= 0
-              ? "green"
-              : "red"
-          }">
-            ${money(pnl)}
-          </td>
+            <td>
+              ${money(avg)}
+            </td>
 
-        </tr>
-      `;
+            <td>
+              ${money(current)}
+            </td>
 
-    }).join("");
+            <td class="${
+              pnl >= 0
+                ? "green"
+                : "red"
+            }">
+              ${money(pnl)}
+            </td>
+
+          </tr>
+        `;
+
+      }
+    ).join("");
 
 }
 
 
-/* =========================================================
+/* ========================================================
    CHART
-========================================================= */
+======================================================== */
 
 function drawChart(history){
 
@@ -653,11 +879,14 @@ function drawChart(history){
       "pnlChart"
     );
 
+
   const rect =
     canvas.getBoundingClientRect();
 
+
   const dpr =
-    window.devicePixelRatio || 1;
+    window.devicePixelRatio ||
+    1;
 
 
   canvas.width =
@@ -668,9 +897,15 @@ function drawChart(history){
 
 
   const ctx =
-    canvas.getContext("2d");
+    canvas.getContext(
+      "2d"
+    );
 
-  ctx.scale(dpr,dpr);
+
+  ctx.scale(
+    dpr,
+    dpr
+  );
 
 
   const width =
@@ -709,21 +944,30 @@ function drawChart(history){
 
   const values =
     history.map(
-      x => Number(x.value || 0)
+      x =>
+        Number(
+          x.value || 0
+        )
     );
 
 
   const min =
-    Math.min(...values);
+    Math.min(
+      ...values
+    );
+
 
   const max =
-    Math.max(...values);
+    Math.max(
+      ...values
+    );
+
 
   const range =
     max - min || 1;
 
-  const padding =
-    25;
+
+  const padding = 25;
 
 
   ctx.beginPath();
@@ -748,7 +992,9 @@ function drawChart(history){
         height -
         padding -
         (
-          (value - min) /
+          (
+            value - min
+          ) /
           range
         ) *
         (
@@ -757,10 +1003,21 @@ function drawChart(history){
         );
 
 
-      if(i === 0)
-        ctx.moveTo(x,y);
-      else
-        ctx.lineTo(x,y);
+      if(i === 0){
+
+        ctx.moveTo(
+          x,
+          y
+        );
+
+      }else{
+
+        ctx.lineTo(
+          x,
+          y
+        );
+
+      }
 
     }
   );
@@ -769,53 +1026,165 @@ function drawChart(history){
   ctx.strokeStyle =
     "#4ade80";
 
-  ctx.lineWidth = 2.5;
+  ctx.lineWidth =
+    2.5;
 
   ctx.stroke();
-
-
-  if(min <= 0 && max >= 0){
-
-    const zeroY =
-      height -
-      padding -
-      (
-        (0 - min) /
-        range
-      ) *
-      (
-        height -
-        padding * 2
-      );
-
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-      padding,
-      zeroY
-    );
-
-    ctx.lineTo(
-      width - padding,
-      zeroY
-    );
-
-    ctx.strokeStyle =
-      "#303744";
-
-    ctx.lineWidth = 1;
-
-    ctx.stroke();
-
-  }
 
 }
 
 
-/* =========================================================
-   NFL MARKETS
-========================================================= */
+/* ========================================================
+   NFL DATE DETECTION
+======================================================== */
+
+/*
+  This is the important part.
+
+  We DO NOT use open_time.
+
+  We first try the actual expiration/close
+  timestamps.
+
+  If those don't give us a usable date,
+  we try dates encoded in the ticker.
+
+  The function returns a Date or null.
+*/
+
+function getNFLDate(
+  market
+){
+
+  const possibleTimes = [
+
+    market.expected_expiration_time,
+
+    market.close_time,
+
+    market.expiration_time,
+
+    market.expiration_timestamp
+
+  ];
+
+
+  for(
+    const value of possibleTimes
+  ){
+
+    if(!value)
+      continue;
+
+
+    const d =
+      new Date(value);
+
+
+    if(
+      !Number.isNaN(
+        d.getTime()
+      )
+    ){
+
+      return d;
+
+    }
+
+  }
+
+
+  /*
+  Try extracting a YYYYMMDD
+  date from the ticker.
+  */
+
+  const ticker =
+    String(
+      market.ticker || ""
+    );
+
+
+  const match =
+    ticker.match(
+      /(20\d{2})(\d{2})(\d{2})/
+    );
+
+
+  if(match){
+
+    const year =
+      Number(match[1]);
+
+    const month =
+      Number(match[2]) - 1;
+
+    const day =
+      Number(match[3]);
+
+
+    const d =
+      new Date(
+        year,
+        month,
+        day
+      );
+
+
+    if(
+      !Number.isNaN(
+        d.getTime()
+      )
+    ){
+
+      return d;
+
+    }
+
+  }
+
+
+  /*
+  Try YYYY-MM-DD
+  */
+
+  const isoMatch =
+    ticker.match(
+      /(20\d{2})-(\d{2})-(\d{2})/
+    );
+
+
+  if(isoMatch){
+
+    const d =
+      new Date(
+        Number(isoMatch[1]),
+        Number(isoMatch[2]) - 1,
+        Number(isoMatch[3])
+      );
+
+
+    if(
+      !Number.isNaN(
+        d.getTime()
+      )
+    ){
+
+      return d;
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+/* ========================================================
+   NFL
+======================================================== */
 
 async function loadNFL(){
 
@@ -823,6 +1192,13 @@ async function loadNFL(){
     document.getElementById(
       "nflStatus"
     );
+
+
+  const count =
+    document.getElementById(
+      "nflCount"
+    );
+
 
   const grid =
     document.getElementById(
@@ -834,8 +1210,12 @@ async function loadNFL(){
 
     const response =
       await fetch(
-        NFL_URL + "?t=" + Date.now(),
-        {cache:"no-store"}
+        NFL_URL +
+        "?t=" +
+        Date.now(),
+        {
+          cache:"no-store"
+        }
       );
 
 
@@ -843,7 +1223,10 @@ async function loadNFL(){
       await response.json();
 
 
-    if(!response.ok || !data.ok){
+    if(
+      !response.ok ||
+      !data.ok
+    ){
 
       throw new Error(
         JSON.stringify(data)
@@ -853,13 +1236,15 @@ async function loadNFL(){
 
 
     let markets =
-      Array.isArray(data.markets)
-        ? data.markets
-        : [];
+      Array.isArray(
+        data.markets
+      )
+      ? data.markets
+      : [];
 
 
     /*
-    ONLY KALSHI NFL GAME MARKETS
+    ONLY NFL GAME MARKETS
     */
 
     markets =
@@ -868,19 +1253,24 @@ async function loadNFL(){
 
           const ticker =
             String(
-              market.ticker || ""
+              market.ticker ||
+              ""
             ).toUpperCase();
 
 
           const series =
             String(
-              market.series_ticker || ""
+              market.series_ticker ||
+              ""
             ).toUpperCase();
 
 
           return (
-            series === "KXNFLGAME" ||
-            ticker.includes("KXNFLGAME")
+            series ===
+              "KXNFLGAME" ||
+            ticker.includes(
+              "KXNFLGAME"
+            )
           );
 
         }
@@ -888,22 +1278,7 @@ async function loadNFL(){
 
 
     /*
-    ======================================================
-    DATE FILTER
-
-    SHOW:
-      TODAY
-      +1 DAY
-      +2 DAYS
-      +3 DAYS
-      +4 DAYS
-      +5 DAYS
-      +6 DAYS
-
-    HIDE:
-      YESTERDAY AND EARLIER
-      +7 DAYS AND LATER
-    ======================================================
+    TODAY THROUGH +6 DAYS
     */
 
     const now =
@@ -918,12 +1293,14 @@ async function loadNFL(){
       );
 
 
-    const sevenDaysFromToday =
-      new Date(today);
+    const limit =
+      new Date(
+        today
+      );
 
 
-    sevenDaysFromToday.setDate(
-      sevenDaysFromToday.getDate() + 7
+    limit.setDate(
+      limit.getDate() + 7
     );
 
 
@@ -931,45 +1308,36 @@ async function loadNFL(){
       markets.filter(
         market => {
 
-          /*
-          Use the market's available
-          time fields to determine
-          its date.
-          */
-
-          const dateString =
-            market.open_time ||
-            market.close_time ||
-            market.expected_expiration_time;
+          const gameDate =
+            getNFLDate(
+              market
+            );
 
 
-          if(!dateString)
+          if(!gameDate){
+
+            /*
+            Don't display markets
+            where we cannot determine
+            a date.
+            */
+
             return false;
 
-
-          const date =
-            new Date(dateString);
-
-
-          if(
-            Number.isNaN(
-              date.getTime()
-            )
-          )
-            return false;
+          }
 
 
           const gameDay =
             new Date(
-              date.getFullYear(),
-              date.getMonth(),
-              date.getDate()
+              gameDate.getFullYear(),
+              gameDate.getMonth(),
+              gameDate.getDate()
             );
 
 
           return (
             gameDay >= today &&
-            gameDay < sevenDaysFromToday
+            gameDay < limit
           );
 
         }
@@ -977,31 +1345,29 @@ async function loadNFL(){
 
 
     /*
-    EARLIEST GAMES FIRST
+    EARLIEST DATE FIRST
     */
 
     markets.sort(
       (a,b) => {
 
-        const aDate =
-          new Date(
-            a.open_time ||
-            a.close_time ||
-            a.expected_expiration_time ||
-            0
-          );
+        const dateA =
+          getNFLDate(a);
+
+        const dateB =
+          getNFLDate(b);
 
 
-        const bDate =
-          new Date(
-            b.open_time ||
-            b.close_time ||
-            b.expected_expiration_time ||
-            0
-          );
+        if(!dateA)
+          return 1;
+
+        if(!dateB)
+          return -1;
 
 
-        return aDate - bDate;
+        return (
+          dateA - dateB
+        );
 
       }
     );
@@ -1009,10 +1375,17 @@ async function loadNFL(){
 
     if(!markets.length){
 
-      status.textContent =
-        "No NFL markets found for the next 7 days.";
+      status.innerHTML = `
+        <span class="error">
+          No NFL markets found for the next 7 days.
+        </span>
+      `;
 
-      grid.innerHTML = "";
+      count.textContent =
+        "0 markets";
+
+      grid.innerHTML =
+        "";
 
       return;
 
@@ -1020,8 +1393,16 @@ async function loadNFL(){
 
 
     status.textContent =
+      "Showing NFL markets";
+
+
+    count.textContent =
       markets.length +
-      " NFL markets";
+      (
+        markets.length === 1
+          ? " market"
+          : " markets"
+      );
 
 
     grid.innerHTML =
@@ -1038,34 +1419,44 @@ async function loadNFL(){
     );
 
 
-    status.innerHTML =
-      `<span class="error">
+    status.innerHTML = `
+      <span class="error">
         NFL feed error
-      </span>`;
+      </span>
+    `;
 
-    grid.innerHTML = "";
+
+    count.textContent =
+      "Error";
+
+
+    grid.innerHTML =
+      "";
 
   }
 
 }
 
 
-/* =========================================================
+/* ========================================================
    NFL CARD
-========================================================= */
+======================================================== */
 
 function renderNFLMarket(
   market
 ){
 
-  const ticker =
-    market.ticker || "";
-
-
   const title =
     market.title ||
     market.subtitle ||
-    ticker;
+    market.ticker ||
+    "NFL Market";
+
+
+  const gameDate =
+    getNFLDate(
+      market
+    );
 
 
   let yes =
@@ -1085,8 +1476,14 @@ function renderNFLMarket(
     );
 
 
-  if(!no && yes){
-    no = 100 - yes;
+  if(
+    !no &&
+    yes
+  ){
+
+    no =
+      100 - yes;
+
   }
 
 
@@ -1116,17 +1513,23 @@ function renderNFLMarket(
     );
 
 
-  const closeTime =
-    market.close_time ||
-    market.expected_expiration_time;
-
-
   return `
 
     <div class="nfl-card">
 
       <div class="nfl-title">
         ${escapeHtml(title)}
+      </div>
+
+
+      <div class="nfl-date">
+
+        ${
+          gameDate
+            ? formatDate(gameDate)
+            : "NFL game"
+        }
+
       </div>
 
 
@@ -1168,16 +1571,11 @@ function renderNFLMarket(
 
       <div
         class="small"
-        style="margin-top:12px"
+        style="margin-top:13px"
       >
 
         Volume:
         ${volume.toLocaleString()}
-
-        <br>
-
-        Closes:
-        ${formatDate(closeTime)}
 
       </div>
 
@@ -1188,23 +1586,20 @@ function renderNFLMarket(
 }
 
 
-/* =========================================================
+/* ========================================================
    START
-========================================================= */
+======================================================== */
 
 loadPortfolio();
 
 loadNFL();
 
 
-/*
-REFRESH
-*/
-
 setInterval(
   loadPortfolio,
   10000
 );
+
 
 setInterval(
   loadNFL,
