@@ -157,18 +157,27 @@ td{
   margin-bottom:12px;
 }
 
-.nfl-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:8px;
+.odds{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
 }
 
-.nfl-team{
-  color:#cbd5e1;
+.odds-box{
+  background:#111722;
+  border-radius:10px;
+  padding:12px;
 }
 
-.nfl-price{
+.odds-label{
+  color:#8d96a5;
+  font-size:12px;
+  margin-bottom:5px;
+}
+
+.odds-value{
+  font-size:24px;
   font-weight:700;
 }
 
@@ -182,17 +191,22 @@ td{
 
 .progress{
   width:100%;
-  height:6px;
+  height:7px;
   background:#202733;
   border-radius:10px;
   overflow:hidden;
-  margin-top:12px;
+  margin-top:14px;
+  display:flex;
 }
 
-.progress-bar{
+.progress-yes{
   height:100%;
   background:#4ade80;
-  border-radius:10px;
+}
+
+.progress-no{
+  height:100%;
+  background:#fb7185;
 }
 
 .error{
@@ -441,13 +455,11 @@ const WORKER_BASE =
 
 
 const PORTFOLIO_URL =
-  WORKER_BASE +
-  "/api/portfolio";
+  WORKER_BASE + "/api/portfolio";
 
 
 const NFL_URL =
-  WORKER_BASE +
-  "/api/nfl";
+  WORKER_BASE + "/api/nfl";
 
 
 /* ========================================================
@@ -597,8 +609,7 @@ async function loadPortfolio(){
 
     const balance =
       cents(
-        data.balance?.balance ||
-        0
+        data.balance?.balance || 0
       );
 
 
@@ -637,15 +648,11 @@ async function loadPortfolio(){
 
 
         portfolioValue +=
-          cents(
-            marketValue
-          );
+          cents(marketValue);
 
 
         totalPnl +=
-          cents(
-            pnl
-          );
+          cents(pnl);
 
       }
     );
@@ -885,8 +892,7 @@ function drawChart(history){
 
 
   const dpr =
-    window.devicePixelRatio ||
-    1;
+    window.devicePixelRatio || 1;
 
 
   canvas.width =
@@ -897,15 +903,10 @@ function drawChart(history){
 
 
   const ctx =
-    canvas.getContext(
-      "2d"
-    );
+    canvas.getContext("2d");
 
 
-  ctx.scale(
-    dpr,
-    dpr
-  );
+  ctx.scale(dpr,dpr);
 
 
   const width =
@@ -952,15 +953,11 @@ function drawChart(history){
 
 
   const min =
-    Math.min(
-      ...values
-    );
+    Math.min(...values);
 
 
   const max =
-    Math.max(
-      ...values
-    );
+    Math.max(...values);
 
 
   const range =
@@ -992,9 +989,7 @@ function drawChart(history){
         height -
         padding -
         (
-          (
-            value - min
-          ) /
+          (value - min) /
           range
         ) *
         (
@@ -1005,17 +1000,11 @@ function drawChart(history){
 
       if(i === 0){
 
-        ctx.moveTo(
-          x,
-          y
-        );
+        ctx.moveTo(x,y);
 
       }else{
 
-        ctx.lineTo(
-          x,
-          y
-        );
+        ctx.lineTo(x,y);
 
       }
 
@@ -1026,8 +1015,7 @@ function drawChart(history){
   ctx.strokeStyle =
     "#4ade80";
 
-  ctx.lineWidth =
-    2.5;
+  ctx.lineWidth = 2.5;
 
   ctx.stroke();
 
@@ -1035,26 +1023,10 @@ function drawChart(history){
 
 
 /* ========================================================
-   NFL DATE DETECTION
+   NFL DATE
 ======================================================== */
 
-/*
-  This is the important part.
-
-  We DO NOT use open_time.
-
-  We first try the actual expiration/close
-  timestamps.
-
-  If those don't give us a usable date,
-  we try dates encoded in the ticker.
-
-  The function returns a Date or null.
-*/
-
-function getNFLDate(
-  market
-){
+function getNFLDate(market){
 
   const possibleTimes = [
 
@@ -1094,11 +1066,6 @@ function getNFLDate(
   }
 
 
-  /*
-  Try extracting a YYYYMMDD
-  date from the ticker.
-  */
-
   const ticker =
     String(
       market.ticker || ""
@@ -1113,54 +1080,11 @@ function getNFLDate(
 
   if(match){
 
-    const year =
-      Number(match[1]);
-
-    const month =
-      Number(match[2]) - 1;
-
-    const day =
-      Number(match[3]);
-
-
     const d =
       new Date(
-        year,
-        month,
-        day
-      );
-
-
-    if(
-      !Number.isNaN(
-        d.getTime()
-      )
-    ){
-
-      return d;
-
-    }
-
-  }
-
-
-  /*
-  Try YYYY-MM-DD
-  */
-
-  const isoMatch =
-    ticker.match(
-      /(20\d{2})-(\d{2})-(\d{2})/
-    );
-
-
-  if(isoMatch){
-
-    const d =
-      new Date(
-        Number(isoMatch[1]),
-        Number(isoMatch[2]) - 1,
-        Number(isoMatch[3])
+        Number(match[1]),
+        Number(match[2]) - 1,
+        Number(match[3])
       );
 
 
@@ -1178,6 +1102,186 @@ function getNFLDate(
 
 
   return null;
+
+}
+
+
+/* ========================================================
+   NFL ODDS
+======================================================== */
+
+/*
+  IMPORTANT:
+
+  Kalshi prices are in CENTS.
+
+  Example:
+
+  yes_bid = 63
+  means 63%
+
+  no_bid = 35
+  means 35%
+
+  We prefer the actual YES BID.
+
+  If only YES is available:
+      NO = 100 - YES
+
+  If only NO is available:
+      YES = 100 - NO
+
+  If both are available:
+      display each actual bid.
+*/
+
+function getNFLOdds(market){
+
+  let yes = null;
+
+  let no = null;
+
+
+  /*
+    Actual Kalshi bid prices.
+  */
+
+  if(
+    market.yes_bid !== undefined &&
+    market.yes_bid !== null
+  ){
+
+    yes =
+      Number(
+        market.yes_bid
+      );
+
+  }
+
+
+  if(
+    market.no_bid !== undefined &&
+    market.no_bid !== null
+  ){
+
+    no =
+      Number(
+        market.no_bid
+      );
+
+  }
+
+
+  /*
+    If there is no bid, use ask.
+
+    This keeps the card from showing 0%
+    when the market has an active ask.
+  */
+
+  if(
+    yes === null &&
+    market.yes_ask !== undefined
+  ){
+
+    yes =
+      Number(
+        market.yes_ask
+      );
+
+  }
+
+
+  if(
+    no === null &&
+    market.no_ask !== undefined
+  ){
+
+    no =
+      Number(
+        market.no_ask
+      );
+
+  }
+
+
+  /*
+    Last price fallback.
+  */
+
+  if(
+    yes === null &&
+    market.last_price !== undefined
+  ){
+
+    yes =
+      Number(
+        market.last_price
+      );
+
+  }
+
+
+  /*
+    If only YES exists,
+    calculate NO.
+  */
+
+  if(
+    yes !== null &&
+    no === null
+  ){
+
+    no =
+      100 - yes;
+
+  }
+
+
+  /*
+    If only NO exists,
+    calculate YES.
+  */
+
+  if(
+    no !== null &&
+    yes === null
+  ){
+
+    yes =
+      100 - no;
+
+  }
+
+
+  /*
+    Safety.
+  */
+
+  yes =
+    Math.max(
+      0,
+      Math.min(
+        100,
+        Number(yes || 0)
+      )
+    );
+
+
+  no =
+    Math.max(
+      0,
+      Math.min(
+        100,
+        Number(no || 0)
+      )
+    );
+
+
+  return {
+    yes,
+    no
+  };
 
 }
 
@@ -1244,7 +1348,7 @@ async function loadNFL(){
 
 
     /*
-    ONLY NFL GAME MARKETS
+      Only KXNFLGAME markets.
     */
 
     markets =
@@ -1253,24 +1357,19 @@ async function loadNFL(){
 
           const ticker =
             String(
-              market.ticker ||
-              ""
+              market.ticker || ""
             ).toUpperCase();
 
 
           const series =
             String(
-              market.series_ticker ||
-              ""
+              market.series_ticker || ""
             ).toUpperCase();
 
 
           return (
-            series ===
-              "KXNFLGAME" ||
-            ticker.includes(
-              "KXNFLGAME"
-            )
+            series === "KXNFLGAME" ||
+            ticker.includes("KXNFLGAME")
           );
 
         }
@@ -1278,7 +1377,7 @@ async function loadNFL(){
 
 
     /*
-    TODAY THROUGH +6 DAYS
+      TODAY THROUGH NEXT 6 DAYS.
     */
 
     const now =
@@ -1294,9 +1393,7 @@ async function loadNFL(){
 
 
     const limit =
-      new Date(
-        today
-      );
+      new Date(today);
 
 
     limit.setDate(
@@ -1314,17 +1411,8 @@ async function loadNFL(){
             );
 
 
-          if(!gameDate){
-
-            /*
-            Don't display markets
-            where we cannot determine
-            a date.
-            */
-
+          if(!gameDate)
             return false;
-
-          }
 
 
           const gameDay =
@@ -1344,10 +1432,6 @@ async function loadNFL(){
       );
 
 
-    /*
-    EARLIEST DATE FIRST
-    */
-
     markets.sort(
       (a,b) => {
 
@@ -1365,9 +1449,7 @@ async function loadNFL(){
           return -1;
 
 
-        return (
-          dateA - dateB
-        );
+        return dateA - dateB;
 
       }
     );
@@ -1384,8 +1466,7 @@ async function loadNFL(){
       count.textContent =
         "0 markets";
 
-      grid.innerHTML =
-        "";
+      grid.innerHTML = "";
 
       return;
 
@@ -1406,9 +1487,9 @@ async function loadNFL(){
 
 
     grid.innerHTML =
-      markets.map(
-        renderNFLMarket
-      ).join("");
+      markets
+        .map(renderNFLMarket)
+        .join("");
 
 
   }catch(error){
@@ -1459,52 +1540,18 @@ function renderNFLMarket(
     );
 
 
-  let yes =
-    Number(
-      market.yes_bid ??
-      market.yes_price ??
-      market.last_price ??
-      0
+  const odds =
+    getNFLOdds(
+      market
     );
 
 
-  let no =
-    Number(
-      market.no_bid ??
-      market.no_price ??
-      0
-    );
+  const yes =
+    odds.yes;
 
 
-  if(
-    !no &&
-    yes
-  ){
-
-    no =
-      100 - yes;
-
-  }
-
-
-  yes =
-    Math.max(
-      0,
-      Math.min(
-        100,
-        yes
-      )
-    );
-
-
-  no =
-    Math.max(
-      0,
-      Math.min(
-        100,
-        no
-      )
-    );
+  const no =
+    odds.no;
 
 
   const volume =
@@ -1533,15 +1580,32 @@ function renderNFLMarket(
       </div>
 
 
-      <div class="nfl-row">
+      <div class="odds">
 
-        <span class="nfl-team">
-          YES
-        </span>
+        <div class="odds-box">
 
-        <span class="nfl-price yes">
-          ${yes}%
-        </span>
+          <div class="odds-label">
+            YES
+          </div>
+
+          <div class="odds-value yes">
+            ${yes.toFixed(0)}%
+          </div>
+
+        </div>
+
+
+        <div class="odds-box">
+
+          <div class="odds-label">
+            NO
+          </div>
+
+          <div class="odds-value no">
+            ${no.toFixed(0)}%
+          </div>
+
+        </div>
 
       </div>
 
@@ -1549,22 +1613,14 @@ function renderNFLMarket(
       <div class="progress">
 
         <div
-          class="progress-bar"
+          class="progress-yes"
           style="width:${yes}%"
         ></div>
 
-      </div>
-
-
-      <div class="nfl-row">
-
-        <span class="nfl-team">
-          NO
-        </span>
-
-        <span class="nfl-price no">
-          ${no}%
-        </span>
+        <div
+          class="progress-no"
+          style="width:${no}%"
+        ></div>
 
       </div>
 
