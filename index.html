@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Position Ledger — Kalshi Weather Dashboard</title>
+
 <style>
 :root{
 --bg:#07090d;
@@ -1147,13 +1148,27 @@ return parts.length
 
 function getTitle(market){
 
-return (
+const city =
+market.city ||
+market.location ||
+market.cityName ||
+market.rawMarket?.city ||
+market.rawMarket?.location ||
+market.rawMarket?.cityName ||
+"";
+
+const question =
 market.title ||
 market.question ||
 market.name ||
 market.subtitle ||
-"Weather market"
-);
+"Weather market";
+
+if(city){
+return `${city} — ${question}`;
+}
+
+return question;
 
 }
 
