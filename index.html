@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Position Ledger — Kalshi Weather Dashboard</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kalshi Weather Auto Trader</title>
 
 <style>
+
 :root{
 --bg:#07090d;
 --panel:#0d1118;
@@ -15,398 +16,285 @@
 --muted:#8c98a8;
 --green:#39e58c;
 --red:#ff5d6c;
---yellow:#ffd166;
 --blue:#5ca9ff;
+--yellow:#ffd166
 }
 
-*{box-sizing:border-box}
+*{
+box-sizing:border-box
+}
 
 body{
 margin:0;
 background:var(--bg);
 color:var(--text);
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif
 }
 
-.container{
+.wrap{
 max-width:1200px;
 margin:auto;
-padding:18px;
+padding:18px
+}
+
+h1{
+margin:0;
+font-size:25px
+}
+
+.muted{
+color:var(--muted)
 }
 
 header{
 display:flex;
 justify-content:space-between;
-align-items:center;
 gap:15px;
-margin-bottom:18px;
+align-items:center;
+margin-bottom:16px
 }
 
-h1{
-margin:0;
-font-size:25px;
-}
-
-.subtitle{
-color:var(--muted);
-font-size:13px;
-margin-top:5px;
-}
-
-.status-pill{
-padding:9px 13px;
-border-radius:999px;
-background:#151b24;
+.pill{
+padding:9px 12px;
 border:1px solid var(--border);
-font-size:12px;
-white-space:nowrap;
+border-radius:999px;
+font-weight:700;
+font-size:12px
 }
 
-.status-pill.on{
+.on{
 color:var(--green);
-border-color:#205c42;
+border-color:#205c42
 }
 
-.status-pill.off{
+.off{
 color:var(--red);
-border-color:#632b33;
+border-color:#632b33
 }
 
-.grid{
+.cards{
 display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:12px;
-margin-bottom:18px;
+grid-template-columns:repeat(5,1fr);
+gap:10px;
+margin-bottom:14px
 }
 
 .card{
 background:var(--panel);
 border:1px solid var(--border);
 border-radius:14px;
-padding:15px;
+padding:14px
 }
 
-.card-label{
+.label{
 color:var(--muted);
-font-size:11px;
+font-size:10px;
 text-transform:uppercase;
-letter-spacing:.08em;
+letter-spacing:.08em
 }
 
-.card-value{
-margin-top:7px;
-font-size:23px;
-font-weight:700;
+.value{
+font-size:22px;
+font-weight:800;
+margin-top:5px
 }
 
 .settings{
-margin-bottom:18px;
+margin-bottom:14px
 }
 
-.settings-grid{
+.form{
 display:grid;
 grid-template-columns:repeat(6,1fr);
-gap:10px;
-margin-top:12px;
+gap:9px;
+margin-top:10px
 }
 
-label{
+.field label{
 display:block;
 color:var(--muted);
 font-size:11px;
-margin-bottom:5px;
+margin-bottom:5px
 }
 
-input{
+.field input{
 width:100%;
 background:#080c12;
 border:1px solid #293340;
-color:white;
-border-radius:9px;
-padding:10px;
-outline:none;
-}
-
-input:focus{
-border-color:var(--blue);
-}
-
-button{
-border:0;
-border-radius:9px;
-padding:11px 14px;
-font-weight:700;
-cursor:pointer;
 color:#fff;
-background:#202936;
-}
-
-button:hover{
-filter:brightness(1.15);
-}
-
-button.green{
-background:#176b45;
-}
-
-button.red{
-background:#7b2835;
-}
-
-button.blue{
-background:#245a91;
+border-radius:9px;
+padding:10px
 }
 
 .actions{
 display:flex;
 flex-wrap:wrap;
 gap:8px;
-margin-top:12px;
+margin-top:11px
 }
 
-.message{
+button{
+border:0;
+border-radius:9px;
+padding:10px 13px;
+font-weight:800;
+color:#fff;
+background:#202936;
+cursor:pointer
+}
+
+button:hover{
+filter:brightness(1.12)
+}
+
+button.blue{
+background:#245a91
+}
+
+button.green{
+background:#176b45
+}
+
+button.red{
+background:#7b2835
+}
+
+.msg{
+display:none;
 margin-top:10px;
-padding:10px 12px;
+padding:10px;
 border-radius:9px;
 background:#0a0f15;
-color:var(--muted);
-font-size:13px;
-display:none;
+border:1px solid var(--border)
 }
 
-.message.show{
-display:block;
+.msg.show{
+display:block
 }
 
-.message.error{
+.msg.error{
 color:#ff8791;
-border:1px solid #54242b;
+border-color:#632b33
 }
 
-.message.success{
+.msg.good{
 color:var(--green);
-border:1px solid #205c42;
+border-color:#205c42
 }
 
-.section-title{
-font-size:20px;
-font-weight:700;
-margin:24px 0 10px;
+.bot{
+margin-top:10px;
+padding:10px;
+border-radius:9px;
+background:#0a0f15;
+border:1px solid var(--border);
+font-size:12px;
+line-height:1.45
 }
 
 .summary{
 display:flex;
 gap:8px;
 flex-wrap:wrap;
-margin-bottom:12px;
+margin:14px 0
 }
 
 .badge{
+padding:7px 9px;
 background:#111720;
 border:1px solid var(--border);
-padding:7px 10px;
 border-radius:8px;
-color:var(--muted);
-font-size:12px;
+color:var(--muted)
 }
 
 .badge strong{
-color:white;
+color:#fff
 }
 
 .market{
 background:var(--panel);
 border:1px solid var(--border);
-border-radius:15px;
-margin-bottom:12px;
-overflow:hidden;
+border-radius:14px;
+margin-bottom:10px;
+overflow:hidden
 }
 
-.market-head{
-padding:15px;
+.top{
 display:flex;
 justify-content:space-between;
-gap:12px;
-align-items:flex-start;
+gap:10px;
+padding:13px
 }
 
-.market-title{
-font-weight:700;
-font-size:15px;
-line-height:1.4;
+.title{
+font-weight:800
 }
 
-.market-meta{
+.meta{
 color:var(--muted);
-font-size:12px;
-margin-top:5px;
+font-size:11px;
+margin-top:4px
 }
 
-.decision{
-padding:7px 10px;
+.status{
+padding:7px 9px;
 border-radius:8px;
-font-size:12px;
+font-size:11px;
 font-weight:800;
 white-space:nowrap;
+height:max-content
 }
 
-.decision.buy{
+.buy{
 background:#123c29;
-color:var(--green);
+color:var(--green)
 }
 
-.decision.wait{
-background:#29230f;
-color:var(--yellow);
-}
-
-.decision.no{
+.wait{
 background:#2a1519;
-color:var(--red);
+color:#ff8791
 }
 
 .metrics{
 display:grid;
 grid-template-columns:repeat(5,1fr);
 gap:8px;
-padding:0 15px 15px;
+padding:0 13px 13px
 }
 
 .metric{
 background:var(--panel2);
-border-radius:9px;
-padding:10px;
+padding:9px;
+border-radius:8px
 }
 
-.metric-label{
+.metric span{
+display:block;
 color:var(--muted);
-font-size:10px;
-text-transform:uppercase;
+font-size:9px;
+text-transform:uppercase
 }
 
-.metric-value{
-margin-top:4px;
-font-size:15px;
-font-weight:700;
+.metric strong{
+display:block;
+margin-top:3px
 }
 
-.good{color:var(--green)}
-.bad{color:var(--red)}
-.warn{color:var(--yellow)}
-
-.diagnostics{
-border-top:1px solid var(--border);
-padding:13px 15px 15px;
+.good{
+color:var(--green)
 }
 
-.diag-title{
-font-size:12px;
-font-weight:800;
-text-transform:uppercase;
-letter-spacing:.06em;
-margin-bottom:9px;
-}
-
-.checks{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:7px;
-}
-
-.check{
-padding:9px 10px;
-border-radius:8px;
-background:#0a0f15;
-border:1px solid #1d2631;
-font-size:12px;
-}
-
-.check.pass{
-border-color:#205c42;
-}
-
-.check.fail{
-border-color:#632b33;
-}
-
-.check .top{
-display:flex;
-justify-content:space-between;
-gap:8px;
-font-weight:700;
-}
-
-.check .detail{
-color:var(--muted);
-margin-top:3px;
-line-height:1.35;
+.bad{
+color:var(--red)
 }
 
 .reason{
-margin-top:9px;
-padding:10px;
-border-radius:8px;
-background:#0b1017;
-border:1px solid #2a3440;
-font-size:12px;
-}
-
-.reason strong{
-color:white;
-}
-
-.eligible{
-margin-top:9px;
-padding:11px;
-border-radius:9px;
-background:#0c2419;
-border:1px solid #205c42;
-color:var(--green);
-font-weight:800;
-}
-
-.ineligible{
-margin-top:9px;
-padding:11px;
-border-radius:9px;
-background:#251115;
-border:1px solid #632b33;
-color:#ff8791;
-font-weight:800;
-}
-
-.empty{
-padding:25px;
-text-align:center;
+padding:10px 13px;
+border-top:1px solid var(--border);
 color:var(--muted);
-background:var(--panel);
-border:1px solid var(--border);
-border-radius:14px;
+font-size:11px
 }
 
-.small{
-color:var(--muted);
-font-size:11px;
-}
-
-@media(max-width:900px){
-.grid{grid-template-columns:repeat(2,1fr)}
-.settings-grid{grid-template-columns:repeat(3,1fr)}
-.metrics{grid-template-columns:repeat(3,1fr)}
-}
-
-@media(max-width:600px){
-.container{padding:12px}
-header{align-items:flex-start}
-h1{font-size:21px}
-.grid{grid-template-columns:repeat(2,1fr)}
-.settings-grid{grid-template-columns:repeat(2,1fr)}
-.metrics{grid-template-columns:repeat(2,1fr)}
-.checks{grid-template-columns:1fr}
-.market-head{flex-direction:column}
-}
-
-/* confirmation modal */
 .modal{
 position:fixed;
 inset:0;
@@ -414,199 +302,426 @@ background:rgba(0,0,0,.78);
 display:none;
 align-items:center;
 justify-content:center;
-padding:20px;
-z-index:100;
+padding:20px
 }
 
 .modal.show{
-display:flex;
+display:flex
 }
 
-.modal-box{
-width:min(430px,100%);
-background:#0d1118;
+.modalbox{
+width:min(420px,100%);
+background:var(--panel);
+border:1px solid var(--border);
+border-radius:14px;
+padding:20px
+}
+
+.modalbox input{
+width:100%;
+margin-top:8px;
+background:#080c12;
 border:1px solid #293340;
-border-radius:15px;
-padding:20px;
+color:#fff;
+border-radius:9px;
+padding:10px
 }
 
-.modal-box h2{
-margin-top:0;
+@media(max-width:900px){
+
+.cards{
+grid-template-columns:repeat(2,1fr)
 }
 
-.modal-box p{
-color:var(--muted);
-font-size:13px;
-line-height:1.5;
+.form{
+grid-template-columns:repeat(3,1fr)
 }
 
-.modal-actions{
-display:flex;
-gap:8px;
-margin-top:12px;
+.metrics{
+grid-template-columns:repeat(3,1fr)
 }
+
+}
+
+@media(max-width:600px){
+
+.wrap{
+padding:11px
+}
+
+header{
+align-items:flex-start
+}
+
+.cards,
+.form,
+.metrics{
+grid-template-columns:repeat(2,1fr)
+}
+
+.top{
+flex-direction:column
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="wrap">
 
 <header>
+
 <div>
-<h1>Position Ledger — Kalshi Weather</h1>
-<div class="subtitle">
-Weather-model BUY signals • Kalshi-only SELL logic
-</div>
+
+<h1>
+Position Ledger — Kalshi Weather
+</h1>
+
+<div class="muted">
+Weather-model BUY signals • Kalshi V2 orders • Kalshi-only take profit
 </div>
 
-<div id="tradingStatus" class="status-pill off">
+</div>
+
+<div
+id="status"
+class="pill off"
+>
 REAL TRADING OFF
 </div>
+
 </header>
 
-<div class="grid">
+
+<div class="cards">
 
 <div class="card">
-<div class="card-label">Max / Trade</div>
-<div class="card-value" id="maxTradeDisplay">$5</div>
+<div class="label">
+Max / Trade
 </div>
+
+<div
+id="maxTradeD"
+class="value"
+>
+$5.00
+</div>
+</div>
+
 
 <div class="card">
-<div class="card-label">Max / Day</div>
-<div class="card-value" id="maxDayDisplay">$20</div>
+<div class="label">
+Max / Day
 </div>
+
+<div
+id="maxDayD"
+class="value"
+>
+$20.00
+</div>
+</div>
+
 
 <div class="card">
-<div class="card-label">Spent Today</div>
-<div class="card-value" id="spentDisplay">$0.00</div>
+<div class="label">
+Spent Today
 </div>
+
+<div
+id="spentD"
+class="value"
+>
+$0.00
+</div>
+</div>
+
 
 <div class="card">
-<div class="card-label">Open Positions</div>
-<div class="card-value" id="positionsDisplay">0</div>
+<div class="label">
+Kalshi Balance
+</div>
+
+<div
+id="balanceD"
+class="value"
+>
+—
+</div>
+</div>
+
+
+<div class="card">
+<div class="label">
+Open Positions
+</div>
+
+<div
+id="positionsD"
+class="value"
+>
+0
+</div>
 </div>
 
 </div>
+
 
 <div class="card settings">
 
-<div class="card-label">AUTO-TRADER SETTINGS</div>
-
-<div class="settings-grid">
-
-<div>
-<label>Max $ / Trade</label>
-<input id="maxTrade" type="number" min="1" step="1" value="5">
+<div class="label">
+AUTO-TRADER SETTINGS
 </div>
 
-<div>
-<label>Max $ / Day</label>
-<input id="maxDay" type="number" min="1" step="1" value="20">
+
+<div class="form">
+
+<div class="field">
+<label>
+Max $ / Trade
+</label>
+
+<input
+id="maxTrade"
+type="number"
+min="1"
+step="1"
+value="5"
+>
 </div>
 
-<div>
-<label>Take Profit %</label>
-<input id="takeProfit" type="number" min="1" step="1" value="25">
+
+<div class="field">
+<label>
+Max $ / Day
+</label>
+
+<input
+id="maxDay"
+type="number"
+min="1"
+step="1"
+value="20"
+>
 </div>
 
-<div>
-<label>Min Minutes Until Close</label>
-<input id="minMinutes" type="number" min="0" step="15" value="180">
+
+<div class="field">
+<label>
+Take Profit %
+</label>
+
+<input
+id="tp"
+type="number"
+min="1"
+step="1"
+value="25"
+>
 </div>
 
-<div>
-<label>Min Weather Edge %</label>
-<input id="minEdge" type="number" min="0" step="1" value="10">
+
+<div class="field">
+<label>
+Min Minutes
+</label>
+
+<input
+id="mins"
+type="number"
+min="1"
+step="15"
+value="180"
+>
 </div>
 
-<div>
-<label>Min Expected Move ¢</label>
-<input id="minMove" type="number" min="0" step="0.1" value="1">
+
+<div class="field">
+<label>
+Min Weather Edge %
+</label>
+
+<input
+id="edge"
+type="number"
+min="0"
+step="1"
+value="1"
+>
+</div>
+
+
+<div class="field">
+<label>
+Min Expected Move ¢
+</label>
+
+<input
+id="move"
+type="number"
+min="0"
+step="0.1"
+value="1"
+>
 </div>
 
 </div>
+
 
 <div class="actions">
 
-<button class="blue" onclick="saveSettings()">
+<button
+class="blue"
+onclick="saveSettings()"
+>
 SAVE SETTINGS
 </button>
 
-<button class="green" onclick="openStartModal()">
+<button
+class="green"
+onclick="openStart()"
+>
 START REAL TRADING
 </button>
 
-<button class="red" onclick="stopTrading()">
+<button
+class="red"
+onclick="stopTrading()"
+>
 STOP REAL TRADING
 </button>
 
-<button onclick="refreshAll()">
+<button
+class="blue"
+onclick="runNow()"
+>
+RUN AUTO BUYER NOW
+</button>
+
+<button
+onclick="refresh()"
+>
 REFRESH
 </button>
 
 </div>
 
-<div id="settingsMessage" class="message"></div>
+
+<div
+id="msg"
+class="msg"
+></div>
+
+
+<div class="bot">
+
+<div>
+<b>Last action:</b>
+
+<span id="lastAction">
+—
+</span>
 
 </div>
 
-<div class="section-title">Today's Weather Markets</div>
+<div>
+<b>Last error:</b>
+
+<span id="lastError">
+—
+</span>
+
+</div>
+
+</div>
+
+</div>
+
 
 <div class="summary">
+
 <div class="badge">
-Markets: <strong id="marketCount">0</strong>
+Markets
+<strong id="marketCount">
+0
+</strong>
 </div>
 
 <div class="badge">
-Eligible: <strong id="eligibleCount">0</strong>
+Eligible
+<strong id="eligibleCount">
+0
+</strong>
 </div>
 
 <div class="badge">
-Rejected: <strong id="rejectedCount">0</strong>
+Rejected
+<strong id="rejectedCount">
+0
+</strong>
 </div>
 
 <div class="badge">
-Last update: <strong id="lastUpdate">—</strong>
+Updated
+<strong id="updated">
+—
+</strong>
 </div>
+
 </div>
+
 
 <div id="markets">
-<div class="empty">Loading markets...</div>
+
+<div class="card muted">
+Loading…
 </div>
 
 </div>
 
-<!-- START CONFIRMATION -->
-<div id="startModal" class="modal">
+</div>
 
-<div class="modal-box">
 
-<h2>Start Real Trading</h2>
+<div
+id="modal"
+class="modal"
+>
 
-<p>
-This enables the Worker to place real Kalshi orders.
+<div class="modalbox">
+
+<h2>
+Start Real Trading
+</h2>
+
+<p class="muted">
 Type the exact confirmation below.
 </p>
 
-<p>
-<strong>ENABLE REAL TRADING</strong>
-</p>
+<b>
+ENABLE REAL TRADING
+</b>
 
 <input
-id="confirmation"
-type="text"
-autocomplete="off"
+id="confirm"
 placeholder="ENABLE REAL TRADING"
+autocomplete="off"
 >
 
-<div class="modal-actions">
+<div class="actions">
 
-<button class="green" onclick="startTrading()">
+<button
+class="green"
+onclick="startTrading()"
+>
 CONFIRM & START
 </button>
 
-<button onclick="closeStartModal()">
+<button
+onclick="closeStart()"
+>
 CANCEL
 </button>
 
@@ -616,80 +731,105 @@ CANCEL
 
 </div>
 
-<script>
 
-/* ============================================================
-CONFIG
-============================================================ */
+<script>
 
 const WORKER =
 "https://worker1.ryderolinger1.workers.dev";
 
+const $ =
+id =>
+document.getElementById(
+id
+);
 
-/* ============================================================
-HELPERS
-============================================================ */
+const money =
+n =>
+`$${Number(n || 0).toFixed(2)}`;
 
-function $(id){
-return document.getElementById(id);
+const pct =
+v =>
+(
+  Number(v || 0) *
+  100
+).toFixed(1) +
+"%";
+
+const move =
+v =>
+(
+  Number(v || 0) *
+  100
+).toFixed(1) +
+"¢";
+
+const price =
+v =>
+Number(v || 0)
+.toFixed(1) +
+"¢";
+
+const esc =
+s =>
+String(s ?? "")
+.replace(
+  /&/g,
+  "&amp;"
+)
+.replace(
+  /</g,
+  "&lt;"
+)
+.replace(
+  />/g,
+  "&gt;"
+)
+.replace(
+  /"/g,
+  "&quot;"
+);
+
+
+async function api(
+path,
+options = {}
+) {
+
+const response =
+await fetch(
+WORKER + path,
+{
+  ...options,
+
+  headers: {
+    "Content-Type":
+      "application/json",
+
+    ...(options.headers || {})
+  }
+}
+);
+
+let data = {};
+
+try {
+data =
+await response.json();
 }
 
-function money(v){
-const n = Number(v || 0);
-return "$" + n.toFixed(2);
+catch {
+throw new Error(
+"Worker returned invalid JSON."
+);
 }
 
-function pct(v){
-return Number(v || 0).toFixed(1) + "%";
-}
-
-function cents(v){
-return Number(v || 0).toFixed(1) + "¢";
-}
-
-function escapeHtml(value){
-return String(value ?? "")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-}
-
-function showMessage(text,type=""){
-const el = $("settingsMessage");
-el.textContent = text;
-el.className = "message show " + type;
-}
-
-
-/* ============================================================
-FETCH
-============================================================ */
-
-async function api(path, options = {}){
-
-const response = await fetch(WORKER + path, {
-...options,
-headers:{
-"Content-Type":"application/json",
-...(options.headers || {})
-}
-});
-
-let data;
-
-try{
-data = await response.json();
-}catch{
-throw new Error("Worker returned invalid JSON.");
-}
-
-if(!response.ok){
+if (
+!response.ok
+) {
 throw new Error(
 data.error ||
 data.message ||
-`Worker error ${response.status}`
+`HTTP ${response.status}`
 );
 }
 
@@ -697,118 +837,252 @@ return data;
 }
 
 
-/* ============================================================
-SETTINGS
-============================================================ */
+function show(
+text,
+type = "good"
+) {
 
-async function loadStatus(){
+$("msg")
+.textContent =
+text;
 
-try{
+$("msg")
+.className =
+"msg show " +
+type;
+}
 
-const s = await api("/api/auto-trade/status");
+
+function describeAction(
+action
+) {
+
+if (!action) {
+return "—";
+}
+
+return [
+  action.type,
+
+  action.ticker,
+
+  action.side,
+
+  action.contracts
+    ? `${action.contracts} contracts`
+    : "",
+
+  action.reason,
+
+  action.message
+]
+.filter(Boolean)
+.join(" • ");
+}
+
+
+/* =========================================================
+STATUS
+========================================================= */
+
+async function loadStatus() {
+
+const status =
+await api(
+"/api/auto-trade/status"
+);
+
+$("status")
+.textContent =
+status.enabled
+? "REAL TRADING ON"
+: "REAL TRADING OFF";
+
+$("status")
+.className =
+"pill " +
+(
+status.enabled
+? "on"
+: "off"
+);
+
 
 $("maxTrade").value =
-Number(s.maxTrade ?? 5);
+status.maxTrade ??
+5;
 
 $("maxDay").value =
-Number(s.maxDay ?? 20);
+status.maxDay ??
+20;
 
-$("takeProfit").value =
-Number(s.takeProfit ?? .25) * 100;
+$("tp").value =
+Number(
+status.takeProfit ??
+0.25
+) * 100;
 
-const f = s.filters || {};
 
-$("minMinutes").value =
-Number(f.minMinutesToClose ?? 180);
+const filters =
+status.filters ||
+{};
 
-$("minEdge").value =
-Number(f.minEdge ?? .10) * 100;
+$("mins").value =
+filters.minMinutesToClose ??
+180;
 
-$("minMove").value =
-Number(f.minExpectedPriceMove ?? .01) * 100;
+$("edge").value =
+Number(
+filters.minEdge ??
+0.01
+) * 100;
 
-$("maxTradeDisplay").textContent =
-money(s.maxTrade);
+$("move").value =
+Number(
+filters.minExpectedPriceMove ??
+0.01
+) * 100;
 
-$("maxDayDisplay").textContent =
-money(s.maxDay);
 
-$("spentDisplay").textContent =
-money(s.spentToday);
+$("maxTradeD")
+.textContent =
+money(
+status.maxTrade
+);
 
-$("positionsDisplay").textContent =
-Array.isArray(s.entries)
-? s.entries.length
+$("maxDayD")
+.textContent =
+money(
+status.maxDay
+);
+
+$("spentD")
+.textContent =
+money(
+status.spentToday
+);
+
+$("positionsD")
+.textContent =
+Array.isArray(
+status.entries
+)
+? status.entries.length
 : 0;
 
-const status = $("tradingStatus");
+$("lastAction")
+.textContent =
+describeAction(
+status.lastAction
+);
 
-if(s.enabled){
+$("lastError")
+.textContent =
+status.lastError ||
+"—";
 
-status.textContent = "REAL TRADING ON";
-status.className = "status-pill on";
-
-}else{
-
-status.textContent = "REAL TRADING OFF";
-status.className = "status-pill off";
-
+return status;
 }
 
-}catch(err){
 
-showMessage(
-"Could not load auto-trader status: " + err.message,
-"error"
+/* =========================================================
+BALANCE
+========================================================= */
+
+async function loadBalance() {
+
+try {
+
+const balance =
+await api(
+"/api/account/balance"
+);
+
+$("balanceD")
+.textContent =
+money(
+balance.balanceDollars
 );
 
 }
 
+catch {
+
+$("balanceD")
+.textContent =
+"—";
+}
+
 }
 
 
-async function saveSettings(){
+/* =========================================================
+SAVE SETTINGS
+========================================================= */
 
-try{
+async function saveSettings() {
 
-const body = {
+try {
+
+await api(
+"/api/auto-trade/settings",
+{
+method:
+"POST",
+
+body:
+JSON.stringify({
 
 maxTrade:
-Number($("maxTrade").value),
+Number(
+$("maxTrade").value
+),
 
 maxDay:
-Number($("maxDay").value),
+Number(
+$("maxDay").value
+),
 
 takeProfit:
-Number($("takeProfit").value) / 100,
+Number(
+$("tp").value
+) / 100,
 
 minMinutesToClose:
-Number($("minMinutes").value),
+Number(
+$("mins").value
+),
+
+/*
+DEFAULT = 1%
+*/
 
 minEdge:
-Number($("minEdge").value) / 100,
+Number(
+$("edge").value
+) / 100,
 
 minExpectedPriceMove:
-Number($("minMove").value) / 100
+Number(
+$("move").value
+) / 100
 
-};
-
-await api("/api/auto-trade/settings",{
-method:"POST",
-body:JSON.stringify(body)
-});
-
-showMessage(
-"Settings saved successfully.",
-"success"
+})
+}
 );
 
-await refreshAll();
+show(
+"Settings saved."
+);
 
-}catch(err){
+await refresh();
 
-showMessage(
-"Could not save settings: " + err.message,
+}
+
+catch (error) {
+
+show(
+error.message,
 "error"
 );
 
@@ -817,91 +1091,87 @@ showMessage(
 }
 
 
-/* ============================================================
-REAL TRADING
-============================================================ */
+/* =========================================================
+START / STOP
+========================================================= */
 
-function openStartModal(){
+function openStart() {
 
-$("confirmation").value = "";
-$("startModal").classList.add("show");
+$("modal")
+.classList.add(
+"show"
+);
 
-setTimeout(()=>{
-$("confirmation").focus();
-},100);
+$("confirm").value =
+"";
+
+setTimeout(
+() =>
+$("confirm").focus(),
+50
+);
 
 }
 
-function closeStartModal(){
-$("startModal").classList.remove("show");
+function closeStart() {
+
+$("modal")
+.classList.remove(
+"show"
+);
+
 }
 
 
-async function startTrading(){
+async function startTrading() {
 
-const confirmation =
-$("confirmation").value.trim();
-
-if(confirmation !== "ENABLE REAL TRADING"){
+if (
+$("confirm")
+.value
+.trim() !==
+"ENABLE REAL TRADING"
+) {
 
 alert(
-"You must type exactly:\n\nENABLE REAL TRADING"
+"Type ENABLE REAL TRADING exactly."
 );
 
 return;
 }
 
-try{
+try {
 
-await api("/api/auto-trade/start",{
-method:"POST",
-body:JSON.stringify({
+await api(
+"/api/auto-trade/start",
+{
+method:
+"POST",
+
+body:
+JSON.stringify({
 confirmation:
-confirmation
+"ENABLE REAL TRADING"
 })
-});
-
-closeStartModal();
-
-showMessage(
-"REAL TRADING IS NOW ON.",
-"success"
+}
 );
 
-await refreshAll();
+closeStart();
 
-}catch(err){
+show(
+"REAL TRADING ON — initial scan started."
+);
 
-alert(
-"Could not start real trading:\n\n" +
-err.message
+setTimeout(
+refresh,
+1200
 );
 
 }
 
-}
+catch (error) {
 
-
-async function stopTrading(){
-
-try{
-
-await api("/api/auto-trade/stop",{
-method:"POST",
-body:JSON.stringify({})
-});
-
-showMessage(
-"Real trading stopped.",
-"success"
-);
-
-await refreshAll();
-
-}catch(err){
-
-showMessage(
-"Could not stop trading: " + err.message,
+show(
+error.message,
 "error"
 );
 
@@ -910,708 +1180,344 @@ showMessage(
 }
 
 
-/* ============================================================
-DIAGNOSTICS
-============================================================ */
+async function stopTrading() {
 
-function getNumber(obj,...keys){
+try {
 
-for(const key of keys){
+await api(
+"/api/auto-trade/stop",
+{
+method:
+"POST",
 
-if(
-obj &&
-obj[key] !== undefined &&
-obj[key] !== null &&
-obj[key] !== ""
-){
+body:
+JSON.stringify({})
+}
+);
 
-const n = Number(obj[key]);
+show(
+"Real trading stopped."
+);
 
-if(Number.isFinite(n))
-return n;
+await refresh();
+
+}
+
+catch (error) {
+
+show(
+error.message,
+"error"
+);
 
 }
 
 }
 
-return null;
+
+/* =========================================================
+RUN AUTO BUYER NOW
+========================================================= */
+
+async function runNow() {
+
+try {
+
+const result =
+await api(
+"/api/auto-trade/run-now",
+{
+method:
+"POST",
+
+body:
+JSON.stringify({})
+}
+);
+
+show(
+result.message ||
+"Auto-buyer run queued."
+);
+
+setTimeout(
+refresh,
+1200
+);
+
+}
+
+catch (error) {
+
+show(
+error.message,
+"error"
+);
+
+await loadStatus();
+
+}
+
 }
 
 
-function getMinutes(market){
+/* =========================================================
+MARKET CARD
+========================================================= */
 
-return getNumber(
+function renderMarket(
 market,
-"minutesToClose",
-"minutes_to_close"
-);
-}
-
-
-function getEdge(market){
-
-const value =
-Number(market?.edge);
-
-if(!Number.isFinite(value))
-return null;
-
-return Math.abs(value) <= 1
-? value * 100
-: value;
-
-}
-
-
-
-function getExpectedMove(market){
-
-const value =
-Number(market?.expectedMove);
-
-if(!Number.isFinite(value))
-return null;
-
-return Math.abs(value) <= 1
-? value * 100
-: value;
-
-}
-
-
-
-function getSettlementText(market){
-
-if(market.winningRule)
-return market.winningRule;
-
-if(market.exactWinningTemperatures)
-return market.exactWinningTemperatures;
-
-const type =
-market.settlementType ||
-market.settlement?.type;
-
-const min =
-market.minTemp ??
-market.settlement?.minTemp;
-
-const max =
-market.maxTemp ??
-market.settlement?.maxTemp;
-
-if(type === "range" && min != null && max != null)
-return `${min}° to ${max}°`;
-
-if(type === "below" && max != null)
-return `${max}° or lower`;
-
-if(type === "above" && min != null)
-return `${min}° or higher`;
-
-return "Settlement rule recognized";
-}
-
-
-function hasSettlementRule(market){
-
-return Boolean(
-market.winningRule ||
-market.exactWinningTemperatures ||
-market.settlement ||
-market.settlementType
-);
-
-}
-
-
-function hasOrderBook(market){
-
-const yesBid = getNumber(
-market,
-"yesBid",
-"yes_bid"
-);
-
-const yesAsk = getNumber(
-market,
-"yesAsk",
-"yes_ask"
-);
-
-const noBid = getNumber(
-market,
-"noBid",
-"no_bid"
-);
-
-const noAsk = getNumber(
-market,
-"noAsk",
-"no_ask"
-);
-
-return (
-yesBid != null ||
-yesAsk != null ||
-noBid != null ||
-noAsk != null ||
-market.orderbook
-);
-
-}
-
-
-function getOrderBookDetail(market){
-
-const yesBid = getNumber(
-market,
-"yesBid",
-"yes_bid"
-);
-
-const yesAsk = getNumber(
-market,
-"yesAsk",
-"yes_ask"
-);
-
-const noBid = getNumber(
-market,
-"noBid",
-"no_bid"
-);
-
-const noAsk = getNumber(
-market,
-"noAsk",
-"no_ask"
-);
-
-const parts = [];
-
-if(yesBid != null)
-parts.push(`YES bid ${cents(yesBid * (yesBid <= 1 ? 100 : 1))}`);
-
-if(yesAsk != null)
-parts.push(`YES ask ${cents(yesAsk * (yesAsk <= 1 ? 100 : 1))}`);
-
-if(noBid != null)
-parts.push(`NO bid ${cents(noBid * (noBid <= 1 ? 100 : 1))}`);
-
-if(noAsk != null)
-parts.push(`NO ask ${cents(noAsk * (noAsk <= 1 ? 100 : 1))}`);
-
-return parts.length
-? parts.join(" • ")
-: "Order book data available";
-}
-
-
-function getTitle(market){
-
-const city =
-market.city ||
-market.location ||
-market.cityName ||
-market.rawMarket?.city ||
-market.rawMarket?.location ||
-market.rawMarket?.cityName ||
-"";
-
-const question =
-market.title ||
-market.question ||
-market.name ||
-market.subtitle ||
-"Weather market";
-
-if(city)
-return `${city} — ${question}`;
-
-return question;
-
-}
-
-
-function getDecision(market){
-
-return (
-market.decision ||
-market.signal ||
-market.action ||
-"WAIT"
-).toString().toUpperCase();
-
-}
-
-
-function getPrice(market){
-
-let p = getNumber(
-market,
-"entryPrice",
-"price",
-"buyPrice",
-"priceCents",
-"yesAsk",
-"noAsk"
-);
-
-if(p === null)
-return null;
-
-if(p < 1)
-p *= 100;
-
-return p;
-
-}
-
-
-function getModelProbability(market){
-
-const value =
-Number(market?.modelProbability);
-
-if(!Number.isFinite(value))
-return null;
-
-return Math.abs(value) <= 1
-? value * 100
-: value;
-
-}
-
-
-
-/* ============================================================
-BUILD CHECKS
-============================================================ */
-
-function buildDiagnostics(market, filters){
-
-const checks = [];
-
-const minMinutes =
-Number(filters.minMinutesToClose ?? 180);
-
-const minEdge =
-Number(filters.minEdge ?? .10) * 100;
-
-const minMove =
-Number(filters.minExpectedPriceMove ?? .01) * 100;
-
-
-/* TIME */
-
-const minutes =
-getMinutes(market);
-
-let timePass = false;
-let timeDetail = "";
-
-if(minutes === null){
-
-timeDetail =
-"No close-time information returned.";
-
-}else{
-
-timePass =
-minutes >= minMinutes;
-
-timeDetail =
-`${minutes.toFixed(0)} min remaining • required ${minMinutes} min`;
-
-}
-
-checks.push({
-name:"Time until close",
-pass:timePass,
-detail:timeDetail
-});
-
-
-/* EDGE */
-
-const rawEdge =
-getEdge(market);
+filters
+) {
+
+const eligible =
+market.eligible === true;
 
 const edge =
-rawEdge;
-
-let edgePass = false;
-let edgeDetail = "";
-
-if(edge === null){
-
-edgeDetail =
-"Weather-model edge unavailable.";
-
-}else{
-
-edgePass =
-edge >= minEdge;
-
-edgeDetail =
-`${edge >= 0 ? "+" : ""}${edge.toFixed(1)}% • required +${minEdge.toFixed(1)}%`;
-
-}
-
-checks.push({
-name:"Weather model edge",
-pass:edgePass,
-detail:edgeDetail
-});
-
-
-/* PRICE MOVE */
-
-const move =
-getExpectedMove(market);
-
-let movePass = false;
-let moveDetail = "";
-
-if(move === null){
-
-moveDetail =
-"Expected price movement unavailable.";
-
-}else{
-
-movePass =
-move >= minMove;
-
-moveDetail =
-`${move.toFixed(1)}¢ expected • required ${minMove.toFixed(1)}¢`;
-
-}
-
-checks.push({
-name:"Expected price move",
-pass:movePass,
-detail:moveDetail
-});
-
-
-/* SETTLEMENT */
-
-const settlementPass =
-hasSettlementRule(market);
-
-checks.push({
-name:"Settlement rule",
-pass:settlementPass,
-detail:settlementPass
-? getSettlementText(market)
-: "Could not identify the temperature settlement rule."
-});
-
-
-/* ORDER BOOK */
-
-const orderBookPass =
-hasOrderBook(market);
-
-checks.push({
-name:"Kalshi order book",
-pass:orderBookPass,
-detail:orderBookPass
-? getOrderBookDetail(market)
-: "No usable bid/ask information returned."
-});
-
-
-/*
-Some Worker versions already provide their own
-eligibility result. If available, respect an explicit
-false result as an additional failure.
-*/
-
-if(
-market.eligibleByTime === false &&
-!checks[0].pass
-){
-// already represented by time check
-}
-
-
-const failed =
-checks.filter(x => !x.pass);
-
-
-let reason = "";
-
-if(failed.length){
-
-reason =
-failed
-.map(x => `${x.name}: ${x.detail}`)
-.join(" | ");
-
-}else{
-
-reason =
-"Every auto-trader filter currently passes.";
-
-}
-
-
-return {
-checks,
-eligible:failed.length === 0,
-reason
-};
-
-}
-
-
-/* ============================================================
-MARKET CARD
-============================================================ */
-
-function renderMarket(market, filters){
-
-const diagnostics =
-buildDiagnostics(market, filters);
-
-const title =
-getTitle(market);
-
-const decision =
-getDecision(market);
-
-const price =
-getPrice(market);
+Number(
+market.edge
+);
 
 const model =
-getModelProbability(market);
+Number(
+market.modelProbability
+);
 
-const edge =
-getEdge(market);
+const expectedMove =
+Number(
+market.expectedMove
+);
 
-const move =
-getExpectedMove(market);
+const entryPrice =
+Number(
+market.entryPrice
+);
 
-const minutes =
-getMinutes(market);
+const title =
+market.title ||
+market.ticker ||
+"Market";
 
-const settlement =
-getSettlementText(market);
-
-
-let decisionClass = "wait";
-
-if(
-diagnostics.eligible &&
-decision.includes("BUY")
-){
-decisionClass = "buy";
-}
-
-if(
-decision.includes("NO") &&
-!diagnostics.eligible
-){
-decisionClass = "no";
-}
+const close =
+market.closeTime
+? new Date(
+    market.closeTime
+  ).toLocaleTimeString()
+: "—";
 
 
-const checksHtml =
-diagnostics.checks.map(check => {
-
-const icon =
-check.pass ? "✓" : "✗";
-
-return `
-<div class="check ${check.pass ? "pass" : "fail"}">
-
-<div class="top">
-
-<span>
-${icon} ${escapeHtml(check.name)}
-</span>
-
-<span class="${check.pass ? "good" : "bad"}">
-${check.pass ? "PASS" : "FAIL"}
-</span>
-
-</div>
-
-<div class="detail">
-${escapeHtml(check.detail)}
-</div>
-
-</div>
-`;
-
-}).join("");
-
-
-const eligibleHtml =
-diagnostics.eligible
+const status =
+eligible
 
 ? `
-<div class="eligible">
-🟢 ELIGIBLE — BOT CAN TRADE THIS MARKET
+<div class="status buy">
+ELIGIBLE — BOT CAN BUY
 </div>
 `
 
 : `
-<div class="ineligible">
-🔴 NOT ELIGIBLE — ${escapeHtml(diagnostics.reason)}
+<div class="status wait">
+NOT ELIGIBLE
 </div>
 `;
+
+
+const reason =
+market.rejectionReason ||
+"Every auto-trader filter passes.";
 
 
 return `
 
 <div class="market">
 
-<div class="market-head">
+<div class="top">
 
 <div>
 
-<div class="market-title">
-${escapeHtml(title)}
+<div class="title">
+${esc(
+  market.city
+    ? market.city +
+      " — " +
+      title
+    : title
+)}
 </div>
 
-<div class="market-meta">
+<div class="meta">
 
-Settlement:
-<strong>
-${escapeHtml(settlement)}
-</strong>
+${esc(
+  market.ticker ||
+  ""
+)}
 
-${
-minutes !== null
-? ` • ${minutes.toFixed(0)} min until close`
-: ""
-}
+•
+
+Side:
+${esc(
+  String(
+    market.side ||
+    "—"
+  ).toUpperCase()
+)}
+
+•
+
+Forecast:
+${market.forecast ??
+"—"}°
+
+•
+
+Close:
+${esc(
+  close
+)}
 
 </div>
 
 </div>
 
-<div class="decision ${decisionClass}">
-${escapeHtml(decision)}
-</div>
+${status}
 
 </div>
 
 
 <div class="metrics">
 
+
 <div class="metric">
 
-<div class="metric-label">
-Kalshi ${market.side ? String(market.side).toUpperCase() : ""}
-</div>
+<span>
+Kalshi
+</span>
 
-<div class="metric-value">
+<strong>
+
 ${
-price !== null
-? cents(price)
-: "—"
+  Number.isFinite(
+    entryPrice
+  )
+    ? price(
+        entryPrice
+      )
+    : "—"
 }
-</div>
+
+</strong>
 
 </div>
 
 
 <div class="metric">
 
-<div class="metric-label">
+<span>
 Model
-</div>
+</span>
 
-<div class="metric-value">
+<strong>
+
 ${
-model !== null
-? pct(model)
-: "—"
+  Number.isFinite(
+    model
+  )
+    ? pct(model)
+    : "—"
 }
-</div>
+
+</strong>
 
 </div>
 
 
 <div class="metric">
 
-<div class="metric-label">
+<span>
 Edge
-</div>
+</span>
 
-<div class="metric-value ${
-edge !== null && edge >= 0
-? "good"
-: "bad"
-}">
+<strong
+class="${
+  edge >= 0
+    ? "good"
+    : "bad"
+}"
+>
 
 ${
-edge !== null
-? `${edge >= 0 ? "+" : ""}${edge.toFixed(1)}%`
-: "—"
+  Number.isFinite(
+    edge
+  )
+    ? pct(edge)
+    : "—"
 }
 
-</div>
+</strong>
 
 </div>
 
 
 <div class="metric">
 
-<div class="metric-label">
+<span>
 Expected Move
-</div>
+</span>
 
-<div class="metric-value">
+<strong>
 
 ${
-move !== null
-? cents(move)
-: "—"
+  Number.isFinite(
+    expectedMove
+  )
+    ? move(
+        expectedMove
+      )
+    : "—"
 }
 
-</div>
+</strong>
 
 </div>
 
 
 <div class="metric">
 
-<div class="metric-label">
+<span>
 Take Profit
-</div>
+</span>
 
-<div class="metric-value">
+<strong>
 
 ${
-Number.isFinite(Number(filters.takeProfit))
-? `${(Number(filters.takeProfit ?? .25) * 100).toFixed(0)}%`
-: "—"
+  (
+    Number(
+      filters.takeProfit ??
+      0.25
+    ) *
+    100
+  ).toFixed(0)
+}%
+
+</strong>
+
+</div>
+
+
+</div>
+
+
+<div class="reason">
+
+${
+  eligible
+    ? "🟢 "
+    : "🔴 "
 }
 
-</div>
-
-</div>
-
-</div>
-
-
-<div class="diagnostics">
-
-<div class="diag-title">
-AUTO-TRADER ELIGIBILITY
-</div>
-
-<div class="checks">
-${checksHtml}
-</div>
-
-${eligibleHtml}
+${esc(
+  reason
+)}
 
 </div>
 
@@ -1622,194 +1528,222 @@ ${eligibleHtml}
 }
 
 
-/* ============================================================
-LOAD MARKETS
-============================================================ */
+/* =========================================================
+MARKETS
+========================================================= */
 
-async function loadMarkets(){
-
-try{
+async function loadMarkets() {
 
 const [
 weather,
 status
-] = await Promise.all([
+] =
+await Promise.all([
+  api(
+    "/api/weather"
+  ),
 
-api("/api/weather"),
-
-api("/api/auto-trade/status")
-
+  api(
+    "/api/auto-trade/status"
+  )
 ]);
 
 
 const filters =
-status.filters || {
+status.filters ||
+{
+  minMinutesToClose:
+    180,
 
-minMinutesToClose:180,
-minEdge:.10,
-minExpectedPriceMove:.01,
-takeProfit:
-Number(status.takeProfit ?? .25)
+  minEdge:
+    0.01,
 
+  minExpectedPriceMove:
+    0.01,
+
+  takeProfit:
+    0.25
 };
 
 
-let markets = [];
-
-/*
-Support multiple Worker response shapes.
-*/
-
-if(Array.isArray(weather))
-markets = weather;
-
-else if(Array.isArray(weather.opportunities))
-markets = weather.opportunities;
-
-else if(Array.isArray(weather.markets))
-markets = weather.markets;
-
-else if(Array.isArray(weather.data))
-markets = weather.data;
+const markets =
+Array.isArray(
+  weather.markets
+)
+  ? weather.markets
+  : (
+      Array.isArray(
+        weather.opportunities
+      )
+      ? weather.opportunities
+      : []
+    );
 
 
-/*
-Today-only filtering.
-
-The Worker is already responsible for its primary
-today-only market filtering. This frontend does not
-invent dates or locations.
-*/
-
-$("marketCount").textContent =
+$("marketCount")
+.textContent =
 markets.length;
 
+$("eligibleCount")
+.textContent =
+markets.filter(
+  market =>
+    market.eligible
+).length;
 
-let eligibleCount = 0;
-let rejectedCount = 0;
+$("rejectedCount")
+.textContent =
+markets.filter(
+  market =>
+    !market.eligible
+).length;
 
-
-const html =
-markets.map(market => {
-
-const d =
-buildDiagnostics(
-market,
-filters
-);
-
-if(d.eligible)
-eligibleCount++;
-else
-rejectedCount++;
-
-return renderMarket(
-market,
-filters
-);
-
-}).join("");
+$("updated")
+.textContent =
+new Date()
+.toLocaleTimeString();
 
 
-$("eligibleCount").textContent =
-eligibleCount;
+$("markets")
+.innerHTML =
+markets.length
 
-$("rejectedCount").textContent =
-rejectedCount;
+? markets
+    .map(
+      market =>
+        renderMarket(
+          market,
+          filters
+        )
+    )
+    .join("")
 
-
-$("lastUpdate").textContent =
-new Date().toLocaleTimeString();
-
-
-if(!markets.length){
-
-$("markets").innerHTML = `
-
-<div class="empty">
-
-No today's weather markets were returned.
-
-<br><br>
-
-<span class="small">
-The Worker may currently be waiting for
-qualifying Kalshi weather markets.
-</span>
-
+: `
+<div class="card muted">
+No market data returned.
 </div>
-
-`;
-
-}else{
-
-$("markets").innerHTML = html;
-
-}
-
-
-}catch(err){
-
-$("markets").innerHTML = `
-
-<div class="empty">
-
-<strong>Could not load weather markets.</strong>
-
-<br><br>
-
-${escapeHtml(err.message)}
-
-</div>
-
 `;
 
 }
 
-}
 
-
-/* ============================================================
+/* =========================================================
 REFRESH
-============================================================ */
+========================================================= */
 
-async function refreshAll(){
+async function refresh() {
+
+try {
 
 await loadStatus();
+
+await loadBalance();
+
 await loadMarkets();
 
 }
 
+catch (error) {
 
-/* ============================================================
-INITIAL LOAD
-============================================================ */
+$("markets")
+.innerHTML = `
 
-refreshAll();
+<div class="card">
 
+${esc(
+  error.message
+)}
 
-/*
-Refresh automatically every 30 seconds so the dashboard
-keeps showing changing Kalshi prices and eligibility.
-*/
+</div>
 
-setInterval(refreshAll,10000);
+`;
 
-
-/*
-Allow Enter key inside confirmation box.
-*/
-
-$("confirmation").addEventListener(
-"keydown",
-function(event){
-
-if(event.key === "Enter"){
-startTrading();
 }
 
-if(event.key === "Escape"){
-closeStartModal();
+}
+
+
+/* =========================================================
+INITIAL
+========================================================= */
+
+refresh();
+
+
+/*
+When the dashboard is open:
+
+Every 10 seconds, if real trading is ON,
+trigger the auto buyer.
+
+This gives you a live auto-buy loop even if
+you have not configured a Cloudflare Cron Trigger.
+*/
+
+setInterval(
+async () => {
+
+try {
+
+const status =
+await api(
+"/api/auto-trade/status"
+);
+
+if (
+status.enabled
+) {
+
+await api(
+"/api/auto-trade/run-now",
+{
+method:
+"POST",
+
+body:
+JSON.stringify({})
+}
+);
+
+}
+
+}
+
+catch {}
+
+await refresh();
+
+},
+10000
+);
+
+
+/* =========================================================
+CONFIRMATION KEYBOARD
+========================================================= */
+
+$("confirm")
+.addEventListener(
+"keydown",
+
+event => {
+
+if (
+event.key ===
+"Enter"
+) {
+
+startTrading();
+
+}
+
+if (
+event.key ===
+"Escape"
+) {
+
+closeStart();
+
 }
 
 }
@@ -1818,3 +1752,4 @@ closeStartModal();
 </script>
 
 </body>
+</html>
