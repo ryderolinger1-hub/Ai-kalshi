@@ -3,464 +3,687 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Position Ledger — Kalshi Dashboard</title>
 
 <style>
-*{box-sizing:border-box}
 
-html,body{
-  margin:0;
-  padding:0;
-  background:#080a0f;
-  color:#f5f7fa;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+* {
+box-sizing: border-box;
 }
 
-body{min-height:100vh}
-
-.container{
-  width:min(1150px,94%);
-  margin:auto;
-  padding:28px 0 60px;
+body {
+margin: 0;
+background: #080b10;
+color: #f4f7fb;
+font-family: Arial, Helvetica, sans-serif;
 }
 
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  margin-bottom:25px;
+header {
+padding: 24px;
+border-bottom: 1px solid #202632;
+background: #0c1017;
+position: sticky;
+top: 0;
+z-index: 10;
 }
 
-.title{
-  font-size:28px;
-  font-weight:800;
+.header-row {
+max-width: 1200px;
+margin: auto;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 15px;
 }
 
-.subtitle{
-  margin-top:5px;
-  color:#858d9b;
-  font-size:13px;
+h1 {
+margin: 0;
+font-size: 25px;
 }
 
-.live-status{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  color:#39d996;
-  font-size:12px;
-  font-weight:700;
+.subtitle {
+color: #8993a4;
+margin-top: 5px;
+font-size: 13px;
 }
 
-.live-dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#39d996;
-  box-shadow:0 0 10px rgba(57,217,150,.7);
+.status {
+font-size: 12px;
+color: #8cffb0;
 }
 
-.cards{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-bottom:25px;
+main {
+max-width: 1200px;
+margin: auto;
+padding: 22px;
 }
 
-.card{
-  background:#10131a;
-  border:1px solid #202631;
-  border-radius:14px;
+.cards {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 15px;
 }
 
-.stat-card{
-  padding:19px;
-  min-height:115px;
+.card {
+background: #10151e;
+border: 1px solid #222a36;
+border-radius: 14px;
+padding: 18px;
 }
 
-.stat-label{
-  color:#808896;
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.4px;
-  margin-bottom:10px;
+.card-label {
+color: #8c97a8;
+font-size: 12px;
 }
 
-.stat-value{
-  font-size:24px;
-  font-weight:800;
+.card-value {
+font-size: 27px;
+font-weight: bold;
+margin-top: 8px;
 }
 
-.green{color:#39d996!important}
-.red{color:#ff5969!important}
-
-.panel{
-  background:#10131a;
-  border:1px solid #202631;
-  border-radius:15px;
-  padding:18px;
-  margin-bottom:18px;
+.section {
+margin-top: 30px;
 }
 
-.panel-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  margin-bottom:15px;
+.section-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 15px;
+margin-bottom: 14px;
+flex-wrap: wrap;
 }
 
-.panel-title{
-  font-size:17px;
-  font-weight:800;
+.section-title {
+font-size: 20px;
+font-weight: bold;
 }
 
-.periods{
-  display:flex;
-  gap:5px;
+.controls {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
 }
 
-.period-button{
-  border:1px solid #303642;
-  background:#171b23;
-  color:#89919f;
-  border-radius:8px;
-  padding:7px 13px;
-  font-size:12px;
-  font-weight:700;
-  cursor:pointer;
+select,
+input {
+background: #111722;
+color: white;
+border: 1px solid #2a3443;
+border-radius: 8px;
+padding: 9px 11px;
+outline: none;
 }
 
-.period-button.active{
-  background:#e8edf3;
-  color:#080a0f;
-  border-color:#e8edf3;
+button {
+border: 0;
+border-radius: 9px;
+padding: 10px 14px;
+font-weight: bold;
+cursor: pointer;
 }
 
-.chart-wrap{
-  position:relative;
-  width:100%;
-  height:350px;
-  background:#0b0e14;
-  border-radius:11px;
-  overflow:hidden;
-  touch-action:none;
+.btn-buy {
+background: #27d17f;
+color: #06150d;
 }
 
-#chart{
-  width:100%;
-  height:100%;
-  display:block;
-  touch-action:none;
-  cursor:crosshair;
+.btn-buy:hover {
+filter: brightness(1.08);
 }
 
-.chart-info{
-  min-height:58px;
-  margin-top:11px;
-  padding:11px 13px;
-  background:#0b0e14;
-  border:1px solid #202631;
-  border-radius:10px;
-  color:#939baa;
-  font-size:12px;
-  line-height:1.5;
+.btn-secondary {
+background: #1b2330;
+color: white;
 }
 
-.chart-info strong{color:#f5f7fa}
-
-.slider-area{margin-top:13px}
-
-#historySlider{
-  width:100%;
-  height:24px;
-  accent-color:#f5f7fa;
-  cursor:pointer;
-  touch-action:none;
+.market-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 14px;
 }
 
-.slider-labels{
-  display:flex;
-  justify-content:space-between;
-  color:#68717f;
-  font-size:10px;
+.market {
+background: #10151e;
+border: 1px solid #222a36;
+border-radius: 14px;
+padding: 17px;
+position: relative;
 }
 
-.slider-current{
-  text-align:center;
-  margin-top:5px;
-  color:#c0c7d1;
-  font-size:11px;
+.rank {
+position: absolute;
+right: 14px;
+top: 14px;
+font-size: 20px;
 }
 
-.nfl-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
+.market-title {
+font-size: 16px;
+font-weight: bold;
+padding-right: 35px;
+line-height: 1.3;
 }
 
-.game-card{
-  background:#0b0e14;
-  border:1px solid #202631;
-  border-radius:13px;
-  padding:16px;
+.market-subtitle {
+color: #8993a4;
+font-size: 12px;
+margin-top: 6px;
+line-height: 1.4;
 }
 
-.game-title{
-  font-size:16px;
-  font-weight:800;
-  color:#f5f7fa;
-  margin-bottom:3px;
+.score {
+margin-top: 13px;
+font-size: 13px;
+color: #8cffb0;
 }
 
-.game-date{
-  color:#697281;
-  font-size:11px;
-  margin-bottom:12px;
+.metric-row {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+margin-top: 13px;
 }
 
-.team-row{
-  padding:12px 0;
-  border-top:1px solid #202631;
+.metric {
+background: #0b0f15;
+border-radius: 9px;
+padding: 9px;
 }
 
-.team-name{
-  font-size:14px;
-  font-weight:700;
-  margin-bottom:8px;
+.metric-label {
+font-size: 10px;
+color: #778294;
+text-transform: uppercase;
 }
 
-.odds-row{
-  display:flex;
-  gap:7px;
+.metric-value {
+margin-top: 4px;
+font-size: 13px;
+font-weight: bold;
 }
 
-.odds-box{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex:1;
-  padding:9px 11px;
-  border-radius:8px;
-  font-size:12px;
-  font-weight:800;
+.settlement {
+margin-top: 10px;
+padding: 10px;
+border-radius: 9px;
+background: #111b27;
+border: 1px solid #253345;
 }
 
-.yes-box{
-  background:rgba(57,217,150,.09);
-  border:1px solid rgba(57,217,150,.28);
-  color:#39d996;
+.settlement-label {
+color: #8290a3;
+font-size: 10px;
+text-transform: uppercase;
 }
 
-.no-box{
-  background:rgba(255,89,105,.09);
-  border:1px solid rgba(255,89,105,.28);
-  color:#ff5969;
+.settlement-value {
+margin-top: 4px;
+font-size: 13px;
+font-weight: bold;
 }
 
-.odds-label{
-  font-size:10px;
-  font-weight:900;
+.fast {
+color: #8cffb0;
 }
 
-.odds-number{
-  font-size:14px;
-  font-weight:900;
+.warning {
+color: #ffd166;
 }
 
-.loading,.empty{
-  color:#737c8b;
-  padding:20px 0;
-  font-size:13px;
+.muted {
+color: #7f8a9c;
 }
 
-.error{
-  color:#ff5969;
-  background:#181015;
-  border:1px solid #38202a;
-  padding:13px;
-  border-radius:9px;
-  font-size:13px;
+.actions {
+display: flex;
+gap: 8px;
+margin-top: 14px;
 }
 
-@media(max-width:850px){
-  .cards{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .nfl-grid{
-    grid-template-columns:1fr;
-  }
+.actions button {
+flex: 1;
 }
 
-@media(max-width:600px){
-
-  .container{
-    width:93%;
-    padding-top:20px;
-  }
-
-  .title{
-    font-size:23px;
-  }
-
-  .stat-card{
-    min-height:100px;
-    padding:15px;
-  }
-
-  .stat-value{
-    font-size:20px;
-  }
-
-  .panel-header{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-  .periods{
-    width:100%;
-  }
-
-  .period-button{
-    flex:1;
-  }
-
-  .chart-wrap{
-    height:300px;
-  }
+.nfl-list {
+display: grid;
+gap: 10px;
 }
+
+.nfl-game {
+background: #10151e;
+border: 1px solid #222a36;
+border-radius: 12px;
+padding: 14px;
+}
+
+.nfl-title {
+font-weight: bold;
+}
+
+.nfl-market {
+display: grid;
+grid-template-columns: 1fr 90px 90px;
+gap: 8px;
+align-items: center;
+margin-top: 9px;
+}
+
+.price {
+background: #0a0f15;
+border: 1px solid #27303d;
+padding: 9px;
+border-radius: 8px;
+text-align: center;
+font-weight: bold;
+}
+
+.price:hover {
+background: #16202c;
+}
+
+.modal-backdrop {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,.72);
+display: none;
+align-items: center;
+justify-content: center;
+padding: 20px;
+z-index: 50;
+}
+
+.modal {
+width: 100%;
+max-width: 460px;
+background: #10151e;
+border: 1px solid #2b3544;
+border-radius: 15px;
+padding: 20px;
+}
+
+.modal h2 {
+margin-top: 0;
+}
+
+.modal-row {
+margin-top: 13px;
+}
+
+.modal-label {
+color: #8993a4;
+font-size: 12px;
+margin-bottom: 5px;
+}
+
+.modal input,
+.modal select {
+width: 100%;
+}
+
+.cost {
+margin-top: 14px;
+padding: 13px;
+background: #0b0f15;
+border-radius: 10px;
+}
+
+.modal-actions {
+display: flex;
+gap: 9px;
+margin-top: 17px;
+}
+
+.modal-actions button {
+flex: 1;
+}
+
+.empty {
+padding: 25px;
+text-align: center;
+color: #7e899b;
+background: #10151e;
+border: 1px solid #222a36;
+border-radius: 12px;
+}
+
+.error {
+color: #ff7777;
+font-size: 13px;
+margin-top: 10px;
+}
+
+@media(max-width: 850px) {
+
+.cards {
+grid-template-columns: 1fr;
+}
+
+.market-grid {
+grid-template-columns: 1fr;
+}
+
+}
+
+@media(max-width: 600px) {
+
+main {
+padding: 14px;
+}
+
+header {
+padding: 17px;
+}
+
+.header-row {
+align-items: flex-start;
+}
+
+.nfl-market {
+grid-template-columns: 1fr 75px 75px;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<header>
 
-<div class="header">
-  <div>
-    <div class="title">Position Ledger</div>
-    <div class="subtitle">Kalshi Trading Dashboard</div>
-  </div>
+<div class="header-row">
 
-  <div class="live-status">
-    <span class="live-dot"></span>
-    <span id="statusText">LIVE</span>
-  </div>
+<div>
+<h1>Position Ledger</h1>
+<div class="subtitle">
+Kalshi Dashboard
+</div>
 </div>
 
+<div class="status" id="status">
+Connecting...
+</div>
+
+</div>
+
+</header>
+
+
+<main>
+
+<!-- ACCOUNT -->
 
 <div class="cards">
 
-  <div class="card stat-card">
-    <div class="stat-label">Available Balance</div>
-    <div id="balance" class="stat-value">$0.00</div>
-  </div>
+<div class="card">
+<div class="card-label">
+Available Balance
+</div>
 
-  <div class="card stat-card">
-    <div class="stat-label">Portfolio Value</div>
-    <div id="portfolioValue" class="stat-value">$0.00</div>
-  </div>
+<div class="card-value" id="balance">
+—
+</div>
+</div>
 
-  <div class="card stat-card">
-    <div class="stat-label">Total Account Value</div>
-    <div id="totalValue" class="stat-value">$0.00</div>
-  </div>
 
-  <div class="card stat-card">
-    <div class="stat-label">Live P/L</div>
-    <div id="livePL" class="stat-value">$0.00</div>
-  </div>
+<div class="card">
+<div class="card-label">
+Portfolio Value
+</div>
+
+<div class="card-value" id="portfolioValue">
+—
+</div>
+</div>
+
+
+<div class="card">
+<div class="card-label">
+Open Positions
+</div>
+
+<div class="card-value" id="positionCount">
+—
+</div>
+</div>
 
 </div>
 
 
-<div class="panel">
+<!-- TOP OPPORTUNITIES -->
 
-  <div class="panel-header">
+<section class="section">
 
-    <div>
-      <div class="panel-title">Account Performance</div>
+<div class="section-header">
 
-      <div id="periodDescription" class="subtitle">
-        Day — 1 minute intervals
-      </div>
-    </div>
+<div>
+<div class="section-title">
+Top Opportunities
+</div>
 
-    <div class="periods">
-
-      <button class="period-button active" data-period="day">
-        Day
-      </button>
-
-      <button class="period-button" data-period="week">
-        Week
-      </button>
-
-      <button class="period-button" data-period="month">
-        Month
-      </button>
-
-    </div>
-
-  </div>
+<div class="subtitle">
+Non-political open markets
+</div>
+</div>
 
 
-  <div class="chart-wrap">
-    <canvas id="chart"></canvas>
-  </div>
+<div class="controls">
+
+<select id="sortSelect">
+
+<option value="score">
+Opportunity
+</option>
+
+<option value="soonest">
+Soonest Settlement
+</option>
+
+<option value="latest">
+Latest Settlement
+</option>
+
+</select>
 
 
-  <div id="chartInfo" class="chart-info">
-    Drag across the graph or use the slider to inspect a timestamp.
-  </div>
+<input
+id="minVolume"
+type="number"
+value="50"
+min="0"
+placeholder="Min volume"
+>
 
 
-  <div class="slider-area">
+<input
+id="maxSpread"
+type="number"
+value="8"
+min="1"
+max="99"
+placeholder="Max spread"
+>
 
-    <input
-      id="historySlider"
-      type="range"
-      min="0"
-      max="0"
-      value="0"
-      step="1"
-    >
+<button
+class="btn-secondary"
+onclick="loadMarkets()"
+>
+Refresh
+</button>
 
-    <div class="slider-labels">
-      <span id="sliderStart">--</span>
-      <span id="sliderEnd">--</span>
-    </div>
-
-    <div id="sliderCurrent" class="slider-current">
-      --
-    </div>
-
-  </div>
+</div>
 
 </div>
 
 
-<div class="panel">
+<div id="marketsGrid" class="market-grid">
 
-  <div class="panel-header">
+<div class="empty">
+Loading markets...
+</div>
 
-    <div class="panel-title">
-      NFL Markets
-    </div>
+</div>
 
-    <div id="nflUpdated" class="subtitle">
-      Loading...
-    </div>
+</section>
 
-  </div>
 
-  <div id="nflGrid" class="nfl-grid">
+<!-- NFL -->
 
-    <div class="loading">
-      Loading NFL markets...
-    </div>
+<section class="section">
 
-  </div>
+<div class="section-header">
+
+<div>
+<div class="section-title">
+NFL
+</div>
+
+<div class="subtitle">
+Live Kalshi NFL markets
+</div>
+</div>
+
+<button
+class="btn-secondary"
+onclick="loadNFL()"
+>
+Refresh
+</button>
+
+</div>
+
+
+<div id="nflList" class="nfl-list">
+
+<div class="empty">
+Loading NFL markets...
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- BUY MODAL -->
+
+<div
+id="modalBackdrop"
+class="modal-backdrop"
+>
+
+<div class="modal">
+
+<h2>
+Buy Position
+</h2>
+
+
+<div class="modal-row">
+
+<div class="modal-label">
+Market
+</div>
+
+<div id="modalMarket">
+—
+</div>
+
+</div>
+
+
+<div class="modal-row">
+
+<div class="modal-label">
+Side
+</div>
+
+<select id="orderSide">
+
+<option value="yes">
+YES
+</option>
+
+<option value="no">
+NO
+</option>
+
+</select>
+
+</div>
+
+
+<div class="modal-row">
+
+<div class="modal-label">
+Price — cents
+</div>
+
+<input
+id="orderPrice"
+type="number"
+min="1"
+max="99"
+value="50"
+>
+
+</div>
+
+
+<div class="modal-row">
+
+<div class="modal-label">
+Contracts
+</div>
+
+<input
+id="orderCount"
+type="number"
+min="1"
+max="1000"
+value="1"
+>
+
+</div>
+
+
+<div class="cost">
+
+Max cost:
+<strong id="maxCost">
+$0.50
+</strong>
+
+</div>
+
+
+<div
+id="orderError"
+class="error"
+></div>
+
+
+<div class="modal-actions">
+
+<button
+class="btn-secondary"
+onclick="closeModal()"
+>
+Cancel
+</button>
+
+<button
+class="btn-buy"
+onclick="confirmBuy()"
+>
+Confirm BUY
+</button>
+
+</div>
 
 </div>
 
@@ -470,2016 +693,1543 @@ body{min-height:100vh}
 <script>
 
 const WORKER_URL =
-  "https://worker1.ryderolinger1.workers.dev";
-
-const HISTORY_KEY =
-  "kalshi_pl_history_v1";
+"https://worker1.ryderolinger1.workers.dev";
 
 
-const PERIODS = {
+let allMarkets = [];
+let nflMarkets = [];
 
-  day:{
-    duration:24*60*60*1000,
-    interval:60*1000,
-    label:"Day — 1 minute intervals"
-  },
+let selectedMarket = null;
 
-  week:{
-    duration:7*24*60*60*1000,
-    interval:10*60*1000,
-    label:"Week — 10 minute intervals"
-  },
 
-  month:{
-    duration:30*24*60*60*1000,
-    interval:60*60*1000,
-    label:"Month — 1 hour intervals"
-  }
+/* ---------------------------------------
+HELPERS
+--------------------------------------- */
 
+function money(value) {
+
+const n = Number(value || 0);
+
+return "$" + n.toFixed(2);
+}
+
+
+function number(value) {
+
+const n = Number(value);
+
+return Number.isFinite(n)
+? n
+: 0;
+}
+
+
+function getPrice(market, side) {
+
+if (side === "yes") {
+
+return number(
+market.yes_ask ??
+market.yes_ask_dollars * 100 ??
+market.yes_bid ??
+0
+);
+
+}
+
+return number(
+market.no_ask ??
+market.no_ask_dollars * 100 ??
+market.no_bid ??
+0
+);
+}
+
+
+function getYesAsk(market) {
+
+if (market.yes_ask !== undefined)
+return number(market.yes_ask);
+
+if (market.yes_ask_dollars !== undefined)
+return number(market.yes_ask_dollars) * 100;
+
+return 0;
+}
+
+
+function getYesBid(market) {
+
+if (market.yes_bid !== undefined)
+return number(market.yes_bid);
+
+if (market.yes_bid_dollars !== undefined)
+return number(market.yes_bid_dollars) * 100;
+
+return 0;
+}
+
+
+function getNoAsk(market) {
+
+if (market.no_ask !== undefined)
+return number(market.no_ask);
+
+if (market.no_ask_dollars !== undefined)
+return number(market.no_ask_dollars) * 100;
+
+return 0;
+}
+
+
+function getNoBid(market) {
+
+if (market.no_bid !== undefined)
+return number(market.no_bid);
+
+if (market.no_bid_dollars !== undefined)
+return number(market.no_bid_dollars) * 100;
+
+return 0;
+}
+
+
+/* ---------------------------------------
+SETTLEMENT
+--------------------------------------- */
+
+function getSettlementDate(market) {
+
+const fields = [
+
+market.settlement_time,
+
+market.expected_expiration_time,
+
+market.expiration_time,
+
+market.latest_expiration_time,
+
+market.settlement_ts,
+
+market.close_time
+
+];
+
+for (const value of fields) {
+
+if (!value) continue;
+
+const date = new Date(value);
+
+if (!Number.isNaN(date.getTime())) {
+return date;
+}
+
+}
+
+return null;
+}
+
+
+function formatSettlement(market) {
+
+const date =
+getSettlementDate(market);
+
+if (!date) {
+
+return {
+text: "Settlement unknown",
+countdown: "—",
+ms: Infinity
 };
 
-
-let currentPeriod="day";
-let history=[];
-let visibleHistory=[];
-let selectedIndex=null;
-let dragging=false;
-let lastSavedTime=0;
-
-
-const canvas=document.getElementById("chart");
-const ctx=canvas.getContext("2d");
-const slider=document.getElementById("historySlider");
-
-
-function money(value){
-
-  return Number(value||0).toLocaleString(
-    "en-US",
-    {
-      style:"currency",
-      currency:"USD"
-    }
-  );
-
 }
 
 
-function loadHistory(){
+const now = Date.now();
 
-  try{
+const diff =
+date.getTime() - now;
 
-    const saved=
-      localStorage.getItem(HISTORY_KEY);
 
-    if(!saved){
-      history=[];
-      return;
-    }
+if (diff <= 0) {
 
-    const parsed=JSON.parse(saved);
-
-    if(!Array.isArray(parsed)){
-      history=[];
-      return;
-    }
-
-    history=
-      parsed
-      .filter(p=>
-        p &&
-        Number.isFinite(Number(p.time)) &&
-        Number.isFinite(Number(p.value))
-      )
-      .map(p=>({
-        time:Number(p.time),
-        value:Number(p.value),
-        pnl:
-          p.pnl===null||
-          p.pnl===undefined
-            ?null
-            :Number(p.pnl)
-      }))
-      .sort((a,b)=>a.time-b.time);
-
-  }catch{
-    history=[];
-  }
-
-}
-
-
-function saveHistoryPoint(value,pnl){
-
-  const now=Date.now();
-
-  if(now-lastSavedTime<9000){
-    return;
-  }
-
-  lastSavedTime=now;
-
-  history.push({
-    time:now,
-    value:Number(value)||0,
-    pnl:
-      Number.isFinite(Number(pnl))
-        ?Number(pnl)
-        :null
-  });
-
-  const cutoff=
-    now-31*24*60*60*1000;
-
-  history=
-    history.filter(
-      p=>p.time>=cutoff
-    );
-
-  try{
-    localStorage.setItem(
-      HISTORY_KEY,
-      JSON.stringify(history)
-    );
-  }catch{}
-
-}
-
-
-function dateTime(timestamp){
-
-  return new Date(timestamp).toLocaleString(
-    "en-US",
-    {
-      month:"short",
-      day:"numeric",
-      year:"numeric",
-      hour:"numeric",
-      minute:"2-digit",
-      second:"2-digit"
-    }
-  );
-
-}
-
-
-function graphTime(timestamp){
-
-  const date=new Date(timestamp);
-
-  if(currentPeriod==="month"){
-
-    return date.toLocaleString(
-      "en-US",
-      {
-        month:"short",
-        day:"numeric",
-        hour:"numeric"
-      }
-    );
-
-  }
-
-  if(currentPeriod==="week"){
-
-    return date.toLocaleString(
-      "en-US",
-      {
-        weekday:"short",
-        hour:"numeric",
-        minute:"2-digit"
-      }
-    );
-
-  }
-
-  return date.toLocaleTimeString(
-    "en-US",
-    {
-      hour:"numeric",
-      minute:"2-digit"
-    }
-  );
-
-}
-
-
-function buildVisibleHistory(){
-
-  const config=PERIODS[currentPeriod];
-
-  const now=Date.now();
-
-  const start=now-config.duration;
-
-  const source=
-    history
-    .filter(
-      p=>p.time>=start&&p.time<=now
-    )
-    .sort(
-      (a,b)=>a.time-b.time
-    );
-
-  if(!source.length){
-
-    visibleHistory=[];
-
-    return;
-
-  }
-
-  const buckets=new Map();
-
-  for(const point of source){
-
-    const bucket=
-      Math.floor(
-        point.time/config.interval
-      )*config.interval;
-
-    buckets.set(
-      bucket,
-      {
-        time:bucket,
-        value:point.value,
-        pnl:point.pnl
-      }
-    );
-
-  }
-
-  visibleHistory=
-    Array.from(buckets.values())
-    .sort(
-      (a,b)=>a.time-b.time
-    );
-
-}
-
-
-function resizeCanvas(){
-
-  const rect=
-    canvas.getBoundingClientRect();
-
-  const dpr=
-    window.devicePixelRatio||1;
-
-  canvas.width=
-    Math.round(rect.width*dpr);
-
-  canvas.height=
-    Math.round(rect.height*dpr);
-
-  ctx.setTransform(
-    dpr,0,0,dpr,0,0
-  );
-
-}
-
-
-function drawChart(){
-
-  resizeCanvas();
-
-  const rect=
-    canvas.getBoundingClientRect();
-
-  const width=rect.width;
-  const height=rect.height;
-
-  ctx.clearRect(
-    0,0,width,height
-  );
-
-  if(!visibleHistory.length){
-
-    ctx.fillStyle="#737c8b";
-    ctx.font="13px Arial";
-    ctx.textAlign="center";
-
-    ctx.fillText(
-      "Waiting for history...",
-      width/2,
-      height/2
-    );
-
-    return;
-
-  }
-
-  const left=58;
-  const right=20;
-  const top=20;
-  const bottom=42;
-
-  const graphWidth=
-    width-left-right;
-
-  const graphHeight=
-    height-top-bottom;
-
-  const values=
-    visibleHistory.map(
-      p=>Number(p.value)
-    );
-
-  let min=Math.min(...values);
-  let max=Math.max(...values);
-
-  if(min===max){
-    min-=1;
-    max+=1;
-  }
-
-  const padding=(max-min)*.12;
-
-  min-=padding;
-  max+=padding;
-
-  function x(index){
-
-    if(visibleHistory.length===1){
-      return left+graphWidth/2;
-    }
-
-    return left+
-      (
-        index/
-        (visibleHistory.length-1)
-      )*graphWidth;
-
-  }
-
-  function y(value){
-
-    return top+
-      (
-        1-
-        ((value-min)/(max-min))
-      )*graphHeight;
-
-  }
-
-
-  ctx.strokeStyle="#202631";
-  ctx.lineWidth=1;
-
-  for(let i=0;i<=4;i++){
-
-    const yy=
-      top+(i/4)*graphHeight;
-
-    ctx.beginPath();
-    ctx.moveTo(left,yy);
-    ctx.lineTo(width-right,yy);
-    ctx.stroke();
-
-    const label=
-      max-(i/4)*(max-min);
-
-    ctx.fillStyle="#697281";
-    ctx.font="10px Arial";
-    ctx.textAlign="right";
-
-    ctx.fillText(
-      money(label),
-      left-8,
-      yy+3
-    );
-
-  }
-
-
-  ctx.beginPath();
-
-  visibleHistory.forEach(
-    (point,index)=>{
-
-      const xx=x(index);
-      const yy=y(point.value);
-
-      if(index===0){
-        ctx.moveTo(xx,yy);
-      }else{
-        ctx.lineTo(xx,yy);
-      }
-
-    }
-  );
-
-  ctx.strokeStyle="#e8edf3";
-  ctx.lineWidth=2.2;
-  ctx.lineJoin="round";
-  ctx.lineCap="round";
-  ctx.stroke();
-
-
-  if(
-    selectedIndex!==null &&
-    visibleHistory[selectedIndex]
-  ){
-
-    const point=
-      visibleHistory[selectedIndex];
-
-    const xx=x(selectedIndex);
-    const yy=y(point.value);
-
-    ctx.beginPath();
-
-    ctx.setLineDash([4,5]);
-
-    ctx.moveTo(xx,top);
-    ctx.lineTo(xx,height-bottom);
-
-    ctx.strokeStyle="#78818f";
-    ctx.lineWidth=1;
-    ctx.stroke();
-
-    ctx.setLineDash([]);
-
-    ctx.beginPath();
-
-    ctx.arc(
-      xx,
-      yy,
-      5,
-      0,
-      Math.PI*2
-    );
-
-    ctx.fillStyle="#ffffff";
-    ctx.fill();
-
-  }
-
-
-  const count=visibleHistory.length;
-
-  if(count){
-
-    const indexes=[];
-
-    if(count<=5){
-
-      for(let i=0;i<count;i++){
-        indexes.push(i);
-      }
-
-    }else{
-
-      indexes.push(0);
-      indexes.push(Math.floor((count-1)*.25));
-      indexes.push(Math.floor((count-1)*.5));
-      indexes.push(Math.floor((count-1)*.75));
-      indexes.push(count-1);
-
-    }
-
-    ctx.fillStyle="#697281";
-    ctx.font="10px Arial";
-    ctx.textAlign="center";
-
-    indexes.forEach(index=>{
-
-      ctx.fillText(
-        graphTime(
-          visibleHistory[index].time
-        ),
-        x(index),
-        height-13
-      );
-
-    });
-
-  }
-
-}
-
-
-function updateSlider(){
-
-  if(!visibleHistory.length){
-
-    slider.max=0;
-    slider.value=0;
-
-    document.getElementById("sliderStart").textContent="--";
-    document.getElementById("sliderEnd").textContent="--";
-    document.getElementById("sliderCurrent").textContent="--";
-
-    return;
-
-  }
-
-  slider.max=
-    visibleHistory.length-1;
-
-  if(selectedIndex===null){
-
-    selectedIndex=
-      visibleHistory.length-1;
-
-  }
-
-  selectedIndex=
-    Math.max(
-      0,
-      Math.min(
-        selectedIndex,
-        visibleHistory.length-1
-      )
-    );
-
-  slider.value=selectedIndex;
-
-  document.getElementById(
-    "sliderStart"
-  ).textContent=
-    graphTime(
-      visibleHistory[0].time
-    );
-
-  document.getElementById(
-    "sliderEnd"
-  ).textContent=
-    graphTime(
-      visibleHistory[
-        visibleHistory.length-1
-      ].time
-    );
-
-  document.getElementById(
-    "sliderCurrent"
-  ).textContent=
-    dateTime(
-      visibleHistory[selectedIndex].time
-    );
-
-}
-
-
-function inspectIndex(index){
-
-  if(!visibleHistory.length){
-    return;
-  }
-
-  selectedIndex=
-    Math.max(
-      0,
-      Math.min(
-        visibleHistory.length-1,
-        Math.round(index)
-      )
-    );
-
-  drawChart();
-  updateSlider();
-
-  const point=
-    visibleHistory[selectedIndex];
-
-  const pnl=point.pnl;
-
-  document.getElementById(
-    "chartInfo"
-  ).innerHTML=`
-
-    <strong>${dateTime(point.time)}</strong>
-
-    &nbsp; • &nbsp;
-
-    Account Value:
-    <strong>${money(point.value)}</strong>
-
-    &nbsp; • &nbsp;
-
-    P/L:
-
-    ${
-      pnl===null
-        ?"<strong>P/L not recorded</strong>"
-        :`
-          <strong class="${pnl>=0?"green":"red"}">
-            ${pnl>=0?"+":""}${money(pnl)}
-          </strong>
-        `
-    }
-
-  `;
-
-}
-
-
-function pointerToIndex(event){
-
-  if(visibleHistory.length<2){
-    return 0;
-  }
-
-  const rect=
-    canvas.getBoundingClientRect();
-
-  const left=58;
-  const right=20;
-
-  let position=
-    event.clientX-rect.left;
-
-  position=
-    Math.max(
-      left,
-      Math.min(
-        rect.width-right,
-        position
-      )
-    );
-
-  const ratio=
-    (position-left)/
-    (rect.width-left-right);
-
-  return ratio*
-    (visibleHistory.length-1);
-
-}
-
-
-canvas.addEventListener(
-  "pointerdown",
-  event=>{
-
-    if(!visibleHistory.length){
-      return;
-    }
-
-    dragging=true;
-
-    canvas.setPointerCapture(
-      event.pointerId
-    );
-
-    inspectIndex(
-      pointerToIndex(event)
-    );
-
-  }
-);
-
-
-canvas.addEventListener(
-  "pointermove",
-  event=>{
-
-    if(!dragging){
-      return;
-    }
-
-    inspectIndex(
-      pointerToIndex(event)
-    );
-
-  }
-);
-
-
-canvas.addEventListener(
-  "pointerup",
-  ()=>{
-    dragging=false;
-  }
-);
-
-
-canvas.addEventListener(
-  "pointercancel",
-  ()=>{
-    dragging=false;
-  }
-);
-
-
-slider.addEventListener(
-  "input",
-  event=>{
-    inspectIndex(
-      Number(event.target.value)
-    );
-  }
-);
-
-
-document
-.querySelectorAll(".period-button")
-.forEach(button=>{
-
-  button.addEventListener(
-    "click",
-    ()=>{
-
-      currentPeriod=
-        button.dataset.period;
-
-      document
-      .querySelectorAll(".period-button")
-      .forEach(item=>{
-        item.classList.remove("active");
-      });
-
-      button.classList.add("active");
-
-      document.getElementById(
-        "periodDescription"
-      ).textContent=
-        PERIODS[currentPeriod].label;
-
-      selectedIndex=null;
-
-      refreshChart();
-
-    }
-  );
-
-});
-
-
-async function loadPortfolio(){
-
-  try{
-
-    const response=
-      await fetch(
-        WORKER_URL+
-        "/api/portfolio?t="+Date.now(),
-        {cache:"no-store"}
-      );
-
-    const data=
-      await response.json();
-
-    if(!response.ok||!data.ok){
-      throw new Error("Portfolio request failed");
-    }
-
-    const balanceRaw=
-      Number(
-        data.balance?.balance??
-        data.balance?.available_balance??
-        0
-      );
-
-    const balance=
-      balanceRaw/100;
-
-    const positions=
-      Array.isArray(
-        data.positions?.market_positions
-      )
-      ?data.positions.market_positions
-      :Array.isArray(
-        data.positions?.positions
-      )
-      ?data.positions.positions
-      :[];
-
-    let portfolioValue=0;
-
-    for(
-      const position
-      of positions
-    ){
-
-      const marketValue=
-        Number(
-          position.market_value??
-          position.market_value_cents??
-          0
-        );
-
-      if(Number.isFinite(marketValue)){
-        portfolioValue+=marketValue/100;
-      }
-
-    }
-
-    const total=
-      balance+portfolioValue;
-
-    let pnl=0;
-
-    const candidates=[
-      data.positions?.total_pnl,
-      data.positions?.pnl,
-      data.positions?.profit_loss,
-      data.balance?.pnl
-    ];
-
-    for(
-      const candidate
-      of candidates
-    ){
-
-      if(
-        candidate!==undefined&&
-        candidate!==null&&
-        Number.isFinite(Number(candidate))
-      ){
-
-        pnl=Number(candidate);
-
-        if(Math.abs(pnl)>10000){
-          pnl/=100;
-        }
-
-        break;
-
-      }
-
-    }
-
-    document.getElementById(
-      "balance"
-    ).textContent=money(balance);
-
-    document.getElementById(
-      "portfolioValue"
-    ).textContent=
-      money(portfolioValue);
-
-    document.getElementById(
-      "totalValue"
-    ).textContent=
-      money(total);
-
-    const pnlElement=
-      document.getElementById("livePL");
-
-    pnlElement.textContent=
-      (pnl>=0?"+":"")+money(pnl);
-
-    pnlElement.classList.remove(
-      "green",
-      "red"
-    );
-
-    pnlElement.classList.add(
-      pnl>=0?"green":"red"
-    );
-
-    saveHistoryPoint(
-      total,
-      pnl
-    );
-
-    refreshChart();
-
-    document.getElementById(
-      "statusText"
-    ).textContent=
-      "LIVE • "+
-      new Date().toLocaleTimeString(
-        "en-US",
-        {
-          hour:"numeric",
-          minute:"2-digit"
-        }
-      );
-
-  }catch(error){
-
-    console.error(error);
-
-    document.getElementById(
-      "statusText"
-    ).textContent=
-      "CONNECTION ERROR";
-
-  }
-
-}
-
-
-/* =========================================================
-   NFL TEAM NAMES
-========================================================= */
-
-const NFL_TEAMS={
-
-  ARI:"Arizona Cardinals",
-  ATL:"Atlanta Falcons",
-  BAL:"Baltimore Ravens",
-  BUF:"Buffalo Bills",
-  CAR:"Carolina Panthers",
-  CHI:"Chicago Bears",
-  CIN:"Cincinnati Bengals",
-  CLE:"Cleveland Browns",
-  DAL:"Dallas Cowboys",
-  DEN:"Denver Broncos",
-  DET:"Detroit Lions",
-  GB:"Green Bay Packers",
-  GNB:"Green Bay Packers",
-  HOU:"Houston Texans",
-  IND:"Indianapolis Colts",
-  JAX:"Jacksonville Jaguars",
-  KC:"Kansas City Chiefs",
-  KAN:"Kansas City Chiefs",
-  LAC:"Los Angeles Chargers",
-  LAR:"Los Angeles Rams",
-  LV:"Las Vegas Raiders",
-  MIA:"Miami Dolphins",
-  MIN:"Minnesota Vikings",
-  NE:"New England Patriots",
-  NO:"New Orleans Saints",
-  NYG:"New York Giants",
-  NYJ:"New York Jets",
-  PHI:"Philadelphia Eagles",
-  PIT:"Pittsburgh Steelers",
-  SEA:"Seattle Seahawks",
-  SF:"San Francisco 49ers",
-  SFO:"San Francisco 49ers",
-  TB:"Tampa Bay Buccaneers",
-  TEN:"Tennessee Titans",
-  WAS:"Washington Commanders"
-
+return {
+text: "Due now",
+countdown: "Due now",
+ms: diff
 };
 
-
-const NFL_CODES=
-  Object.keys(NFL_TEAMS)
-  .sort(
-    (a,b)=>b.length-a.length
-  );
+}
 
 
-function getEventTicker(markets){
+const totalMinutes =
+Math.floor(diff / 60000);
 
-  for(
-    const market
-    of markets
-  ){
+const days =
+Math.floor(totalMinutes / 1440);
 
-    if(market.event_ticker){
-      return String(
-        market.event_ticker
-      ).toUpperCase();
-    }
+const hours =
+Math.floor(
+(totalMinutes % 1440) / 60
+);
 
-  }
+const minutes =
+totalMinutes % 60;
 
-  return "";
+
+let countdown = "";
+
+if (days > 0) {
+
+countdown =
+`${days}d ${hours}h`;
+
+} else if (hours > 0) {
+
+countdown =
+`${hours}h ${minutes}m`;
+
+} else {
+
+countdown =
+`${minutes}m`;
 
 }
 
 
-/* =========================================================
-   GET DATE DIRECTLY FROM KALSHI TICKER
-   EXAMPLE:
-   26SEP27BALDAL
-   26SEP28PHICHI
-========================================================= */
+const text =
+date.toLocaleString(
+undefined,
+{
+month: "short",
+day: "numeric",
+hour: "numeric",
+minute: "2-digit"
+}
+);
 
-function getTickerDate(ticker){
 
-  const match=
-    String(ticker||"")
-    .toUpperCase()
-    .match(
-      /(?:^|[-_])(\d{2})(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(\d{2})/
-    );
-
-  if(!match){
-    return null;
-  }
-
-  const year=
-    2000+Number(match[1]);
-
-  const monthNames=[
-    "JAN","FEB","MAR","APR","MAY","JUN",
-    "JUL","AUG","SEP","OCT","NOV","DEC"
-  ];
-
-  const month=
-    monthNames.indexOf(match[2]);
-
-  const day=
-    Number(match[3]);
-
-  if(month<0||!day){
-    return null;
-  }
-
-  return new Date(
-    year,
-    month,
-    day,
-    0,
-    0,
-    0,
-    0
-  ).getTime();
+return {
+text,
+countdown,
+ms: diff
+};
 
 }
 
 
-/* =========================================================
-   SORT DATE
-========================================================= */
+/* ---------------------------------------
+OPPORTUNITY SCORE
+--------------------------------------- */
 
-function getGameSortTimestamp(gameMarkets){
+function scoreMarket(market) {
 
-  /*
-    FIRST:
-    use the actual date encoded in the
-    Kalshi NFL event ticker.
-
-    This guarantees:
-
-    SEP 27
-    SEP 27
-    SEP 27
-    SEP 28
-    SEP 28
-
-    instead of accidentally sorting
-    by market expiration.
-  */
-
-  const ticker=
-    getEventTicker(
-      gameMarkets
-    );
-
-  const tickerDate=
-    getTickerDate(
-      ticker
-    );
-
-  if(tickerDate!==null){
-
-    /*
-      Try to find a time attached to the
-      market, while keeping the ticker date.
-    */
-
-    for(
-      const market
-      of gameMarkets
-    ){
-
-      const candidates=[
-        market.expected_expiration_time,
-        market.close_time,
-        market.expiration_time,
-        market.end_time,
-        market.open_time
-      ];
-
-      for(
-        const value
-        of candidates
-      ){
-
-        if(!value){
-          continue;
-        }
-
-        const parsed=
-          new Date(value).getTime();
-
-        if(!Number.isFinite(parsed)){
-          continue;
-        }
-
-        const d=
-          new Date(parsed);
-
-        /*
-          Use the time of day from the
-          market, but force the date from
-          the NFL ticker.
-        */
-
-        return new Date(
-          new Date(tickerDate).getFullYear(),
-          new Date(tickerDate).getMonth(),
-          new Date(tickerDate).getDate(),
-          d.getHours(),
-          d.getMinutes(),
-          d.getSeconds()
-        ).getTime();
-
-      }
-
-    }
-
-    return tickerDate;
-
-  }
+const volume =
+number(
+market.volume_number ??
+market.volume ??
+market.volume_fp
+);
 
 
-  /*
-    Fallback if ticker doesn't contain
-    a recognizable date.
-  */
+const volume24 =
+number(
+market.volume_24h_number ??
+market.volume_24h ??
+market.volume_24h_fp
+);
 
-  for(
-    const market
-    of gameMarkets
-  ){
 
-    const candidates=[
-      market.open_time,
-      market.close_time,
-      market.expected_expiration_time,
-      market.expiration_time
-    ];
+const liquidity =
+number(
+market.liquidity_number ??
+market.liquidity ??
+market.liquidity_dollars
+);
 
-    for(
-      const value
-      of candidates
-    ){
 
-      const parsed=
-        new Date(value).getTime();
+const yesBid =
+getYesBid(market);
 
-      if(Number.isFinite(parsed)){
-        return parsed;
-      }
+const yesAsk =
+getYesAsk(market);
 
-    }
+const noBid =
+getNoBid(market);
 
-  }
+const noAsk =
+getNoAsk(market);
 
-  return Infinity;
+
+let spread = 99;
+
+if (yesBid > 0 && yesAsk > 0) {
+
+spread =
+yesAsk - yesBid;
 
 }
 
 
-/* =========================================================
-   TEAM DECODING
-========================================================= */
-
-function teamsFromTicker(ticker){
-
-  let value=
-    String(ticker||"")
-    .toUpperCase()
-    .replace(
-      /^KXNFLGAME[-_]?/i,
-      ""
-    );
-
-  /*
-    Remove date:
-    26SEP27
-    26SEP28
-  */
-
-  value=
-    value.replace(
-      /^\d{2}(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\d{2}/,
-      ""
-    );
-
-  value=
-    value.replace(
-      /[-_]/g,
-      ""
-    );
+let score = 0;
 
 
-  for(
-    const first
-    of NFL_CODES
-  ){
+/*
+Liquidity
+*/
 
-    if(!value.startsWith(first)){
-      continue;
-    }
-
-    const remainder=
-      value.slice(first.length);
-
-    for(
-      const second
-      of NFL_CODES
-    ){
-
-      if(remainder===second){
-
-        return[
-          NFL_TEAMS[first],
-          NFL_TEAMS[second]
-        ];
-
-      }
-
-    }
-
-  }
-
-  return[];
-
-}
+score +=
+Math.min(
+liquidity / 100,
+20
+);
 
 
-function cleanTeamName(name){
+/*
+Volume
+*/
 
-  if(!name){
-    return "";
-  }
+score +=
+Math.min(
+volume / 1000,
+20
+);
 
-  let value=
-    String(name)
-    .trim()
-    .replace(/^YES\s+/i,"")
-    .replace(/^NO\s+/i,"")
-    .trim();
 
-  const upper=
-    value
-    .toUpperCase()
-    .replace(/[^A-Z]/g,"");
+/*
+24h activity
+*/
 
-  if(NFL_TEAMS[upper]){
-    return NFL_TEAMS[upper];
-  }
+score +=
+Math.min(
+volume24 / 500,
+20
+);
 
-  return value;
+
+/*
+Spread
+*/
+
+if (spread <= 2)
+score += 20;
+
+else if (spread <= 4)
+score += 15;
+
+else if (spread <= 6)
+score += 10;
+
+else if (spread <= 8)
+score += 5;
+
+
+/*
+Price structure
+
+Avoid markets where the displayed
+side is extremely close to 0 or 100.
+*/
+
+const last =
+number(
+market.last_price ??
+market.last_price_dollars * 100
+);
+
+
+if (
+last >= 20 &&
+last <= 80
+) {
+
+score += 10;
 
 }
 
 
-function getMarketTeam(market){
+return Math.round(score * 10) / 10;
+}
 
-  const candidates=[
-    market.yes_sub_title,
-    market.yes_title,
-    market.subtitle,
-    market.team_name,
-    market.team
-  ];
 
-  for(
-    const candidate
-    of candidates
-  ){
+/* ---------------------------------------
+LOAD PORTFOLIO
+--------------------------------------- */
 
-    if(!candidate){
-      continue;
-    }
+async function loadPortfolio() {
 
-    const cleaned=
-      cleanTeamName(candidate);
+try {
 
-    if(!cleaned){
-      continue;
-    }
+const response =
+await fetch(
+WORKER_URL +
+"/api/portfolio"
+);
 
-    if(
-      /^(winner|win|yes|no|team)$/i.test(
-        cleaned
-      )
-    ){
-      continue;
-    }
+const data =
+await response.json();
 
-    return cleaned;
 
-  }
+if (!data.ok) {
 
-  return "";
+throw new Error(
+JSON.stringify(data.error)
+);
 
 }
 
 
-function getGameKey(market){
+const balanceRaw =
+data.balance?.balance ??
+data.balance?.available_balance ??
+0;
 
-  if(market.event_ticker){
-    return String(
-      market.event_ticker
-    );
-  }
 
-  if(market.event_id){
-    return String(
-      market.event_id
-    );
-  }
+const balance =
+number(balanceRaw) / 100;
 
-  return String(
-    market.ticker||""
-  )
-  .split("-")
-  .slice(0,-1)
-  .join("-");
+
+document.getElementById(
+"balance"
+).textContent =
+money(balance);
+
+
+const positions =
+Array.isArray(
+data.positions?.market_positions
+)
+? data.positions.market_positions
+: [];
+
+
+document.getElementById(
+"positionCount"
+).textContent =
+positions.length;
+
+
+let portfolioValue = balance;
+
+
+for (const position of positions) {
+
+const qty =
+Math.abs(
+number(
+position.position ??
+position.quantity ??
+0
+)
+);
+
+
+const price =
+number(
+position.market_value ??
+position.current_value ??
+0
+);
+
+
+if (price > 0) {
+
+portfolioValue +=
+price / 100;
+
+} else {
+
+portfolioValue +=
+qty;
+
+}
 
 }
 
 
-function getGameTeams(gameMarkets){
+document.getElementById(
+"portfolioValue"
+).textContent =
+money(portfolioValue);
 
-  const ticker=
-    getEventTicker(
-      gameMarkets
-    );
 
-  const decoded=
-    teamsFromTicker(
-      ticker
-    );
+document.getElementById(
+"status"
+).textContent =
+"Connected";
 
-  if(decoded.length===2){
-    return decoded;
-  }
+} catch (error) {
 
-  const teams=[];
+console.error(error);
 
-  for(
-    const market
-    of gameMarkets
-  ){
+document.getElementById(
+"status"
+).textContent =
+"Connection error";
 
-    const team=
-      getMarketTeam(market);
-
-    if(
-      team&&
-      !teams.includes(team)
-    ){
-
-      teams.push(team);
-
-    }
-
-  }
-
-  return teams;
+}
 
 }
 
 
-function getGameTitle(gameMarkets){
+/* ---------------------------------------
+LOAD MARKETS
+--------------------------------------- */
 
-  const teams=
-    getGameTeams(
-      gameMarkets
-    );
+async function loadMarkets() {
 
-  if(teams.length>=2){
-
-    return(
-      teams[0]+
-      " vs. "+
-      teams[1]
-    );
-
-  }
-
-  if(teams.length===1){
-    return teams[0];
-  }
-
-  return"NFL Game";
-
-}
+const grid =
+document.getElementById(
+"marketsGrid"
+);
 
 
-function getGameDate(gameMarkets){
+try {
 
-  const timestamp=
-    getGameSortTimestamp(
-      gameMarkets
-    );
+grid.innerHTML =
+`<div class="empty">
+Loading opportunities...
+</div>`;
 
-  if(!Number.isFinite(timestamp)){
-    return "";
-  }
 
-  return new Date(timestamp).toLocaleString(
-    "en-US",
-    {
-      weekday:"short",
-      month:"short",
-      day:"numeric",
-      hour:"numeric",
-      minute:"2-digit"
-    }
-  );
+const response =
+await fetch(
+WORKER_URL +
+"/api/markets"
+);
+
+
+const data =
+await response.json();
+
+
+if (!data.ok) {
+
+throw new Error(
+JSON.stringify(data.error)
+);
 
 }
 
 
-function percent(value){
+allMarkets =
+Array.isArray(data.markets)
+? data.markets
+: [];
 
-  if(
-    value===null||
-    value===undefined||
-    value===""
-  ){
-    return null;
-  }
 
-  let n=
-    Number(
-      String(value)
-      .replace("$","")
-      .replace("%","")
-      .trim()
-    );
+renderMarkets();
 
-  if(!Number.isFinite(n)){
-    return null;
-  }
+} catch (error) {
 
-  if(n>=0&&n<=1){
-    n*=100;
-  }
+console.error(error);
 
-  return Math.max(
-    0,
-    Math.min(
-      100,
-      n
-    )
-  );
+grid.innerHTML =
+`<div class="empty">
+Unable to load markets.
+<div class="error">
+${escapeHtml(
+error.message
+)}
+</div>
+</div>`;
+
+}
 
 }
 
 
-function getOdds(market){
+/* ---------------------------------------
+RENDER MARKETS
+--------------------------------------- */
 
-  let yes=null;
+function renderMarkets() {
 
-  const lastCandidates=[
-    market.last_price_dollars,
-    market.last_price,
-    market.yes_last_price_dollars,
-    market.yes_last_price,
-    market.last_trade_price_dollars,
-    market.last_trade_price
-  ];
-
-  for(
-    const candidate
-    of lastCandidates
-  ){
-
-    yes=percent(candidate);
-
-    if(yes!==null){
-      break;
-    }
-
-  }
+const grid =
+document.getElementById(
+"marketsGrid"
+);
 
 
-  if(yes===null){
-
-    const bid=
-      percent(
-        market.yes_bid_dollars??
-        market.yes_bid??
-        market.yes_bid_price
-      );
-
-    const ask=
-      percent(
-        market.yes_ask_dollars??
-        market.yes_ask??
-        market.yes_ask_price
-      );
-
-    if(
-      bid!==null&&
-      ask!==null
-    ){
-
-      yes=(bid+ask)/2;
-
-    }else if(ask!==null){
-
-      yes=ask;
-
-    }else if(bid!==null){
-
-      yes=bid;
-
-    }
-
-  }
+const minVolume =
+number(
+document.getElementById(
+"minVolume"
+).value
+);
 
 
-  if(yes===null){
-
-    const candidates=[
-      market.yes_price,
-      market.yes_price_dollars,
-      market.price
-    ];
-
-    for(
-      const candidate
-      of candidates
-    ){
-
-      yes=percent(candidate);
-
-      if(yes!==null){
-        break;
-      }
-
-    }
-
-  }
+const maxSpread =
+number(
+document.getElementById(
+"maxSpread"
+).value
+);
 
 
-  let no=
-    percent(
-      market.no_price_dollars??
-      market.no_price??
-      market.no_last_price_dollars??
-      market.no_last_price
-    );
+const sort =
+document.getElementById(
+"sortSelect"
+).value;
 
 
-  if(
-    no===null&&
-    yes!==null
-  ){
+let markets =
+allMarkets.filter(
+market => {
 
-    no=100-yes;
+const volume =
+number(
+market.volume_number ??
+market.volume ??
+market.volume_fp
+);
 
-  }
+
+const yesBid =
+getYesBid(market);
+
+const yesAsk =
+getYesAsk(market);
 
 
-  return{
-    yes,
-    no
-  };
+let spread = 99;
+
+if (
+yesBid > 0 &&
+yesAsk > 0
+) {
+
+spread =
+yesAsk - yesBid;
 
 }
 
 
-function findMarketForTeam(
-  gameMarkets,
-  team
-){
+return (
+volume >= minVolume &&
+spread <= maxSpread
+);
 
-  const teamCodes=
-    Object.keys(NFL_TEAMS)
-    .filter(
-      code=>NFL_TEAMS[code]===team
-    );
+}
+);
 
 
-  for(
-    const market
-    of gameMarkets
-  ){
+markets =
+markets.map(
+market => ({
 
-    const text=(
-      String(market.ticker||"")+" "+
-      String(market.yes_sub_title||"")+" "+
-      String(market.subtitle||"")
-    ).toUpperCase();
+...market,
 
+opportunityScore:
+scoreMarket(market),
 
-    for(
-      const code
-      of teamCodes
-    ){
+settlement:
+formatSettlement(market)
 
-      if(
-        new RegExp(
-          "(^|[^A-Z])"+
-          code+
-          "([^A-Z]|$)"
-        ).test(text)
-      ){
-
-        return market;
-
-      }
-
-    }
-
-  }
+})
+);
 
 
-  for(
-    const market
-    of gameMarkets
-  ){
+if (sort === "soonest") {
 
-    if(
-      getMarketTeam(market)===team
-    ){
+markets.sort(
+(a, b) =>
+a.settlement.ms -
+b.settlement.ms
+);
 
-      return market;
+} else if (sort === "latest") {
 
-    }
+markets.sort(
+(a, b) =>
+b.settlement.ms -
+a.settlement.ms
+);
 
-  }
+} else {
 
-  return null;
+markets.sort(
+(a, b) =>
+b.opportunityScore -
+a.opportunityScore
+);
 
 }
 
 
-/* =========================================================
-   NFL LOAD
-========================================================= */
+const visible =
+markets.slice(0, 3);
 
-async function loadNFL(){
 
-  const grid=
-    document.getElementById(
-      "nflGrid"
-    );
+if (!visible.length) {
 
-  try{
+grid.innerHTML =
+`<div class="empty">
+No markets match your filters.
+</div>`;
 
-    const response=
-      await fetch(
-        WORKER_URL+
-        "/api/nfl?t="+Date.now(),
-        {
-          cache:"no-store"
-        }
-      );
-
-    const data=
-      await response.json();
-
-    if(
-      !response.ok||
-      !data.ok
-    ){
-
-      throw new Error(
-        "NFL feed error"
-      );
-
-    }
-
-    const markets=
-      Array.isArray(data.markets)
-        ?data.markets
-        :[];
-
-
-    if(!markets.length){
-
-      grid.innerHTML=`
-        <div class="empty">
-          No open NFL markets found.
-        </div>
-      `;
-
-      return;
-
-    }
-
-
-    const games=new Map();
-
-
-    for(
-      const market
-      of markets
-    ){
-
-      const key=
-        getGameKey(market);
-
-      if(!games.has(key)){
-        games.set(key,[]);
-      }
-
-      games
-        .get(key)
-        .push(market);
-
-    }
-
-
-    /*
-      =====================================================
-      IMPORTANT ORDER:
-
-      PRESENT / SOONEST
-              ↓
-      FUTURE
-              ↓
-      LATER FUTURE
-
-      Example:
-
-      SEP 27
-      SEP 27
-      SEP 27
-      SEP 28
-      SEP 28
-      SEP 29
-      =====================================================
-    */
-
-    const sortedGames=
-      Array.from(
-        games.entries()
-      )
-      .sort(
-        (a,b)=>{
-
-          const timeA=
-            getGameSortTimestamp(
-              a[1]
-            );
-
-          const timeB=
-            getGameSortTimestamp(
-              b[1]
-            );
-
-          /*
-            ASCENDING ORDER.
-
-            Smaller timestamp =
-            earlier game.
-          */
-
-          return timeA-timeB;
-
-        }
-      );
-
-
-    grid.innerHTML="";
-
-
-    for(
-      const [
-        gameKey,
-        gameMarkets
-      ]
-      of sortedGames
-    ){
-
-      const gameCard=
-        document.createElement(
-          "div"
-        );
-
-      gameCard.className=
-        "game-card";
-
-
-      const title=
-        document.createElement(
-          "div"
-        );
-
-      title.className=
-        "game-title";
-
-      title.textContent=
-        getGameTitle(
-          gameMarkets
-        );
-
-      gameCard.appendChild(
-        title
-      );
-
-
-      const date=
-        getGameDate(
-          gameMarkets
-        );
-
-
-      if(date){
-
-        const dateElement=
-          document.createElement(
-            "div"
-          );
-
-        dateElement.className=
-          "game-date";
-
-        dateElement.textContent=
-          date;
-
-        gameCard.appendChild(
-          dateElement
-        );
-
-      }
-
-
-      const teams=
-        getGameTeams(
-          gameMarkets
-        );
-
-
-      for(
-        const team
-        of teams
-      ){
-
-        const market=
-          findMarketForTeam(
-            gameMarkets,
-            team
-          );
-
-
-        if(!market){
-          continue;
-        }
-
-
-        const odds=
-          getOdds(market);
-
-
-        const teamRow=
-          document.createElement(
-            "div"
-          );
-
-        teamRow.className=
-          "team-row";
-
-
-        const teamName=
-          document.createElement(
-            "div"
-          );
-
-        teamName.className=
-          "team-name";
-
-        teamName.textContent=
-          team;
-
-
-        teamRow.appendChild(
-          teamName
-        );
-
-
-        const oddsRow=
-          document.createElement(
-            "div"
-          );
-
-        oddsRow.className=
-          "odds-row";
-
-
-        const yesBox=
-          document.createElement(
-            "div"
-          );
-
-        yesBox.className=
-          "odds-box yes-box";
-
-        yesBox.innerHTML=`
-          <span class="odds-label">
-            YES
-          </span>
-
-          <span class="odds-number">
-            ${
-              odds.yes===null
-                ?"—"
-                :odds.yes.toFixed(1)+"%"
-            }
-          </span>
-        `;
-
-
-        const noBox=
-          document.createElement(
-            "div"
-          );
-
-        noBox.className=
-          "odds-box no-box";
-
-        noBox.innerHTML=`
-          <span class="odds-label">
-            NO
-          </span>
-
-          <span class="odds-number">
-            ${
-              odds.no===null
-                ?"—"
-                :odds.no.toFixed(1)+"%"
-            }
-          </span>
-        `;
-
-
-        oddsRow.appendChild(
-          yesBox
-        );
-
-        oddsRow.appendChild(
-          noBox
-        );
-
-        teamRow.appendChild(
-          oddsRow
-        );
-
-        gameCard.appendChild(
-          teamRow
-        );
-
-      }
-
-
-      grid.appendChild(
-        gameCard
-      );
-
-    }
-
-
-    document.getElementById(
-      "nflUpdated"
-    ).textContent=
-      "Updated "+
-      new Date().toLocaleTimeString(
-        "en-US",
-        {
-          hour:"numeric",
-          minute:"2-digit"
-        }
-      );
-
-
-  }catch(error){
-
-    console.error(
-      "NFL error:",
-      error
-    );
-
-    grid.innerHTML=`
-      <div class="error">
-        NFL feed error
-      </div>
-    `;
-
-  }
+return;
 
 }
 
 
-function refreshChart(){
-
-  buildVisibleHistory();
-  drawChart();
-  updateSlider();
+grid.innerHTML =
+visible.map(
+(market, index) =>
+marketCard(
+market,
+index
+)
+).join("");
 
 }
 
 
-loadHistory();
-refreshChart();
+/* ---------------------------------------
+MARKET CARD
+--------------------------------------- */
+
+function marketCard(
+market,
+index
+) {
+
+const yesAsk =
+getYesAsk(market);
+
+const noAsk =
+getNoAsk(market);
+
+
+const volume =
+number(
+market.volume_number ??
+market.volume ??
+market.volume_fp
+);
+
+
+const liquidity =
+number(
+market.liquidity_number ??
+market.liquidity ??
+market.liquidity_dollars
+);
+
+
+const settlement =
+formatSettlement(market);
+
+
+const settlementClass =
+settlement.ms <
+24 * 60 * 60 * 1000
+
+? "fast"
+
+: settlement.ms <
+3 * 24 * 60 * 60 * 1000
+
+? "warning"
+
+: "muted";
+
+
+const medals = [
+"🥇",
+"🥈",
+"🥉"
+];
+
+
+return `
+
+<div class="market">
+
+<div class="rank">
+${medals[index] || ""}
+</div>
+
+
+<div class="market-title">
+
+${escapeHtml(
+market.title ||
+market.subtitle ||
+market.ticker
+)}
+
+</div>
+
+
+<div class="market-subtitle">
+
+${escapeHtml(
+market.subtitle ||
+market.event_ticker ||
+market.ticker
+)}
+
+</div>
+
+
+<div class="score">
+
+Opportunity Score:
+<strong>
+${market.opportunityScore}
+</strong>
+
+</div>
+
+
+<div class="settlement">
+
+<div class="settlement-label">
+Expected Settlement
+</div>
+
+<div
+class="settlement-value ${settlementClass}"
+>
+
+${settlement.countdown}
+·
+${settlement.text}
+
+</div>
+
+</div>
+
+
+<div class="metric-row">
+
+<div class="metric">
+
+<div class="metric-label">
+Volume
+</div>
+
+<div class="metric-value">
+${volume.toLocaleString()}
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="metric-label">
+Liquidity
+</div>
+
+<div class="metric-value">
+${liquidity.toLocaleString()}
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="metric-label">
+YES Ask
+</div>
+
+<div class="metric-value">
+${yesAsk
+? yesAsk.toFixed(0) + "¢"
+: "—"}
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="metric-label">
+NO Ask
+</div>
+
+<div class="metric-value">
+${noAsk
+? noAsk.toFixed(0) + "¢"
+: "—"}
+</div>
+
+</div>
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="btn-buy"
+onclick='openBuy(${JSON.stringify(
+market
+)}, "yes")'
+>
+BUY YES
+</button>
+
+
+<button
+class="btn-buy"
+onclick='openBuy(${JSON.stringify(
+market
+)}, "no")'
+>
+BUY NO
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* ---------------------------------------
+NFL
+--------------------------------------- */
+
+async function loadNFL() {
+
+const list =
+document.getElementById(
+"nflList"
+);
+
+
+try {
+
+list.innerHTML =
+`<div class="empty">
+Loading NFL...
+</div>`;
+
+
+const response =
+await fetch(
+WORKER_URL +
+"/api/nfl"
+);
+
+
+const data =
+await response.json();
+
+
+if (!data.ok) {
+
+throw new Error(
+JSON.stringify(data.error)
+);
+
+}
+
+
+nflMarkets =
+Array.isArray(data.markets)
+? data.markets
+: [];
+
+
+renderNFL();
+
+} catch (error) {
+
+console.error(error);
+
+list.innerHTML =
+`<div class="empty">
+Unable to load NFL markets.
+</div>`;
+
+}
+
+}
+
+
+function renderNFL() {
+
+const list =
+document.getElementById(
+"nflList"
+);
+
+
+if (!nflMarkets.length) {
+
+list.innerHTML =
+`<div class="empty">
+No open NFL markets found.
+</div>`;
+
+return;
+
+}
+
+
+const groups = {};
+
+
+for (const market of nflMarkets) {
+
+const key =
+market.event_ticker ||
+market.ticker;
+
+
+if (!groups[key]) {
+groups[key] = [];
+}
+
+
+groups[key].push(market);
+
+}
+
+
+const games =
+Object.values(groups);
+
+
+list.innerHTML =
+games.map(
+markets => {
+
+const first =
+markets[0];
+
+
+return `
+
+<div class="nfl-game">
+
+<div class="nfl-title">
+
+${escapeHtml(
+first.title ||
+first.event_ticker ||
+"NFL Market"
+)}
+
+</div>
+
+
+${markets.map(
+market => {
+
+const yes =
+getYesAsk(market);
+
+const no =
+getNoAsk(market);
+
+
+const settlement =
+formatSettlement(market);
+
+
+return `
+
+<div class="nfl-market">
+
+<div>
+
+${escapeHtml(
+market.subtitle ||
+market.ticker
+)}
+
+<div class="subtitle">
+
+Settles:
+${settlement.countdown}
+
+</div>
+
+</div>
+
+
+<button
+class="price"
+onclick='openBuy(${JSON.stringify(
+market
+)}, "yes")'
+>
+YES
+${yes
+? yes.toFixed(0) + "¢"
+: "—"}
+</button>
+
+
+<button
+class="price"
+onclick='openBuy(${JSON.stringify(
+market
+)}, "no")'
+>
+NO
+${no
+? no.toFixed(0) + "¢"
+: "—"}
+</button>
+
+</div>
+
+`;
+
+}
+).join("")}
+
+</div>
+
+`;
+
+}
+).join("");
+
+}
+
+
+/* ---------------------------------------
+BUY MODAL
+--------------------------------------- */
+
+function openBuy(
+market,
+side
+) {
+
+selectedMarket =
+market;
+
+
+document.getElementById(
+"modalMarket"
+).textContent =
+market.title ||
+market.subtitle ||
+market.ticker;
+
+
+document.getElementById(
+"orderSide"
+).value =
+side;
+
+
+const price =
+side === "yes"
+? getYesAsk(market)
+: getNoAsk(market);
+
+
+document.getElementById(
+"orderPrice"
+).value =
+price
+? Math.round(price)
+: 50;
+
+
+document.getElementById(
+"orderCount"
+).value =
+1;
+
+
+updateCost();
+
+
+document.getElementById(
+"orderError"
+).textContent =
+"";
+
+
+document.getElementById(
+"modalBackdrop"
+).style.display =
+"flex";
+
+}
+
+
+function closeModal() {
+
+document.getElementById(
+"modalBackdrop"
+).style.display =
+"none";
+
+selectedMarket =
+null;
+
+}
+
+
+function updateCost() {
+
+const price =
+number(
+document.getElementById(
+"orderPrice"
+).value
+);
+
+
+const count =
+number(
+document.getElementById(
+"orderCount"
+).value
+);
+
+
+const cost =
+(price * count) / 100;
+
+
+document.getElementById(
+"maxCost"
+).textContent =
+money(cost);
+
+}
+
+
+document.getElementById(
+"orderPrice"
+).addEventListener(
+"input",
+updateCost
+);
+
+
+document.getElementById(
+"orderCount"
+).addEventListener(
+"input",
+updateCost
+);
+
+
+document.getElementById(
+"orderSide"
+).addEventListener(
+"change",
+() => {
+
+if (!selectedMarket)
+return;
+
+
+const side =
+document.getElementById(
+"orderSide"
+).value;
+
+
+const price =
+side === "yes"
+? getYesAsk(selectedMarket)
+: getNoAsk(selectedMarket);
+
+
+if (price) {
+
+document.getElementById(
+"orderPrice"
+).value =
+Math.round(price);
+
+updateCost();
+
+}
+
+}
+);
+
+
+/* ---------------------------------------
+CONFIRM BUY
+--------------------------------------- */
+
+async function confirmBuy() {
+
+if (!selectedMarket) {
+return;
+}
+
+
+const side =
+document.getElementById(
+"orderSide"
+).value;
+
+
+const price =
+number(
+document.getElementById(
+"orderPrice"
+).value
+);
+
+
+const count =
+number(
+document.getElementById(
+"orderCount"
+).value
+);
+
+
+const errorBox =
+document.getElementById(
+"orderError"
+);
+
+
+errorBox.textContent =
+"";
+
+
+if (
+price < 1 ||
+price > 99
+) {
+
+errorBox.textContent =
+"Price must be 1–99 cents.";
+
+return;
+
+}
+
+
+if (
+!Number.isInteger(count) ||
+count < 1
+) {
+
+errorBox.textContent =
+"Contracts must be at least 1.";
+
+return;
+
+}
+
+
+const cost =
+(price * count) / 100;
+
+
+const confirmed =
+confirm(
+`BUY ${count} ${side.toUpperCase()} contract(s) at ${price}¢ each?\n\nMaximum cost: ${money(cost)}`
+);
+
+
+if (!confirmed) {
+return;
+}
+
+
+try {
+
+errorBox.textContent =
+"Submitting order...";
+
+
+const response =
+await fetch(
+WORKER_URL +
+"/api/order",
+{
+method: "POST",
+
+headers: {
+"Content-Type":
+"application/json"
+},
+
+body: JSON.stringify({
+
+ticker:
+selectedMarket.ticker,
+
+side,
+
+price,
+
+count
+
+})
+
+}
+);
+
+
+const data =
+await response.json();
+
+
+if (!response.ok || !data.ok) {
+
+throw new Error(
+JSON.stringify(
+data.error ||
+data.order ||
+data
+)
+);
+
+}
+
+
+errorBox.style.color =
+"#8cffb0";
+
+errorBox.textContent =
+"Order submitted successfully.";
+
+
+setTimeout(
+closeModal,
+1200
+);
+
+
 loadPortfolio();
+
+} catch (error) {
+
+console.error(error);
+
+errorBox.style.color =
+"#ff7777";
+
+errorBox.textContent =
+"Order failed: " +
+error.message;
+
+}
+
+}
+
+
+/* ---------------------------------------
+ESCAPE HTML
+--------------------------------------- */
+
+function escapeHtml(value) {
+
+return String(value || "")
+.replace(
+/&/g,
+"&amp;"
+)
+.replace(
+/</g,
+"&lt;"
+)
+.replace(
+/>/g,
+"&gt;"
+)
+.replace(
+/"/g,
+"&quot;"
+)
+.replace(
+/'/g,
+"&#039;"
+);
+
+}
+
+
+/* ---------------------------------------
+FILTER EVENTS
+--------------------------------------- */
+
+document.getElementById(
+"sortSelect"
+).addEventListener(
+"change",
+renderMarkets
+);
+
+
+document.getElementById(
+"minVolume"
+).addEventListener(
+"input",
+renderMarkets
+);
+
+
+document.getElementById(
+"maxSpread"
+).addEventListener(
+"input",
+renderMarkets
+);
+
+
+/* ---------------------------------------
+INITIAL LOAD
+--------------------------------------- */
+
+loadPortfolio();
+loadMarkets();
 loadNFL();
 
 
+/* ---------------------------------------
+AUTO REFRESH
+--------------------------------------- */
+
 setInterval(
-  loadPortfolio,
-  10000
+loadPortfolio,
+10000
 );
 
 
 setInterval(
-  loadNFL,
-  30000
+loadMarkets,
+30000
 );
 
 
-window.addEventListener(
-  "resize",
-  ()=>{
-    drawChart();
-  }
+setInterval(
+loadNFL,
+30000
+);
+
+
+/* Refresh countdowns without
+hitting the API every second. */
+
+setInterval(
+() => {
+
+if (allMarkets.length) {
+renderMarkets();
+}
+
+},
+30000
 );
 
 </script>
