@@ -983,29 +983,18 @@ return edge;
 
 function getExpectedMove(market){
 
-let v = getNumber(
-market,
-"expectedMove",
-"expectedPriceMove",
-"expectedPriceMoveCents",
-"expected_move",
-"priceMove"
-);
+const edge = normalizeEdge(getEdge(market));
 
-if(v === null)
+if(edge === null)
 return null;
 
 /*
-Worker normally stores this as dollars:
-.01 = 1 cent
-
-If value is >= 1, assume already cents.
+Expected Move matches Edge exactly:
++37.8% Edge = +37.8¢ Expected Move
 */
 
-if(Math.abs(v) < 1)
-v = v * 100;
+return edge;
 
-return 100 - v;
 }
 
 
@@ -1198,13 +1187,23 @@ return p;
 
 function getModelProbability(market){
 
-const price = getPrice(market);
+const kalshi = getPrice(market);
 const edge = normalizeEdge(getEdge(market));
 
-if(price === null || edge === null)
+if(kalshi === null || edge === null)
 return null;
 
-return price + edge;
+/*
+Model follows:
+Kalshi % + Edge %
+
+Example:
+Kalshi 50%
+Edge +37.8%
+Model 87.8%
+*/
+
+return kalshi + edge;
 
 }
 
