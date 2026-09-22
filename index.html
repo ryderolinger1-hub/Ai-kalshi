@@ -248,6 +248,7 @@ td{
 
   <div>
     <h1>Position Ledger</h1>
+
     <div class="subtitle">
       Kalshi trading dashboard
     </div>
@@ -381,10 +382,7 @@ td{
       <tbody id="positionsBody">
 
         <tr>
-          <td
-            colspan="6"
-            class="loading"
-          >
+          <td colspan="6" class="loading">
             Loading positions...
           </td>
         </tr>
@@ -453,10 +451,8 @@ td{
 const WORKER_BASE =
   "https://worker1.ryderolinger1.workers.dev";
 
-
 const PORTFOLIO_URL =
   WORKER_BASE + "/api/portfolio";
-
 
 const NFL_URL =
   WORKER_BASE + "/api/nfl";
@@ -543,9 +539,8 @@ function escapeHtml(value){
 
 function formatDate(value){
 
-  if(!value){
+  if(!value)
     return "—";
-  }
 
   const d =
     new Date(value);
@@ -554,9 +549,8 @@ function formatDate(value){
     Number.isNaN(
       d.getTime()
     )
-  ){
+  )
     return "—";
-  }
 
   return d.toLocaleString(
     "en-US",
@@ -735,8 +729,7 @@ async function loadPortfolio(){
       "lastUpdated"
     ).textContent =
       "Updated " +
-      new Date()
-        .toLocaleTimeString();
+      new Date().toLocaleTimeString();
 
 
   }catch(error){
@@ -745,7 +738,6 @@ async function loadPortfolio(){
       "Portfolio error:",
       error
     );
-
 
     document.getElementById(
       "status"
@@ -998,15 +990,10 @@ function drawChart(history){
         );
 
 
-      if(i === 0){
-
+      if(i === 0)
         ctx.moveTo(x,y);
-
-      }else{
-
+      else
         ctx.lineTo(x,y);
-
-      }
 
     }
   );
@@ -1015,7 +1002,8 @@ function drawChart(history){
   ctx.strokeStyle =
     "#4ade80";
 
-  ctx.lineWidth = 2.5;
+  ctx.lineWidth =
+    2.5;
 
   ctx.stroke();
 
@@ -1030,13 +1018,15 @@ function getNFLDate(market){
 
   const possibleTimes = [
 
-    market.expected_expiration_time,
+    market.occurrence_datetime,
 
-    market.close_time,
+    market.expected_expiration_time,
 
     market.expiration_time,
 
-    market.expiration_timestamp
+    market.latest_expiration_time,
+
+    market.close_time
 
   ];
 
@@ -1066,76 +1056,89 @@ function getNFLDate(market){
   }
 
 
-  const ticker =
-    String(
-      market.ticker || ""
-    );
-
-
-  const match =
-    ticker.match(
-      /(20\d{2})(\d{2})(\d{2})/
-    );
-
-
-  if(match){
-
-    const d =
-      new Date(
-        Number(match[1]),
-        Number(match[2]) - 1,
-        Number(match[3])
-      );
-
-
-    if(
-      !Number.isNaN(
-        d.getTime()
-      )
-    ){
-
-      return d;
-
-    }
-
-  }
-
-
   return null;
 
 }
 
 
 /* ========================================================
-   NFL ODDS
+   KALSHI PRICE → PERCENT
 ======================================================== */
 
 /*
-  IMPORTANT:
+   CURRENT KALSHI API:
 
-  Kalshi prices are in CENTS.
+   yes_bid_dollars = "0.63"
+   yes_ask_dollars = "0.65"
+   no_bid_dollars  = "0.37"
+   no_ask_dollars  = "0.39"
+   last_price_dollars = "0.64"
 
-  Example:
+   Therefore:
 
-  yes_bid = 63
-  means 63%
+   0.63 × 100 = 63%
 
-  no_bid = 35
-  means 35%
-
-  We prefer the actual YES BID.
-
-  If only YES is available:
-      NO = 100 - YES
-
-  If only NO is available:
-      YES = 100 - NO
-
-  If both are available:
-      display each actual bid.
+   We also support the older integer fields
+   just in case.
 */
 
-function getNFLOdds(market){
+function dollarPriceToPercent(
+  value
+){
+
+  if(
+    value === undefined ||
+    value === null ||
+    value === ""
+  ){
+
+    return null;
+
+  }
+
+
+  const n =
+    Number(value);
+
+
+  if(
+    Number.isNaN(n)
+  ){
+
+    return null;
+
+  }
+
+
+  /*
+    If value is already in cents,
+    such as 63, use 63%.
+
+    If value is dollars,
+    such as 0.63, convert to 63%.
+  */
+
+  if(
+    Math.abs(n) > 1
+  ){
+
+    return n;
+
+  }
+
+
+  return n * 100;
+
+}
+
+
+/* ========================================================
+   GET NFL ODDS
+======================================================== */
+
+function getNFLOdds(
+  market
+){
 
   let yes = null;
 
@@ -1143,29 +1146,79 @@ function getNFLOdds(market){
 
 
   /*
-    Actual Kalshi bid prices.
+   CURRENT KALSHI FIELDS
   */
 
-  if(
-    market.yes_bid !== undefined &&
-    market.yes_bid !== null
-  ){
+  yes =
+    dollarPriceToPercent(
+      market.yes_bid_dollars
+    );
+
+
+  no =
+    dollarPriceToPercent(
+      market.no_bid_dollars
+    );
+
+
+  /*
+   If bid doesn't exist,
+   use ask.
+  */
+
+  if(yes === null){
 
     yes =
-      Number(
+      dollarPriceToPercent(
+        market.yes_ask_dollars
+      );
+
+  }
+
+
+  if(no === null){
+
+    no =
+      dollarPriceToPercent(
+        market.no_ask_dollars
+      );
+
+  }
+
+
+  /*
+   If there are no bid/ask values,
+   use last traded price.
+  */
+
+  if(yes === null){
+
+    yes =
+      dollarPriceToPercent(
+        market.last_price_dollars
+      );
+
+  }
+
+
+  /*
+   OLD KALSHI FIELDS
+  */
+
+  if(yes === null){
+
+    yes =
+      dollarPriceToPercent(
         market.yes_bid
       );
 
   }
 
 
-  if(
-    market.no_bid !== undefined &&
-    market.no_bid !== null
-  ){
+  if(no === null){
 
     no =
-      Number(
+      dollarPriceToPercent(
         market.no_bid
       );
 
@@ -1173,49 +1226,13 @@ function getNFLOdds(market){
 
 
   /*
-    If there is no bid, use ask.
-
-    This keeps the card from showing 0%
-    when the market has an active ask.
+   Old last_price fallback.
   */
 
-  if(
-    yes === null &&
-    market.yes_ask !== undefined
-  ){
+  if(yes === null){
 
     yes =
-      Number(
-        market.yes_ask
-      );
-
-  }
-
-
-  if(
-    no === null &&
-    market.no_ask !== undefined
-  ){
-
-    no =
-      Number(
-        market.no_ask
-      );
-
-  }
-
-
-  /*
-    Last price fallback.
-  */
-
-  if(
-    yes === null &&
-    market.last_price !== undefined
-  ){
-
-    yes =
-      Number(
+      dollarPriceToPercent(
         market.last_price
       );
 
@@ -1223,8 +1240,9 @@ function getNFLOdds(market){
 
 
   /*
-    If only YES exists,
-    calculate NO.
+   Calculate missing side.
+
+   YES + NO = 100%
   */
 
   if(
@@ -1238,11 +1256,6 @@ function getNFLOdds(market){
   }
 
 
-  /*
-    If only NO exists,
-    calculate YES.
-  */
-
   if(
     no !== null &&
     yes === null
@@ -1255,7 +1268,7 @@ function getNFLOdds(market){
 
 
   /*
-    Safety.
+   Final safety.
   */
 
   yes =
@@ -1347,10 +1360,6 @@ async function loadNFL(){
       : [];
 
 
-    /*
-      Only KXNFLGAME markets.
-    */
-
     markets =
       markets.filter(
         market => {
@@ -1377,7 +1386,7 @@ async function loadNFL(){
 
 
     /*
-      TODAY THROUGH NEXT 6 DAYS.
+      Today through next 6 days.
     */
 
     const now =
@@ -1405,27 +1414,27 @@ async function loadNFL(){
       markets.filter(
         market => {
 
-          const gameDate =
+          const date =
             getNFLDate(
               market
             );
 
 
-          if(!gameDate)
+          if(!date)
             return false;
 
 
-          const gameDay =
+          const day =
             new Date(
-              gameDate.getFullYear(),
-              gameDate.getMonth(),
-              gameDate.getDate()
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate()
             );
 
 
           return (
-            gameDay >= today &&
-            gameDay < limit
+            day >= today &&
+            day < limit
           );
 
         }
@@ -1435,21 +1444,21 @@ async function loadNFL(){
     markets.sort(
       (a,b) => {
 
-        const dateA =
+        const aDate =
           getNFLDate(a);
 
-        const dateB =
+        const bDate =
           getNFLDate(b);
 
 
-        if(!dateA)
+        if(!aDate)
           return 1;
 
-        if(!dateB)
+        if(!bDate)
           return -1;
 
 
-        return dateA - dateB;
+        return aDate - bDate;
 
       }
     );
@@ -1466,7 +1475,8 @@ async function loadNFL(){
       count.textContent =
         "0 markets";
 
-      grid.innerHTML = "";
+      grid.innerHTML =
+        "";
 
       return;
 
@@ -1534,7 +1544,7 @@ function renderNFLMarket(
     "NFL Market";
 
 
-  const gameDate =
+  const date =
     getNFLDate(
       market
     );
@@ -1556,7 +1566,9 @@ function renderNFLMarket(
 
   const volume =
     Number(
-      market.volume || 0
+      market.volume_fp ??
+      market.volume ??
+      0
     );
 
 
@@ -1572,8 +1584,8 @@ function renderNFLMarket(
       <div class="nfl-date">
 
         ${
-          gameDate
-            ? formatDate(gameDate)
+          date
+            ? formatDate(date)
             : "NFL game"
         }
 
