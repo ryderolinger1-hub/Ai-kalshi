@@ -2,365 +2,263 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>Position Ledger — Kalshi Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather Edge — Kalshi</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-* {
-box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+margin:0;
+background:#08090d;
+color:#f5f5f5;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
 }
 
-body {
-margin: 0;
-background: #08090d;
-color: #f5f5f5;
-font-family:
--apple-system,
-BlinkMacSystemFont,
-"Segoe UI",
-sans-serif;
+.container{
+width:min(1400px,94%);
+margin:auto;
+padding:28px 0 60px;
 }
 
-.wrap {
-width: min(1250px, 94%);
-margin: auto;
-padding: 28px 0 60px;
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:20px;
+margin-bottom:24px;
 }
 
-h1 {
-margin: 0;
-font-size: 30px;
+h1{
+margin:0;
+font-size:30px;
 }
 
-h2 {
-margin: 0 0 6px;
-font-size: 22px;
+.subtitle{
+color:#858b99;
+font-size:14px;
+margin-top:5px;
 }
 
-.sub {
-color: #858b9a;
-margin-top: 6px;
-margin-bottom: 24px;
+button{
+background:#fff;
+color:#08090d;
+border:0;
+border-radius:10px;
+padding:11px 17px;
+font-weight:800;
+cursor:pointer;
 }
 
-.grid {
-display: grid;
-grid-template-columns: repeat(4,1fr);
-gap: 12px;
+button:disabled{
+opacity:.5;
 }
 
-.stat {
-background: #11131a;
-border: 1px solid #252a36;
-border-radius: 14px;
-padding: 18px;
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:14px;
+margin-bottom:20px;
 }
 
-.stat-label {
-color: #858b9a;
-font-size: 13px;
-margin-bottom: 8px;
+.card{
+background:#111319;
+border:1px solid #252934;
+border-radius:14px;
+padding:18px;
 }
 
-.stat-value {
-font-size: 24px;
-font-weight: 700;
+.stat-label{
+color:#858b99;
+font-size:13px;
+margin-bottom:7px;
 }
 
-section {
-margin-top: 30px;
+.stat-value{
+font-size:25px;
+font-weight:800;
 }
 
-.section-head {
-display: flex;
-justify-content: space-between;
-align-items: center;
-gap: 15px;
-flex-wrap: wrap;
-margin-bottom: 15px;
+.controls{
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+align-items:center;
+margin-bottom:18px;
 }
 
-.controls {
-display: flex;
-gap: 8px;
+.controls label{
+color:#9298a5;
+font-size:13px;
 }
 
-select,
-input {
-background: #11131a;
-color: white;
-border: 1px solid #2b3040;
-border-radius: 9px;
-padding: 10px 12px;
-outline: none;
+input,select{
+background:#0d0f14;
+color:white;
+border:1px solid #2b2f3a;
+border-radius:9px;
+padding:10px 12px;
+outline:none;
 }
 
-select:focus,
-input:focus {
-border-color: #737b90;
+.section-title{
+margin:30px 0 13px;
+font-size:20px;
 }
 
-.status {
-margin: 15px 0;
-padding: 10px 12px;
-border-radius: 9px;
-background: #11131a;
-border: 1px solid #252a36;
-color: #aeb4c1;
-font-size: 13px;
+.table-wrap{
+overflow-x:auto;
+background:#111319;
+border:1px solid #252934;
+border-radius:14px;
 }
 
-.success {
-color: #66e3a2;
+table{
+width:100%;
+border-collapse:collapse;
+min-width:1050px;
 }
 
-.error {
-color: #ff8585;
+th,td{
+padding:14px;
+border-bottom:1px solid #252934;
+text-align:left;
 }
 
-/* GRAPH */
-
-.graph-card {
-background: #11131a;
-border: 1px solid #252a36;
-border-radius: 15px;
-padding: 18px;
+th{
+color:#858b99;
+font-size:11px;
+text-transform:uppercase;
+letter-spacing:.05em;
 }
 
-.graph-wrap {
-position: relative;
-height: 330px;
-width: 100%;
+td{
+font-size:14px;
 }
 
-.graph-description {
-color: #858b9a;
-font-size: 13px;
-margin-bottom: 15px;
+tr:last-child td{
+border-bottom:0;
 }
 
-/* OPPORTUNITIES */
-
-.opportunity-grid,
-.nfl-grid {
-display: grid;
-grid-template-columns: repeat(2,minmax(0,1fr));
-gap: 14px;
+.market-title{
+font-weight:750;
+max-width:360px;
 }
 
-.card,
-.nfl-game {
-background: #11131a;
-border: 1px solid #252a36;
-border-radius: 15px;
-padding: 17px;
+.small{
+color:#7f8693;
+font-size:12px;
+margin-top:4px;
 }
 
-.card-top {
-display: flex;
-justify-content: space-between;
-gap: 12px;
-align-items: flex-start;
+.yes{
+color:#5fe28a;
 }
 
-.title {
-font-size: 17px;
-font-weight: 700;
-line-height: 1.3;
+.no{
+color:#ff7474;
 }
 
-.muted {
-color: #858b9a;
-font-size: 13px;
+.edge{
+color:#5fe28a;
+font-weight:800;
 }
 
-.badge {
-padding: 5px 9px;
-border-radius: 999px;
-background: #202532;
-font-size: 12px;
-font-weight: 800;
-white-space: nowrap;
+.buy{
+font-weight:850;
 }
 
-.yes {
-color: #66e3a2;
+.empty,.loading{
+text-align:center;
+padding:35px;
+color:#818896;
 }
 
-.no {
-color: #ff8585;
+.error{
+display:none;
+background:#281418;
+border:1px solid #6b333b;
+color:#ff9da6;
+padding:13px;
+border-radius:10px;
+margin-bottom:18px;
 }
 
-.price {
-font-size: 30px;
-font-weight: 800;
-margin: 12px 0;
+.calculator{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
 }
 
-.stats-row {
-display: grid;
-grid-template-columns: repeat(3,1fr);
-gap: 8px;
-margin-top: 13px;
+.calc-grid{
+display:grid;
+gap:12px;
 }
 
-.mini {
-background: #0b0d12;
-border-radius: 9px;
-padding: 9px;
+.calc-box{
+background:#0d0f14;
+border:1px solid #252934;
+border-radius:12px;
+padding:16px;
 }
 
-.mini-label {
-color: #777e8d;
-font-size: 11px;
-margin-bottom: 3px;
+.calc-label{
+color:#818896;
+font-size:12px;
+margin-bottom:6px;
 }
 
-.mini-value {
-font-size: 14px;
-font-weight: 700;
+.calc-number{
+font-size:21px;
+font-weight:800;
 }
 
-.reason {
-color: #aeb4c1;
-font-size: 13px;
-line-height: 1.45;
-margin-top: 13px;
+.signal{
+margin-top:14px;
+padding:14px;
+background:#0d0f14;
+border:1px solid #252934;
+border-radius:10px;
+color:#9097a4;
+font-size:13px;
+line-height:1.5;
 }
 
-.calculator {
-border-top: 1px solid #252a36;
-margin-top: 15px;
-padding-top: 14px;
+.graph{
+height:390px;
+position:relative;
 }
 
-.calculator label {
-display: block;
-color: #8b91a0;
-font-size: 12px;
-margin-bottom: 6px;
+.refresh-info{
+margin-top:9px;
+color:#6f7683;
+font-size:12px;
 }
 
-.money-input {
-width: 100%;
-font-size: 16px;
+@media(max-width:900px){
+.stats{
+grid-template-columns:repeat(2,1fr);
 }
 
-.calc-grid {
-display: grid;
-grid-template-columns: repeat(3,1fr);
-gap: 8px;
-margin-top: 10px;
+.calculator{
+grid-template-columns:1fr;
 }
 
-.calc-box {
-background: #0b0d12;
-border-radius: 9px;
-padding: 10px;
-}
-
-.calc-label {
-color: #777e8d;
-font-size: 11px;
-margin-bottom: 4px;
-}
-
-.calc-value {
-font-size: 15px;
-font-weight: 700;
-}
-
-button {
-width: 100%;
-border: 0;
-border-radius: 9px;
-padding: 11px 14px;
-cursor: pointer;
-font-weight: 800;
-margin-top: 12px;
-background: #e8eaf0;
-color: #0b0d12;
-}
-
-button:hover {
-opacity: .9;
-}
-
-/* NFL */
-
-.game-title {
-font-size: 18px;
-font-weight: 800;
-margin-bottom: 4px;
-}
-
-.teams {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 10px;
-margin-top: 13px;
-}
-
-.team {
-background: #0b0d12;
-border-radius: 10px;
-padding: 12px;
-}
-
-.team-name {
-font-weight: 700;
-margin-bottom: 5px;
-}
-
-.side-buttons {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 8px;
-}
-
-.side-btn {
-margin-top: 8px;
-}
-
-.empty {
-background: #11131a;
-border: 1px solid #252a36;
-border-radius: 14px;
-padding: 25px;
-color: #858b9a;
-text-align: center;
-grid-column: 1/-1;
-}
-
-@media(max-width:900px) {
-.grid {
-grid-template-columns: repeat(2,1fr);
-}
-
-.opportunity-grid,
-.nfl-grid {
-grid-template-columns: 1fr;
+header{
+align-items:flex-start;
+flex-direction:column;
 }
 }
 
-@media(max-width:600px) {
-.grid {
-grid-template-columns: 1fr 1fr;
+@media(max-width:550px){
+.stats{
+grid-template-columns:1fr;
 }
 
-.calc-grid {
-grid-template-columns: repeat(2,1fr);
-}
-
-.stats-row {
-grid-template-columns: 1fr 1fr;
-}
-
-h1 {
-font-size: 25px;
+h1{
+font-size:25px;
 }
 }
 </style>
@@ -368,202 +266,246 @@ font-size: 25px;
 
 <body>
 
-<div class="wrap">
+<div class="container">
 
-<h1>Position Ledger</h1>
-
-<div class="sub">
-Kalshi Market Dashboard
-</div>
-
-<div id="status" class="status">
-Loading dashboard...
-</div>
-
-
-<!-- STATS -->
-
-<div class="grid">
-
-<div class="stat">
-<div class="stat-label">Balance</div>
-<div id="balance" class="stat-value">$0.00</div>
-</div>
-
-<div class="stat">
-<div class="stat-label">Open Positions</div>
-<div id="positionCount" class="stat-value">0</div>
-</div>
-
-<div class="stat">
-<div class="stat-label">Opportunities</div>
-<div id="opportunityCount" class="stat-value">0</div>
-</div>
-
-<div class="stat">
-<div class="stat-label">NFL Markets</div>
-<div id="nflCount" class="stat-value">0</div>
-</div>
-
-</div>
-
-
-<!-- GRAPH -->
-
-<section>
-
-<div class="section-head">
+<header>
 
 <div>
-<h2>Market Odds</h2>
+<h1>🌦️ Weather Edge</h1>
+<div class="subtitle">
+Kalshi weather markets + independent Open-Meteo model
+</div>
+</div>
 
-<div class="muted">
-Top opportunities shown as probability percentages
+<button id="refreshBtn" onclick="loadWeather()">
+Refresh Markets
+</button>
+
+</header>
+
+<div id="errorBox" class="error"></div>
+
+<div class="stats">
+
+<div class="card">
+<div class="stat-label">Opportunities</div>
+<div class="stat-value" id="opportunityCount">0</div>
+</div>
+
+<div class="card">
+<div class="stat-label">Best Edge</div>
+<div class="stat-value" id="bestEdge">—</div>
+</div>
+
+<div class="card">
+<div class="stat-label">Best City</div>
+<div class="stat-value" id="bestCity">—</div>
+</div>
+
+<div class="card">
+<div class="stat-label">Updated</div>
+<div class="stat-value" id="lastUpdated">—</div>
+</div>
+
+</div>
+
+<div class="controls">
+
+<label>Sort:</label>
+
+<select id="sortSelect" onchange="render()">
+<option value="edge">Highest Edge</option>
+<option value="score">Signal Score</option>
+<option value="soonest">Soonest Settlement</option>
+<option value="latest">Latest Settlement</option>
+<option value="price">Lowest Price</option>
+</select>
+
+<label>Investment:</label>
+
+<input
+id="investment"
+type="number"
+min="0"
+step="0.01"
+value="25"
+oninput="render()"
+>
+
+<span style="color:#777e8c;font-size:13px">
+dollars
+</span>
+
+</div>
+
+<h2 class="section-title">
+Top Weather Opportunities
+</h2>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>Market</th>
+<th>Signal</th>
+<th>Kalshi</th>
+<th>Model</th>
+<th>Edge</th>
+<th>Cost</th>
+<th>Contracts</th>
+<th>Profit</th>
+<th>Settlement</th>
+</tr>
+</thead>
+
+<tbody id="marketsBody">
+
+<tr>
+<td colspan="9" class="loading">
+Loading weather markets...
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<h2 class="section-title">
+Investment Calculator
+</h2>
+
+<div class="card calculator">
+
+<div class="calc-grid">
+
+<div class="calc-box">
+<div class="calc-label">Selected Market</div>
+<div class="calc-number" id="calcMarket">
+Select a market
+</div>
+</div>
+
+<div class="calc-box">
+<div class="calc-label">Side</div>
+<div class="calc-number" id="calcSide">
+—
+</div>
+</div>
+
+<div class="calc-box">
+<div class="calc-label">Contract Price</div>
+<div class="calc-number" id="calcPrice">
+—
 </div>
 </div>
 
 </div>
 
-<div class="graph-card">
+<div class="calc-grid">
 
-<div class="graph-description">
-The graph shows the current market price as a percentage.
-A 65% market price means the contract is currently priced
-around 65¢.
+<div class="calc-box">
+<div class="calc-label">Contracts</div>
+<div class="calc-number" id="calcContracts">
+0
+</div>
 </div>
 
-<div class="graph-wrap">
+<div class="calc-box">
+<div class="calc-label">Actual Cost</div>
+<div class="calc-number" id="calcCost">
+$0.00
+</div>
+</div>
+
+<div class="calc-box">
+<div class="calc-label">Potential Payout</div>
+<div class="calc-number" id="calcPayout">
+$0.00
+</div>
+</div>
+
+<div class="calc-box">
+<div class="calc-label">Potential Profit</div>
+<div class="calc-number" id="calcProfit">
+$0.00
+</div>
+</div>
+
+<div class="calc-box">
+<div class="calc-label">Potential Return</div>
+<div class="calc-number" id="calcReturn">
+0%
+</div>
+</div>
+
+<div class="calc-box">
+<div class="calc-label">Unused Money</div>
+<div class="calc-number" id="calcUnused">
+$0.00
+</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="signal">
+<strong>How the signal works:</strong>
+the Worker compares Kalshi's current contract price with an
+independent Open-Meteo weather-model estimate. The displayed
+edge is an estimated probability difference, not a guarantee.
+</div>
+
+<h2 class="section-title">
+Market Odds
+</h2>
+
+<div class="card">
+
+<div class="graph">
 <canvas id="oddsChart"></canvas>
 </div>
 
 </div>
 
-</section>
-
-
-<!-- OPPORTUNITIES -->
-
-<section>
-
-<div class="section-head">
-
-<div>
-<h2>Top Opportunities</h2>
-
-<div class="muted">
-Non-political binary markets selected by the signal
-</div>
-</div>
-
-<div class="controls">
-
-<select id="sortSelect">
-
-<option value="opportunity">
-Opportunity
-</option>
-
-<option value="soonest">
-Soonest Settlement
-</option>
-
-<option value="latest">
-Latest Settlement
-</option>
-
-</select>
-
+<div class="refresh-info">
+Data is refreshed when you press "Refresh Markets".
+Cloudflare caching helps prevent unnecessary upstream requests.
 </div>
 
 </div>
-
-<div
-id="opportunities"
-class="opportunity-grid"
-></div>
-
-</section>
-
-
-<!-- NFL -->
-
-<section>
-
-<div class="section-head">
-
-<div>
-<h2>NFL</h2>
-
-<div class="muted">
-Games grouped by event
-</div>
-</div>
-
-</div>
-
-<div
-id="nfl"
-class="nfl-grid"
-></div>
-
-</section>
-
-</div>
-
 
 <script>
 
-const API =
+const WORKER =
 "https://worker1.ryderolinger1.workers.dev";
 
-let markets = [];
-let nflMarkets = [];
-let portfolio = null;
-let oddsChart = null;
+const WEATHER_ENDPOINT =
+WORKER + "/api/weather";
 
+let opportunities = [];
+let selectedMarket = null;
+let chart = null;
 
-/* ----------------------------------
+/* ---------------------------------------------------------
 HELPERS
----------------------------------- */
+--------------------------------------------------------- */
 
-function money(value) {
-
+function money(value){
 return "$" +
-(Number(value) || 0).toFixed(2);
+Number(value || 0).toFixed(2);
 }
 
-
-function percent(value) {
-
-return (
-(Number(value) || 0) * 100
-).toFixed(1) + "%";
+function pct(value){
+return Number(value || 0).toFixed(1) +
+"%";
 }
 
-
-function formatDate(value) {
-
-if (!value) {
-return "Unknown";
-}
-
-const d =
-new Date(value);
-
-if (
-Number.isNaN(
-d.getTime()
-)
-) {
-return "Unknown";
-}
-
-return d.toLocaleString();
-}
-
-
-function escapeHtml(value) {
-
+function escapeHTML(value){
 return String(value ?? "")
 .replace(/&/g,"&amp;")
 .replace(/</g,"&lt;")
@@ -572,1673 +514,653 @@ return String(value ?? "")
 .replace(/'/g,"&#039;");
 }
 
+function formatDate(value){
 
-/* ----------------------------------
-PRICES
----------------------------------- */
+if(!value){
+return "—";
+}
 
-function yesAsk(market) {
+const d = new Date(value);
 
-const direct =
-Number(
-market.yes_ask_dollars
+if(Number.isNaN(d.getTime())){
+return "—";
+}
+
+return d.toLocaleString([],{
+month:"short",
+day:"numeric",
+hour:"numeric",
+minute:"2-digit"
+});
+}
+
+/* ---------------------------------------------------------
+LOAD WEATHER
+--------------------------------------------------------- */
+
+async function loadWeather(){
+
+const button =
+document.getElementById(
+"refreshBtn"
 );
 
-if (
-direct > 0 &&
-direct < 1
-) {
-return direct;
-}
-
-const noBid =
-Number(
-market.no_bid_dollars
+const error =
+document.getElementById(
+"errorBox"
 );
 
-if (
-noBid > 0 &&
-noBid < 1
-) {
-return 1 - noBid;
+button.disabled = true;
+button.textContent =
+"Loading...";
+
+error.style.display =
+"none";
+
+document.getElementById(
+"marketsBody"
+).innerHTML = `
+<tr>
+<td colspan="9" class="loading">
+Loading weather opportunities...
+</td>
+</tr>
+`;
+
+try{
+
+const response =
+await fetch(
+WEATHER_ENDPOINT,
+{
+method:"GET",
+cache:"no-store"
 }
-
-return Number(
-market.last_price_dollars
-) || 0;
-}
-
-
-function noAsk(market) {
-
-const direct =
-Number(
-market.no_ask_dollars
 );
 
-if (
-direct > 0 &&
-direct < 1
-) {
-return direct;
+const data =
+await response.json();
+
+if(
+!response.ok ||
+data.ok === false
+){
+throw new Error(
+data.error ||
+"Weather request failed"
+);
 }
 
-const yesBid =
-Number(
-market.yes_bid_dollars
+opportunities =
+Array.isArray(
+data.opportunities
+)
+? data.opportunities
+: [];
+
+selectedMarket =
+opportunities[0] ||
+null;
+
+document.getElementById(
+"opportunityCount"
+).textContent =
+opportunities.length;
+
+if(opportunities.length){
+
+document.getElementById(
+"bestEdge"
+).textContent =
+pct(
+opportunities[0].edge
 );
 
-if (
-yesBid > 0 &&
-yesBid < 1
-) {
-return 1 - yesBid;
+document.getElementById(
+"bestCity"
+).textContent =
+opportunities[0].city ||
+"—";
+
+}else{
+
+document.getElementById(
+"bestEdge"
+).textContent =
+"—";
+
+document.getElementById(
+"bestCity"
+).textContent =
+"—";
 }
 
-const last =
-Number(
-market.last_price_dollars
-) || 0;
+document.getElementById(
+"lastUpdated"
+).textContent =
+new Date()
+.toLocaleTimeString([],{
+hour:"numeric",
+minute:"2-digit"
+});
 
-return last > 0
-? 1 - last
-: 0;
+render();
+
+}catch(errorObject){
+
+console.error(
+errorObject
+);
+
+error.textContent =
+"Failed to load weather markets: " +
+errorObject.message;
+
+error.style.display =
+"block";
+
+document.getElementById(
+"marketsBody"
+).innerHTML = `
+<tr>
+<td colspan="9" class="empty">
+No weather data available.
+</td>
+</tr>
+`;
 }
 
+button.disabled =
+false;
 
-/* ----------------------------------
-ALGORITHM
----------------------------------- */
-
-function sideAnalysis(market) {
-
-const last =
-Number(
-market.last_price_dollars
-) || 0;
-
-const previous =
-Number(
-market.previous_price_dollars
-) || last;
-
-const yesPrice =
-yesAsk(market);
-
-const noPrice =
-noAsk(market);
-
-const yesMomentum =
-last - previous;
-
-const noMomentum =
--yesMomentum;
-
-const liquidity =
-Number(
-market.liquidity_number
-) || 0;
-
-const volume =
-Number(
-market.volume_number
-) || 0;
-
-const volume24 =
-Number(
-market.volume_24h_number
-) || 0;
-
-
-function score(
-side,
-price,
-momentum
-) {
-
-if (
-!(price > 0 && price < 1)
-) {
-return -Infinity;
+button.textContent =
+"Refresh Markets";
 }
 
-const probability =
-side === "yes"
-? last
-: 1 - last;
+/* ---------------------------------------------------------
+SORT
+--------------------------------------------------------- */
 
-const momentumScore =
-Math.max(
-0,
-Math.min(
-1,
-momentum / 0.10
+function sortedMarkets(){
+
+const list =
+[...opportunities];
+
+const mode =
+document.getElementById(
+"sortSelect"
+).value;
+
+if(mode === "edge"){
+
+list.sort(
+(a,b) =>
+Number(b.edge || 0) -
+Number(a.edge || 0)
+);
+
+}else if(mode === "score"){
+
+list.sort(
+(a,b) =>
+Number(b.score || 0) -
+Number(a.score || 0)
+);
+
+}else if(mode === "soonest"){
+
+list.sort(
+(a,b) =>
+new Date(
+a.settlementDate || 0
+) -
+new Date(
+b.settlementDate || 0
 )
 );
 
-const liquidityScore =
-Math.min(
-1,
-liquidity / 5000
-);
+}else if(mode === "latest"){
 
-const volumeScore =
-Math.min(
-1,
-volume / 10000
-);
-
-const volume24Score =
-Math.min(
-1,
-volume24 / 5000
-);
-
-return (
-probability * 45 +
-momentumScore * 20 +
-liquidityScore * 15 +
-volumeScore * 10 +
-volume24Score * 5 +
-5
-);
-}
-
-
-const yesScore =
-score(
-"yes",
-yesPrice,
-yesMomentum
-);
-
-const noScore =
-score(
-"no",
-noPrice,
-noMomentum
-);
-
-
-const side =
-yesScore >= noScore
-? "yes"
-: "no";
-
-
-return {
-
-side,
-
-price:
-side === "yes"
-? yesPrice
-: noPrice,
-
-score:
-side === "yes"
-? yesScore
-: noScore,
-
-reason:
-side === "yes"
-? (
-yesMomentum > 0
-? "positive momentum"
-: "strong market price"
+list.sort(
+(a,b) =>
+new Date(
+b.settlementDate || 0
+) -
+new Date(
+a.settlementDate || 0
 )
-: (
-noMomentum > 0
-? "positive momentum"
-: "strong market price"
-)
-};
-}
-
-
-/* ----------------------------------
-INVESTMENT CALCULATOR
----------------------------------- */
-
-function calculateInvestment(
-amount,
-price
-) {
-
-const dollars =
-Math.max(
-0,
-Number(amount) || 0
 );
 
-const priceCents =
-Math.round(
-price * 100
+}else if(mode === "price"){
+
+list.sort(
+(a,b) =>
+Number(a.marketPrice || 0) -
+Number(b.marketPrice || 0)
 );
-
-if (
-priceCents <= 0 ||
-priceCents >= 100
-) {
-
-return {
-contracts: 0,
-actualCost: 0,
-payout: 0,
-profit: 0,
-returnPct: 0,
-unused: dollars
-};
 }
 
+return list;
+}
+
+/* ---------------------------------------------------------
+RENDER TABLE
+--------------------------------------------------------- */
+
+function render(){
+
+const body =
+document.getElementById(
+"marketsBody"
+);
+
+const list =
+sortedMarkets();
+
+if(!list.length){
+
+body.innerHTML = `
+<tr>
+<td colspan="9" class="empty">
+No weather opportunities currently meet
+the model's edge threshold.
+</td>
+</tr>
+`;
+
+renderChart([]);
+
+calculate();
+
+return;
+}
+
+body.innerHTML =
+list.map(
+(market,index) => {
+
+const price =
+Number(
+market.marketPrice || 0
+);
+
+const investment =
+Number(
+document.getElementById(
+"investment"
+).value
+) || 0;
 
 const contracts =
 Math.floor(
-dollars * 100 /
-priceCents
+investment /
+Math.max(
+price,
+0.01
+)
 );
 
-
-const actualCost =
-contracts *
-priceCents /
-100;
-
+const cost =
+contracts * price;
 
 const payout =
 contracts;
 
-
 const profit =
-payout -
-actualCost;
+payout - cost;
 
-
-const returnPct =
-actualCost > 0
-? profit /
-actualCost *
-100
-: 0;
-
-
-return {
-
-contracts,
-
-actualCost,
-
-payout,
-
-profit,
-
-returnPct,
-
-unused:
-dollars -
-actualCost
-
-};
-}
-
-
-/* ----------------------------------
-OPPORTUNITY CARD
----------------------------------- */
-
-function opportunityCard(
-market
-) {
-
-const analysis =
-sideAnalysis(market);
-
-if (
-!Number.isFinite(
-analysis.score
-)
-) {
-return "";
-}
-
-
-const ticker =
-market.ticker || "";
-
-
-const title =
-market.title ||
-market.yes_sub_title ||
-"Untitled Market";
-
-
-const price =
-analysis.price;
-
-
-const calc =
-calculateInvestment(
-100,
-price
-);
-
+const sideClass =
+market.side === "YES"
+? "yes"
+: "no";
 
 return `
-
-<div
-class="card opportunity-card"
-data-price="${price}"
+<tr
+onclick="selectMarket(${index})"
+style="cursor:pointer"
 >
 
-<div class="card-top">
+<td>
 
-<div>
-
-<div class="title">
-${escapeHtml(title)}
-</div>
-
-<div class="muted">
-${escapeHtml(ticker)}
-</div>
-
-</div>
-
-<div class="badge">
-BUY ${analysis.side.toUpperCase()}
-</div>
-
-</div>
-
-
-<div class="price ${analysis.side}">
-${percent(price)}
-</div>
-
-
-<div class="stats-row">
-
-<div class="mini">
-
-<div class="mini-label">
-Signal
-</div>
-
-<div class="mini-value">
-${analysis.score.toFixed(1)}
-</div>
-
-</div>
-
-
-<div class="mini">
-
-<div class="mini-label">
-Settlement
-</div>
-
-<div class="mini-value">
-${formatDate(
-market.settlement_time
+<div class="market-title">
+${escapeHTML(
+market.title
 )}
 </div>
 
+<div class="small">
+${escapeHTML(
+market.city || ""
+)}
 </div>
 
+</td>
 
-<div class="mini">
+<td>
 
-<div class="mini-label">
-Volume
-</div>
+<span class="buy ${sideClass}">
+${escapeHTML(
+market.sideLabel ||
+"BUY " +
+market.side
+)}
+</span>
 
-<div class="mini-value">
-${Number(
-market.volume_number || 0
-).toLocaleString()}
-</div>
+</td>
 
-</div>
+<td>
+${pct(
+market.marketPrice * 100
+)}
+</td>
 
-</div>
+<td>
+${pct(
+market.modelProbability
+)}
+</td>
 
+<td class="edge">
++${pct(
+market.edge
+)}
+</td>
 
-<div class="reason">
+<td>
+${money(cost)}
+</td>
 
-Signal factors:
-${escapeHtml(
-analysis.reason
-)}.
+<td>
+${contracts}
+</td>
 
-This is a market-data
-heuristic, not a guarantee.
+<td class="${
+profit > 0
+? "yes"
+: ""
+}">
+${money(profit)}
+</td>
 
-</div>
+<td>
+${formatDate(
+market.settlementDate ||
+market.closeTime
+)}
+</td>
 
-
-<div class="calculator">
-
-<label>
-Investment amount ($)
-</label>
-
-<input
-class="money-input investment-input"
-type="number"
-min="0"
-step="0.01"
-value="100"
->
-
-
-<div class="calc-grid">
-
-<div class="calc-box">
-
-<div class="calc-label">
-Contracts
-</div>
-
-<div class="calc-value contracts">
-${calc.contracts}
-</div>
-
-</div>
-
-
-<div class="calc-box">
-
-<div class="calc-label">
-Actual Cost
-</div>
-
-<div class="calc-value actual-cost">
-${money(calc.actualCost)}
-</div>
-
-</div>
-
-
-<div class="calc-box">
-
-<div class="calc-label">
-Potential Payout
-</div>
-
-<div class="calc-value payout">
-${money(calc.payout)}
-</div>
-
-</div>
-
-
-<div class="calc-box">
-
-<div class="calc-label">
-Potential Profit
-</div>
-
-<div class="calc-value profit">
-${money(calc.profit)}
-</div>
-
-</div>
-
-
-<div class="calc-box">
-
-<div class="calc-label">
-Return
-</div>
-
-<div class="calc-value return-pct">
-${calc.returnPct.toFixed(1)}%
-</div>
-
-</div>
-
-
-<div class="calc-box">
-
-<div class="calc-label">
-Unused
-</div>
-
-<div class="calc-value unused">
-${money(calc.unused)}
-</div>
-
-</div>
-
-</div>
-
-
-<button
-class="buy-opportunity"
-data-ticker="${escapeHtml(ticker)}"
-data-side="${analysis.side}"
-data-price="${price}"
->
-BUY ${analysis.side.toUpperCase()}
-</button>
-
-</div>
-
-</div>
-
+</tr>
 `;
 }
+).join("");
 
+renderChart(list);
 
-/* ----------------------------------
-GRAPH
----------------------------------- */
+calculate();
+}
 
-function updateGraph() {
+/* ---------------------------------------------------------
+SELECT MARKET
+--------------------------------------------------------- */
+
+function selectMarket(index){
+
+const list =
+sortedMarkets();
+
+if(!list[index]){
+return;
+}
+
+selectedMarket =
+list[index];
+
+calculate();
+
+const calculator =
+document.querySelector(
+".calculator"
+);
+
+calculator.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+}
+
+/* ---------------------------------------------------------
+CALCULATOR
+--------------------------------------------------------- */
+
+function calculate(){
+
+if(!selectedMarket){
+
+document.getElementById(
+"calcMarket"
+).textContent =
+"Select a market";
+
+document.getElementById(
+"calcSide"
+).textContent =
+"—";
+
+document.getElementById(
+"calcPrice"
+).textContent =
+"—";
+
+return;
+}
+
+const investment =
+Math.max(
+0,
+Number(
+document.getElementById(
+"investment"
+).value
+) || 0
+);
+
+const price =
+Math.max(
+0.01,
+Number(
+selectedMarket.marketPrice
+) || 0
+);
+
+const contracts =
+Math.floor(
+investment / price
+);
+
+const cost =
+contracts * price;
+
+const payout =
+contracts;
+
+const profit =
+payout - cost;
+
+const returnPct =
+cost > 0
+? (
+profit /
+cost
+) * 100
+: 0;
+
+const unused =
+investment - cost;
+
+document.getElementById(
+"calcMarket"
+).textContent =
+selectedMarket.title ||
+"Weather market";
+
+const side =
+document.getElementById(
+"calcSide"
+);
+
+side.textContent =
+selectedMarket.sideLabel ||
+"BUY " +
+selectedMarket.side;
+
+side.className =
+"calc-number " +
+(
+selectedMarket.side === "YES"
+? "yes"
+: "no"
+);
+
+document.getElementById(
+"calcPrice"
+).textContent =
+pct(price * 100);
+
+document.getElementById(
+"calcContracts"
+).textContent =
+contracts;
+
+document.getElementById(
+"calcCost"
+).textContent =
+money(cost);
+
+document.getElementById(
+"calcPayout"
+).textContent =
+money(payout);
+
+document.getElementById(
+"calcProfit"
+).textContent =
+money(profit);
+
+document.getElementById(
+"calcReturn"
+).textContent =
+returnPct.toFixed(1) +
+"%";
+
+document.getElementById(
+"calcUnused"
+).textContent =
+money(unused);
+}
+
+/* ---------------------------------------------------------
+CHART
+--------------------------------------------------------- */
+
+function renderChart(list){
 
 const canvas =
 document.getElementById(
 "oddsChart"
 );
 
-if (!canvas) {
-return;
+if(chart){
+chart.destroy();
 }
 
+const top =
+list.slice(0,12);
 
-const ranked =
-markets
-.map(market => {
-
-const analysis =
-sideAnalysis(market);
-
-return {
-market,
-analysis
-};
-
-})
-.filter(item =>
-Number.isFinite(
-item.analysis.score
-)
-)
-.sort(
-(a,b) =>
-b.analysis.score -
-a.analysis.score
-)
-.slice(0,10);
-
-
-const labels =
-ranked.map(item => {
-
-const title =
-item.market.title ||
-item.market.ticker ||
-"Market";
-
-return title.length > 30
-? title.slice(0,30) + "..."
-: title;
-
-});
-
-
-const values =
-ranked.map(item =>
-Number(
-(
-item.analysis.price *
-100
-).toFixed(1)
-)
-);
-
-
-if (oddsChart) {
-oddsChart.destroy();
-}
-
-
-oddsChart =
+chart =
 new Chart(
 canvas,
 {
+type:"bar",
 
-type: "bar",
+data:{
+labels:
+top.map(
+market =>
+(
+market.city ||
+"Weather"
+) +
+" — " +
+(
+market.side ||
+""
+)
+),
 
-data: {
-
-labels,
-
-datasets: [
+datasets:[
 
 {
 label:
-"Market Probability",
+"Kalshi Price %",
 
 data:
-values,
+top.map(
+market =>
+Number(
+market.marketProbability ||
+0
+)
+)
+},
 
-borderWidth: 1
+{
+label:
+"Model Probability %",
+
+data:
+top.map(
+market =>
+Number(
+market.modelProbability ||
+0
+)
+)
 }
 
 ]
-
 },
 
-options: {
+options:{
 
-responsive: true,
+responsive:true,
 
-maintainAspectRatio: false,
+maintainAspectRatio:false,
 
-scales: {
+scales:{
 
-y: {
+y:{
+beginAtZero:true,
+max:100,
 
-beginAtZero: true,
-
-max: 100,
-
-ticks: {
-
+ticks:{
 callback:
 value =>
 value + "%"
-
 }
-
-}
-
-},
-
-plugins: {
-
-legend: {
-display: false
-},
-
-tooltip: {
-
-callbacks: {
-
-label:
-context =>
-" " +
-context.parsed.y +
-"%"
-
 }
 
 }
 
 }
-
-}
-
 }
 );
 }
 
-
-/* ----------------------------------
-RENDER OPPORTUNITIES
----------------------------------- */
-
-function renderOpportunities() {
-
-const container =
-document.getElementById(
-"opportunities"
-);
-
-
-const sort =
-document.getElementById(
-"sortSelect"
-).value;
-
-
-let list =
-markets
-.map(market => ({
-market,
-analysis:
-sideAnalysis(market)
-}))
-.filter(item =>
-Number.isFinite(
-item.analysis.score
-)
-);
-
-
-if (
-sort ===
-"opportunity"
-) {
-
-list.sort(
-(a,b) =>
-b.analysis.score -
-a.analysis.score
-);
-
-} else if (
-sort ===
-"soonest"
-) {
-
-list.sort(
-(a,b) =>
-new Date(
-a.market.settlement_time || 0
-) -
-new Date(
-b.market.settlement_time || 0
-)
-);
-
-} else {
-
-list.sort(
-(a,b) =>
-new Date(
-b.market.settlement_time || 0
-) -
-new Date(
-a.market.settlement_time || 0
-)
-);
-
-}
-
-
-list =
-list.slice(0,20);
-
-
-document.getElementById(
-"opportunityCount"
-).textContent =
-list.length;
-
-
-if (!list.length) {
-
-container.innerHTML = `
-
-<div class="empty">
-No markets match the current filters.
-</div>
-
-`;
-
-updateGraph();
-
-return;
-}
-
-
-container.innerHTML =
-list
-.map(item =>
-opportunityCard(
-item.market
-)
-)
-.join("");
-
-
-updateGraph();
-}
-
-
-/* ----------------------------------
-NFL TEAMS
----------------------------------- */
-
-const NFL_TEAMS = {
-
-ARI:"Arizona Cardinals",
-ATL:"Atlanta Falcons",
-BAL:"Baltimore Ravens",
-BUF:"Buffalo Bills",
-CAR:"Carolina Panthers",
-CHI:"Chicago Bears",
-CIN:"Cincinnati Bengals",
-CLE:"Cleveland Browns",
-DAL:"Dallas Cowboys",
-DEN:"Denver Broncos",
-DET:"Detroit Lions",
-GB:"Green Bay Packers",
-HOU:"Houston Texans",
-IND:"Indianapolis Colts",
-JAX:"Jacksonville Jaguars",
-KC:"Kansas City Chiefs",
-LV:"Las Vegas Raiders",
-LAC:"Los Angeles Chargers",
-LAR:"Los Angeles Rams",
-MIA:"Miami Dolphins",
-MIN:"Minnesota Vikings",
-NE:"New England Patriots",
-NO:"New Orleans Saints",
-NYG:"New York Giants",
-NYJ:"New York Jets",
-PHI:"Philadelphia Eagles",
-PIT:"Pittsburgh Steelers",
-SF:"San Francisco 49ers",
-SEA:"Seattle Seahawks",
-TB:"Tampa Bay Buccaneers",
-TEN:"Tennessee Titans",
-WAS:"Washington Commanders"
-
-};
-
-
-function getTeamName(market) {
-
-const candidates = [
-
-market.yes_sub_title,
-market.yes_subtitle,
-market.subtitle,
-market.team_name,
-market.team
-
-];
-
-
-for (
-const value of candidates
-) {
-
-if (value) {
-
-const text =
-String(value).trim();
-
-const upper =
-text.toUpperCase();
-
-if (
-NFL_TEAMS[upper]
-) {
-
-return NFL_TEAMS[upper];
-
-}
-
-if (text) {
-return text;
-}
-
-}
-
-}
-
-
-const ticker =
-String(
-market.ticker || ""
-);
-
-
-const parts =
-ticker.split("-");
-
-
-const last =
-parts[
-parts.length - 1
-];
-
-
-if (
-NFL_TEAMS[last]
-) {
-return NFL_TEAMS[last];
-}
-
-
-return "NFL Team";
-}
-
-
-/* ----------------------------------
-NFL
----------------------------------- */
-
-function renderNFL() {
-
-const container =
-document.getElementById(
-"nfl"
-);
-
-
-const groups = {};
-
-
-for (
-const market of nflMarkets
-) {
-
-const key =
-market.event_ticker ||
-market.eventTicker ||
-market.event_id ||
-market.ticker ||
-"unknown";
-
-
-if (!groups[key]) {
-groups[key] = [];
-}
-
-
-groups[key].push(market);
-
-}
-
-
-const entries =
-Object.entries(groups);
-
-
-if (!entries.length) {
-
-container.innerHTML = `
-
-<div class="empty">
-No NFL markets found.
-</div>
-
-`;
-
-return;
-}
-
-
-container.innerHTML =
-entries
-.map(
-([eventTicker,group]) => {
-
-const teams = {};
-
-
-for (
-const market of group
-) {
-
-const team =
-getTeamName(market);
-
-if (!teams[team]) {
-teams[team] = [];
-}
-
-teams[team].push(market);
-
-}
-
-
-const names =
-Object.keys(teams);
-
-
-const title =
-names.length >= 2
-? names[0] +
-" vs " +
-names[1]
-: (
-group[0].title ||
-"NFL Game"
-);
-
-
-const teamCards =
-group
-.map(market => {
-
-const yes =
-yesAsk(market);
-
-const no =
-noAsk(market);
-
-const ticker =
-market.ticker ||
-"";
-
-const team =
-getTeamName(market);
-
-
-return `
-
-<div class="team">
-
-<div class="team-name">
-${escapeHtml(team)}
-</div>
-
-<div class="muted">
-${escapeHtml(ticker)}
-</div>
-
-<div class="side-buttons">
-
-<button
-class="side-btn nfl-order"
-data-ticker="${escapeHtml(ticker)}"
-data-side="yes"
-data-price="${yes}"
->
-YES ${percent(yes)}
-</button>
-
-<button
-class="side-btn nfl-order"
-data-ticker="${escapeHtml(ticker)}"
-data-side="no"
-data-price="${no}"
->
-NO ${percent(no)}
-</button>
-
-</div>
-
-</div>
-
-`;
-
-})
-.join("");
-
-
-return `
-
-<div class="nfl-game">
-
-<div class="game-title">
-${escapeHtml(title)}
-</div>
-
-<div class="muted">
-${escapeHtml(eventTicker)}
-</div>
-
-<div class="teams">
-${teamCards}
-</div>
-
-</div>
-
-`;
-
-}
-)
-.join("");
-}
-
-
-/* ----------------------------------
-PORTFOLIO
----------------------------------- */
-
-async function loadPortfolio() {
-
-const response =
-await fetch(
-API + "/api/portfolio"
-);
-
-
-if (!response.ok) {
-throw new Error(
-"Portfolio request failed."
-);
-}
-
-
-portfolio =
-await response.json();
-
-
-const balance =
-Number(
-portfolio?.balance?.balance
-) || 0;
-
-
-document.getElementById(
-"balance"
-).textContent =
-money(balance / 100);
-
-
-const positions =
-portfolio?.positions
-?.market_positions ||
-portfolio?.positions
-?.positions ||
-[];
-
-
-document.getElementById(
-"positionCount"
-).textContent =
-positions.length;
-}
-
-
-/* ----------------------------------
-MARKETS
----------------------------------- */
-
-async function loadMarkets() {
-
-const response =
-await fetch(
-API + "/api/markets"
-);
-
-
-if (!response.ok) {
-throw new Error(
-"Markets request failed."
-);
-}
-
-
-const data =
-await response.json();
-
-
-markets =
-Array.isArray(
-data.markets
-)
-? data.markets
-: [];
-
-
-renderOpportunities();
-}
-
-
-/* ----------------------------------
-NFL
----------------------------------- */
-
-async function loadNFL() {
-
-const response =
-await fetch(
-API + "/api/nfl"
-);
-
-
-if (!response.ok) {
-throw new Error(
-"NFL request failed."
-);
-}
-
-
-const data =
-await response.json();
-
-
-nflMarkets =
-Array.isArray(
-data.markets
-)
-? data.markets
-: [];
-
-
-document.getElementById(
-"nflCount"
-).textContent =
-nflMarkets.length;
-
-
-renderNFL();
-}
-
-
-/* ----------------------------------
-ORDER
----------------------------------- */
-
-async function placeOrder(
-ticker,
-side,
-price
-) {
-
-const amount =
-prompt(
-"How many dollars do you want to invest in " +
-side.toUpperCase() +
-"?",
-"10"
-);
-
-
-if (
-amount === null
-) {
-return;
-}
-
-
-const dollars =
-Number(amount);
-
-
-if (
-!Number.isFinite(dollars) ||
-dollars <= 0
-) {
-
-alert(
-"Enter a valid dollar amount."
-);
-
-return;
-}
-
-
-const calc =
-calculateInvestment(
-dollars,
-price
-);
-
-
-if (
-calc.contracts <= 0
-) {
-
-alert(
-"That amount is too small for 1 contract at the current price."
-);
-
-return;
-}
-
-
-const confirmed =
-confirm(
-
-"BUY " +
-side.toUpperCase() +
-"\n\n" +
-
-"Ticker: " +
-ticker +
-"\n" +
-
-"Contracts: " +
-calc.contracts +
-"\n" +
-
-"Price: " +
-percent(price) +
-"\n" +
-
-"Estimated cost: " +
-money(calc.actualCost) +
-"\n\n" +
-
-"Place order?"
-
-);
-
-
-if (!confirmed) {
-return;
-}
-
-
-try {
-
-setStatus(
-"Placing order..."
-);
-
-
-const response =
-await fetch(
-
-API + "/api/order",
-
-{
-
-method:"POST",
-
-headers:{
-"Content-Type":
-"application/json"
-},
-
-body:
-JSON.stringify({
-
-ticker,
-
-side,
-
-count:
-calc.contracts,
-
-price_cents:
-Math.round(
-price * 100
-)
-
-})
-
-}
-
-);
-
-
-const data =
-await response.json();
-
-
-if (!response.ok) {
-
-throw new Error(
-data?.error ||
-"Order failed."
-);
-
-}
-
-
-setStatus(
-"Order submitted.",
-true
-);
-
-
-await loadPortfolio();
-
-} catch(error) {
-
-setStatus(
-error.message ||
-"Order failed.",
-false
-);
-
-}
-}
-
-
-/* ----------------------------------
-STATUS
----------------------------------- */
-
-function setStatus(
-message,
-success = null
-) {
-
-const el =
-document.getElementById(
-"status"
-);
-
-
-el.textContent =
-message;
-
-
-el.className =
-"status";
-
-
-if (
-success === true
-) {
-
-el.classList.add(
-"success"
-);
-
-}
-
-
-if (
-success === false
-) {
-
-el.classList.add(
-"error"
-);
-
-}
-}
-
-
-/* ----------------------------------
-LIVE CALCULATOR
----------------------------------- */
-
-document.addEventListener(
-"input",
-event => {
-
-if (
-!event.target.classList.contains(
-"investment-input"
-)
-) {
-return;
-}
-
-
-const card =
-event.target.closest(
-".opportunity-card"
-);
-
-
-if (!card) {
-return;
-}
-
-
-const amount =
-Number(
-event.target.value
-);
-
-
-const price =
-Number(
-card.dataset.price
-);
-
-
-const calc =
-calculateInvestment(
-amount,
-price
-);
-
-
-card.querySelector(
-".contracts"
-).textContent =
-calc.contracts;
-
-
-card.querySelector(
-".actual-cost"
-).textContent =
-money(
-calc.actualCost
-);
-
-
-card.querySelector(
-".payout"
-).textContent =
-money(
-calc.payout
-);
-
-
-card.querySelector(
-".profit"
-).textContent =
-money(
-calc.profit
-);
-
-
-card.querySelector(
-".return-pct"
-).textContent =
-calc.returnPct.toFixed(1) +
-"%";
-
-
-card.querySelector(
-".unused"
-).textContent =
-money(
-calc.unused
-);
-
-}
-);
-
-
-/* ----------------------------------
-BUTTONS
----------------------------------- */
-
-document.addEventListener(
-"click",
-event => {
-
-const button =
-event.target.closest(
-".buy-opportunity,.nfl-order"
-);
-
-
-if (!button) {
-return;
-}
-
-
-const ticker =
-button.dataset.ticker;
-
-const side =
-button.dataset.side;
-
-const price =
-Number(
-button.dataset.price
-);
-
-
-if (
-!ticker ||
-!side ||
-!price
-) {
-return;
-}
-
-
-placeOrder(
-ticker,
-side,
-price
-);
-
-}
-);
-
-
-/* ----------------------------------
-SORT
----------------------------------- */
-
-document
-.getElementById(
-"sortSelect"
-)
-.addEventListener(
-"change",
-renderOpportunities
-);
-
-
-/* ----------------------------------
+/* ---------------------------------------------------------
 START
----------------------------------- */
+--------------------------------------------------------- */
 
-async function start() {
-
-try {
-
-setStatus(
-"Loading dashboard..."
-);
-
-
-await Promise.all([
-
-loadPortfolio(),
-
-loadMarkets(),
-
-loadNFL()
-
-]);
-
-
-setStatus(
-"Dashboard loaded.",
-true
-);
-
-
-} catch(error) {
-
-console.error(error);
-
-
-setStatus(
-error.message ||
-"Failed to load dashboard.",
-false
-);
-
-}
-
-}
-
-
-start();
+loadWeather();
 
 </script>
 
