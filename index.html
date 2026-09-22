@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 >
 
 <title>
@@ -12,453 +15,858 @@ Position Ledger — Kalshi Weather
 </title>
 
 <style>
+
 * {
-  box-sizing: border-box;
+box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  background: #090909;
-  color: #f5f5f5;
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
+
+margin: 0;
+
+font-family:
+Inter,
+Arial,
+sans-serif;
+
+background:
+#0b0d10;
+
+color:
+#f5f5f5;
+
+padding:
+24px;
+
 }
 
 .container {
-  max-width: 1400px;
-  margin: auto;
-  padding: 24px;
-}
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 25px;
+max-width:
+1400px;
+
+margin:
+0 auto;
+
 }
 
 h1 {
-  margin: 0;
-  font-size: 30px;
+
+margin:
+0 0 6px;
+
+font-size:
+30px;
+
 }
 
 .subtitle {
-  color: #888;
-  margin-top: 6px;
+
+color:
+#8d939b;
+
+margin-bottom:
+24px;
+
+}
+
+.topbar {
+
+display:
+flex;
+
+justify-content:
+space-between;
+
+align-items:
+center;
+
+gap:
+12px;
+
+flex-wrap:
+wrap;
+
+margin-bottom:
+20px;
+
 }
 
 .status {
-  padding: 10px 16px;
-  border-radius: 999px;
-  font-weight: bold;
-  background: #222;
-}
 
-.status.on {
-  background: #173d25;
-  color: #6cff91;
+padding:
+10px 16px;
+
+border-radius:
+999px;
+
+font-weight:
+700;
+
+font-size:
+13px;
+
 }
 
 .status.off {
-  background: #3d1717;
-  color: #ff7777;
+
+background:
+#321519;
+
+color:
+#ff7d87;
+
+}
+
+.status.on {
+
+background:
+#12351f;
+
+color:
+#66e08a;
+
 }
 
 .cards {
-  display: grid;
-  grid-template-columns:
-    repeat(4, 1fr);
 
-  gap: 12px;
+display:
+grid;
 
-  margin-bottom: 20px;
+grid-template-columns:
+repeat(
+4,
+1fr
+);
+
+gap:
+14px;
+
+margin-bottom:
+20px;
+
 }
 
 .card {
-  background: #141414;
-  border: 1px solid #292929;
-  border-radius: 14px;
-  padding: 18px;
+
+background:
+#12161b;
+
+border:
+1px solid #252b33;
+
+border-radius:
+14px;
+
+padding:
+18px;
+
 }
 
 .card-label {
-  color: #888;
-  font-size: 13px;
-  margin-bottom: 8px;
+
+font-size:
+12px;
+
+color:
+#8d939b;
+
+text-transform:
+uppercase;
+
+margin-bottom:
+8px;
+
 }
 
 .card-value {
-  font-size: 25px;
-  font-weight: bold;
+
+font-size:
+25px;
+
+font-weight:
+800;
+
 }
 
 .settings {
-  background: #141414;
-  border: 1px solid #292929;
-  border-radius: 14px;
-  padding: 20px;
-  margin-bottom: 20px;
+
+display:
+grid;
+
+grid-template-columns:
+repeat(
+3,
+1fr
+);
+
+gap:
+14px;
+
+margin-bottom:
+20px;
+
 }
 
-.settings-grid {
-  display: grid;
-  grid-template-columns:
-    repeat(6, 1fr);
+.field {
 
-  gap: 12px;
+display:
+flex;
+
+flex-direction:
+column;
+
+gap:
+7px;
+
 }
 
-label {
-  display: block;
-  color: #999;
-  font-size: 12px;
-  margin-bottom: 6px;
+.field label {
+
+font-size:
+12px;
+
+color:
+#8d939b;
+
 }
 
-input {
-  width: 100%;
-  padding: 11px;
-  background: #0b0b0b;
-  color: white;
-  border: 1px solid #333;
-  border-radius: 8px;
+.field input {
+
+background:
+#0b0d10;
+
+color:
+#fff;
+
+border:
+1px solid #303740;
+
+border-radius:
+9px;
+
+padding:
+11px;
+
+font-size:
+15px;
+
+}
+
+.buttons {
+
+display:
+flex;
+
+gap:
+10px;
+
+flex-wrap:
+wrap;
+
+margin-bottom:
+25px;
+
 }
 
 button {
-  padding: 11px 16px;
-  border: 0;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
+
+border:
+0;
+
+border-radius:
+9px;
+
+padding:
+11px 16px;
+
+font-weight:
+800;
+
+cursor:
+pointer;
+
+background:
+#e9edf2;
+
+color:
+#0b0d10;
+
 }
 
-.save {
-  background: white;
-  color: black;
+button.danger {
+
+background:
+#8d2631;
+
+color:
+#fff;
+
 }
 
-.start {
-  background: #1d8f46;
-  color: white;
+button.success {
+
+background:
+#246b3a;
+
+color:
+#fff;
+
 }
 
-.stop {
-  background: #a82d2d;
-  color: white;
-}
+button.secondary {
 
-.refresh {
-  background: #292929;
-  color: white;
-}
+background:
+#252b33;
 
-.actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 15px;
+color:
+#fff;
+
 }
 
 .section {
-  background: #141414;
-  border: 1px solid #292929;
-  border-radius: 14px;
-  overflow: hidden;
-  margin-bottom: 20px;
+
+margin-top:
+25px;
+
 }
 
 .section-header {
-  padding: 18px;
-  border-bottom: 1px solid #292929;
-  font-weight: bold;
+
+display:
+flex;
+
+justify-content:
+space-between;
+
+align-items:
+center;
+
+margin-bottom:
+12px;
+
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+.section-header h2 {
+
+margin:
+0;
+
+font-size:
+20px;
+
 }
 
-th,
-td {
-  padding: 13px;
-  text-align: left;
-  border-bottom: 1px solid #252525;
+.small {
+
+font-size:
+12px;
+
+color:
+#8d939b;
+
 }
 
-th {
-  color: #888;
-  font-size: 12px;
-  text-transform: uppercase;
+.markets {
+
+display:
+grid;
+
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(
+320px,
+1fr
+)
+);
+
+gap:
+14px;
+
 }
 
-td {
-  font-size: 14px;
+.market {
+
+background:
+#12161b;
+
+border:
+1px solid #252b33;
+
+border-radius:
+14px;
+
+padding:
+18px;
+
 }
 
-.good {
-  color: #6cff91;
-}
+.market-header {
 
-.bad {
-  color: #ff7777;
+display:
+flex;
+
+justify-content:
+space-between;
+
+gap:
+12px;
+
+margin-bottom:
+15px;
+
 }
 
 .market-title {
-  font-weight: bold;
+
+font-size:
+18px;
+
+font-weight:
+800;
+
 }
 
-.market-city {
-  color: #888;
-  font-size: 12px;
-  margin-top: 4px;
+.market-subtitle {
+
+font-size:
+12px;
+
+color:
+#8d939b;
+
+margin-top:
+4px;
+
+}
+
+.side {
+
+font-size:
+12px;
+
+font-weight:
+800;
+
+padding:
+6px 9px;
+
+border-radius:
+7px;
+
+background:
+#252b33;
+
+}
+
+.metrics {
+
+display:
+grid;
+
+grid-template-columns:
+repeat(
+5,
+1fr
+);
+
+gap:
+8px;
+
+}
+
+.metric {
+
+background:
+#0d1014;
+
+border-radius:
+9px;
+
+padding:
+10px;
+
+}
+
+.metric-label {
+
+font-size:
+10px;
+
+color:
+#777f89;
+
+text-transform:
+uppercase;
+
+margin-bottom:
+5px;
+
+}
+
+.metric-value {
+
+font-size:
+17px;
+
+font-weight:
+800;
+
+}
+
+.good {
+
+color:
+#65d987;
+
+}
+
+.bad {
+
+color:
+#ff737d;
+
 }
 
 .empty {
-  padding: 30px;
-  text-align: center;
-  color: #777;
+
+background:
+#12161b;
+
+border:
+1px solid #252b33;
+
+border-radius:
+14px;
+
+padding:
+30px;
+
+text-align:
+center;
+
+color:
+#8d939b;
+
 }
 
-@media(max-width: 1000px) {
-  .cards {
-    grid-template-columns:
-      repeat(2, 1fr);
-  }
+.position {
 
-  .settings-grid {
-    grid-template-columns:
-      repeat(3, 1fr);
-  }
+background:
+#12161b;
+
+border:
+1px solid #252b33;
+
+border-radius:
+14px;
+
+padding:
+15px;
+
+margin-bottom:
+10px;
+
 }
 
-@media(max-width: 650px) {
-  .cards {
-    grid-template-columns: 1fr;
-  }
+.message {
 
-  .settings-grid {
-    grid-template-columns: 1fr;
-  }
+position:
+fixed;
 
-  table {
-    font-size: 12px;
-  }
+right:
+20px;
 
-  th,
-  td {
-    padding: 8px;
-  }
+bottom:
+20px;
+
+background:
+#171c22;
+
+border:
+1px solid #303740;
+
+padding:
+13px 17px;
+
+border-radius:
+10px;
+
+display:
+none;
+
 }
+
+@media (
+max-width: 900px
+) {
+
+.cards {
+
+grid-template-columns:
+repeat(
+2,
+1fr
+);
+
+}
+
+.settings {
+
+grid-template-columns:
+1fr;
+
+}
+
+.metrics {
+
+grid-template-columns:
+repeat(
+2,
+1fr
+);
+
+}
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
 <div class="container">
 
-<header>
+
+<div class="topbar">
 
 <div>
+
 <h1>
 Position Ledger — Kalshi Weather
 </h1>
 
 <div class="subtitle">
-Weather-model BUY signals •
-Kalshi-only SELL logic
+Weather auto-trader dashboard
 </div>
+
 </div>
 
 <div
-  id="status"
-  class="status off"
+id="status"
+class="status off"
 >
 REAL TRADING OFF
 </div>
 
-</header>
+</div>
 
-
-<!-- ======================================================
-     CARDS
-====================================================== -->
 
 <div class="cards">
 
 <div class="card">
+
 <div class="card-label">
-MAX / TRADE
+Max / Trade
 </div>
 
 <div
-  id="maxTradeCard"
-  class="card-value"
+id="maxTradeCard"
+class="card-value"
 >
 $5
 </div>
+
 </div>
 
 
 <div class="card">
+
 <div class="card-label">
-MAX / DAY
+Max / Day
 </div>
 
 <div
-  id="maxDayCard"
-  class="card-value"
+id="maxDayCard"
+class="card-value"
 >
 $20
 </div>
+
 </div>
 
 
 <div class="card">
+
 <div class="card-label">
-SPENT TODAY
+Spent Today
 </div>
 
 <div
-  id="spentCard"
-  class="card-value"
+id="spentCard"
+class="card-value"
 >
 $0
 </div>
+
 </div>
 
 
 <div class="card">
+
 <div class="card-label">
-OPEN POSITIONS
+Open Positions
 </div>
 
 <div
-  id="positionsCard"
-  class="card-value"
+id="positionsCard"
+class="card-value"
 >
 0
 </div>
-</div>
 
 </div>
 
+</div>
 
-<!-- ======================================================
-     SETTINGS
-====================================================== -->
+
+<div class="card">
+
+<h2>
+Settings
+</h2>
+
 
 <div class="settings">
 
-<div class="settings-grid">
 
-<div>
+<div class="field">
+
 <label>
 Max $ / Trade
 </label>
 
 <input
-  id="maxTrade"
-  type="number"
-  step="0.01"
+id="maxTrade"
+type="number"
+step="0.01"
+min="1"
 >
+
 </div>
 
 
-<div>
+<div class="field">
+
 <label>
 Max $ / Day
 </label>
 
 <input
-  id="maxDay"
-  type="number"
-  step="0.01"
+id="maxDay"
+type="number"
+step="0.01"
+min="1"
 >
+
 </div>
 
 
-<div>
+<div class="field">
+
 <label>
 Take Profit %
 </label>
 
 <input
-  id="takeProfit"
-  type="number"
-  step="1"
+id="takeProfit"
+type="number"
+step="1"
+min="1"
 >
+
 </div>
 
 
-<div>
+<div class="field">
+
 <label>
 Min Minutes Until Close
 </label>
 
 <input
-  id="minMinutes"
-  type="number"
+id="minMinutes"
+type="number"
+step="1"
+min="0"
 >
+
 </div>
 
 
-<div>
+<div class="field">
+
 <label>
 Min Weather Edge %
 </label>
 
 <input
-  id="minEdge"
-  type="number"
-  step="0.1"
+id="minEdge"
+type="number"
+step="0.1"
+min="0"
 >
+
 </div>
 
 
-<div>
+<div class="field">
+
 <label>
 Min Expected Move ¢
 </label>
 
 <input
-  id="minMove"
-  type="number"
-  step="0.01"
+id="minMove"
+type="number"
+step="1"
+min="0"
 >
-</div>
 
 </div>
 
+</div>
 
-<div class="actions">
+
+<div class="buttons">
 
 <button
-  class="save"
-  onclick="saveSettings()"
+class="secondary"
+onclick="saveSettings()"
 >
 SAVE SETTINGS
 </button>
 
 <button
-  class="start"
-  onclick="startTrading()"
+class="success"
+onclick="startTrading()"
 >
 START REAL TRADING
 </button>
 
 <button
-  class="stop"
-  onclick="stopTrading()"
+class="danger"
+onclick="stopTrading()"
 >
 STOP REAL TRADING
 </button>
 
 <button
-  class="refresh"
-  onclick="refreshAll()"
+class="secondary"
+onclick="refreshAll()"
 >
 REFRESH
 </button>
@@ -468,1051 +876,1448 @@ REFRESH
 </div>
 
 
-<!-- ======================================================
-     TODAY'S WEATHER MARKETS
-====================================================== -->
+<div class="section">
+
+<div class="section-header">
+
+<h2>
+Today's Weather Markets
+</h2>
+
+<div class="small">
+Last update:
+<span id="lastUpdate">
+—
+</span>
+</div>
+
+</div>
+
+<div
+id="markets"
+class="markets"
+>
+
+<div class="empty">
+Loading markets...
+</div>
+
+</div>
+
+</div>
+
 
 <div class="section">
 
 <div class="section-header">
-TODAY'S WEATHER MARKETS
-</div>
 
-<div style="overflow-x:auto">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-Market
-</th>
-
-<th>
-Kalshi
-</th>
-
-<th>
-Model
-</th>
-
-<th>
-Edge
-</th>
-
-<th>
-Expected Move
-</th>
-
-<th>
-Side
-</th>
-
-<th>
-Entry
-</th>
-
-<th>
-Close
-</th>
-
-</tr>
-
-</thead>
-
-<tbody
-  id="markets"
->
-<tr>
-<td
-  colspan="8"
-  class="empty"
->
-Loading...
-</td>
-</tr>
-</tbody>
-
-</table>
+<h2>
+Open Positions
+</h2>
 
 </div>
 
-</div>
+<div id="positions">
 
-
-<!-- ======================================================
-     POSITIONS
-====================================================== -->
-
-<div class="section">
-
-<div class="section-header">
-OPEN POSITIONS
-</div>
-
-<div style="overflow-x:auto">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-City
-</th>
-
-<th>
-Side
-</th>
-
-<th>
-Entry
-</th>
-
-<th>
-Target
-</th>
-
-<th>
-Contracts
-</th>
-
-<th>
-Cost
-</th>
-
-</tr>
-
-</thead>
-
-<tbody
-  id="positions"
->
-<tr>
-<td
-  colspan="6"
-  class="empty"
->
-No open positions
-</td>
-</tr>
-</tbody>
-
-</table>
-
+<div class="empty">
+No positions loaded.
 </div>
 
 </div>
 
 </div>
+
+
+</div>
+
+
+<div
+id="message"
+class="message"
+></div>
 
 
 <script>
 
-/* ======================================================
-   CONFIG
-====================================================== */
+
+/* =========================================================
+WORKER URL
+========================================================= */
 
 const WORKER_URL =
-  "https://worker1.ryderolinger1.workers.dev";
+"https://worker1.ryderolinger1.workers.dev";
 
 
-/* ======================================================
-   HELPERS
-====================================================== */
+/* =========================================================
+HELPERS
+========================================================= */
+
+function $(id) {
+
+return document.getElementById(
+id
+);
+
+}
+
+
+function showMessage(
+message
+) {
+
+const box =
+$("message");
+
+box.textContent =
+message;
+
+box.style.display =
+"block";
+
+setTimeout(
+() => {
+
+box.style.display =
+"none";
+
+},
+3000
+);
+
+}
+
+
+/* =========================================================
+API
+========================================================= */
 
 async function api(
-  path,
-  options = {}
+path,
+options = {}
 ) {
-  const response =
-    await fetch(
-      WORKER_URL + path,
-      {
-        ...options,
 
-        headers: {
-          "Content-Type":
-            "application/json",
+const response =
+await fetch(
+WORKER_URL + path,
+{
+cache:
+"no-store",
 
-          ...(options.headers || {})
-        }
-      }
-    );
+...options,
 
-  const data =
-    await response.json();
+headers: {
 
-  if (!response.ok) {
-    throw new Error(
-      data.error ||
-      "Request failed"
-    );
-  }
+"Content-Type":
+"application/json",
 
-  return data;
+...(options.headers || {})
+
 }
 
+}
+);
 
-function money(value) {
-  return (
-    "$" +
-    Number(
-      value || 0
-    ).toFixed(2)
-  );
+const text =
+await response.text();
+
+let data;
+
+try {
+
+data =
+text
+? JSON.parse(text)
+: {};
+
 }
 
+catch {
 
-function percent(value) {
-  if (
-    value === null ||
-    value === undefined ||
-    !Number.isFinite(
-      Number(value)
-    )
-  ) {
-    return "—";
-  }
+data =
+{
+raw:
+text
+};
 
-  return (
-    Number(value) *
-    100
-  ).toFixed(1) +
-  "%";
 }
 
-
-/* ======================================================
-   DASHBOARD-MATCHED VALUES
-====================================================== */
-
-function getPrice(market) {
-
-  if (
-    market.entryPrice !==
-    undefined
-  ) {
-    return Number(
-      market.entryPrice
-    ) / 100;
-  }
-
-  if (
-    market.price !==
-    undefined
-  ) {
-    const p =
-      Number(
-        market.price
-      );
-
-    return Math.abs(p) <= 1
-      ? p
-      : p / 100;
-  }
-
-  return null;
-}
-
-
-function getEdge(market) {
-
-  if (
-    market.edge !==
-    undefined
-  ) {
-    return Number(
-      market.edge
-    );
-  }
-
-  if (
-    market.edgePercent !==
-    undefined
-  ) {
-    return (
-      Number(
-        market.edgePercent
-      ) / 100
-    );
-  }
-
-  return null;
-}
-
-
-/*
-Dashboard Edge:
-raw Edge is reversed.
-*/
-
-function normalizeEdge(edge) {
-
-  if (
-    edge === null ||
-    edge === undefined
-  ) {
-    return null;
-  }
-
-  edge =
-    Number(edge);
-
-  if (
-    Math.abs(edge) > 1
-  ) {
-    edge =
-      edge / 100;
-  }
-
-  return 1 - edge;
-}
-
-
-/*
-Dashboard Model:
-
-Model =
-100% -
-(Kalshi price + reversed Edge)
-*/
-
-function getModelProbability(
-  market
+if (
+!response.ok
 ) {
-  const kalshi =
-    getPrice(market);
 
-  const rawEdge =
-    getEdge(market);
+throw new Error(
+data.error ||
+data.message ||
+`HTTP ${response.status}`
+);
 
-  if (
-    kalshi === null ||
-    rawEdge === null
-  ) {
-    return null;
-  }
+}
 
-  const edge =
-    normalizeEdge(
-      rawEdge
-    );
+return data;
 
-  return (
-    1 -
-    (
-      kalshi +
-      edge
-    )
-  );
 }
 
 
-/*
-Expected Move matches
-the reversed Edge.
-*/
-
-function getExpectedMove(
-  market
-) {
-  const edge =
-    normalizeEdge(
-      getEdge(market)
-    );
-
-  if (
-    edge === null
-  ) {
-    return null;
-  }
-
-  return edge;
-}
-
-
-function getTitle(market) {
-
-  const city =
-    market.city ||
-    market.location ||
-    market.cityName ||
-    market.rawMarket?.city ||
-    market.rawMarket?.location ||
-    market.rawMarket?.cityName ||
-    "";
-
-  const question =
-    market.title ||
-    market.question ||
-    market.name ||
-    market.subtitle ||
-    "Weather market";
-
-  if (city) {
-    return (
-      city +
-      " — " +
-      question
-    );
-  }
-
-  return question;
-}
-
-
-/* ======================================================
-   LOAD STATUS
-====================================================== */
+/* =========================================================
+STATUS
+========================================================= */
 
 async function loadStatus() {
 
-  try {
+try {
 
-    const data =
-      await api(
-        "/api/auto-trade/status"
-      );
-
-    document
-      .getElementById(
-        "status"
-      )
-      .textContent =
-      data.enabled
-        ? "REAL TRADING ON"
-        : "REAL TRADING OFF";
-
-    document
-      .getElementById(
-        "status"
-      )
-      .className =
-      data.enabled
-        ? "status on"
-        : "status off";
+const status =
+await api(
+"/api/auto-trade/status"
+);
 
 
-    document
-      .getElementById(
-        "maxTradeCard"
-      )
-      .textContent =
-      money(
-        data.maxTrade
-      );
+$("status").textContent =
+status.enabled
+? "REAL TRADING ON"
+: "REAL TRADING OFF";
 
 
-    document
-      .getElementById(
-        "maxDayCard"
-      )
-      .textContent =
-      money(
-        data.maxDay
-      );
+$("status").className =
+status.enabled
+? "status on"
+: "status off";
 
 
-    document
-      .getElementById(
-        "spentCard"
-      )
-      .textContent =
-      money(
-        data.spentToday
-      );
+$("maxTradeCard").textContent =
+"$" +
+Number(
+status.maxTrade ??
+5
+).toFixed(2);
 
 
-    document
-      .getElementById(
-        "positionsCard"
-      )
-      .textContent =
-      String(
-        data.openPositions ||
-        0
-      );
+$("maxDayCard").textContent =
+"$" +
+Number(
+status.maxDay ??
+20
+).toFixed(2);
 
 
-    document
-      .getElementById(
-        "maxTrade"
-      )
-      .value =
-      data.maxTrade ?? 5;
+$("spentCard").textContent =
+"$" +
+Number(
+status.spentToday ??
+0
+).toFixed(2);
 
 
-    document
-      .getElementById(
-        "maxDay"
-      )
-      .value =
-      data.maxDay ?? 20;
+const entries =
+status.entries ||
+status.openPositions ||
+[];
 
 
-    document
-      .getElementById(
-        "takeProfit"
-      )
-      .value =
-      (
-        Number(
-          data.takeProfit ??
-          0.25
-        ) * 100
-      ).toFixed(0);
+$("positionsCard").textContent =
+entries.length;
 
 
-    document
-      .getElementById(
-        "minMinutes"
-      )
-      .value =
-      data.minMinutesToClose ??
-      180;
+const filters =
+status.filters ||
+{};
 
 
-    document
-      .getElementById(
-        "minEdge"
-      )
-      .value =
-      (
-        Number(
-          data.minEdge ??
-          0.10
-        ) * 100
-      ).toFixed(1);
+$("maxTrade").value =
+Number(
+status.maxTrade ??
+5
+);
 
 
-    document
-      .getElementById(
-        "minMove"
-      )
-      .value =
-      (
-        Number(
-          data.minExpectedPriceMove ??
-          0.01
-        ) * 100
-      ).toFixed(2);
+$("maxDay").value =
+Number(
+status.maxDay ??
+20
+);
 
 
-    renderPositions(
-      data.entries || []
-    );
+$("takeProfit").value =
+(
+Number(
+status.takeProfit ??
+0.25
+) *
+100
+).toFixed(0);
 
-  } catch (error) {
 
-    console.error(
-      "Status error:",
-      error
-    );
-  }
+$("minMinutes").value =
+Number(
+filters.minMinutesToClose ??
+180
+);
+
+
+$("minEdge").value =
+(
+Number(
+filters.minEdge ??
+0.10
+) *
+100
+).toFixed(1);
+
+
+$("minMove").value =
+(
+Number(
+filters.minExpectedPriceMove ??
+0.01
+) *
+100
+).toFixed(0);
+
+
+renderPositions(
+entries
+);
+
 }
-
-
-/* ======================================================
-   WEATHER MARKETS
-====================================================== */
-
-async function loadWeather() {
-
-  try {
-
-    const data =
-      await api(
-        "/api/weather"
-      );
-
-    renderMarkets(
-      data.markets ||
-      []
-    );
-
-  } catch (error) {
-
-    console.error(
-      "Weather error:",
-      error
-    );
-
-    document
-      .getElementById(
-        "markets"
-      )
-      .innerHTML =
-      `
-      <tr>
-        <td
-          colspan="8"
-          class="empty"
-        >
-          ${error.message}
-        </td>
-      </tr>
-      `;
-  }
-}
-
-
-/* ======================================================
-   RENDER MARKETS
-====================================================== */
-
-function renderMarkets(
-  markets
+catch (
+error
 ) {
 
-  const tbody =
-    document.getElementById(
-      "markets"
-    );
+showMessage(
+"Status error: " +
+error.message
+);
 
-  const eligible =
-    markets.filter(
-      m => m.eligible
-    );
+}
 
-  if (
-    !eligible.length
-  ) {
-    tbody.innerHTML =
-      `
-      <tr>
-        <td
-          colspan="8"
-          class="empty"
-        >
-          No eligible markets right now
-        </td>
-      </tr>
-      `;
-
-    return;
-  }
-
-
-  tbody.innerHTML =
-    eligible
-      .map(
-        market => {
-
-          const price =
-            getPrice(
-              market
-            );
-
-          const edge =
-            normalizeEdge(
-              getEdge(
-                market
-              )
-            );
-
-          const model =
-            getModelProbability(
-              market
-            );
-
-          const expected =
-            getExpectedMove(
-              market
-            );
-
-
-          return `
-          <tr>
-
-            <td>
-              <div
-                class="market-title"
-              >
-                ${getTitle(market)}
-              </div>
-
-              <div
-                class="market-city"
-              >
-                Forecast:
-                ${market.forecast ?? "—"}°F
-              </div>
-            </td>
-
-            <td>
-              ${
-                price === null
-                  ? "—"
-                  : (
-                      price * 100
-                    ).toFixed(1) +
-                    "%"
-              }
-            </td>
-
-            <td>
-              ${
-                model === null
-                  ? "—"
-                  : (
-                      model * 100
-                    ).toFixed(1) +
-                    "%"
-              }
-            </td>
-
-            <td
-              class="${
-                edge !== null &&
-                edge >= 0
-                  ? "good"
-                  : "bad"
-              }"
-            >
-              ${
-                edge === null
-                  ? "—"
-                  : (
-                      edge * 100
-                    ).toFixed(1) +
-                    "%"
-              }
-            </td>
-
-            <td
-              class="${
-                expected !== null &&
-                expected >= 0
-                  ? "good"
-                  : "bad"
-              }"
-            >
-              ${
-                expected === null
-                  ? "—"
-                  : (
-                      expected * 100
-                    ).toFixed(1) +
-                    "¢"
-              }
-            </td>
-
-            <td>
-              ${
-                market.side
-                  ? market.side
-                    .toUpperCase()
-                  : "—"
-              }
-            </td>
-
-            <td>
-              ${
-                market.entryPrice ===
-                undefined
-                  ? "—"
-                  : "$" +
-                    (
-                      Number(
-                        market.entryPrice
-                      ) / 100
-                    ).toFixed(2)
-              }
-            </td>
-
-            <td>
-              ${
-                market.closeTime
-                  ? new Date(
-                      market.closeTime
-                    ).toLocaleTimeString()
-                  : "—"
-              }
-            </td>
-
-          </tr>
-          `;
-        }
-      )
-      .join("");
 }
 
 
-/* ======================================================
-   POSITIONS
-====================================================== */
-
-function renderPositions(
-  entries
-) {
-
-  const tbody =
-    document.getElementById(
-      "positions"
-    );
-
-  const open =
-    entries.filter(
-      entry =>
-        Number(
-          entry.remaining
-        ) > 0
-    );
-
-  if (!open.length) {
-
-    tbody.innerHTML =
-      `
-      <tr>
-        <td
-          colspan="6"
-          class="empty"
-        >
-          No open positions
-        </td>
-      </tr>
-      `;
-
-    return;
-  }
-
-
-  tbody.innerHTML =
-    open
-      .map(
-        entry => `
-        <tr>
-
-          <td>
-            ${entry.city || "—"}
-          </td>
-
-          <td>
-            ${
-              entry.side
-                ? entry.side.toUpperCase()
-                : "—"
-            }
-          </td>
-
-          <td>
-            $
-            ${
-              (
-                Number(
-                  entry.entryPrice
-                ) / 100
-              ).toFixed(2)
-            }
-          </td>
-
-          <td>
-            $
-            ${
-              (
-                Number(
-                  entry.targetPrice
-                ) / 100
-              ).toFixed(2)
-            }
-          </td>
-
-          <td>
-            ${entry.remaining}
-          </td>
-
-          <td>
-            ${money(
-              entry.entryCost
-            )}
-          </td>
-
-        </tr>
-        `
-      )
-      .join("");
-}
-
-
-/* ======================================================
-   SAVE SETTINGS
-====================================================== */
+/* =========================================================
+SAVE SETTINGS
+========================================================= */
 
 async function saveSettings() {
 
-  try {
+try {
 
-    await api(
-      "/api/auto-trade/settings",
-      {
-        method: "POST",
+await api(
+"/api/auto-trade/settings",
+{
 
-        body:
-          JSON.stringify({
-            maxTrade:
-              Number(
-                document
-                  .getElementById(
-                    "maxTrade"
-                  ).value
-              ),
+method:
+"POST",
 
-            maxDay:
-              Number(
-                document
-                  .getElementById(
-                    "maxDay"
-                  ).value
-              ),
+body:
+JSON.stringify({
 
-            takeProfit:
-              Number(
-                document
-                  .getElementById(
-                    "takeProfit"
-                  ).value
-              ) / 100,
+maxTrade:
+Number(
+$("maxTrade").value
+),
 
-            minMinutesToClose:
-              Number(
-                document
-                  .getElementById(
-                    "minMinutes"
-                  ).value
-              ),
+maxDay:
+Number(
+$("maxDay").value
+),
 
-            minEdge:
-              Number(
-                document
-                  .getElementById(
-                    "minEdge"
-                  ).value
-              ) / 100,
+takeProfit:
+Number(
+$("takeProfit").value
+) / 100,
 
-            minExpectedPriceMove:
-              Number(
-                document
-                  .getElementById(
-                    "minMove"
-                  ).value
-              ) / 100
-          })
-      }
-    );
+minMinutesToClose:
+Number(
+$("minMinutes").value
+),
 
-    await refreshAll();
+minEdge:
+Number(
+$("minEdge").value
+) / 100,
 
-    alert(
-      "Settings saved."
-    );
+minExpectedPriceMove:
+Number(
+$("minMove").value
+) / 100
 
-  } catch (error) {
+})
 
-    alert(
-      error.message
-    );
-  }
+}
+);
+
+
+showMessage(
+"Settings saved."
+);
+
+await refreshAll();
+
+}
+catch (
+error
+) {
+
+showMessage(
+"Could not save settings: " +
+error.message
+);
+
+}
+
 }
 
 
-/* ======================================================
-   START
-====================================================== */
+/* =========================================================
+START TRADING
+========================================================= */
 
 async function startTrading() {
 
-  const confirmation =
-    prompt(
-      'Type exactly:\n\nENABLE REAL TRADING'
-    );
+const confirmation =
+prompt(
+'Type exactly: ENABLE REAL TRADING'
+);
 
-  if (
-    confirmation !==
-    "ENABLE REAL TRADING"
-  ) {
-    return;
-  }
+if (
+confirmation !==
+"ENABLE REAL TRADING"
+) {
 
-  try {
+showMessage(
+"Trading was not enabled."
+);
 
-    await api(
-      "/api/auto-trade/start",
-      {
-        method: "POST",
+return;
 
-        body:
-          JSON.stringify({
-            confirmation
-          })
-      }
-    );
+}
 
-    await refreshAll();
+try {
 
-  } catch (error) {
+await api(
+"/api/auto-trade/start",
+{
 
-    alert(
-      error.message
-    );
-  }
+method:
+"POST",
+
+body:
+JSON.stringify({
+
+confirmation
+
+})
+
+}
+);
+
+
+showMessage(
+"REAL TRADING ENABLED"
+);
+
+await refreshAll();
+
+}
+catch (
+error
+) {
+
+showMessage(
+"Could not start trading: " +
+error.message
+);
+
+}
+
 }
 
 
-/* ======================================================
-   STOP
-====================================================== */
+/* =========================================================
+STOP TRADING
+========================================================= */
 
 async function stopTrading() {
 
-  try {
+try {
 
-    await api(
-      "/api/auto-trade/stop",
-      {
-        method: "POST"
-      }
-    );
+await api(
+"/api/auto-trade/stop",
+{
 
-    await refreshAll();
+method:
+"POST"
 
-  } catch (error) {
+}
+);
 
-    alert(
-      error.message
-    );
-  }
+
+showMessage(
+"REAL TRADING STOPPED"
+);
+
+await refreshAll();
+
+}
+catch (
+error
+) {
+
+showMessage(
+"Could not stop trading: " +
+error.message
+);
+
+}
+
 }
 
 
-/* ======================================================
-   REFRESH
-====================================================== */
+/* =========================================================
+NUMBER HELPERS
+========================================================= */
+
+function getNumber(
+obj,
+...keys
+) {
+
+for (
+const key of keys
+) {
+
+if (
+obj &&
+obj[key] !== undefined &&
+obj[key] !== null &&
+obj[key] !== ""
+) {
+
+const n =
+Number(
+obj[key]
+);
+
+if (
+Number.isFinite(n)
+) {
+
+return n;
+
+}
+
+}
+
+}
+
+return null;
+
+}
+
+
+/* =========================================================
+MARKET VALUES
+
+THE WORKER ALREADY REVERSES THESE.
+
+HTML DOES NOT REVERSE THEM.
+========================================================= */
+
+function getEdge(
+market
+) {
+
+const value =
+Number(
+market?.edge
+);
+
+return Number.isFinite(
+value
+)
+? value * 100
+: null;
+
+}
+
+
+function getExpectedMove(
+market
+) {
+
+const value =
+Number(
+market?.expectedMove
+);
+
+return Number.isFinite(
+value
+)
+? value * 100
+: null;
+
+}
+
+
+function getModelProbability(
+market
+) {
+
+const value =
+Number(
+market?.modelProbability
+);
+
+return Number.isFinite(
+value
+)
+? value * 100
+: null;
+
+}
+
+
+function getMinutes(
+market
+) {
+
+return getNumber(
+market,
+"minutesToClose",
+"minutes_to_close"
+);
+
+}
+
+
+function getPrice(
+market
+) {
+
+const value =
+Number(
+market?.entryPrice
+);
+
+return Number.isFinite(
+value
+)
+? value
+: null;
+
+}
+
+
+/* =========================================================
+SETTLEMENT
+========================================================= */
+
+function getSettlementText(
+market
+) {
+
+if (
+market?.settlement?.label
+) {
+
+return market.settlement.label;
+
+}
+
+if (
+market?.settlement
+) {
+
+if (
+typeof market.settlement ===
+"string"
+) {
+
+return market.settlement;
+
+}
+
+}
+
+if (
+market?.title
+) {
+
+return market.title;
+
+}
+
+return "Unknown";
+
+}
+
+
+/* =========================================================
+DIAGNOSTICS
+
+USES THE EXACT SAME VALUES AS AUTO-BUYER.
+========================================================= */
+
+function buildDiagnostics(
+market,
+filters
+) {
+
+const checks = [];
+
+
+const minMinutes =
+Number(
+filters.minMinutesToClose ??
+180
+);
+
+
+const minEdge =
+Number(
+filters.minEdge ??
+0.10
+) * 100;
+
+
+const minMove =
+Number(
+filters.minExpectedPriceMove ??
+0.01
+) * 100;
+
+
+/*
+TIME
+*/
+
+const minutes =
+getMinutes(
+market
+);
+
+let timePass =
+false;
+
+let timeDetail =
+"";
+
+
+if (
+minutes === null
+) {
+
+timeDetail =
+"No close-time information.";
+
+}
+else {
+
+timePass =
+minutes >=
+minMinutes;
+
+timeDetail =
+`${minutes.toFixed(0)} min remaining • required ${minMinutes} min`;
+
+}
+
+
+checks.push({
+
+name:
+"Time until close",
+
+pass:
+timePass,
+
+detail:
+timeDetail
+
+});
+
+
+/*
+EDGE
+*/
+
+const edge =
+getEdge(
+market
+);
+
+let edgePass =
+false;
+
+let edgeDetail =
+"";
+
+
+if (
+edge === null
+) {
+
+edgeDetail =
+"Weather-model edge unavailable.";
+
+}
+else {
+
+edgePass =
+edge >=
+minEdge;
+
+edgeDetail =
+`${edge >= 0 ? "+" : ""}${edge.toFixed(1)}% • required +${minEdge.toFixed(1)}%`;
+
+}
+
+
+checks.push({
+
+name:
+"Weather model edge",
+
+pass:
+edgePass,
+
+detail:
+edgeDetail
+
+});
+
+
+/*
+EXPECTED MOVE
+*/
+
+const move =
+getExpectedMove(
+market
+);
+
+let movePass =
+false;
+
+let moveDetail =
+"";
+
+
+if (
+move === null
+) {
+
+moveDetail =
+"Expected move unavailable.";
+
+}
+else {
+
+movePass =
+move >=
+minMove;
+
+moveDetail =
+`${move.toFixed(0)}¢ expected • required ${minMove.toFixed(0)}¢`;
+
+}
+
+
+checks.push({
+
+name:
+"Expected price move",
+
+pass:
+movePass,
+
+detail:
+moveDetail
+
+});
+
+
+/*
+OVERALL
+*/
+
+const failed =
+checks.filter(
+x =>
+!x.pass
+);
+
+
+return {
+
+checks,
+
+eligible:
+failed.length === 0,
+
+reason:
+failed.length
+? failed
+.map(
+x =>
+`${x.name}: ${x.detail}`
+)
+.join(" | ")
+: "Every auto-trader filter passes."
+
+};
+
+}
+
+
+/* =========================================================
+RENDER MARKET
+========================================================= */
+
+function renderMarket(
+market,
+filters
+) {
+
+const edge =
+getEdge(
+market
+);
+
+const move =
+getExpectedMove(
+market
+);
+
+const model =
+getModelProbability(
+market
+);
+
+const price =
+getPrice(
+market
+);
+
+const minutes =
+getMinutes(
+market
+);
+
+const diagnostics =
+buildDiagnostics(
+market,
+filters
+);
+
+const side =
+String(
+market?.side ??
+""
+).toUpperCase();
+
+
+return `
+
+<div class="market">
+
+<div class="market-header">
+
+<div>
+
+<div class="market-title">
+
+${
+market?.city ??
+"Unknown City"
+}
+
+</div>
+
+<div class="market-subtitle">
+
+${
+market?.title ??
+market?.ticker ??
+""
+}
+
+</div>
+
+<div class="market-subtitle">
+
+Settlement:
+<strong>
+${getSettlementText(
+market
+)}
+</strong>
+
+${
+minutes !== null
+? ` • ${minutes.toFixed(0)} min until close`
+: ""
+}
+
+</div>
+
+</div>
+
+
+<div class="side">
+
+${side}
+
+</div>
+
+</div>
+
+
+<div class="metrics">
+
+
+<div class="metric">
+
+<div class="metric-label">
+Kalshi
+</div>
+
+<div class="metric-value">
+
+${
+price !== null
+? price.toFixed(0) + "¢"
+: "—"
+}
+
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="metric-label">
+Model
+</div>
+
+<div class="metric-value">
+
+${
+model !== null
+? model.toFixed(1) + "%"
+: "—"
+}
+
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="metric-label">
+Edge
+</div>
+
+<div class="metric-value">
+
+${
+edge !== null
+? edge.toFixed(1) + "%"
+: "—"
+}
+
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="metric-label">
+Expected Move
+</div>
+
+<div class="metric-value">
+
+${
+move !== null
+? move.toFixed(0) + "¢"
+: "—"
+}
+
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="metric-label">
+Take Profit
+</div>
+
+<div class="metric-value">
+
+${
+(
+Number(
+filters.takeProfit ??
+0.25
+) *
+100
+).toFixed(0)
+}%
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<div
+style="
+margin-top:15px;
+font-size:12px;
+color:#8d939b;
+"
+>
+
+<strong>
+AUTO-TRADER CHECKS
+</strong>
+
+<br><br>
+
+${
+diagnostics.checks
+.map(
+check =>
+`
+
+<div
+style="
+margin-bottom:5px;
+"
+>
+
+${
+check.pass
+? "✓"
+: "✕"
+}
+
+${check.name}:
+${check.detail}
+
+</div>
+
+`
+)
+.join("")
+}
+
+</div>
+
+
+</div>
+
+`;
+
+}
+
+
+/* =========================================================
+LOAD MARKETS
+========================================================= */
+
+async function loadMarkets() {
+
+try {
+
+const [
+weather,
+status
+] =
+await Promise.all([
+
+api(
+"/api/weather"
+),
+
+api(
+"/api/auto-trade/status"
+)
+
+]);
+
+
+const filters =
+status.filters ||
+{
+
+minMinutesToClose:
+180,
+
+minEdge:
+0.10,
+
+minExpectedPriceMove:
+0.01,
+
+takeProfit:
+Number(
+status.takeProfit ??
+0.25
+)
+
+};
+
+
+let markets = [];
+
+
+if (
+Array.isArray(
+weather
+)
+) {
+
+markets =
+weather;
+
+}
+
+else if (
+Array.isArray(
+weather.opportunities
+)
+) {
+
+markets =
+weather.opportunities;
+
+}
+
+else if (
+Array.isArray(
+weather.markets
+)
+) {
+
+markets =
+weather.markets;
+
+}
+
+else if (
+Array.isArray(
+weather.data
+)
+) {
+
+markets =
+weather.data;
+
+}
+
+
+$("lastUpdate").textContent =
+new Date().toLocaleTimeString();
+
+
+if (
+!markets.length
+) {
+
+$("markets").innerHTML = `
+
+<div class="empty">
+
+No today's weather markets
+were returned.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+$("markets").innerHTML =
+markets
+.map(
+market =>
+renderMarket(
+market,
+filters
+)
+)
+.join("");
+
+
+}
+catch (
+error
+) {
+
+$("markets").innerHTML = `
+
+<div class="empty">
+
+<strong>
+Could not load weather markets.
+</strong>
+
+<br><br>
+
+${error.message}
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* =========================================================
+POSITIONS
+========================================================= */
+
+function renderPositions(
+entries
+) {
+
+if (
+!entries ||
+!entries.length
+) {
+
+$("positions").innerHTML = `
+
+<div class="empty">
+
+No open positions.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+$("positions").innerHTML =
+entries
+.map(
+entry =>
+`
+
+<div class="position">
+
+<strong>
+${entry.city ?? ""}
+</strong>
+
+<br>
+
+Ticker:
+${entry.ticker ?? "—"}
+
+<br>
+
+Side:
+${String(
+entry.side ?? ""
+).toUpperCase()}
+
+<br>
+
+Contracts:
+${entry.contracts ?? "—"}
+
+<br>
+
+Entry:
+${
+entry.entryPrice != null
+? Number(
+entry.entryPrice
+).toFixed(0) + "¢"
+: "—"
+}
+
+<br>
+
+Take Profit:
+${
+entry.targetPrice != null
+? Number(
+entry.targetPrice
+).toFixed(0) + "¢"
+: "—"
+}
+
+<br>
+
+Cost:
+${
+entry.cost != null
+? "$" +
+Number(
+entry.cost
+).toFixed(2)
+: "—"
+}
+
+</div>
+
+`
+)
+.join("");
+
+}
+
+
+/* =========================================================
+REFRESH
+========================================================= */
 
 async function refreshAll() {
 
-  await Promise.all([
-    loadStatus(),
-    loadWeather()
-  ]);
+await loadStatus();
+
+await loadMarkets();
+
 }
 
 
-/* ======================================================
-   START
-====================================================== */
+/* =========================================================
+INITIAL LOAD
+========================================================= */
 
 refreshAll();
 
+
+/*
+REFRESH EVERY 10 SECONDS
+*/
+
 setInterval(
-  refreshAll,
-  10000
+refreshAll,
+10000
 );
 
 </script>
 
 </body>
+
 </html>
