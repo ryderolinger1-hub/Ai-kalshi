@@ -10,8 +10,7 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   background: #080a0f;
@@ -29,10 +28,7 @@ body {
   padding: 28px 0 60px;
 }
 
-
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 
 .header {
   display: flex;
@@ -69,10 +65,7 @@ body {
   box-shadow: 0 0 10px rgba(57,217,150,.7);
 }
 
-
-/* =========================
-   ACCOUNT CARDS
-========================= */
+/* ACCOUNT CARDS */
 
 .cards {
   display: grid;
@@ -113,10 +106,7 @@ body {
   color: #ff5969 !important;
 }
 
-
-/* =========================
-   PANELS
-========================= */
+/* PANELS */
 
 .panel {
   background: #10131a;
@@ -139,10 +129,7 @@ body {
   font-weight: 800;
 }
 
-
-/* =========================
-   PERIOD BUTTONS
-========================= */
+/* PERIOD BUTTONS */
 
 .periods {
   display: flex;
@@ -166,10 +153,7 @@ body {
   border-color: #e8edf3;
 }
 
-
-/* =========================
-   CHART
-========================= */
+/* CHART */
 
 .chart-wrap {
   position: relative;
@@ -231,10 +215,7 @@ body {
   font-size: 11px;
 }
 
-
-/* =========================
-   NFL
-========================= */
+/* NFL */
 
 .nfl-grid {
   display: grid;
@@ -283,7 +264,7 @@ body {
   align-items: center;
   justify-content: space-between;
   flex: 1;
-  padding: 8px 10px;
+  padding: 9px 11px;
   border-radius: 8px;
   font-size: 12px;
   font-weight: 800;
@@ -291,23 +272,25 @@ body {
 
 .yes-box {
   background: rgba(57,217,150,.09);
-  border: 1px solid rgba(57,217,150,.2);
+  border: 1px solid rgba(57,217,150,.28);
   color: #39d996;
 }
 
 .no-box {
   background: rgba(255,89,105,.09);
-  border: 1px solid rgba(255,89,105,.2);
+  border: 1px solid rgba(255,89,105,.28);
   color: #ff5969;
 }
 
 .odds-label {
   font-size: 10px;
-  opacity: .8;
+  font-weight: 900;
+  opacity: .85;
 }
 
 .odds-number {
   font-size: 14px;
+  font-weight: 900;
 }
 
 .loading,
@@ -326,13 +309,9 @@ body {
   font-size: 13px;
 }
 
-
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 
 @media (max-width: 850px) {
-
   .cards {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -340,11 +319,9 @@ body {
   .nfl-grid {
     grid-template-columns: 1fr;
   }
-
 }
 
 @media (max-width: 600px) {
-
   .container {
     width: 93%;
     padding-top: 20px;
@@ -379,252 +356,191 @@ body {
   .chart-wrap {
     height: 300px;
   }
-
 }
 </style>
 </head>
-
 
 <body>
 
 <div class="container">
 
+  <!-- HEADER -->
 
-<!-- =========================
-     HEADER
-========================= -->
-
-<div class="header">
-
-  <div>
-    <div class="title">
-      Position Ledger
-    </div>
-
-    <div class="subtitle">
-      Kalshi Trading Dashboard
-    </div>
-  </div>
-
-  <div class="live-status">
-    <span class="live-dot"></span>
-    <span id="statusText">LIVE</span>
-  </div>
-
-</div>
-
-
-<!-- =========================
-     ACCOUNT
-========================= -->
-
-<div class="cards">
-
-  <div class="card stat-card">
-    <div class="stat-label">
-      Available Balance
-    </div>
-
-    <div
-      id="balance"
-      class="stat-value"
-    >
-      $0.00
-    </div>
-  </div>
-
-
-  <div class="card stat-card">
-    <div class="stat-label">
-      Portfolio Value
-    </div>
-
-    <div
-      id="portfolioValue"
-      class="stat-value"
-    >
-      $0.00
-    </div>
-  </div>
-
-
-  <div class="card stat-card">
-    <div class="stat-label">
-      Total Account Value
-    </div>
-
-    <div
-      id="totalValue"
-      class="stat-value"
-    >
-      $0.00
-    </div>
-  </div>
-
-
-  <div class="card stat-card">
-    <div class="stat-label">
-      Live P/L
-    </div>
-
-    <div
-      id="livePL"
-      class="stat-value"
-    >
-      $0.00
-    </div>
-  </div>
-
-</div>
-
-
-<!-- =========================
-     PERFORMANCE
-========================= -->
-
-<div class="panel">
-
-  <div class="panel-header">
+  <div class="header">
 
     <div>
+      <div class="title">
+        Position Ledger
+      </div>
+
+      <div class="subtitle">
+        Kalshi Trading Dashboard
+      </div>
+    </div>
+
+    <div class="live-status">
+      <span class="live-dot"></span>
+      <span id="statusText">LIVE</span>
+    </div>
+
+  </div>
+
+
+  <!-- ACCOUNT -->
+
+  <div class="cards">
+
+    <div class="card stat-card">
+      <div class="stat-label">
+        Available Balance
+      </div>
+
+      <div id="balance" class="stat-value">
+        $0.00
+      </div>
+    </div>
+
+
+    <div class="card stat-card">
+      <div class="stat-label">
+        Portfolio Value
+      </div>
+
+      <div id="portfolioValue" class="stat-value">
+        $0.00
+      </div>
+    </div>
+
+
+    <div class="card stat-card">
+      <div class="stat-label">
+        Total Account Value
+      </div>
+
+      <div id="totalValue" class="stat-value">
+        $0.00
+      </div>
+    </div>
+
+
+    <div class="card stat-card">
+      <div class="stat-label">
+        Live P/L
+      </div>
+
+      <div id="livePL" class="stat-value">
+        $0.00
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- PERFORMANCE -->
+
+  <div class="panel">
+
+    <div class="panel-header">
+
+      <div>
+        <div class="panel-title">
+          Account Performance
+        </div>
+
+        <div id="periodDescription" class="subtitle">
+          Day — 1 minute intervals
+        </div>
+      </div>
+
+
+      <div class="periods">
+
+        <button class="period-button active" data-period="day">
+          Day
+        </button>
+
+        <button class="period-button" data-period="week">
+          Week
+        </button>
+
+        <button class="period-button" data-period="month">
+          Month
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="chart-wrap">
+      <canvas id="chart"></canvas>
+    </div>
+
+
+    <div id="chartInfo" class="chart-info">
+      Drag across the graph or use the slider to inspect a timestamp.
+    </div>
+
+
+    <div class="slider-area">
+
+      <input
+        id="historySlider"
+        type="range"
+        min="0"
+        max="0"
+        value="0"
+        step="1"
+      >
+
+      <div class="slider-labels">
+
+        <span id="sliderStart">--</span>
+
+        <span id="sliderEnd">--</span>
+
+      </div>
+
+      <div id="sliderCurrent" class="slider-current">
+        --
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- NFL -->
+
+  <div class="panel">
+
+    <div class="panel-header">
 
       <div class="panel-title">
-        Account Performance
+        NFL Markets
       </div>
 
-      <div
-        id="periodDescription"
-        class="subtitle"
-      >
-        Day — 1 minute intervals
+      <div id="nflUpdated" class="subtitle">
+        Loading...
       </div>
 
     </div>
 
 
-    <div class="periods">
+    <div id="nflGrid" class="nfl-grid">
 
-      <button
-        class="period-button active"
-        data-period="day"
-      >
-        Day
-      </button>
-
-      <button
-        class="period-button"
-        data-period="week"
-      >
-        Week
-      </button>
-
-      <button
-        class="period-button"
-        data-period="month"
-      >
-        Month
-      </button>
+      <div class="loading">
+        Loading NFL markets...
+      </div>
 
     </div>
 
   </div>
-
-
-  <div
-    id="chartWrap"
-    class="chart-wrap"
-  >
-
-    <canvas id="chart"></canvas>
-
-  </div>
-
-
-  <div
-    id="chartInfo"
-    class="chart-info"
-  >
-    Drag across the graph or use the slider to inspect a timestamp.
-  </div>
-
-
-  <div class="slider-area">
-
-    <input
-      id="historySlider"
-      type="range"
-      min="0"
-      max="0"
-      value="0"
-      step="1"
-    >
-
-    <div class="slider-labels">
-
-      <span id="sliderStart">
-        --
-      </span>
-
-      <span id="sliderEnd">
-        --
-      </span>
-
-    </div>
-
-
-    <div
-      id="sliderCurrent"
-      class="slider-current"
-    >
-      --
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================
-     NFL
-========================= -->
-
-<div class="panel">
-
-  <div class="panel-header">
-
-    <div class="panel-title">
-      NFL Markets
-    </div>
-
-    <div
-      id="nflUpdated"
-      class="subtitle"
-    >
-      Loading...
-    </div>
-
-  </div>
-
-
-  <div
-    id="nflGrid"
-    class="nfl-grid"
-  >
-
-    <div class="loading">
-      Loading NFL markets...
-    </div>
-
-  </div>
-
-</div>
-
 
 </div>
 
 
 <script>
-
 
 /* =========================================================
    CONFIG
@@ -638,60 +554,38 @@ const HISTORY_KEY =
 
 
 /* =========================================================
-   PERIOD SETTINGS
+   PERIODS
 ========================================================= */
 
 const PERIODS = {
 
   day: {
-    duration:
-      24 * 60 * 60 * 1000,
-
-    interval:
-      60 * 1000,
-
-    label:
-      "Day — 1 minute intervals"
+    duration: 24 * 60 * 60 * 1000,
+    interval: 60 * 1000,
+    label: "Day — 1 minute intervals"
   },
 
   week: {
-    duration:
-      7 * 24 * 60 * 60 * 1000,
-
-    interval:
-      10 * 60 * 1000,
-
-    label:
-      "Week — 10 minute intervals"
+    duration: 7 * 24 * 60 * 60 * 1000,
+    interval: 10 * 60 * 1000,
+    label: "Week — 10 minute intervals"
   },
 
   month: {
-    duration:
-      30 * 24 * 60 * 60 * 1000,
-
-    interval:
-      60 * 60 * 1000,
-
-    label:
-      "Month — 1 hour intervals"
+    duration: 30 * 24 * 60 * 60 * 1000,
+    interval: 60 * 60 * 1000,
+    label: "Month — 1 hour intervals"
   }
 
 };
 
 
 let currentPeriod = "day";
-
 let history = [];
-
 let visibleHistory = [];
-
 let selectedIndex = null;
-
-let currentAccountValue = 0;
-
-let currentPnL = 0;
-
 let dragging = false;
+let lastSavedTime = 0;
 
 
 /* =========================================================
@@ -705,9 +599,7 @@ const ctx =
   canvas.getContext("2d");
 
 const slider =
-  document.getElementById(
-    "historySlider"
-  );
+  document.getElementById("historySlider");
 
 
 /* =========================================================
@@ -716,10 +608,7 @@ const slider =
 
 function money(value) {
 
-  const n =
-    Number(value) || 0;
-
-  return n.toLocaleString(
+  return Number(value || 0).toLocaleString(
     "en-US",
     {
       style: "currency",
@@ -731,7 +620,7 @@ function money(value) {
 
 
 /* =========================================================
-   HISTORY LOAD
+   HISTORY
 ========================================================= */
 
 function loadHistory() {
@@ -739,62 +628,38 @@ function loadHistory() {
   try {
 
     const saved =
-      localStorage.getItem(
-        HISTORY_KEY
-      );
+      localStorage.getItem(HISTORY_KEY);
 
     if (!saved) {
-
       history = [];
-
       return;
-
     }
-
 
     const parsed =
       JSON.parse(saved);
 
-
     if (!Array.isArray(parsed)) {
-
       history = [];
-
       return;
-
     }
-
 
     history =
       parsed
-        .filter(point =>
-          point &&
-          Number.isFinite(
-            Number(point.time)
-          ) &&
-          Number.isFinite(
-            Number(point.value)
-          )
+        .filter(p =>
+          p &&
+          Number.isFinite(Number(p.time)) &&
+          Number.isFinite(Number(p.value))
         )
-        .map(point => ({
-
-          time:
-            Number(point.time),
-
-          value:
-            Number(point.value),
-
+        .map(p => ({
+          time: Number(p.time),
+          value: Number(p.value),
           pnl:
-            point.pnl === null ||
-            point.pnl === undefined
+            p.pnl === null ||
+            p.pnl === undefined
               ? null
-              : Number(point.pnl)
-
+              : Number(p.pnl)
         }))
-        .sort(
-          (a,b) =>
-            a.time - b.time
-        );
+        .sort((a,b) => a.time - b.time);
 
   } catch {
 
@@ -805,80 +670,36 @@ function loadHistory() {
 }
 
 
-/* =========================================================
-   SAVE HISTORY
-========================================================= */
-
-let lastSavedTime = 0;
-
-function saveHistoryPoint(
-  value,
-  pnl
-) {
+function saveHistoryPoint(value, pnl) {
 
   const now =
     Date.now();
 
-
-  /*
-    Save roughly every 10 seconds.
-  */
-
   if (
-    now - lastSavedTime <
-    9000
+    now - lastSavedTime < 9000
   ) {
-
     return;
-
   }
 
-
-  lastSavedTime =
-    now;
-
+  lastSavedTime = now;
 
   history.push({
-
-    /*
-      Absolute timestamp.
-      Displayed in local time later.
-    */
-
     time: now,
-
-    value:
-      Number(value) || 0,
-
+    value: Number(value) || 0,
     pnl:
-      Number.isFinite(
-        Number(pnl)
-      )
+      Number.isFinite(Number(pnl))
         ? Number(pnl)
         : null
-
   });
-
-
-  /*
-    Keep 31 days.
-  */
 
   const cutoff =
     now -
-    31 *
-    24 *
-    60 *
-    60 *
-    1000;
-
+    31 * 24 * 60 * 60 * 1000;
 
   history =
     history.filter(
-      point =>
-        point.time >= cutoff
+      p => p.time >= cutoff
     );
-
 
   try {
 
@@ -893,14 +714,12 @@ function saveHistoryPoint(
 
 
 /* =========================================================
-   TIME FORMATTING
+   TIME
 ========================================================= */
 
 function dateTime(timestamp) {
 
-  return new Date(
-    timestamp
-  ).toLocaleString(
+  return new Date(timestamp).toLocaleString(
     "en-US",
     {
       month: "short",
@@ -915,17 +734,12 @@ function dateTime(timestamp) {
 }
 
 
-function graphTime(
-  timestamp
-) {
+function graphTime(timestamp) {
 
   const date =
     new Date(timestamp);
 
-
-  if (
-    currentPeriod === "month"
-  ) {
+  if (currentPeriod === "month") {
 
     return date.toLocaleString(
       "en-US",
@@ -938,10 +752,7 @@ function graphTime(
 
   }
 
-
-  if (
-    currentPeriod === "week"
-  ) {
+  if (currentPeriod === "week") {
 
     return date.toLocaleString(
       "en-US",
@@ -953,7 +764,6 @@ function graphTime(
     );
 
   }
-
 
   return date.toLocaleTimeString(
     "en-US",
@@ -967,7 +777,7 @@ function graphTime(
 
 
 /* =========================================================
-   BUILD GRAPH DATA
+   GRAPH DATA
 ========================================================= */
 
 function buildVisibleHistory() {
@@ -975,28 +785,22 @@ function buildVisibleHistory() {
   const config =
     PERIODS[currentPeriod];
 
-
   const now =
     Date.now();
 
-
   const start =
-    now -
-    config.duration;
-
+    now - config.duration;
 
   const source =
     history
       .filter(
-        point =>
-          point.time >= start &&
-          point.time <= now
+        p =>
+          p.time >= start &&
+          p.time <= now
       )
       .sort(
-        (a,b) =>
-          a.time - b.time
+        (a,b) => a.time - b.time
       );
-
 
   if (!source.length) {
 
@@ -1006,40 +810,15 @@ function buildVisibleHistory() {
 
   }
 
-
-  /*
-    Group points into exact intervals:
-
-    Day:
-      1 minute
-
-    Week:
-      10 minutes
-
-    Month:
-      1 hour
-  */
-
   const buckets =
     new Map();
 
-
-  for (
-    const point of source
-  ) {
+  for (const point of source) {
 
     const bucket =
       Math.floor(
-        point.time /
-        config.interval
-      ) *
-      config.interval;
-
-
-    /*
-      Keep the latest value
-      inside the bucket.
-    */
+        point.time / config.interval
+      ) * config.interval;
 
     buckets.set(
       bucket,
@@ -1052,21 +831,18 @@ function buildVisibleHistory() {
 
   }
 
-
   visibleHistory =
     Array.from(
       buckets.values()
-    )
-    .sort(
-      (a,b) =>
-        a.time - b.time
+    ).sort(
+      (a,b) => a.time - b.time
     );
 
 }
 
 
 /* =========================================================
-   RESIZE CANVAS
+   CHART
 ========================================================= */
 
 function resizeCanvas() {
@@ -1074,23 +850,14 @@ function resizeCanvas() {
   const rect =
     canvas.getBoundingClientRect();
 
-
   const dpr =
-    window.devicePixelRatio ||
-    1;
-
+    window.devicePixelRatio || 1;
 
   canvas.width =
-    Math.round(
-      rect.width * dpr
-    );
-
+    Math.round(rect.width * dpr);
 
   canvas.height =
-    Math.round(
-      rect.height * dpr
-    );
-
+    Math.round(rect.height * dpr);
 
   ctx.setTransform(
     dpr,
@@ -1104,25 +871,18 @@ function resizeCanvas() {
 }
 
 
-/* =========================================================
-   DRAW GRAPH
-========================================================= */
-
 function drawChart() {
 
   resizeCanvas();
 
-
   const rect =
     canvas.getBoundingClientRect();
-
 
   const width =
     rect.width;
 
   const height =
     rect.height;
-
 
   ctx.clearRect(
     0,
@@ -1131,20 +891,11 @@ function drawChart() {
     height
   );
 
+  if (!visibleHistory.length) {
 
-  if (
-    visibleHistory.length < 1
-  ) {
-
-    ctx.fillStyle =
-      "#737c8b";
-
-    ctx.font =
-      "13px Arial";
-
-    ctx.textAlign =
-      "center";
-
+    ctx.fillStyle = "#737c8b";
+    ctx.font = "13px Arial";
+    ctx.textAlign = "center";
 
     ctx.fillText(
       "Waiting for history...",
@@ -1152,36 +903,25 @@ function drawChart() {
       height / 2
     );
 
-
     return;
 
   }
-
 
   const left = 58;
   const right = 20;
   const top = 20;
   const bottom = 42;
 
-
   const graphWidth =
-    width -
-    left -
-    right;
-
+    width - left - right;
 
   const graphHeight =
-    height -
-    top -
-    bottom;
-
+    height - top - bottom;
 
   const values =
     visibleHistory.map(
-      point =>
-        Number(point.value)
+      p => Number(p.value)
     );
-
 
   let min =
     Math.min(...values);
@@ -1189,93 +929,60 @@ function drawChart() {
   let max =
     Math.max(...values);
 
-
   if (min === max) {
-
     min -= 1;
     max += 1;
-
   }
 
-
   const padding =
-    (max - min) *
-    0.12;
-
+    (max - min) * .12;
 
   min -= padding;
   max += padding;
 
-
   function x(index) {
 
-    if (
-      visibleHistory.length === 1
-    ) {
-
-      return left +
-        graphWidth / 2;
-
+    if (visibleHistory.length === 1) {
+      return left + graphWidth / 2;
     }
-
 
     return left +
       (
         index /
-        (
-          visibleHistory.length - 1
-        )
+        (visibleHistory.length - 1)
       ) *
       graphWidth;
 
   }
-
 
   function y(value) {
 
     return top +
       (
         1 -
-        (
-          (value - min) /
-          (max - min)
-        )
+        ((value - min) / (max - min))
       ) *
       graphHeight;
 
   }
 
 
-  /*
-    Horizontal grid.
-  */
+  /* GRID */
 
   ctx.strokeStyle =
     "#202631";
 
   ctx.lineWidth = 1;
 
-
-  for (
-    let i = 0;
-    i <= 4;
-    i++
-  ) {
+  for (let i = 0; i <= 4; i++) {
 
     const yy =
       top +
-      (
-        i / 4
-      ) *
-      graphHeight;
-
+      (i / 4) * graphHeight;
 
     ctx.beginPath();
 
-    ctx.moveTo(
-      left,
-      yy
-    );
+    ctx.moveTo(left, yy);
 
     ctx.lineTo(
       width - right,
@@ -1284,16 +991,9 @@ function drawChart() {
 
     ctx.stroke();
 
-
     const label =
       max -
-      (
-        i / 4
-      ) *
-      (
-        max - min
-      );
-
+      (i / 4) * (max - min);
 
     ctx.fillStyle =
       "#697281";
@@ -1304,7 +1004,6 @@ function drawChart() {
     ctx.textAlign =
       "right";
 
-
     ctx.fillText(
       money(label),
       left - 8,
@@ -1314,42 +1013,24 @@ function drawChart() {
   }
 
 
-  /*
-    Main line.
-  */
+  /* LINE */
 
   ctx.beginPath();
-
 
   visibleHistory.forEach(
     (point,index) => {
 
-      const xx =
-        x(index);
-
-      const yy =
-        y(point.value);
-
+      const xx = x(index);
+      const yy = y(point.value);
 
       if (index === 0) {
-
-        ctx.moveTo(
-          xx,
-          yy
-        );
-
+        ctx.moveTo(xx, yy);
       } else {
-
-        ctx.lineTo(
-          xx,
-          yy
-        );
-
+        ctx.lineTo(xx, yy);
       }
 
     }
   );
-
 
   ctx.strokeStyle =
     "#e8edf3";
@@ -1366,9 +1047,7 @@ function drawChart() {
   ctx.stroke();
 
 
-  /*
-    Selected point.
-  */
+  /* ONE INSPECTION LINE */
 
   if (
     selectedIndex !== null &&
@@ -1376,10 +1055,7 @@ function drawChart() {
   ) {
 
     const point =
-      visibleHistory[
-        selectedIndex
-      ];
-
+      visibleHistory[selectedIndex];
 
     const xx =
       x(selectedIndex);
@@ -1387,17 +1063,9 @@ function drawChart() {
     const yy =
       y(point.value);
 
-
-    /*
-      ONE vertical line.
-    */
-
     ctx.beginPath();
 
-    ctx.setLineDash([
-      4,
-      5
-    ]);
+    ctx.setLineDash([4,5]);
 
     ctx.moveTo(
       xx,
@@ -1412,17 +1080,12 @@ function drawChart() {
     ctx.strokeStyle =
       "#78818f";
 
-    ctx.lineWidth =
-      1;
+    ctx.lineWidth = 1;
 
     ctx.stroke();
 
     ctx.setLineDash([]);
 
-
-    /*
-      Selected dot.
-    */
 
     ctx.beginPath();
 
@@ -1442,18 +1105,14 @@ function drawChart() {
   }
 
 
-  /*
-    Time labels.
-  */
+  /* TIME LABELS */
 
   const count =
     visibleHistory.length;
 
-
-  if (count > 0) {
+  if (count) {
 
     const indexes = [];
-
 
     if (count <= 5) {
 
@@ -1462,9 +1121,7 @@ function drawChart() {
         i < count;
         i++
       ) {
-
         indexes.push(i);
-
       }
 
     } else {
@@ -1472,29 +1129,20 @@ function drawChart() {
       indexes.push(0);
 
       indexes.push(
-        Math.floor(
-          (count - 1) * .25
-        )
+        Math.floor((count - 1) * .25)
       );
 
       indexes.push(
-        Math.floor(
-          (count - 1) * .5
-        )
+        Math.floor((count - 1) * .5)
       );
 
       indexes.push(
-        Math.floor(
-          (count - 1) * .75
-        )
+        Math.floor((count - 1) * .75)
       );
 
-      indexes.push(
-        count - 1
-      );
+      indexes.push(count - 1);
 
     }
-
 
     ctx.fillStyle =
       "#697281";
@@ -1505,22 +1153,17 @@ function drawChart() {
     ctx.textAlign =
       "center";
 
+    indexes.forEach(index => {
 
-    indexes.forEach(
-      index => {
+      ctx.fillText(
+        graphTime(
+          visibleHistory[index].time
+        ),
+        x(index),
+        height - 13
+      );
 
-        const point =
-          visibleHistory[index];
-
-
-        ctx.fillText(
-          graphTime(point.time),
-          x(index),
-          height - 13
-        );
-
-      }
-    );
+    });
 
   }
 
@@ -1528,14 +1171,12 @@ function drawChart() {
 
 
 /* =========================================================
-   UPDATE SLIDER
+   SLIDER
 ========================================================= */
 
 function updateSlider() {
 
-  if (
-    !visibleHistory.length
-  ) {
+  if (!visibleHistory.length) {
 
     slider.max = 0;
     slider.value = 0;
@@ -1556,20 +1197,15 @@ function updateSlider() {
 
   }
 
-
   slider.max =
     visibleHistory.length - 1;
 
-
-  if (
-    selectedIndex === null
-  ) {
+  if (selectedIndex === null) {
 
     selectedIndex =
       visibleHistory.length - 1;
 
   }
-
 
   selectedIndex =
     Math.max(
@@ -1580,10 +1216,8 @@ function updateSlider() {
       )
     );
 
-
   slider.value =
     selectedIndex;
-
 
   document.getElementById(
     "sliderStart"
@@ -1591,7 +1225,6 @@ function updateSlider() {
     graphTime(
       visibleHistory[0].time
     );
-
 
   document.getElementById(
     "sliderEnd"
@@ -1601,7 +1234,6 @@ function updateSlider() {
         visibleHistory.length - 1
       ].time
     );
-
 
   document.getElementById(
     "sliderCurrent"
@@ -1615,20 +1247,11 @@ function updateSlider() {
 }
 
 
-/* =========================================================
-   INSPECT GRAPH
-========================================================= */
-
 function inspectIndex(index) {
 
-  if (
-    !visibleHistory.length
-  ) {
-
+  if (!visibleHistory.length) {
     return;
-
   }
-
 
   selectedIndex =
     Math.max(
@@ -1639,21 +1262,14 @@ function inspectIndex(index) {
       )
     );
 
-
   drawChart();
-
   updateSlider();
 
-
   const point =
-    visibleHistory[
-      selectedIndex
-    ];
-
+    visibleHistory[selectedIndex];
 
   const pnl =
     point.pnl;
-
 
   document.getElementById(
     "chartInfo"
@@ -1690,35 +1306,20 @@ function inspectIndex(index) {
 }
 
 
-/* =========================================================
-   POINTER → GRAPH INDEX
-========================================================= */
+function pointerToIndex(event) {
 
-function pointerToIndex(
-  event
-) {
-
-  if (
-    visibleHistory.length < 2
-  ) {
-
+  if (visibleHistory.length < 2) {
     return 0;
-
   }
-
 
   const rect =
     canvas.getBoundingClientRect();
 
-
   const left = 58;
   const right = 20;
 
-
   let position =
-    event.clientX -
-    rect.left;
-
+    event.clientX - rect.left;
 
   position =
     Math.max(
@@ -1729,50 +1330,33 @@ function pointerToIndex(
       )
     );
 
-
   const ratio =
-    (
-      position - left
-    ) /
-    (
-      rect.width -
-      left -
-      right
-    );
-
+    (position - left) /
+    (rect.width - left - right);
 
   return ratio *
-    (
-      visibleHistory.length - 1
-    );
+    (visibleHistory.length - 1);
 
 }
 
 
 /* =========================================================
-   GRAPH DRAG
+   GRAPH TOUCH / DRAG
 ========================================================= */
 
 canvas.addEventListener(
   "pointerdown",
   event => {
 
-    if (
-      !visibleHistory.length
-    ) {
-
+    if (!visibleHistory.length) {
       return;
-
     }
 
-
     dragging = true;
-
 
     canvas.setPointerCapture(
       event.pointerId
     );
-
 
     inspectIndex(
       pointerToIndex(event)
@@ -1790,7 +1374,6 @@ canvas.addEventListener(
       return;
     }
 
-
     inspectIndex(
       pointerToIndex(event)
     );
@@ -1802,9 +1385,7 @@ canvas.addEventListener(
 canvas.addEventListener(
   "pointerup",
   () => {
-
     dragging = false;
-
   }
 );
 
@@ -1812,16 +1393,10 @@ canvas.addEventListener(
 canvas.addEventListener(
   "pointercancel",
   () => {
-
     dragging = false;
-
   }
 );
 
-
-/* =========================================================
-   SLIDER
-========================================================= */
 
 slider.addEventListener(
   "input",
@@ -1836,28 +1411,11 @@ slider.addEventListener(
 
 
 /* =========================================================
-   REFRESH CHART
-========================================================= */
-
-function refreshChart() {
-
-  buildVisibleHistory();
-
-  drawChart();
-
-  updateSlider();
-
-}
-
-
-/* =========================================================
    PERIOD BUTTONS
 ========================================================= */
 
 document
-  .querySelectorAll(
-    ".period-button"
-  )
+  .querySelectorAll(".period-button")
   .forEach(button => {
 
     button.addEventListener(
@@ -1867,23 +1425,19 @@ document
         currentPeriod =
           button.dataset.period;
 
-
         document
-          .querySelectorAll(
-            ".period-button"
-          )
-          .forEach(
-            item =>
-              item.classList.remove(
-                "active"
-              )
-          );
+          .querySelectorAll(".period-button")
+          .forEach(item => {
 
+            item.classList.remove(
+              "active"
+            );
+
+          });
 
         button.classList.add(
           "active"
         );
-
 
         document.getElementById(
           "periodDescription"
@@ -1892,15 +1446,12 @@ document
             currentPeriod
           ].label;
 
-
         selectedIndex = null;
-
 
         document.getElementById(
           "chartInfo"
         ).innerHTML =
           "Drag across the graph or use the slider to inspect a timestamp.";
-
 
         refreshChart();
 
@@ -1928,22 +1479,14 @@ async function loadPortfolio() {
         }
       );
 
-
     const data =
       await response.json();
 
-
-    if (
-      !response.ok ||
-      !data.ok
-    ) {
-
+    if (!response.ok || !data.ok) {
       throw new Error(
         "Portfolio request failed"
       );
-
     }
-
 
     const balanceRaw =
       Number(
@@ -1952,10 +1495,8 @@ async function loadPortfolio() {
         0
       );
 
-
     const balance =
       balanceRaw / 100;
-
 
     const positions =
       Array.isArray(
@@ -1968,13 +1509,9 @@ async function loadPortfolio() {
           ? data.positions.positions
           : [];
 
-
     let portfolioValue = 0;
 
-
-    for (
-      const position of positions
-    ) {
+    for (const position of positions) {
 
       const marketValue =
         Number(
@@ -1982,7 +1519,6 @@ async function loadPortfolio() {
           position.market_value_cents ??
           0
         );
-
 
       if (
         Number.isFinite(
@@ -1996,7 +1532,6 @@ async function loadPortfolio() {
       }
 
     }
-
 
     if (
       Number.isFinite(
@@ -2013,18 +1548,11 @@ async function loadPortfolio() {
 
     }
 
-
     const total =
       balance +
       portfolioValue;
 
-
-    /*
-      Try to get an actual P/L field.
-    */
-
     let pnl = null;
-
 
     const pnlCandidates = [
 
@@ -2037,7 +1565,6 @@ async function loadPortfolio() {
       data.balance?.pnl
 
     ];
-
 
     for (
       const candidate
@@ -2055,7 +1582,6 @@ async function loadPortfolio() {
         pnl =
           Number(candidate);
 
-
         if (
           Math.abs(pnl) > 10000
         ) {
@@ -2064,18 +1590,11 @@ async function loadPortfolio() {
 
         }
 
-
         break;
 
       }
 
     }
-
-
-    /*
-      Fallback to change from first
-      recorded account value.
-    */
 
     if (pnl === null) {
 
@@ -2093,52 +1612,32 @@ async function loadPortfolio() {
 
     }
 
-
-    currentAccountValue =
-      total;
-
-    currentPnL =
-      pnl;
-
-
     document.getElementById(
       "balance"
     ).textContent =
       money(balance);
-
 
     document.getElementById(
       "portfolioValue"
     ).textContent =
       money(portfolioValue);
 
-
     document.getElementById(
       "totalValue"
     ).textContent =
       money(total);
 
-
     const pnlElement =
-      document.getElementById(
-        "livePL"
-      );
-
+      document.getElementById("livePL");
 
     pnlElement.textContent =
-      (
-        pnl >= 0
-          ? "+"
-          : ""
-      ) +
+      (pnl >= 0 ? "+" : "") +
       money(pnl);
-
 
     pnlElement.classList.remove(
       "green",
       "red"
     );
-
 
     pnlElement.classList.add(
       pnl >= 0
@@ -2146,15 +1645,12 @@ async function loadPortfolio() {
         : "red"
     );
 
-
     saveHistoryPoint(
       total,
       pnl
     );
 
-
     refreshChart();
-
 
     document.getElementById(
       "statusText"
@@ -2175,7 +1671,6 @@ async function loadPortfolio() {
       error
     );
 
-
     document.getElementById(
       "statusText"
     ).textContent =
@@ -2187,7 +1682,510 @@ async function loadPortfolio() {
 
 
 /* =========================================================
-   NFL PRICE PARSER
+   NFL TEAM DATABASE
+========================================================= */
+
+const NFL_TEAMS = {
+
+  ARI: "Arizona Cardinals",
+  ATL: "Atlanta Falcons",
+  BAL: "Baltimore Ravens",
+  BUF: "Buffalo Bills",
+  CAR: "Carolina Panthers",
+  CHI: "Chicago Bears",
+  CIN: "Cincinnati Bengals",
+  CLE: "Cleveland Browns",
+  DAL: "Dallas Cowboys",
+  DEN: "Denver Broncos",
+  DET: "Detroit Lions",
+  GB: "Green Bay Packers",
+  GNB: "Green Bay Packers",
+  HOU: "Houston Texans",
+  IND: "Indianapolis Colts",
+  JAX: "Jacksonville Jaguars",
+  KC: "Kansas City Chiefs",
+  KAN: "Kansas City Chiefs",
+  LAC: "Los Angeles Chargers",
+  LAR: "Los Angeles Rams",
+  LV: "Las Vegas Raiders",
+  MIA: "Miami Dolphins",
+  MIN: "Minnesota Vikings",
+  NE: "New England Patriots",
+  NO: "New Orleans Saints",
+  NYG: "New York Giants",
+  NYJ: "New York Jets",
+  PHI: "Philadelphia Eagles",
+  PIT: "Pittsburgh Steelers",
+  SEA: "Seattle Seahawks",
+  SF: "San Francisco 49ers",
+  SFO: "San Francisco 49ers",
+  TB: "Tampa Bay Buccaneers",
+  TEN: "Tennessee Titans",
+  WAS: "Washington Commanders"
+
+};
+
+
+/*
+  IMPORTANT:
+
+  Some Kalshi NFL event tickers look like:
+
+  26SEP28PHICHI
+  26SEP27LARDEN
+  26SEP27BALDAL
+  26SEP27LVNO
+  26SEP27MINTB
+  26SEP27ARISF
+
+  We decode the team abbreviations directly.
+*/
+
+
+const NFL_CODES =
+  Object.keys(NFL_TEAMS)
+    .sort(
+      (a,b) =>
+        b.length - a.length
+    );
+
+
+/* =========================================================
+   GET EVENT TICKER
+========================================================= */
+
+function getEventTicker(markets) {
+
+  for (const market of markets) {
+
+    if (market.event_ticker) {
+
+      return String(
+        market.event_ticker
+      ).toUpperCase();
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+/* =========================================================
+   EXTRACT TWO TEAMS FROM KALSHI TICKER
+========================================================= */
+
+function teamsFromTicker(ticker) {
+
+  /*
+    Remove the date portion.
+
+    Example:
+
+      26SEP27LARDEN
+          ↓
+      LARDEN
+  */
+
+  let value =
+    String(ticker || "")
+      .toUpperCase()
+      .replace(/^KXNFLGAME[-_]?/i, "")
+      .replace(/^\d{2}[A-Z]{3}\d{2}/, "")
+      .replace(/[-_]/g, "");
+
+
+  const found = [];
+
+
+  /*
+    First try every possible pair of
+    known NFL codes.
+
+    This handles:
+      PHICHI
+      LARDEN
+      BALDAL
+      LVNO
+      MINTB
+      ARISF
+  */
+
+  for (
+    const first of NFL_CODES
+  ) {
+
+    if (
+      !value.startsWith(first)
+    ) {
+
+      continue;
+
+    }
+
+
+    const remainder =
+      value.slice(
+        first.length
+      );
+
+
+    for (
+      const second of NFL_CODES
+    ) {
+
+      if (
+        remainder === second
+      ) {
+
+        return [
+          NFL_TEAMS[first],
+          NFL_TEAMS[second]
+        ];
+
+      }
+
+    }
+
+  }
+
+
+  /*
+    Try finding two codes anywhere
+    in the remaining ticker.
+  */
+
+  for (
+    const first of NFL_CODES
+  ) {
+
+    const firstIndex =
+      value.indexOf(first);
+
+    if (
+      firstIndex === -1
+    ) {
+
+      continue;
+
+    }
+
+    const remainder =
+      value.slice(
+        firstIndex +
+        first.length
+      );
+
+
+    for (
+      const second of NFL_CODES
+    ) {
+
+      if (
+        remainder.endsWith(second)
+      ) {
+
+        return [
+          NFL_TEAMS[first],
+          NFL_TEAMS[second]
+        ];
+
+      }
+
+    }
+
+  }
+
+
+  return [];
+
+}
+
+
+/* =========================================================
+   FALLBACK TEAM NAME
+========================================================= */
+
+function cleanTeamName(name) {
+
+  if (!name) {
+    return "";
+  }
+
+  let value =
+    String(name)
+      .trim()
+      .replace(/^YES\s+/i, "")
+      .replace(/^NO\s+/i, "")
+      .trim();
+
+  const upper =
+    value
+      .toUpperCase()
+      .replace(/[^A-Z]/g, "");
+
+  if (NFL_TEAMS[upper]) {
+    return NFL_TEAMS[upper];
+  }
+
+  return value;
+
+}
+
+
+/* =========================================================
+   GET TEAM FROM MARKET
+========================================================= */
+
+function getMarketTeam(market) {
+
+  /*
+    Try explicit fields first.
+  */
+
+  const candidates = [
+
+    market.yes_sub_title,
+
+    market.yes_title,
+
+    market.subtitle,
+
+    market.team_name,
+
+    market.team
+
+  ];
+
+
+  for (
+    const candidate
+    of candidates
+  ) {
+
+    if (!candidate) {
+      continue;
+    }
+
+    const cleaned =
+      cleanTeamName(candidate);
+
+    if (!cleaned) {
+      continue;
+    }
+
+    /*
+      Don't accept generic words such
+      as "Winner" as the team name.
+    */
+
+    if (
+      /^(winner|win|yes|no|team)$/i.test(
+        cleaned
+      )
+    ) {
+      continue;
+    }
+
+    return cleaned;
+
+  }
+
+
+  return "";
+
+}
+
+
+/* =========================================================
+   GET GAME KEY
+========================================================= */
+
+function getGameKey(market) {
+
+  if (market.event_ticker) {
+
+    return String(
+      market.event_ticker
+    );
+
+  }
+
+  if (market.event_id) {
+
+    return String(
+      market.event_id
+    );
+
+  }
+
+  const ticker =
+    String(
+      market.ticker || ""
+    );
+
+  return ticker
+    .split("-")
+    .slice(0,-1)
+    .join("-");
+
+}
+
+
+/* =========================================================
+   GET GAME TITLE
+========================================================= */
+
+function getGameTitle(gameMarkets) {
+
+  /*
+    FIRST:
+    Decode the event ticker.
+
+    This is the important fix.
+  */
+
+  const eventTicker =
+    getEventTicker(
+      gameMarkets
+    );
+
+
+  const decoded =
+    teamsFromTicker(
+      eventTicker
+    );
+
+
+  if (
+    decoded.length === 2
+  ) {
+
+    return (
+      decoded[0] +
+      " vs. " +
+      decoded[1]
+    );
+
+  }
+
+
+  /*
+    SECOND:
+    Try explicit market team names.
+  */
+
+  const teams = [];
+
+
+  for (
+    const market
+    of gameMarkets
+  ) {
+
+    const team =
+      getMarketTeam(market);
+
+    if (
+      team &&
+      !teams.includes(team)
+    ) {
+
+      teams.push(team);
+
+    }
+
+  }
+
+
+  if (teams.length >= 2) {
+
+    return (
+      teams[0] +
+      " vs. " +
+      teams[1]
+    );
+
+  }
+
+
+  /*
+    Last fallback.
+  */
+
+  return "NFL Game";
+
+}
+
+
+/* =========================================================
+   GET TEAM NAMES FOR GAME
+========================================================= */
+
+function getGameTeams(gameMarkets) {
+
+  const eventTicker =
+    getEventTicker(
+      gameMarkets
+    );
+
+
+  const decoded =
+    teamsFromTicker(
+      eventTicker
+    );
+
+
+  /*
+    If ticker successfully decoded,
+    use those exact names.
+  */
+
+  if (
+    decoded.length === 2
+  ) {
+
+    return decoded;
+
+  }
+
+
+  /*
+    Otherwise use market names.
+  */
+
+  const teams = [];
+
+
+  for (
+    const market
+    of gameMarkets
+  ) {
+
+    const team =
+      getMarketTeam(market);
+
+    if (
+      team &&
+      !teams.includes(team)
+    ) {
+
+      teams.push(team);
+
+    }
+
+  }
+
+
+  return teams;
+
+}
+
+
+/* =========================================================
+   PERCENT
 ========================================================= */
 
 function percent(value) {
@@ -2202,28 +2200,21 @@ function percent(value) {
 
   }
 
-
   let n =
     Number(
       String(value)
-        .replace("$", "")
-        .replace("%", "")
+        .replace("$","")
+        .replace("%","")
         .trim()
     );
 
-
-  if (
-    !Number.isFinite(n)
-  ) {
-
+  if (!Number.isFinite(n)) {
     return null;
-
   }
 
-
   /*
-    0.62 -> 62%
-    62   -> 62%
+    Decimal:
+      .64 → 64%
   */
 
   if (
@@ -2234,7 +2225,6 @@ function percent(value) {
     n *= 100;
 
   }
-
 
   return Math.max(
     0,
@@ -2248,17 +2238,12 @@ function percent(value) {
 
 
 /* =========================================================
-   NFL ODDS
+   GET MARKET ODDS
 ========================================================= */
 
 function getOdds(market) {
 
   let yes = null;
-
-
-  /*
-    Last traded price first.
-  */
 
   const lastCandidates = [
 
@@ -2285,7 +2270,6 @@ function getOdds(market) {
     yes =
       percent(candidate);
 
-
     if (
       yes !== null
     ) {
@@ -2298,12 +2282,10 @@ function getOdds(market) {
 
 
   /*
-    If no last price, calculate midpoint.
+    Bid / ask midpoint.
   */
 
-  if (
-    yes === null
-  ) {
+  if (yes === null) {
 
     const bid =
       percent(
@@ -2311,7 +2293,6 @@ function getOdds(market) {
         market.yes_bid ??
         market.yes_bid_price
       );
-
 
     const ask =
       percent(
@@ -2350,9 +2331,7 @@ function getOdds(market) {
     Older fields.
   */
 
-  if (
-    yes === null
-  ) {
+  if (yes === null) {
 
     const candidates = [
 
@@ -2373,7 +2352,6 @@ function getOdds(market) {
       yes =
         percent(candidate);
 
-
       if (
         yes !== null
       ) {
@@ -2387,6 +2365,10 @@ function getOdds(market) {
   }
 
 
+  /*
+    Explicit NO if Kalshi provides it.
+  */
+
   let no =
     percent(
       market.no_price_dollars ??
@@ -2397,8 +2379,8 @@ function getOdds(market) {
 
 
   /*
-    Binary market:
-    NO = 100 - YES
+    Otherwise binary market:
+    NO = 100 - YES.
   */
 
   if (
@@ -2421,346 +2403,88 @@ function getOdds(market) {
 
 
 /* =========================================================
-   NFL TEAM NAME
+   FIND MARKET FOR TEAM
 ========================================================= */
 
-function cleanTeamName(name) {
-
-  if (!name) {
-    return "";
-  }
-
-
-  let value =
-    String(name)
-      .trim();
-
+function findMarketForTeam(
+  gameMarkets,
+  team
+) {
 
   /*
-    Remove common Kalshi prefixes.
+    Try ticker code first.
   */
 
-  value =
-    value
-      .replace(
-        /^YES\s+/i,
-        ""
-      )
-      .replace(
-        /^NO\s+/i,
-        ""
-      )
-      .trim();
+  const teamCode =
+    Object.keys(NFL_TEAMS)
+      .find(
+        code =>
+          NFL_TEAMS[code] === team
+      );
 
 
-  return value;
+  if (teamCode) {
 
-}
-
-
-/*
-  Team abbreviations → full names.
-
-  This is also used when Kalshi gives
-  abbreviations in the ticker.
-*/
-
-const NFL_TEAMS = {
-
-  ARI: "Arizona Cardinals",
-  ATL: "Atlanta Falcons",
-  BAL: "Baltimore Ravens",
-  BUF: "Buffalo Bills",
-  CAR: "Carolina Panthers",
-  CHI: "Chicago Bears",
-  CIN: "Cincinnati Bengals",
-  CLE: "Cleveland Browns",
-  DAL: "Dallas Cowboys",
-  DEN: "Denver Broncos",
-  DET: "Detroit Lions",
-  GB: "Green Bay Packers",
-  GNB: "Green Bay Packers",
-  HOU: "Houston Texans",
-  IND: "Indianapolis Colts",
-  JAX: "Jacksonville Jaguars",
-  KC: "Kansas City Chiefs",
-  KAN: "Kansas City Chiefs",
-  LAC: "Los Angeles Chargers",
-  LA: "Los Angeles Rams",
-  LAR: "Los Angeles Rams",
-  LV: "Las Vegas Raiders",
-  MIA: "Miami Dolphins",
-  MIN: "Minnesota Vikings",
-  NE: "New England Patriots",
-  NO: "New Orleans Saints",
-  NYG: "New York Giants",
-  NYJ: "New York Jets",
-  PHI: "Philadelphia Eagles",
-  PIT: "Pittsburgh Steelers",
-  SEA: "Seattle Seahawks",
-  SF: "San Francisco 49ers",
-  SFO: "San Francisco 49ers",
-  TB: "Tampa Bay Buccaneers",
-  TEN: "Tennessee Titans",
-  WAS: "Washington Commanders"
-
-};
-
-
-/* =========================================================
-   FIND TEAM NAME
-========================================================= */
-
-function getTeamName(market) {
-
-  /*
-    Prefer explicit Kalshi team fields.
-  */
-
-  const directCandidates = [
-
-    market.yes_sub_title,
-
-    market.yes_title,
-
-    market.subtitle,
-
-    market.team_name,
-
-    market.team,
-
-    market.name
-
-  ];
-
-
-  for (
-    const candidate
-    of directCandidates
-  ) {
-
-    if (
-      candidate &&
-      String(candidate).trim()
+    for (
+      const market
+      of gameMarkets
     ) {
 
-      const cleaned =
-        cleanTeamName(candidate);
-
-
-      /*
-        If the value is an abbreviation,
-        expand it.
-      */
-
-      const upper =
-        cleaned
-          .toUpperCase()
-          .replace(/[^A-Z]/g, "");
+      const text =
+        (
+          String(
+            market.ticker || ""
+          ) +
+          " " +
+          String(
+            market.yes_sub_title || ""
+          ) +
+          " " +
+          String(
+            market.subtitle || ""
+          )
+        ).toUpperCase();
 
 
       if (
-        NFL_TEAMS[upper]
+        new RegExp(
+          `\\b${teamCode}\\b`
+        ).test(text)
       ) {
 
-        return NFL_TEAMS[upper];
+        return market;
 
       }
 
-
-      return cleaned;
-
     }
 
   }
 
 
   /*
-    Try ticker.
-
-    Example:
-
-      KXNFLGAME-20250921-ARI-SEA-ARI
-
+    Try market team name.
   */
-
-  const ticker =
-    String(
-      market.ticker || ""
-    );
-
-
-  const parts =
-    ticker
-      .split("-");
-
-
-  for (
-    let i = parts.length - 1;
-    i >= 0;
-    i--
-  ) {
-
-    const code =
-      parts[i]
-        .toUpperCase();
-
-
-    if (
-      NFL_TEAMS[code]
-    ) {
-
-      return NFL_TEAMS[code];
-
-    }
-
-  }
-
-
-  /*
-    Last fallback.
-  */
-
-  return cleanTeamName(
-    market.ticker ||
-    "Team"
-  );
-
-}
-
-
-/* =========================================================
-   GAME KEY
-========================================================= */
-
-function getGameKey(market) {
-
-  /*
-    Kalshi's event_ticker is the best
-    grouping identifier.
-  */
-
-  if (
-    market.event_ticker
-  ) {
-
-    return String(
-      market.event_ticker
-    );
-
-  }
-
-
-  if (
-    market.event_id
-  ) {
-
-    return String(
-      market.event_id
-    );
-
-  }
-
-
-  if (
-    market.event
-  ) {
-
-    return String(
-      market.event
-    );
-
-  }
-
-
-  /*
-    Fallback to ticker without
-    the final outcome portion.
-  */
-
-  const ticker =
-    String(
-      market.ticker || ""
-    );
-
-
-  const parts =
-    ticker.split("-");
-
-
-  return parts
-    .slice(
-      0,
-      Math.max(
-        1,
-        parts.length - 1
-      )
-    )
-    .join("-");
-
-}
-
-
-/* =========================================================
-   GAME TITLE
-========================================================= */
-
-function getGameTitle(
-  markets
-) {
-
-  const teams = [];
-
 
   for (
     const market
-    of markets
+    of gameMarkets
   ) {
 
-    const name =
-      getTeamName(market);
-
+    const marketTeam =
+      getMarketTeam(market);
 
     if (
-      name &&
-      !teams.includes(name)
+      marketTeam === team
     ) {
 
-      teams.push(name);
+      return market;
 
     }
 
   }
 
 
-  /*
-    Exactly two teams:
-      Team A vs Team B
-  */
-
-  if (
-    teams.length >= 2
-  ) {
-
-    return (
-      teams[0] +
-      " vs. " +
-      teams[1]
-    );
-
-  }
-
-
-  if (
-    teams.length === 1
-  ) {
-
-    return teams[0];
-
-  }
-
-
-  return "NFL Game";
+  return null;
 
 }
 
@@ -2769,16 +2493,14 @@ function getGameTitle(
    NFL DATE
 ========================================================= */
 
-function getGameDate(
-  markets
-) {
+function getGameDate(gameMarkets) {
 
   for (
     const market
-    of markets
+    of gameMarkets
   ) {
 
-    const possible = [
+    const candidates = [
 
       market.expected_expiration_time,
 
@@ -2793,17 +2515,15 @@ function getGameDate(
 
     for (
       const value
-      of possible
+      of candidates
     ) {
 
       if (!value) {
         continue;
       }
 
-
       const date =
         new Date(value);
-
 
       if (
         !Number.isNaN(
@@ -2827,7 +2547,6 @@ function getGameDate(
     }
 
   }
-
 
   return "";
 
@@ -2885,12 +2604,11 @@ async function loadNFL() {
 
     if (!markets.length) {
 
-      grid.innerHTML =
-        `
+      grid.innerHTML = `
         <div class="empty">
           No open NFL markets found.
         </div>
-        `;
+      `;
 
       return;
 
@@ -2898,7 +2616,7 @@ async function loadNFL() {
 
 
     /*
-      Group all markets by game.
+      Group markets by event.
     */
 
     const games =
@@ -2937,7 +2655,7 @@ async function loadNFL() {
 
 
     /*
-      Display every game.
+      Render each game.
     */
 
     for (
@@ -2953,26 +2671,26 @@ async function loadNFL() {
           "div"
         );
 
-
       gameCard.className =
         "game-card";
 
+
+      /*
+        FIXED FULL GAME NAME.
+      */
 
       const title =
         document.createElement(
           "div"
         );
 
-
       title.className =
         "game-title";
-
 
       title.textContent =
         getGameTitle(
           gameMarkets
         );
-
 
       gameCard.appendChild(
         title
@@ -2992,14 +2710,11 @@ async function loadNFL() {
             "div"
           );
 
-
         dateElement.className =
           "game-date";
 
-
         dateElement.textContent =
           date;
-
 
         gameCard.appendChild(
           dateElement
@@ -3009,32 +2724,34 @@ async function loadNFL() {
 
 
       /*
-        Prevent duplicate team rows.
+        Get exact two NFL teams.
       */
 
-      const teamsShown =
-        new Set();
+      const teams =
+        getGameTeams(
+          gameMarkets
+        );
 
+
+      /*
+        Render each team.
+      */
 
       for (
-        const market
-        of gameMarkets
+        const team
+        of teams
       ) {
 
-        const team =
-          getTeamName(market);
+        const market =
+          findMarketForTeam(
+            gameMarkets,
+            team
+          );
 
 
-        if (
-          teamsShown.has(team)
-        ) {
-
+        if (!market) {
           continue;
-
         }
-
-
-        teamsShown.add(team);
 
 
         const odds =
@@ -3046,7 +2763,6 @@ async function loadNFL() {
             "div"
           );
 
-
         teamRow.className =
           "team-row";
 
@@ -3056,10 +2772,8 @@ async function loadNFL() {
             "div"
           );
 
-
         teamName.className =
           "team-name";
-
 
         teamName.textContent =
           team;
@@ -3070,29 +2784,26 @@ async function loadNFL() {
         );
 
 
+        /*
+          YES + NO boxes.
+        */
+
         const oddsRow =
           document.createElement(
             "div"
           );
 
-
         oddsRow.className =
           "odds-row";
 
-
-        /*
-          YES
-        */
 
         const yesBox =
           document.createElement(
             "div"
           );
 
-
         yesBox.className =
           "odds-box yes-box";
-
 
         yesBox.innerHTML = `
 
@@ -3111,19 +2822,13 @@ async function loadNFL() {
         `;
 
 
-        /*
-          NO
-        */
-
         const noBox =
           document.createElement(
             "div"
           );
 
-
         noBox.className =
           "odds-box no-box";
-
 
         noBox.innerHTML = `
 
@@ -3182,21 +2887,37 @@ async function loadNFL() {
         }
       );
 
+
   } catch (error) {
 
     console.error(
+      "NFL error:",
       error
     );
 
 
-    grid.innerHTML =
-      `
+    grid.innerHTML = `
       <div class="error">
         NFL feed error
       </div>
-      `;
+    `;
 
   }
+
+}
+
+
+/* =========================================================
+   REFRESH CHART
+========================================================= */
+
+function refreshChart() {
+
+  buildVisibleHistory();
+
+  drawChart();
+
+  updateSlider();
 
 }
 
@@ -3215,8 +2936,7 @@ loadNFL();
 
 
 /*
-  Portfolio:
-  every 10 seconds.
+  Portfolio every 10 seconds.
 */
 
 setInterval(
@@ -3226,8 +2946,7 @@ setInterval(
 
 
 /*
-  NFL:
-  every 30 seconds.
+  NFL every 30 seconds.
 */
 
 setInterval(
@@ -3237,7 +2956,7 @@ setInterval(
 
 
 /*
-  Redraw after resizing.
+  Redraw on resize.
 */
 
 window.addEventListener(
