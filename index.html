@@ -3,478 +3,469 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Weather Edge — Kalshi</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-*{box-sizing:border-box}
 
-body{
-margin:0;
-background:#08090d;
-color:#f5f5f5;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+* {
+box-sizing: border-box;
 }
 
-.container{
-width:min(1400px,94%);
-margin:auto;
-padding:28px 0 60px;
+body {
+margin: 0;
+background: #080b10;
+color: #f5f7fa;
+font-family: Arial, Helvetica, sans-serif;
 }
 
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:20px;
-margin-bottom:24px;
+header {
+padding: 22px;
+border-bottom: 1px solid #202630;
+background: #0d1118;
 }
 
-h1{
-margin:0;
-font-size:30px;
+h1 {
+margin: 0 0 5px;
+font-size: 25px;
 }
 
-.subtitle{
-color:#858b99;
-font-size:14px;
-margin-top:5px;
+.sub {
+color: #8993a3;
+font-size: 13px;
 }
 
-button{
-background:#fff;
-color:#08090d;
-border:0;
-border-radius:10px;
-padding:11px 17px;
-font-weight:800;
-cursor:pointer;
+.container {
+max-width: 1400px;
+margin: auto;
+padding: 20px;
 }
 
-button:disabled{
-opacity:.5;
+.grid {
+display: grid;
+grid-template-columns:
+repeat(4, minmax(0, 1fr));
+gap: 14px;
 }
 
-.stats{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:14px;
-margin-bottom:20px;
+.card {
+background: #10151d;
+border: 1px solid #242c38;
+border-radius: 14px;
+padding: 18px;
 }
 
-.card{
-background:#111319;
-border:1px solid #252934;
-border-radius:14px;
-padding:18px;
+.label {
+color: #8b96a7;
+font-size: 12px;
+margin-bottom: 8px;
 }
 
-.stat-label{
-color:#858b99;
-font-size:13px;
-margin-bottom:7px;
+.value {
+font-size: 26px;
+font-weight: bold;
 }
 
-.stat-value{
-font-size:25px;
-font-weight:800;
+.green {
+color: #35d07f;
 }
 
-.controls{
-display:flex;
-flex-wrap:wrap;
-gap:12px;
-align-items:center;
-margin-bottom:18px;
+.red {
+color: #ff647c;
 }
 
-.controls label{
-color:#9298a5;
-font-size:13px;
+.yellow {
+color: #ffd166;
 }
 
-input,select{
-background:#0d0f14;
-color:white;
-border:1px solid #2b2f3a;
-border-radius:9px;
-padding:10px 12px;
-outline:none;
+.controls {
+margin-top: 16px;
+display: grid;
+grid-template-columns:
+repeat(4, minmax(0, 1fr));
+gap: 12px;
 }
 
-.section-title{
-margin:30px 0 13px;
-font-size:20px;
+input {
+width: 100%;
+background: #080b10;
+color: white;
+border: 1px solid #303947;
+border-radius: 8px;
+padding: 10px;
 }
 
-.table-wrap{
-overflow-x:auto;
-background:#111319;
-border:1px solid #252934;
-border-radius:14px;
+button {
+border: 0;
+border-radius: 9px;
+padding: 11px 15px;
+font-weight: bold;
+cursor: pointer;
 }
 
-table{
-width:100%;
-border-collapse:collapse;
-min-width:1050px;
+.enable {
+background: #35d07f;
+color: #04130a;
 }
 
-th,td{
-padding:14px;
-border-bottom:1px solid #252934;
-text-align:left;
+.disable {
+background: #ff647c;
+color: #22050b;
 }
 
-th{
-color:#858b99;
-font-size:11px;
-text-transform:uppercase;
-letter-spacing:.05em;
+.refresh {
+background: #273141;
+color: white;
 }
 
-td{
-font-size:14px;
+.status {
+margin-top: 15px;
+padding: 13px;
+border-radius: 9px;
+background: #0b1017;
+border: 1px solid #242c38;
 }
 
-tr:last-child td{
-border-bottom:0;
+.table-wrap {
+margin-top: 18px;
+overflow-x: auto;
 }
 
-.market-title{
-font-weight:750;
-max-width:360px;
+table {
+width: 100%;
+border-collapse: collapse;
 }
 
-.small{
-color:#7f8693;
-font-size:12px;
-margin-top:4px;
+th,
+td {
+padding: 12px;
+border-bottom: 1px solid #202630;
+text-align: left;
+white-space: nowrap;
 }
 
-.yes{
-color:#5fe28a;
+th {
+color: #8b96a7;
+font-size: 12px;
 }
 
-.no{
-color:#ff7474;
+td {
+font-size: 13px;
 }
 
-.edge{
-color:#5fe28a;
-font-weight:800;
+.buy {
+font-weight: bold;
+color: #35d07f;
 }
 
-.buy{
-font-weight:850;
+.edge {
+font-weight: bold;
 }
 
-.empty,.loading{
-text-align:center;
-padding:35px;
-color:#818896;
+.small {
+font-size: 11px;
+color: #7d8796;
 }
 
-.error{
-display:none;
-background:#281418;
-border:1px solid #6b333b;
-color:#ff9da6;
-padding:13px;
-border-radius:10px;
-margin-bottom:18px;
+.panel {
+margin-top: 18px;
 }
 
-.calculator{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:18px;
+canvas {
+max-height: 360px;
 }
 
-.calc-grid{
-display:grid;
-gap:12px;
+@media(max-width: 900px) {
+
+.grid {
+grid-template-columns:
+repeat(2, 1fr);
 }
 
-.calc-box{
-background:#0d0f14;
-border:1px solid #252934;
-border-radius:12px;
-padding:16px;
-}
-
-.calc-label{
-color:#818896;
-font-size:12px;
-margin-bottom:6px;
-}
-
-.calc-number{
-font-size:21px;
-font-weight:800;
-}
-
-.signal{
-margin-top:14px;
-padding:14px;
-background:#0d0f14;
-border:1px solid #252934;
-border-radius:10px;
-color:#9097a4;
-font-size:13px;
-line-height:1.5;
-}
-
-.graph{
-height:390px;
-position:relative;
-}
-
-.refresh-info{
-margin-top:9px;
-color:#6f7683;
-font-size:12px;
-}
-
-@media(max-width:900px){
-.stats{
-grid-template-columns:repeat(2,1fr);
-}
-
-.calculator{
-grid-template-columns:1fr;
-}
-
-header{
-align-items:flex-start;
-flex-direction:column;
+.controls {
+grid-template-columns:
+repeat(2, 1fr);
 }
 }
 
-@media(max-width:550px){
-.stats{
-grid-template-columns:1fr;
+@media(max-width: 600px) {
+
+.grid {
+grid-template-columns: 1fr;
 }
 
-h1{
-font-size:25px;
+.controls {
+grid-template-columns: 1fr;
 }
 }
+
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
 <header>
 
-<div>
-<h1>🌦️ Weather Edge</h1>
-<div class="subtitle">
-Kalshi weather markets + independent Open-Meteo model
-</div>
-</div>
+<h1>Weather Edge — Kalshi</h1>
 
-<button id="refreshBtn" onclick="loadWeather()">
-Refresh Markets
-</button>
+<div class="sub">
+Weather model controls BUY decisions.
+Kalshi market controls SELL decisions.
+</div>
 
 </header>
 
-<div id="errorBox" class="error"></div>
+<div class="container">
 
-<div class="stats">
+<div class="grid">
 
 <div class="card">
-<div class="stat-label">Opportunities</div>
-<div class="stat-value" id="opportunityCount">0</div>
+<div class="label">
+WEATHER OPPORTUNITIES
+</div>
+
+<div
+class="value"
+id="count"
+>
+—
+</div>
 </div>
 
 <div class="card">
-<div class="stat-label">Best Edge</div>
-<div class="stat-value" id="bestEdge">—</div>
+<div class="label">
+BEST EDGE
+</div>
+
+<div
+class="value green"
+id="bestEdge"
+>
+—
+</div>
 </div>
 
 <div class="card">
-<div class="stat-label">Best City</div>
-<div class="stat-value" id="bestCity">—</div>
+<div class="label">
+BEST CITY
+</div>
+
+<div
+class="value"
+id="bestCity"
+>
+—
+</div>
 </div>
 
 <div class="card">
-<div class="stat-label">Updated</div>
-<div class="stat-value" id="lastUpdated">—</div>
+<div class="label">
+SCANNER DATE
 </div>
 
+<div
+class="value yellow"
+id="scannerDate"
+>
+—
+</div>
+</div>
+
+</div>
+
+<!-- AUTO TRADE -->
+
+<div class="card panel">
+
+<h2>
+Auto Trading
+</h2>
+
+<div class="small">
+BUY = weather edge.
+SELL = Kalshi price only.
 </div>
 
 <div class="controls">
 
-<label>Sort:</label>
-
-<select id="sortSelect" onchange="render()">
-<option value="edge">Highest Edge</option>
-<option value="score">Signal Score</option>
-<option value="soonest">Soonest Settlement</option>
-<option value="latest">Latest Settlement</option>
-<option value="price">Lowest Price</option>
-</select>
-
-<label>Investment:</label>
+<div>
+<div class="label">
+MAX $ / TRADE
+</div>
 
 <input
-id="investment"
+id="maxTrade"
 type="number"
-min="0"
-step="0.01"
-value="25"
-oninput="render()"
+min="1"
+max="25"
+step="1"
+value="5"
 >
+</div>
 
-<span style="color:#777e8c;font-size:13px">
-dollars
-</span>
+<div>
+<div class="label">
+MAX $ / DAY
+</div>
+
+<input
+id="maxDaily"
+type="number"
+min="1"
+max="100"
+step="1"
+value="20"
+>
+</div>
+
+<div>
+<div class="label">
+TAKE PROFIT %
+</div>
+
+<input
+id="takeProfit"
+type="number"
+min="5"
+max="90"
+step="1"
+value="25"
+>
+</div>
+
+<div>
+
+<div class="label">
+CONTROL
+</div>
+
+<button
+class="enable"
+onclick="enableTrading()"
+>
+ENABLE REAL TRADING
+</button>
+
+<button
+class="disable"
+onclick="disableTrading()"
+style="margin-top:7px;"
+>
+TURN OFF
+</button>
 
 </div>
 
-<h2 class="section-title">
-Top Weather Opportunities
+</div>
+
+<div
+class="status"
+id="tradeStatus"
+>
+Auto Trade: checking...
+</div>
+
+</div>
+
+<!-- OPPORTUNITIES -->
+
+<div class="card panel">
+
+<h2>
+Today's Weather Opportunities
 </h2>
+
+<div class="small">
+Only today's weather markets are eligible.
+</div>
 
 <div class="table-wrap">
 
 <table>
 
 <thead>
+
 <tr>
-<th>Market</th>
-<th>Signal</th>
-<th>Kalshi</th>
-<th>Model</th>
-<th>Edge</th>
-<th>Cost</th>
-<th>Contracts</th>
-<th>Profit</th>
-<th>Settlement</th>
+
+<th>
+CITY
+</th>
+
+<th>
+MARKET
+</th>
+
+<th>
+BUY
+</th>
+
+<th>
+KALSHI
+</th>
+
+<th>
+MODEL
+</th>
+
+<th>
+EDGE
+</th>
+
+<th>
+SCORE
+</th>
+
+<th>
+SETTLEMENT
+</th>
+
 </tr>
+
 </thead>
 
-<tbody id="marketsBody">
-
-<tr>
-<td colspan="9" class="loading">
-Loading weather markets...
-</td>
-</tr>
-
-</tbody>
+<tbody
+id="opportunities"
+></tbody>
 
 </table>
 
 </div>
 
-<h2 class="section-title">
-Investment Calculator
-</h2>
-
-<div class="card calculator">
-
-<div class="calc-grid">
-
-<div class="calc-box">
-<div class="calc-label">Selected Market</div>
-<div class="calc-number" id="calcMarket">
-Select a market
-</div>
 </div>
 
-<div class="calc-box">
-<div class="calc-label">Side</div>
-<div class="calc-number" id="calcSide">
-—
-</div>
-</div>
+<!-- CHART -->
 
-<div class="calc-box">
-<div class="calc-label">Contract Price</div>
-<div class="calc-number" id="calcPrice">
-—
-</div>
-</div>
+<div class="card panel">
 
-</div>
-
-<div class="calc-grid">
-
-<div class="calc-box">
-<div class="calc-label">Contracts</div>
-<div class="calc-number" id="calcContracts">
-0
-</div>
-</div>
-
-<div class="calc-box">
-<div class="calc-label">Actual Cost</div>
-<div class="calc-number" id="calcCost">
-$0.00
-</div>
-</div>
-
-<div class="calc-box">
-<div class="calc-label">Potential Payout</div>
-<div class="calc-number" id="calcPayout">
-$0.00
-</div>
-</div>
-
-<div class="calc-box">
-<div class="calc-label">Potential Profit</div>
-<div class="calc-number" id="calcProfit">
-$0.00
-</div>
-</div>
-
-<div class="calc-box">
-<div class="calc-label">Potential Return</div>
-<div class="calc-number" id="calcReturn">
-0%
-</div>
-</div>
-
-<div class="calc-box">
-<div class="calc-label">Unused Money</div>
-<div class="calc-number" id="calcUnused">
-$0.00
-</div>
-</div>
-
-</div>
-
-</div>
-
-<div class="signal">
-<strong>How the signal works:</strong>
-the Worker compares Kalshi's current contract price with an
-independent Open-Meteo weather-model estimate. The displayed
-edge is an estimated probability difference, not a guarantee.
-</div>
-
-<h2 class="section-title">
+<h2>
 Market Odds
 </h2>
 
-<div class="card">
-
-<div class="graph">
-<canvas id="oddsChart"></canvas>
-</div>
+<canvas
+id="oddsChart"
+></canvas>
 
 </div>
 
-<div class="refresh-info">
-Data is refreshed when you press "Refresh Markets".
-Cloudflare caching helps prevent unnecessary upstream requests.
+<!-- LAST ORDER -->
+
+<div class="card panel">
+
+<h2>
+Trading Status
+</h2>
+
+<pre
+id="lastOrder"
+style="
+white-space:pre-wrap;
+color:#aab4c3;
+font-size:12px;
+"
+>No orders yet.</pre>
+
 </div>
 
 </div>
@@ -484,145 +475,71 @@ Cloudflare caching helps prevent unnecessary upstream requests.
 const WORKER =
 "https://worker1.ryderolinger1.workers.dev";
 
-const WEATHER_ENDPOINT =
-WORKER + "/api/weather";
-
-let opportunities = [];
-let selectedMarket = null;
 let chart = null;
 
-/* ---------------------------------------------------------
-HELPERS
---------------------------------------------------------- */
+/* =========================================
+WEATHER
+========================================= */
 
-function money(value){
-return "$" +
-Number(value || 0).toFixed(2);
-}
+async function loadWeather() {
 
-function pct(value){
-return Number(value || 0).toFixed(1) +
-"%";
-}
-
-function escapeHTML(value){
-return String(value ?? "")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-}
-
-function formatDate(value){
-
-if(!value){
-return "—";
-}
-
-const d = new Date(value);
-
-if(Number.isNaN(d.getTime())){
-return "—";
-}
-
-return d.toLocaleString([],{
-month:"short",
-day:"numeric",
-hour:"numeric",
-minute:"2-digit"
-});
-}
-
-/* ---------------------------------------------------------
-LOAD WEATHER
---------------------------------------------------------- */
-
-async function loadWeather(){
-
-const button =
-document.getElementById(
-"refreshBtn"
-);
-
-const error =
-document.getElementById(
-"errorBox"
-);
-
-button.disabled = true;
-button.textContent =
-"Loading...";
-
-error.style.display =
-"none";
-
-document.getElementById(
-"marketsBody"
-).innerHTML = `
-<tr>
-<td colspan="9" class="loading">
-Loading weather opportunities...
-</td>
-</tr>
-`;
-
-try{
+try {
 
 const response =
 await fetch(
-WEATHER_ENDPOINT,
+WORKER +
+"/api/weather?ts=" +
+Date.now(),
 {
-method:"GET",
-cache:"no-store"
+cache: "no-store"
 }
 );
 
 const data =
 await response.json();
 
-if(
-!response.ok ||
-data.ok === false
-){
+if (!data.ok) {
 throw new Error(
 data.error ||
 "Weather request failed"
 );
 }
 
-opportunities =
+document.getElementById(
+"count"
+).textContent =
+data.count ?? 0;
+
+document.getElementById(
+"scannerDate"
+).textContent =
+data.scannerDate || "—";
+
+const opportunities =
 Array.isArray(
 data.opportunities
 )
 ? data.opportunities
 : [];
 
-selectedMarket =
-opportunities[0] ||
-null;
+if (
+opportunities.length
+) {
 
-document.getElementById(
-"opportunityCount"
-).textContent =
-opportunities.length;
-
-if(opportunities.length){
+const best =
+opportunities[0];
 
 document.getElementById(
 "bestEdge"
 ).textContent =
-pct(
-opportunities[0].edge
-);
+best.edge + "%";
 
 document.getElementById(
 "bestCity"
 ).textContent =
-opportunities[0].city ||
-"—";
+best.city;
 
-}else{
+} else {
 
 document.getElementById(
 "bestEdge"
@@ -635,532 +552,502 @@ document.getElementById(
 "—";
 }
 
-document.getElementById(
-"lastUpdated"
-).textContent =
-new Date()
-.toLocaleTimeString([],{
-hour:"numeric",
-minute:"2-digit"
-});
-
-render();
-
-}catch(errorObject){
-
-console.error(
-errorObject
+renderTable(
+opportunities
 );
 
-error.textContent =
-"Failed to load weather markets: " +
-errorObject.message;
+renderChart(
+opportunities
+);
 
-error.style.display =
-"block";
+} catch (error) {
 
 document.getElementById(
-"marketsBody"
-).innerHTML = `
+"opportunities"
+).innerHTML =
+`
 <tr>
-<td colspan="9" class="empty">
-No weather data available.
-</td>
-</tr>
-`;
-}
-
-button.disabled =
-false;
-
-button.textContent =
-"Refresh Markets";
-}
-
-/* ---------------------------------------------------------
-SORT
---------------------------------------------------------- */
-
-function sortedMarkets(){
-
-const list =
-[...opportunities];
-
-const mode =
-document.getElementById(
-"sortSelect"
-).value;
-
-if(mode === "edge"){
-
-list.sort(
-(a,b) =>
-Number(b.edge || 0) -
-Number(a.edge || 0)
-);
-
-}else if(mode === "score"){
-
-list.sort(
-(a,b) =>
-Number(b.score || 0) -
-Number(a.score || 0)
-);
-
-}else if(mode === "soonest"){
-
-list.sort(
-(a,b) =>
-new Date(
-a.settlementDate || 0
-) -
-new Date(
-b.settlementDate || 0
-)
-);
-
-}else if(mode === "latest"){
-
-list.sort(
-(a,b) =>
-new Date(
-b.settlementDate || 0
-) -
-new Date(
-a.settlementDate || 0
-)
-);
-
-}else if(mode === "price"){
-
-list.sort(
-(a,b) =>
-Number(a.marketPrice || 0) -
-Number(b.marketPrice || 0)
-);
-}
-
-return list;
-}
-
-/* ---------------------------------------------------------
-RENDER TABLE
---------------------------------------------------------- */
-
-function render(){
-
-const body =
-document.getElementById(
-"marketsBody"
-);
-
-const list =
-sortedMarkets();
-
-if(!list.length){
-
-body.innerHTML = `
-<tr>
-<td colspan="9" class="empty">
-No weather opportunities currently meet
-the model's edge threshold.
+<td colspan="8">
+Error: ${escapeHtml(
+error.message
+)}
 </td>
 </tr>
 `;
 
-renderChart([]);
-
-calculate();
-
-return;
 }
 
-body.innerHTML =
-list.map(
-(market,index) => {
+}
 
-const price =
-Number(
-market.marketPrice || 0
-);
+/* =========================================
+TABLE
+========================================= */
 
-const investment =
-Number(
+function renderTable(
+opportunities
+) {
+
+const tbody =
 document.getElementById(
-"investment"
-).value
-) || 0;
-
-const contracts =
-Math.floor(
-investment /
-Math.max(
-price,
-0.01
-)
+"opportunities"
 );
 
-const cost =
-contracts * price;
+tbody.innerHTML = "";
 
-const payout =
-contracts;
+for (
+const item of
+opportunities
+) {
 
-const profit =
-payout - cost;
+const row =
+document.createElement(
+"tr"
+);
 
-const sideClass =
-market.side === "YES"
-? "yes"
-: "no";
+row.innerHTML = `
 
-return `
-<tr
-onclick="selectMarket(${index})"
-style="cursor:pointer"
+<td>
+${escapeHtml(item.city)}
+</td>
+
+<td>
+${escapeHtml(
+item.title
+)}
+</td>
+
+<td class="buy">
+BUY ${escapeHtml(
+item.side
+)}
+</td>
+
+<td>
+${Number(
+item.marketPrice
+).toFixed(3)}
+</td>
+
+<td>
+${item.modelProbability}%
+</td>
+
+<td
+class="edge green"
 >
-
-<td>
-
-<div class="market-title">
-${escapeHTML(
-market.title
-)}
-</div>
-
-<div class="small">
-${escapeHTML(
-market.city || ""
-)}
-</div>
-
++${item.edge}%
 </td>
 
 <td>
-
-<span class="buy ${sideClass}">
-${escapeHTML(
-market.sideLabel ||
-"BUY " +
-market.side
-)}
-</span>
-
+${item.score}
 </td>
 
 <td>
-${pct(
-market.marketPrice * 100
-)}
+${item.closeTime
+? new Date(
+item.closeTime
+).toLocaleString()
+: "—"}
 </td>
 
-<td>
-${pct(
-market.modelProbability
-)}
-</td>
-
-<td class="edge">
-+${pct(
-market.edge
-)}
-</td>
-
-<td>
-${money(cost)}
-</td>
-
-<td>
-${contracts}
-</td>
-
-<td class="${
-profit > 0
-? "yes"
-: ""
-}">
-${money(profit)}
-</td>
-
-<td>
-${formatDate(
-market.settlementDate ||
-market.closeTime
-)}
-</td>
-
-</tr>
 `;
+
+tbody.appendChild(
+row
+);
 }
-).join("");
-
-renderChart(list);
-
-calculate();
-}
-
-/* ---------------------------------------------------------
-SELECT MARKET
---------------------------------------------------------- */
-
-function selectMarket(index){
-
-const list =
-sortedMarkets();
-
-if(!list[index]){
-return;
 }
 
-selectedMarket =
-list[index];
-
-calculate();
-
-const calculator =
-document.querySelector(
-".calculator"
-);
-
-calculator.scrollIntoView({
-behavior:"smooth",
-block:"center"
-});
-}
-
-/* ---------------------------------------------------------
-CALCULATOR
---------------------------------------------------------- */
-
-function calculate(){
-
-if(!selectedMarket){
-
-document.getElementById(
-"calcMarket"
-).textContent =
-"Select a market";
-
-document.getElementById(
-"calcSide"
-).textContent =
-"—";
-
-document.getElementById(
-"calcPrice"
-).textContent =
-"—";
-
-return;
-}
-
-const investment =
-Math.max(
-0,
-Number(
-document.getElementById(
-"investment"
-).value
-) || 0
-);
-
-const price =
-Math.max(
-0.01,
-Number(
-selectedMarket.marketPrice
-) || 0
-);
-
-const contracts =
-Math.floor(
-investment / price
-);
-
-const cost =
-contracts * price;
-
-const payout =
-contracts;
-
-const profit =
-payout - cost;
-
-const returnPct =
-cost > 0
-? (
-profit /
-cost
-) * 100
-: 0;
-
-const unused =
-investment - cost;
-
-document.getElementById(
-"calcMarket"
-).textContent =
-selectedMarket.title ||
-"Weather market";
-
-const side =
-document.getElementById(
-"calcSide"
-);
-
-side.textContent =
-selectedMarket.sideLabel ||
-"BUY " +
-selectedMarket.side;
-
-side.className =
-"calc-number " +
-(
-selectedMarket.side === "YES"
-? "yes"
-: "no"
-);
-
-document.getElementById(
-"calcPrice"
-).textContent =
-pct(price * 100);
-
-document.getElementById(
-"calcContracts"
-).textContent =
-contracts;
-
-document.getElementById(
-"calcCost"
-).textContent =
-money(cost);
-
-document.getElementById(
-"calcPayout"
-).textContent =
-money(payout);
-
-document.getElementById(
-"calcProfit"
-).textContent =
-money(profit);
-
-document.getElementById(
-"calcReturn"
-).textContent =
-returnPct.toFixed(1) +
-"%";
-
-document.getElementById(
-"calcUnused"
-).textContent =
-money(unused);
-}
-
-/* ---------------------------------------------------------
+/* =========================================
 CHART
---------------------------------------------------------- */
+========================================= */
 
-function renderChart(list){
+function renderChart(
+opportunities
+) {
 
-const canvas =
-document.getElementById(
-"oddsChart"
+const labels =
+opportunities
+.slice(0, 10)
+.map(
+x =>
+x.city +
+" " +
+x.side
 );
 
-if(chart){
+const market =
+opportunities
+.slice(0, 10)
+.map(
+x =>
+Number(
+x.marketProbability
+)
+);
+
+const model =
+opportunities
+.slice(0, 10)
+.map(
+x =>
+Number(
+x.modelProbability
+)
+);
+
+if (chart) {
 chart.destroy();
 }
 
-const top =
-list.slice(0,12);
-
 chart =
 new Chart(
-canvas,
-{
-type:"bar",
-
-data:{
-labels:
-top.map(
-market =>
-(
-market.city ||
-"Weather"
-) +
-" — " +
-(
-market.side ||
-""
-)
+document.getElementById(
+"oddsChart"
 ),
+{
+type:
+"bar",
 
-datasets:[
+data: {
+
+labels,
+
+datasets: [
 
 {
 label:
-"Kalshi Price %",
-
+"Kalshi %",
 data:
-top.map(
-market =>
-Number(
-market.marketProbability ||
-0
-)
-)
+market
 },
 
 {
 label:
-"Model Probability %",
-
+"Model %",
 data:
-top.map(
-market =>
-Number(
-market.modelProbability ||
-0
-)
-)
+model
 }
 
 ]
+
 },
 
-options:{
+options: {
 
-responsive:true,
+responsive:
+true,
 
-maintainAspectRatio:false,
+scales: {
 
-scales:{
+y: {
+beginAtZero:
+true,
 
-y:{
-beginAtZero:true,
-max:100,
-
-ticks:{
-callback:
-value =>
-value + "%"
-}
+max:
+100
 }
 
 }
 
 }
+
 }
 );
 }
 
-/* ---------------------------------------------------------
-START
---------------------------------------------------------- */
+/* =========================================
+AUTO TRADE STATUS
+========================================= */
 
-loadWeather();
+async function loadTradeStatus() {
+
+try {
+
+const response =
+await fetch(
+WORKER +
+"/api/auto-trade/status?ts=" +
+Date.now(),
+{
+cache:
+"no-store"
+}
+);
+
+const data =
+await response.json();
+
+if (!data.ok) {
+throw new Error(
+data.error ||
+"Status failed"
+);
+}
+
+const status =
+document.getElementById(
+"tradeStatus"
+);
+
+if (
+data.enabled
+) {
+
+status.innerHTML =
+
+`<span class="green">
+● AUTO TRADE ON
+</span>
+<br>
+Max trade: $${data.maxTradeDollars}
+<br>
+Daily limit: $${data.maxDailyDollars}
+<br>
+Spent today: $${Number(
+data.dailySpent || 0
+).toFixed(2)}
+<br>
+Take profit: ${data.takeProfit}%
+<br>
+Open bot positions:
+${data.positions?.length || 0}`;
+
+} else {
+
+status.innerHTML =
+
+`<span class="red">
+● AUTO TRADE OFF
+</span>`;
+}
+
+document.getElementById(
+"lastOrder"
+).textContent =
+data.lastOrder
+? JSON.stringify(
+data.lastOrder,
+null,
+2
+)
+: "No orders yet.";
+
+} catch (error) {
+
+document.getElementById(
+"tradeStatus"
+).innerHTML =
+
+`<span class="red">
+Auto Trade status error:
+${escapeHtml(
+error.message
+)}
+</span>`;
+}
+}
+
+/* =========================================
+ENABLE
+========================================= */
+
+async function enableTrading() {
+
+const maxTrade =
+Number(
+document.getElementById(
+"maxTrade"
+).value
+);
+
+const maxDaily =
+Number(
+document.getElementById(
+"maxDaily"
+).value
+);
+
+const takeProfit =
+Number(
+document.getElementById(
+"takeProfit"
+).value
+);
+
+const confirmed =
+confirm(
+"This will enable REAL-MONEY automatic Kalshi trading. Continue?"
+);
+
+if (!confirmed) {
+return;
+}
+
+try {
+
+const response =
+await fetch(
+WORKER +
+"/api/auto-trade",
+{
+method:
+"POST",
+
+headers: {
+"Content-Type":
+"application/json"
+},
+
+body:
+JSON.stringify({
+
+enabled:
+true,
+
+confirm:
+"ENABLE_REAL_MONEY_TRADING",
+
+maxTradeDollars:
+maxTrade,
+
+maxDailyDollars:
+maxDaily,
+
+takeProfitPercent:
+takeProfit
+
+})
+}
+);
+
+const data =
+await response.json();
+
+if (!data.ok) {
+throw new Error(
+data.error ||
+"Could not enable trading"
+);
+}
+
+await loadTradeStatus();
+
+} catch (error) {
+
+alert(
+error.message
+);
+}
+}
+
+/* =========================================
+DISABLE
+========================================= */
+
+async function disableTrading() {
+
+try {
+
+const response =
+await fetch(
+WORKER +
+"/api/auto-trade",
+{
+method:
+"POST",
+
+headers: {
+"Content-Type":
+"application/json"
+},
+
+body:
+JSON.stringify({
+enabled:
+false
+})
+}
+);
+
+const data =
+await response.json();
+
+if (!data.ok) {
+throw new Error(
+data.error ||
+"Could not disable"
+);
+}
+
+await loadTradeStatus();
+
+} catch (error) {
+
+alert(
+error.message
+);
+}
+}
+
+/* =========================================
+ESCAPE
+========================================= */
+
+function escapeHtml(
+value
+) {
+
+return String(
+value ?? ""
+)
+.replace(
+/&/g,
+"&amp;"
+)
+.replace(
+/</g,
+"&lt;"
+)
+.replace(
+/>/g,
+"&gt;"
+)
+.replace(
+/"/g,
+"&quot;"
+)
+.replace(
+/'/g,
+"&#039;"
+);
+}
+
+/* =========================================
+START
+========================================= */
+
+async function refresh() {
+
+await loadWeather();
+
+await loadTradeStatus();
+
+}
+
+refresh();
+
+/*
+Dashboard refresh only.
+
+Actual trading is handled by the
+Cloudflare scheduled Worker.
+*/
+
+setInterval(
+refresh,
+30000
+);
 
 </script>
 
