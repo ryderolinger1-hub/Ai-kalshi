@@ -37,6 +37,14 @@ margin:auto;
 padding:18px
 }
 
+header{
+display:flex;
+justify-content:space-between;
+gap:15px;
+align-items:center;
+margin-bottom:16px
+}
+
 h1{
 margin:0;
 font-size:25px
@@ -44,14 +52,6 @@ font-size:25px
 
 .muted{
 color:var(--muted)
-}
-
-header{
-display:flex;
-justify-content:space-between;
-gap:15px;
-align-items:center;
-margin-bottom:16px
 }
 
 .pill{
@@ -99,10 +99,6 @@ font-weight:800;
 margin-top:5px
 }
 
-.settings{
-margin-bottom:14px
-}
-
 .form{
 display:grid;
 grid-template-columns:repeat(6,1fr);
@@ -117,7 +113,8 @@ font-size:11px;
 margin-bottom:5px
 }
 
-.field input{
+.field input,
+.modalbox input{
 width:100%;
 background:#080c12;
 border:1px solid #293340;
@@ -189,7 +186,7 @@ border-radius:9px;
 background:#0a0f15;
 border:1px solid var(--border);
 font-size:12px;
-line-height:1.45
+line-height:1.5
 }
 
 .summary{
@@ -315,16 +312,6 @@ background:var(--panel);
 border:1px solid var(--border);
 border-radius:14px;
 padding:20px
-}
-
-.modalbox input{
-width:100%;
-margin-top:8px;
-background:#080c12;
-border:1px solid #293340;
-color:#fff;
-border-radius:9px;
-padding:10px
 }
 
 @media(max-width:900px){
@@ -470,7 +457,7 @@ class="value"
 </div>
 
 
-<div class="card settings">
+<div class="card">
 
 <div class="label">
 AUTO-TRADER SETTINGS
@@ -620,20 +607,16 @@ class="msg"
 
 <div>
 <b>Last action:</b>
-
 <span id="lastAction">
 —
 </span>
-
 </div>
 
 <div>
 <b>Last error:</b>
-
 <span id="lastError">
 —
 </span>
-
 </div>
 
 </div>
@@ -737,41 +720,19 @@ CANCEL
 const WORKER =
 "https://worker1.ryderolinger1.workers.dev";
 
+
 const $ =
 id =>
 document.getElementById(
 id
 );
 
-const money =
-n =>
-`$${Number(n || 0).toFixed(2)}`;
-
-const pct =
-v =>
-(
-  Number(v || 0) *
-  100
-).toFixed(1) +
-"%";
-
-const move =
-v =>
-(
-  Number(v || 0) *
-  100
-).toFixed(1) +
-"¢";
-
-const price =
-v =>
-Number(v || 0)
-.toFixed(1) +
-"¢";
 
 const esc =
 s =>
-String(s ?? "")
+String(
+  s ?? ""
+)
 .replace(
   /&/g,
   "&amp;"
@@ -790,94 +751,117 @@ String(s ?? "")
 );
 
 
+const money =
+n =>
+`$${Number(
+  n || 0
+).toFixed(2)}`;
+
+
+const pct =
+v =>
+(
+  Number(
+    v || 0
+  )*
+  100
+).toFixed(1)+
+"%";
+
+
+const cents =
+v =>
+Number(
+  v || 0
+).toFixed(1)+
+"¢";
+
+
 async function api(
-path,
-options = {}
-) {
+  path,
+  options={}
+){
 
-const response =
-await fetch(
-WORKER + path,
-{
-  ...options,
+  const r=
+    await fetch(
+      WORKER+
+      path,
+      {
+        ...options,
 
-  headers: {
-    "Content-Type":
-      "application/json",
+        headers:{
+          "Content-Type":
+            "application/json",
 
-    ...(options.headers || {})
+          ...(options.headers||{})
+        }
+      }
+    );
+
+  let d={};
+
+  try{
+    d=
+      await r.json();
   }
-}
-);
 
-let data = {};
+  catch{
+    throw new Error(
+      "Worker returned invalid JSON."
+    );
+  }
 
-try {
-data =
-await response.json();
-}
+  if(
+    !r.ok
+  ){
+    throw new Error(
+      d.error||
+      d.message||
+      `HTTP ${r.status}`
+    );
+  }
 
-catch {
-throw new Error(
-"Worker returned invalid JSON."
-);
-}
-
-if (
-!response.ok
-) {
-throw new Error(
-data.error ||
-data.message ||
-`HTTP ${response.status}`
-);
-}
-
-return data;
+  return d;
 }
 
 
 function show(
-text,
-type = "good"
-) {
+  text,
+  type="good"
+){
+  $("msg").textContent=
+    text;
 
-$("msg")
-.textContent =
-text;
-
-$("msg")
-.className =
-"msg show " +
-type;
+  $("msg").className=
+    "msg show "+
+    type;
 }
 
 
-function describeAction(
-action
-) {
+function actionText(a){
 
-if (!action) {
-return "—";
-}
+  if(
+    !a
+  ){
+    return "—";
+  }
 
-return [
-  action.type,
+  return [
+    a.type,
+    a.ticker,
+    a.side,
 
-  action.ticker,
+    a.contracts
+      ? `${a.contracts} contracts`
+      : "",
 
-  action.side,
-
-  action.contracts
-    ? `${action.contracts} contracts`
-    : "",
-
-  action.reason,
-
-  action.message
-]
-.filter(Boolean)
-.join(" • ");
+    a.reason,
+    a.message
+  ]
+  .filter(Boolean)
+  .join(
+    " • "
+  );
 }
 
 
@@ -885,103 +869,101 @@ return [
 STATUS
 ========================================================= */
 
-async function loadStatus() {
+async function loadStatus(){
 
-const status =
-await api(
-"/api/auto-trade/status"
-);
+  const s=
+    await api(
+      "/api/auto-trade/status"
+    );
 
-$("status")
-.textContent =
-status.enabled
-? "REAL TRADING ON"
-: "REAL TRADING OFF";
+  $("status").textContent=
+    s.enabled
+      ? "REAL TRADING ON"
+      : "REAL TRADING OFF";
 
-$("status")
-.className =
-"pill " +
-(
-status.enabled
-? "on"
-: "off"
-);
+  $("status").className=
+    "pill "+
+    (
+      s.enabled
+        ? "on"
+        : "off"
+    );
 
+  $("maxTrade").value=
+    s.maxTrade??
+    5;
 
-$("maxTrade").value =
-status.maxTrade ??
-5;
+  $("maxDay").value=
+    s.maxDay??
+    20;
 
-$("maxDay").value =
-status.maxDay ??
-20;
+  $("tp").value=
+    Number(
+      s.takeProfit??
+      .25
+    )*
+    100;
 
-$("tp").value =
-Number(
-status.takeProfit ??
-0.25
-) * 100;
+  const f=
+    s.filters||
+    {};
 
+  $("mins").value=
+    f.minMinutesToClose??
+    180;
 
-const filters =
-status.filters ||
-{};
+  $("edge").value=
+    Number(
+      f.minEdge??
+      .01
+    )*
+    100;
 
-$("mins").value =
-filters.minMinutesToClose ??
-180;
+  $("move").value=
+    Number(
+      f.minExpectedPriceMove??
+      .01
+    )*
+    100;
 
-$("edge").value =
-Number(
-filters.minEdge ??
-0.01
-) * 100;
+  $("maxTradeD")
+    .textContent=
+      money(
+        s.maxTrade
+      );
 
-$("move").value =
-Number(
-filters.minExpectedPriceMove ??
-0.01
-) * 100;
+  $("maxDayD")
+    .textContent=
+      money(
+        s.maxDay
+      );
 
+  $("spentD")
+    .textContent=
+      money(
+        s.spentToday
+      );
 
-$("maxTradeD")
-.textContent =
-money(
-status.maxTrade
-);
+  $("positionsD")
+    .textContent=
+      Array.isArray(
+        s.entries
+      )
+        ? s.entries.length
+        : 0;
 
-$("maxDayD")
-.textContent =
-money(
-status.maxDay
-);
+  $("lastAction")
+    .textContent=
+      actionText(
+        s.lastAction
+      );
 
-$("spentD")
-.textContent =
-money(
-status.spentToday
-);
+  $("lastError")
+    .textContent=
+      s.lastError||
+      "—";
 
-$("positionsD")
-.textContent =
-Array.isArray(
-status.entries
-)
-? status.entries.length
-: 0;
-
-$("lastAction")
-.textContent =
-describeAction(
-status.lastAction
-);
-
-$("lastError")
-.textContent =
-status.lastError ||
-"—";
-
-return status;
+  return s;
 }
 
 
@@ -989,105 +971,107 @@ return status;
 BALANCE
 ========================================================= */
 
-async function loadBalance() {
+async function loadBalance(){
 
-try {
+  try{
 
-const balance =
-await api(
-"/api/account/balance"
-);
+    const b=
+      await api(
+        "/api/account/balance"
+      );
 
-$("balanceD")
-.textContent =
-money(
-balance.balanceDollars
-);
+    $("balanceD")
+      .textContent=
+        money(
+          b.balanceDollars
+        );
 
-}
+  }
 
-catch {
+  catch{
 
-$("balanceD")
-.textContent =
-"—";
-}
-
+    $("balanceD")
+      .textContent=
+        "—";
+  }
 }
 
 
 /* =========================================================
-SAVE SETTINGS
+SETTINGS
 ========================================================= */
 
-async function saveSettings() {
+async function saveSettings(){
 
-try {
+  try{
 
-await api(
-"/api/auto-trade/settings",
-{
-method:
-"POST",
+    await api(
+      "/api/auto-trade/settings",
+      {
+        method:
+          "POST",
 
-body:
-JSON.stringify({
+        body:
+          JSON.stringify({
 
-maxTrade:
-Number(
-$("maxTrade").value
-),
+            maxTrade:
+              Number(
+                $("maxTrade")
+                  .value
+              ),
 
-maxDay:
-Number(
-$("maxDay").value
-),
+            maxDay:
+              Number(
+                $("maxDay")
+                  .value
+              ),
 
-takeProfit:
-Number(
-$("tp").value
-) / 100,
+            takeProfit:
+              Number(
+                $("tp")
+                  .value
+              )/
+              100,
 
-minMinutesToClose:
-Number(
-$("mins").value
-),
+            minMinutesToClose:
+              Number(
+                $("mins")
+                  .value
+              ),
 
-/*
-DEFAULT = 1%
-*/
+            minEdge:
+              Number(
+                $("edge")
+                  .value
+              )/
+              100,
 
-minEdge:
-Number(
-$("edge").value
-) / 100,
+            minExpectedPriceMove:
+              Number(
+                $("move")
+                  .value
+              )/
+              100
 
-minExpectedPriceMove:
-Number(
-$("move").value
-) / 100
+          })
+      }
+    );
 
-})
-}
-);
+    show(
+      "Settings saved."
+    );
 
-show(
-"Settings saved."
-);
+    await refresh();
 
-await refresh();
+  }
 
-}
+  catch(e){
 
-catch (error) {
-
-show(
-error.message,
-"error"
-);
-
-}
-
+    show(
+      e.message,
+      "error"
+    );
+  }
 }
 
 
@@ -1095,169 +1079,162 @@ error.message,
 START / STOP
 ========================================================= */
 
-function openStart() {
+function openStart(){
 
-$("modal")
-.classList.add(
-"show"
-);
+  $("modal")
+    .classList
+    .add(
+      "show"
+    );
 
-$("confirm").value =
-"";
+  $("confirm")
+    .value=
+      "";
 
-setTimeout(
-() =>
-$("confirm").focus(),
-50
-);
-
+  setTimeout(
+    () =>
+      $("confirm")
+        .focus(),
+    50
+  );
 }
 
-function closeStart() {
+function closeStart(){
 
-$("modal")
-.classList.remove(
-"show"
-);
-
-}
-
-
-async function startTrading() {
-
-if (
-$("confirm")
-.value
-.trim() !==
-"ENABLE REAL TRADING"
-) {
-
-alert(
-"Type ENABLE REAL TRADING exactly."
-);
-
-return;
-}
-
-try {
-
-await api(
-"/api/auto-trade/start",
-{
-method:
-"POST",
-
-body:
-JSON.stringify({
-confirmation:
-"ENABLE REAL TRADING"
-})
-}
-);
-
-closeStart();
-
-show(
-"REAL TRADING ON — initial scan started."
-);
-
-setTimeout(
-refresh,
-1200
-);
-
-}
-
-catch (error) {
-
-show(
-error.message,
-"error"
-);
-
-}
-
+  $("modal")
+    .classList
+    .remove(
+      "show"
+    );
 }
 
 
-async function stopTrading() {
+async function startTrading(){
 
-try {
+  if(
+    $("confirm")
+      .value
+      .trim()!==
+      "ENABLE REAL TRADING"
+  ){
+    alert(
+      "Type ENABLE REAL TRADING exactly."
+    );
 
-await api(
-"/api/auto-trade/stop",
-{
-method:
-"POST",
+    return;
+  }
 
-body:
-JSON.stringify({})
+  try{
+
+    await api(
+      "/api/auto-trade/start",
+      {
+        method:
+          "POST",
+
+        body:
+          JSON.stringify({
+            confirmation:
+              "ENABLE REAL TRADING"
+          })
+      }
+    );
+
+    closeStart();
+
+    show(
+      "REAL TRADING ON — initial scan started."
+    );
+
+    setTimeout(
+      refresh,
+      1200
+    );
+  }
+
+  catch(e){
+
+    show(
+      e.message,
+      "error"
+    );
+  }
 }
-);
 
-show(
-"Real trading stopped."
-);
 
-await refresh();
+async function stopTrading(){
 
-}
+  try{
 
-catch (error) {
+    await api(
+      "/api/auto-trade/stop",
+      {
+        method:
+          "POST",
 
-show(
-error.message,
-"error"
-);
+        body:
+          JSON.stringify({})
+      }
+    );
 
-}
+    show(
+      "Real trading stopped."
+    );
 
+    await refresh();
+
+  }
+
+  catch(e){
+
+    show(
+      e.message,
+      "error"
+    );
+  }
 }
 
 
 /* =========================================================
-RUN AUTO BUYER NOW
+RUN NOW
 ========================================================= */
 
-async function runNow() {
+async function runNow(){
 
-try {
+  try{
 
-const result =
-await api(
-"/api/auto-trade/run-now",
-{
-method:
-"POST",
+    const d=
+      await api(
+        "/api/auto-trade/run-now",
+        {
+          method:
+            "POST",
 
-body:
-JSON.stringify({})
-}
-);
+          body:
+            JSON.stringify({})
+        }
+      );
 
-show(
-result.message ||
-"Auto-buyer run queued."
-);
+    show(
+      d.message||
+      "Auto-buyer run queued."
+    );
 
-setTimeout(
-refresh,
-1200
-);
+    setTimeout(
+      refresh,
+      1200
+    );
+  }
 
-}
+  catch(e){
 
-catch (error) {
+    show(
+      e.message,
+      "error"
+    );
 
-show(
-error.message,
-"error"
-);
-
-await loadStatus();
-
-}
-
+    await loadStatus();
+  }
 }
 
 
@@ -1266,68 +1243,43 @@ MARKET CARD
 ========================================================= */
 
 function renderMarket(
-market,
-filters
-) {
+  m,
+  filters
+){
 
-const eligible =
-market.eligible === true;
+  const edge=
+    Number(
+      m.edge
+    );
 
-const edge =
-Number(
-market.edge
-);
+  const model=
+    Number(
+      m.modelProbability
+    );
 
-const model =
-Number(
-market.modelProbability
-);
+  const em=
+    Number(
+      m.expectedMove
+    );
 
-const expectedMove =
-Number(
-market.expectedMove
-);
+  const px=
+    Number(
+      m.entryPrice
+    );
 
-const entryPrice =
-Number(
-market.entryPrice
-);
+  const eligible=
+    m.eligible===
+    true;
 
-const title =
-market.title ||
-market.ticker ||
-"Market";
-
-const close =
-market.closeTime
-? new Date(
-    market.closeTime
-  ).toLocaleTimeString()
-: "—";
+  const close=
+    m.closeTime
+      ? new Date(
+          m.closeTime
+        ).toLocaleTimeString()
+      : "—";
 
 
-const status =
-eligible
-
-? `
-<div class="status buy">
-ELIGIBLE — BOT CAN BUY
-</div>
-`
-
-: `
-<div class="status wait">
-NOT ELIGIBLE
-</div>
-`;
-
-
-const reason =
-market.rejectionReason ||
-"Every auto-trader filter passes.";
-
-
-return `
+  return `
 
 <div class="market">
 
@@ -1337,18 +1289,25 @@ return `
 
 <div class="title">
 ${esc(
-  market.city
-    ? market.city +
-      " — " +
-      title
-    : title
+  m.city
+    ? m.city+
+      " — "+
+      (
+        m.title||
+        m.ticker
+      )
+    : (
+        m.title||
+        m.ticker||
+        "Market"
+      )
 )}
 </div>
 
 <div class="meta">
 
 ${esc(
-  market.ticker ||
+  m.ticker||
   ""
 )}
 
@@ -1357,7 +1316,7 @@ ${esc(
 Side:
 ${esc(
   String(
-    market.side ||
+    m.side||
     "—"
   ).toUpperCase()
 )}
@@ -1365,8 +1324,7 @@ ${esc(
 •
 
 Forecast:
-${market.forecast ??
-"—"}°
+${m.forecast??"—"}°
 
 •
 
@@ -1379,13 +1337,26 @@ ${esc(
 
 </div>
 
-${status}
+<div
+class="status ${
+  eligible
+    ? "buy"
+    : "wait"
+}"
+>
+
+${
+  eligible
+    ? "ELIGIBLE — BOT CAN BUY"
+    : "NOT ELIGIBLE"
+}
+
+</div>
 
 </div>
 
 
 <div class="metrics">
-
 
 <div class="metric">
 
@@ -1397,11 +1368,9 @@ Kalshi
 
 ${
   Number.isFinite(
-    entryPrice
+    px
   )
-    ? price(
-        entryPrice
-      )
+    ? cents(px)
     : "—"
 }
 
@@ -1439,7 +1408,7 @@ Edge
 
 <strong
 class="${
-  edge >= 0
+  edge>=0
     ? "good"
     : "bad"
 }"
@@ -1468,11 +1437,9 @@ Expected Move
 
 ${
   Number.isFinite(
-    expectedMove
+    em
   )
-    ? move(
-        expectedMove
-      )
+    ? cents(em)
     : "—"
 }
 
@@ -1492,9 +1459,9 @@ Take Profit
 ${
   (
     Number(
-      filters.takeProfit ??
-      0.25
-    ) *
+      filters.takeProfit??
+      .25
+    )*
     100
   ).toFixed(0)
 }%
@@ -1503,7 +1470,6 @@ ${
 
 </div>
 
-
 </div>
 
 
@@ -1511,12 +1477,13 @@ ${
 
 ${
   eligible
-    ? "🟢 "
-    : "🔴 "
+    ? "🟢"
+    : "🔴"
 }
 
 ${esc(
-  reason
+  m.rejectionReason||
+  "Every auto-trader filter passes."
 )}
 
 </div>
@@ -1524,7 +1491,6 @@ ${esc(
 </div>
 
 `;
-
 }
 
 
@@ -1532,98 +1498,93 @@ ${esc(
 MARKETS
 ========================================================= */
 
-async function loadMarkets() {
+async function loadMarkets(){
 
-const [
-weather,
-status
-] =
-await Promise.all([
-  api(
-    "/api/weather"
-  ),
+  const [
+    weather,
+    status
+  ]=
+    await Promise.all([
+      api(
+        "/api/weather"
+      ),
 
-  api(
-    "/api/auto-trade/status"
-  )
-]);
-
-
-const filters =
-status.filters ||
-{
-  minMinutesToClose:
-    180,
-
-  minEdge:
-    0.01,
-
-  minExpectedPriceMove:
-    0.01,
-
-  takeProfit:
-    0.25
-};
-
-
-const markets =
-Array.isArray(
-  weather.markets
-)
-  ? weather.markets
-  : (
-      Array.isArray(
-        weather.opportunities
+      api(
+        "/api/auto-trade/status"
       )
-      ? weather.opportunities
-      : []
-    );
+    ]);
 
+  const filters=
+    status.filters||
+    {
+      minMinutesToClose:
+        180,
 
-$("marketCount")
-.textContent =
-markets.length;
+      minEdge:
+        .01,
 
-$("eligibleCount")
-.textContent =
-markets.filter(
-  market =>
-    market.eligible
-).length;
+      minExpectedPriceMove:
+        .01,
 
-$("rejectedCount")
-.textContent =
-markets.filter(
-  market =>
-    !market.eligible
-).length;
+      takeProfit:
+        .25
+    };
 
-$("updated")
-.textContent =
-new Date()
-.toLocaleTimeString();
-
-
-$("markets")
-.innerHTML =
-markets.length
-
-? markets
-    .map(
-      market =>
-        renderMarket(
-          market,
-          filters
-        )
+  const markets=
+    Array.isArray(
+      weather.markets
     )
-    .join("")
+      ? weather.markets
+      : (
+          Array.isArray(
+            weather.opportunities
+          )
+            ? weather.opportunities
+            : []
+        );
 
-: `
-<div class="card muted">
-No market data returned.
-</div>
-`;
+  $("marketCount")
+    .textContent=
+      markets.length;
 
+  $("eligibleCount")
+    .textContent=
+      markets.filter(
+        m =>
+          m.eligible
+      ).length;
+
+  $("rejectedCount")
+    .textContent=
+      markets.filter(
+        m =>
+          !m.eligible
+      ).length;
+
+  $("updated")
+    .textContent=
+    new Date()
+      .toLocaleTimeString();
+
+  $("markets")
+    .innerHTML=
+      markets.length
+
+        ? markets
+            .map(
+              m =>
+                renderMarket(
+                  m,
+                  filters
+                )
+            )
+            .join("")
+
+        : `
+          <div class="card muted">
+            No market data returned.
+          </div>
+        `;
 }
 
 
@@ -1631,123 +1592,98 @@ No market data returned.
 REFRESH
 ========================================================= */
 
-async function refresh() {
+async function refresh(){
 
-try {
+  try{
 
-await loadStatus();
+    await loadStatus();
 
-await loadBalance();
+    await loadBalance();
 
-await loadMarkets();
+    await loadMarkets();
 
+  }
+
+  catch(e){
+
+    $("markets")
+      .innerHTML=
+        `
+        <div class="card">
+          ${esc(e.message)}
+        </div>
+        `;
+  }
 }
 
-catch (error) {
-
-$("markets")
-.innerHTML = `
-
-<div class="card">
-
-${esc(
-  error.message
-)}
-
-</div>
-
-`;
-
-}
-
-}
-
-
-/* =========================================================
-INITIAL
-========================================================= */
 
 refresh();
 
 
 /*
-When the dashboard is open:
-
-Every 10 seconds, if real trading is ON,
-trigger the auto buyer.
-
-This gives you a live auto-buy loop even if
-you have not configured a Cloudflare Cron Trigger.
+If the dashboard stays open and
+real trading is ON, trigger a run
+every 10 seconds.
 */
 
 setInterval(
-async () => {
+  async () => {
 
-try {
+    try{
 
-const status =
-await api(
-"/api/auto-trade/status"
+      const s=
+        await api(
+          "/api/auto-trade/status"
+        );
+
+      if(
+        s.enabled
+      ){
+        await api(
+          "/api/auto-trade/run-now",
+          {
+            method:
+              "POST",
+
+            body:
+              "{}"
+          }
+        );
+      }
+
+    }
+
+    catch{}
+
+    await refresh();
+
+  },
+
+  10000
 );
 
-if (
-status.enabled
-) {
-
-await api(
-"/api/auto-trade/run-now",
-{
-method:
-"POST",
-
-body:
-JSON.stringify({})
-}
-);
-
-}
-
-}
-
-catch {}
-
-await refresh();
-
-},
-10000
-);
-
-
-/* =========================================================
-CONFIRMATION KEYBOARD
-========================================================= */
 
 $("confirm")
-.addEventListener(
-"keydown",
+  .addEventListener(
+    "keydown",
+    e => {
 
-event => {
+      if(
+        e.key===
+        "Enter"
+      ){
+        startTrading();
+      }
 
-if (
-event.key ===
-"Enter"
-) {
+      if(
+        e.key===
+        "Escape"
+      ){
+        closeStart();
+      }
 
-startTrading();
-
-}
-
-if (
-event.key ===
-"Escape"
-) {
-
-closeStart();
-
-}
-
-}
-);
+    }
+  );
 
 </script>
 
