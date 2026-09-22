@@ -1,267 +1,311 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>Position Ledger — Kalshi Weather</title>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <style>
-* {
-box-sizing: border-box;
+
+*{
+box-sizing:border-box;
 }
 
-body {
-margin: 0;
-font-family: Arial, Helvetica, sans-serif;
-background: #07111f;
-color: #f4f7fb;
+body{
+margin:0;
+background:#07111f;
+color:#f5f7fb;
+font-family:Arial,Helvetica,sans-serif;
 }
 
-.container {
-width: 94%;
-max-width: 1500px;
-margin: 0 auto;
-padding: 25px 0 50px;
+.container{
+width:94%;
+max-width:1500px;
+margin:auto;
+padding:25px 0 50px;
 }
 
-h1 {
-margin: 0;
-font-size: 30px;
+h1{
+margin:0;
+font-size:30px;
 }
 
-.subtitle {
-color: #8fa4bd;
-margin-top: 6px;
-margin-bottom: 25px;
+.subtitle{
+color:#91a4ba;
+margin:6px 0 25px;
 }
 
-.cards {
-display: grid;
-grid-template-columns: repeat(4, 1fr);
-gap: 14px;
-margin-bottom: 20px;
+.panel{
+background:#0d1b2c;
+border:1px solid #20364f;
+border-radius:12px;
+padding:20px;
+margin-bottom:20px;
 }
 
-.card {
-background: #0d1b2c;
-border: 1px solid #1d3149;
-border-radius: 12px;
-padding: 18px;
+.panel h2{
+margin:0 0 6px;
+font-size:21px;
 }
 
-.card-title {
-color: #8fa4bd;
-font-size: 13px;
-margin-bottom: 8px;
+.small{
+color:#91a4ba;
+font-size:13px;
+margin-bottom:16px;
 }
 
-.card-value {
-font-size: 25px;
-font-weight: bold;
+.status{
+padding:14px;
+border-radius:9px;
+background:#101f32;
+border:1px solid #29435f;
+margin-bottom:18px;
+font-weight:bold;
 }
 
-.panel {
-background: #0d1b2c;
-border: 1px solid #1d3149;
-border-radius: 12px;
-padding: 20px;
-margin-bottom: 20px;
-overflow: hidden;
+.status.on{
+border-color:#22d99b;
+color:#35e5a7;
 }
 
-.panel h2 {
-margin: 0 0 5px;
-font-size: 21px;
+.status.off{
+border-color:#733b42;
+color:#ff8e98;
 }
 
-.small {
-color: #8fa4bd;
-font-size: 13px;
-margin-bottom: 15px;
+.controls{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:14px;
 }
 
-.filters {
-display: flex;
-flex-wrap: wrap;
-gap: 10px;
-margin-bottom: 18px;
+.control{
+display:flex;
+flex-direction:column;
+gap:6px;
 }
 
-.filter {
-background: #101f32;
-border: 1px solid #27405d;
-border-radius: 8px;
-padding: 9px 12px;
-color: #b9c9da;
-font-size: 13px;
+.control label{
+font-size:13px;
+color:#91a4ba;
 }
 
-.filter strong {
-color: white;
+.control input{
+background:#07111f;
+border:1px solid #304962;
+border-radius:7px;
+padding:11px;
+color:white;
+font-size:15px;
+width:100%;
 }
 
-.table-wrap {
-width: 100%;
-overflow-x: auto;
+.control input:focus{
+outline:none;
+border-color:#2584ed;
 }
 
-table {
-width: 100%;
-border-collapse: collapse;
-min-width: 1000px;
+.buttons{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-top:18px;
 }
 
-th {
-text-align: left;
-color: #7188a2;
-font-size: 12px;
-padding: 11px;
-border-bottom: 1px solid #223850;
-white-space: nowrap;
+button{
+border:0;
+border-radius:8px;
+padding:11px 17px;
+font-weight:bold;
+cursor:pointer;
+font-size:14px;
 }
 
-td {
-padding: 13px 11px;
-border-bottom: 1px solid #172b40;
-font-size: 14px;
+.save{
+background:#1473e6;
+color:white;
 }
 
-tr:hover {
-background: #102237;
+.start{
+background:#19b77b;
+color:white;
 }
 
-.buy {
-font-weight: bold;
+.stop{
+background:#d94855;
+color:white;
 }
 
-.yes {
-color: #32e6a1;
+.refresh{
+background:#263b52;
+color:white;
 }
 
-.no {
-color: #ff8f8f;
+button:hover{
+opacity:.85;
 }
 
-.edge {
-color: #24e5a0;
-font-weight: bold;
+.warning{
+margin-top:16px;
+padding:12px;
+background:#30250e;
+border:1px solid #66521c;
+border-radius:8px;
+color:#e4ca78;
+font-size:13px;
 }
 
-.price {
-font-weight: bold;
+.message{
+margin-top:14px;
+padding:11px;
+border-radius:7px;
+display:none;
+background:#102237;
 }
 
-.eligible {
-color: #32e6a1;
-font-weight: bold;
+.cards{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:14px;
+margin-bottom:20px;
 }
 
-.rejected {
-color: #ff9b9b;
+.card{
+background:#0d1b2c;
+border:1px solid #20364f;
+border-radius:12px;
+padding:17px;
 }
 
-.loading {
-text-align: center;
-padding: 35px;
-color: #8fa4bd;
+.card-title{
+font-size:13px;
+color:#91a4ba;
+margin-bottom:8px;
 }
 
-.status {
-display: inline-flex;
-align-items: center;
-gap: 7px;
-padding: 7px 10px;
-border-radius: 7px;
-background: #102237;
-font-size: 13px;
+.card-value{
+font-size:24px;
+font-weight:bold;
 }
 
-.dot {
-width: 8px;
-height: 8px;
-border-radius: 50%;
-background: #32e6a1;
+.filters{
+display:flex;
+flex-wrap:wrap;
+gap:9px;
+margin-top:15px;
 }
 
-.dot.off {
-background: #ff7070;
+.filter{
+background:#101f32;
+border:1px solid #29435f;
+padding:9px 12px;
+border-radius:7px;
+font-size:13px;
+color:#a9bacb;
 }
 
-.trade-grid {
-display: grid;
-grid-template-columns: repeat(4, 1fr);
-gap: 12px;
-margin-top: 15px;
+.filter strong{
+color:white;
 }
 
-.trade-box {
-background: #101f32;
-border: 1px solid #263e58;
-border-radius: 9px;
-padding: 13px;
+.table-wrap{
+overflow-x:auto;
 }
 
-.trade-label {
-color: #8299b2;
-font-size: 12px;
+table{
+width:100%;
+border-collapse:collapse;
+min-width:1050px;
 }
 
-.trade-value {
-margin-top: 5px;
-font-size: 18px;
-font-weight: bold;
+th{
+text-align:left;
+font-size:12px;
+color:#7189a3;
+padding:11px;
+border-bottom:1px solid #223850;
 }
 
-.refresh {
-float: right;
-background: #1473e6;
-color: white;
-border: none;
-padding: 9px 14px;
-border-radius: 7px;
-cursor: pointer;
-font-weight: bold;
+td{
+padding:13px 11px;
+border-bottom:1px solid #172b40;
+font-size:14px;
 }
 
-.refresh:hover {
-background: #0f62c5;
+tr:hover{
+background:#102237;
 }
 
-.warning {
-background: #2a2110;
-border: 1px solid #69501d;
-color: #e8c978;
-border-radius: 8px;
-padding: 11px 13px;
-margin-bottom: 15px;
-font-size: 13px;
+.yes{
+color:#32e6a1;
+font-weight:bold;
 }
 
-.empty {
-padding: 35px;
-text-align: center;
-color: #8fa4bd;
+.no{
+color:#ff8f8f;
+font-weight:bold;
 }
 
-@media (max-width: 900px) {
+.edge{
+color:#32e6a1;
+font-weight:bold;
+}
+
+.empty{
+text-align:center;
+padding:35px;
+color:#91a4ba;
+}
+
+.info-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+}
+
+.info{
+background:#101f32;
+border:1px solid #29435f;
+border-radius:8px;
+padding:12px;
+}
+
+.info-label{
+font-size:12px;
+color:#8198b0;
+}
+
+.info-value{
+font-size:18px;
+font-weight:bold;
+margin-top:5px;
+}
+
+@media(max-width:900px){
+
+.controls,
 .cards,
-.trade-grid {
-grid-template-columns: repeat(2, 1fr);
-}
+.info-grid{
+grid-template-columns:repeat(2,1fr);
 }
 
-@media (max-width: 600px) {
+}
+
+@media(max-width:600px){
+
+.controls,
 .cards,
-.trade-grid {
-grid-template-columns: 1fr;
+.info-grid{
+grid-template-columns:1fr;
 }
 
-h1 {
-font-size: 24px;
+h1{
+font-size:24px;
 }
+
 }
+
 </style>
 </head>
 
@@ -269,116 +313,341 @@ font-size: 24px;
 
 <div class="container">
 
-<button class="refresh" onclick="loadDashboard()">Refresh</button>
-
 <h1>Position Ledger — Kalshi Weather</h1>
+
 <div class="subtitle">
-Weather model + Kalshi market scanner
+Weather model + Kalshi auto-trader
 </div>
 
-<div class="cards">
-<div class="card">
-<div class="card-title">Eligible Opportunities</div>
-<div class="card-value" id="opportunities">—</div>
-</div>
 
-<div class="card">
-<div class="card-title">Best Edge</div>
-<div class="card-value" id="bestEdge">—</div>
-</div>
-
-<div class="card">
-<div class="card-title">Best City</div>
-<div class="card-value" id="bestCity">—</div>
-</div>
-
-<div class="card">
-<div class="card-title">Last Updated</div>
-<div class="card-value" id="updated" style="font-size:18px;">—</div>
-</div>
-</div>
+<!-- =========================
+AUTO TRADER CONTROLS
+========================= -->
 
 <div class="panel">
 
-<h2>Auto-Trader Filters</h2>
+<h2>Auto Trader Controls</h2>
 
 <div class="small">
-The dashboard now uses the same eligibility rules as the Cloudflare auto-trader.
+These settings are stored in Cloudflare KV and are used by the actual auto-trader.
 </div>
 
-<div class="filters">
-<div class="filter">
-Minimum time to close:
-<strong id="filterTime">—</strong>
+<div id="status"
+class="status off">
+REAL TRADING OFF
 </div>
 
-<div class="filter">
-Minimum edge:
-<strong id="filterEdge">—</strong>
+
+<div class="controls">
+
+<div class="control">
+<label>Max $ Per Trade</label>
+
+<input
+id="maxTrade"
+type="number"
+min="0.01"
+max="25"
+step="0.01"
+value="5">
 </div>
 
-<div class="filter">
-Minimum expected move:
-<strong id="filterMove">—</strong>
+
+<div class="control">
+<label>Max $ Per Day</label>
+
+<input
+id="maxDay"
+type="number"
+min="0.01"
+max="100"
+step="0.01"
+value="20">
 </div>
 
-<div class="filter">
-Take profit:
-<strong id="filterTP">—</strong>
+
+<div class="control">
+<label>Take Profit %</label>
+
+<input
+id="takeProfit"
+type="number"
+min="1"
+max="500"
+step="1"
+value="25">
 </div>
+
+
+<div class="control">
+<label>Minimum Minutes Until Close</label>
+
+<input
+id="minMinutes"
+type="number"
+min="1"
+max="1440"
+step="1"
+value="180">
 </div>
+
+
+<div class="control">
+<label>Minimum Weather Edge %</label>
+
+<input
+id="minEdge"
+type="number"
+min="0.1"
+max="100"
+step="0.1"
+value="10">
+</div>
+
+
+<div class="control">
+<label>Minimum Expected Price Move (¢)</label>
+
+<input
+id="minMove"
+type="number"
+min="0.1"
+max="50"
+step="0.1"
+value="1">
+</div>
+
+</div>
+
+
+<div class="buttons">
+
+<button
+class="save"
+onclick="saveSettings()">
+SAVE SETTINGS
+</button>
+
+<button
+class="start"
+onclick="startTrading()">
+START REAL TRADING
+</button>
+
+<button
+class="stop"
+onclick="stopTrading()">
+STOP REAL TRADING
+</button>
+
+<button
+class="refresh"
+onclick="loadAll()">
+REFRESH
+</button>
+
+</div>
+
+
+<div
+id="message"
+class="message">
+</div>
+
 
 <div class="warning">
-Only markets passing ALL filters are displayed as trading opportunities.
-Late markets and 1¢ contracts that cannot meet the required price movement are hidden.
+⚠️ START REAL TRADING sends real orders to Kalshi when the Worker finds a qualifying opportunity. Keep it OFF while testing.
 </div>
 
 </div>
+
+
+<!-- =========================
+SUMMARY
+========================= -->
+
+<div class="cards">
+
+<div class="card">
+<div class="card-title">
+Eligible Opportunities
+</div>
+
+<div
+id="opportunities"
+class="card-value">
+—
+</div>
+</div>
+
+
+<div class="card">
+<div class="card-title">
+Best Edge
+</div>
+
+<div
+id="bestEdge"
+class="card-value">
+—
+</div>
+</div>
+
+
+<div class="card">
+<div class="card-title">
+Best City
+</div>
+
+<div
+id="bestCity"
+class="card-value">
+—
+</div>
+</div>
+
+
+<div class="card">
+<div class="card-title">
+Last Updated
+</div>
+
+<div
+id="updated"
+class="card-value"
+style="font-size:17px;">
+—
+</div>
+</div>
+
+</div>
+
+
+<!-- =========================
+CURRENT SETTINGS
+========================= -->
 
 <div class="panel">
 
-<h2>Real Trading</h2>
-<div class="small">
-This dashboard does not turn trading on or off. Trading is controlled by the Cloudflare Worker.
+<h2>Current Auto-Trader Settings</h2>
+
+<div class="filters">
+
+<div class="filter">
+Max Trade:
+<strong id="showTrade">—</strong>
 </div>
 
-<div class="status">
-<span id="statusDot" class="dot off"></span>
-<span id="tradingStatus">Checking...</span>
+<div class="filter">
+Max Day:
+<strong id="showDay">—</strong>
 </div>
 
-<div class="trade-grid">
-
-<div class="trade-box">
-<div class="trade-label">Max / Trade</div>
-<div class="trade-value" id="maxTrade">—</div>
+<div class="filter">
+Take Profit:
+<strong id="showTP">—</strong>
 </div>
 
-<div class="trade-box">
-<div class="trade-label">Max / Day</div>
-<div class="trade-value" id="maxDay">—</div>
+<div class="filter">
+Min Close:
+<strong id="showClose">—</strong>
 </div>
 
-<div class="trade-box">
-<div class="trade-label">Spent Today</div>
-<div class="trade-value" id="spentToday">—</div>
+<div class="filter">
+Min Edge:
+<strong id="showEdge">—</strong>
 </div>
 
-<div class="trade-box">
-<div class="trade-label">Open Positions</div>
-<div class="trade-value" id="openPositions">—</div>
+<div class="filter">
+Min Move:
+<strong id="showMove">—</strong>
 </div>
 
 </div>
 
 </div>
+
+
+<!-- =========================
+ACCOUNT
+========================= -->
 
 <div class="panel">
 
-<h2>Today's Eligible Weather Opportunities</h2>
+<h2>Trading Status</h2>
 
 <div class="small">
-These are the trades that pass the same filters used immediately before an order.
+Current Cloudflare Worker state.
+</div>
+
+<div class="info-grid">
+
+<div class="info">
+<div class="info-label">
+Max / Trade
+</div>
+
+<div
+id="infoTrade"
+class="info-value">
+—
+</div>
+</div>
+
+
+<div class="info">
+<div class="info-label">
+Max / Day
+</div>
+
+<div
+id="infoDay"
+class="info-value">
+—
+</div>
+</div>
+
+
+<div class="info">
+<div class="info-label">
+Spent Today
+</div>
+
+<div
+id="infoSpent"
+class="info-value">
+—
+</div>
+</div>
+
+
+<div class="info">
+<div class="info-label">
+Open Positions
+</div>
+
+<div
+id="infoPositions"
+class="info-value">
+—
+</div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+OPPORTUNITIES
+========================= -->
+
+<div class="panel">
+
+<h2>Eligible Weather Opportunities</h2>
+
+<div class="small">
+Only markets passing the current auto-trader filters appear here.
 </div>
 
 <div class="table-wrap">
@@ -386,6 +655,7 @@ These are the trades that pass the same filters used immediately before an order
 <table>
 
 <thead>
+
 <tr>
 <th>CITY</th>
 <th>MARKET</th>
@@ -394,17 +664,22 @@ These are the trades that pass the same filters used immediately before an order
 <th>MODEL</th>
 <th>EDGE</th>
 <th>TIME LEFT</th>
-<th>TAKE PROFIT</th>
-<th>SETTLEMENT</th>
+<th>TP TARGET</th>
+<th>CLOSE</th>
 </tr>
+
 </thead>
 
 <tbody id="marketTable">
+
 <tr>
-<td colspan="9" class="loading">
-Loading markets...
+<td
+colspan="9"
+class="empty">
+Loading...
 </td>
 </tr>
+
 </tbody>
 
 </table>
@@ -413,760 +688,638 @@ Loading markets...
 
 </div>
 
-<div class="panel">
-
-<h2>Market Model</h2>
-
-<div class="small">
-Model probability vs current Kalshi price for eligible markets.
 </div>
 
-<canvas id="marketChart" height="100"></canvas>
-
-</div>
-
-</div>
 
 <script>
 
 const WORKER =
 "https://worker1.ryderolinger1.workers.dev";
 
-let chart = null;
 
-/*
-These defaults are ONLY fallbacks.
-The actual values are pulled from the Worker.
-*/
-const DEFAULT_FILTERS = {
-minMinutesToClose: 180,
-minEdge: 0.10,
-minExpectedPriceMove: 0.01,
-takeProfit: 0.25
-};
+function money(value){
+
+const n =
+Number(value);
+
+return Number.isFinite(n)
+? "$" + n.toFixed(2)
+: "—";
+
+}
 
 
-/* -------------------------------------------------------
-Helpers
-------------------------------------------------------- */
+function cents(value){
 
-function money(value) {
+const n =
+Number(value);
 
-const n = Number(value);
+return Number.isFinite(n)
+? (n * 100).toFixed(1) + "¢"
+: "—";
 
-if (!Number.isFinite(n)) {
+}
+
+
+function percent(value){
+
+const n =
+Number(value);
+
+return Number.isFinite(n)
+? (n * 100).toFixed(1) + "%"
+: "—";
+
+}
+
+
+function minutes(value){
+
+const n =
+Number(value);
+
+if(!Number.isFinite(n))
 return "—";
-}
 
-return "$" + n.toFixed(2);
-}
-
-
-function cents(value) {
-
-const n = Number(value);
-
-if (!Number.isFinite(n)) {
-return "—";
-}
-
-return (n * 100).toFixed(1) + "¢";
-}
-
-
-function percent(value) {
-
-const n = Number(value);
-
-if (!Number.isFinite(n)) {
-return "—";
-}
-
-return (n * 100).toFixed(1) + "%";
-}
-
-
-function formatMinutes(minutes) {
-
-const n = Number(minutes);
-
-if (!Number.isFinite(n)) {
-return "—";
-}
-
-if (n < 60) {
+if(n < 60)
 return Math.floor(n) + "m";
-}
 
-const hours = Math.floor(n / 60);
-const mins = Math.floor(n % 60);
+const h =
+Math.floor(n / 60);
 
-return hours + "h " + mins + "m";
-}
+const m =
+Math.floor(n % 60);
 
+return h + "h " + m + "m";
 
-function formatDate(dateString) {
-
-if (!dateString) {
-return "—";
-}
-
-const d = new Date(dateString);
-
-if (Number.isNaN(d.getTime())) {
-return dateString;
-}
-
-return d.toLocaleString();
 }
 
 
-/* -------------------------------------------------------
-Fetch JSON
-------------------------------------------------------- */
+function escapeHTML(value){
 
-async function getJSON(url) {
+return String(value ?? "")
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
 
-const response = await fetch(url, {
-cache: "no-store"
-});
-
-if (!response.ok) {
-throw new Error(
-"HTTP " + response.status + " from " + url
-);
-}
-
-return await response.json();
 }
 
 
-/* -------------------------------------------------------
-Determine whether a market is actually tradable
-------------------------------------------------------- */
+async function api(
+path,
+options={}
+){
 
-function isEligible(market, opportunity, filters) {
-
-/*
-IMPORTANT:
-
-The dashboard applies the same basic rules as the
-Worker before displaying a BUY.
-
-1. Must have >= 180 minutes until close.
-2. Must have >= 10 percentage points edge.
-3. Must have enough price movement for take profit.
-*/
-
-const minutesToClose =
-Number(
-market?.minutesToClose ??
-opportunity?.minutesToClose ??
--1
-);
-
-if (
-!Number.isFinite(minutesToClose) ||
-minutesToClose < filters.minMinutesToClose
-) {
-return false;
-}
-
-
-const edge =
-Number(
-opportunity?.edge ??
-opportunity?.edgePct ??
-0
-);
-
-/*
-The API normally provides edge as decimal.
-If somebody sends 92.8 instead of 0.928,
-convert it.
-*/
-
-const normalizedEdge =
-edge > 1 ? edge / 100 : edge;
-
-if (normalizedEdge < filters.minEdge) {
-return false;
-}
-
-
-/*
-Determine the actual buy price.
-
-BUY YES -> YES ask
-BUY NO -> 1 - NO ask
-*/
-
-const action =
-String(
-opportunity?.action ??
-opportunity?.buy ??
-""
-).toUpperCase();
-
-let buyPrice = Number(
-opportunity?.price ??
-opportunity?.kalshiPrice ??
-opportunity?.kalshi ??
-NaN
-);
-
-
-if (
-!Number.isFinite(buyPrice) &&
-action.includes("YES")
-) {
-
-const yesAsk =
-Number(
-market?.yesAsk ??
-market?.yes_ask_dollars ??
-NaN
-);
-
-if (Number.isFinite(yesAsk)) {
-buyPrice = yesAsk;
-}
-}
-
-
-if (
-!Number.isFinite(buyPrice) &&
-action.includes("NO")
-) {
-
-const noAsk =
-Number(
-market?.noAsk ??
-market?.no_ask_dollars ??
-NaN
-);
-
-if (Number.isFinite(noAsk)) {
-buyPrice = 1 - noAsk;
-}
-}
-
-
-/*
-25% take-profit must produce at least the minimum
-absolute price movement.
-
-Example:
-
-1¢ × 1.25 = 1.25¢
-
-That's only 0.25¢ movement, so it is rejected.
-
-4¢ × 1.25 = 5¢
-
-That's 1¢ movement, so it can pass.
-*/
-
-if (Number.isFinite(buyPrice)) {
-
-const target =
-buyPrice * (1 + filters.takeProfit);
-
-const expectedMove =
-target - buyPrice;
-
-if (
-expectedMove < filters.minExpectedPriceMove
-) {
-return false;
-}
-}
-
-return true;
-}
-
-
-/* -------------------------------------------------------
-Build market lookup
-------------------------------------------------------- */
-
-function buildMarketLookup(weatherMarkets) {
-
-const lookup = new Map();
-
-if (!weatherMarkets) {
-return lookup;
-}
-
-const outputs =
-Array.isArray(weatherMarkets.output)
-? weatherMarkets.output
-: [];
-
-for (const cityGroup of outputs) {
-
-const markets =
-Array.isArray(cityGroup.markets)
-? cityGroup.markets
-: [];
-
-for (const market of markets) {
-
-if (market.ticker) {
-lookup.set(
-market.ticker,
+const response =
+await fetch(
+WORKER + path,
 {
-...market,
-city:
-market.city ||
-cityGroup.city
+...options,
+cache:"no-store",
+headers:{
+"Content-Type":
+"application/json",
+...(options.headers || {})
+}
 }
 );
-}
-}
-}
 
-return lookup;
-}
+const data =
+await response.json();
 
+if(!response.ok){
 
-/* -------------------------------------------------------
-Find ticker from opportunity
-------------------------------------------------------- */
-
-function getTicker(opportunity) {
-
-return (
-opportunity?.ticker ||
-opportunity?.market?.ticker ||
-opportunity?.marketTicker ||
-null
+throw new Error(
+data.error ||
+"HTTP " +
+response.status
 );
+
+}
+
+return data;
+
 }
 
 
-/* -------------------------------------------------------
-Normalize opportunity
-------------------------------------------------------- */
+/* =========================
+SHOW MESSAGE
+========================= */
 
-function normalizeOpportunity(opportunity, market) {
+function message(
+text
+){
 
-const action =
-String(
-opportunity?.action ??
-opportunity?.buy ??
-""
-).toUpperCase();
+const box =
+document.getElementById(
+"message"
+);
+
+box.textContent =
+text;
+
+box.style.display =
+"block";
+
+setTimeout(
+()=>{
+box.style.display =
+"none";
+},
+4000
+);
+
+}
 
 
-let price =
+/* =========================
+LOAD STATUS
+========================= */
+
+async function loadStatus(){
+
+const data =
+await api(
+"/api/auto-trade/status?t=" +
+Date.now()
+);
+
+
+document.getElementById(
+"maxTrade"
+).value =
+data.maxTrade;
+
+
+document.getElementById(
+"maxDay"
+).value =
+data.maxDay;
+
+
+document.getElementById(
+"takeProfit"
+).value =
 Number(
-opportunity?.price ??
-opportunity?.kalshiPrice ??
-opportunity?.kalshi ??
-NaN
-);
+data.takeProfit * 100
+).toFixed(1);
 
 
-if (
-!Number.isFinite(price) &&
-action.includes("YES")
-) {
+document.getElementById(
+"minMinutes"
+).value =
+data.filters.minMinutesToClose;
 
-price =
+
+document.getElementById(
+"minEdge"
+).value =
 Number(
-market?.yesAsk ??
-market?.yes_ask_dollars ??
-NaN
-);
-}
+data.filters.minEdge * 100
+).toFixed(1);
 
 
-if (
-!Number.isFinite(price) &&
-action.includes("NO")
-) {
-
-const noAsk =
+document.getElementById(
+"minMove"
+).value =
 Number(
-market?.noAsk ??
-market?.no_ask_dollars ??
-NaN
+data.filters.minExpectedPriceMove * 100
+).toFixed(2);
+
+
+/* Status */
+
+const status =
+document.getElementById(
+"status"
 );
 
-if (Number.isFinite(noAsk)) {
-price = 1 - noAsk;
-}
-}
+if(data.enabled){
 
+status.textContent =
+"🟢 REAL TRADING ON";
 
-let edge =
-Number(
-opportunity?.edge ??
-opportunity?.edgePct ??
-0
-);
+status.className =
+"status on";
 
-if (edge > 1) {
-edge /= 100;
-}
+}else{
 
+status.textContent =
+"🔴 REAL TRADING OFF";
 
-let model =
-Number(
-opportunity?.modelProbability ??
-opportunity?.model ??
-opportunity?.probability ??
-NaN
-);
+status.className =
+"status off";
 
-if (model > 1) {
-model /= 100;
 }
 
 
-return {
-...opportunity,
+/* Current settings */
 
-ticker:
-getTicker(opportunity),
+document.getElementById(
+"showTrade"
+).textContent =
+money(data.maxTrade);
 
-city:
-opportunity?.city ||
-market?.city ||
-"Unknown",
+document.getElementById(
+"showDay"
+).textContent =
+money(data.maxDay);
 
-title:
-opportunity?.title ||
-market?.title ||
-"Weather Market",
+document.getElementById(
+"showTP"
+).textContent =
+percent(data.takeProfit);
 
-action,
+document.getElementById(
+"showClose"
+).textContent =
+data.filters.minMinutesToClose +
+" min";
 
-price,
+document.getElementById(
+"showEdge"
+).textContent =
+percent(data.filters.minEdge);
 
-edge,
-
-model,
-
-minutesToClose:
-Number(
-market?.minutesToClose ??
-opportunity?.minutesToClose ??
-NaN
-),
-
-closeTime:
-market?.closeTime ||
-opportunity?.closeTime ||
-null
-};
-}
-
-
-/* -------------------------------------------------------
-Load dashboard
-------------------------------------------------------- */
-
-async function loadDashboard() {
-
-try {
-
-document.getElementById("marketTable").innerHTML = `
-<tr>
-<td colspan="9" class="loading">
-Loading markets...
-</td>
-</tr>
-`;
-
-
-const [
-weather,
-weatherMarkets,
-status
-] = await Promise.all([
-
-getJSON(
-WORKER + "/api/weather?t=" + Date.now()
-),
-
-getJSON(
-WORKER + "/api/weather-markets?t=" + Date.now()
-),
-
-getJSON(
-WORKER + "/api/auto-trade/status?t=" + Date.now()
-)
-
-]);
-
-
-/* -----------------------------------------------
-Filters
------------------------------------------------- */
-
-const filters = {
-...DEFAULT_FILTERS,
-...(weather?.filters || {}),
-...(status?.filters || {})
-};
-
-
-document.getElementById("filterTime").textContent =
-filters.minMinutesToClose + " minutes";
-
-document.getElementById("filterEdge").textContent =
-percent(filters.minEdge);
-
-document.getElementById("filterMove").textContent =
-cents(filters.minExpectedPriceMove);
-
-document.getElementById("filterTP").textContent =
-percent(filters.takeProfit);
-
-
-/* -----------------------------------------------
-Market lookup
------------------------------------------------- */
-
-const lookup =
-buildMarketLookup(weatherMarkets);
-
-
-/*
-/api/weather can use different property names
-depending on the Worker version.
-*/
-
-let rawOpportunities =
-weather?.opportunities ||
-weather?.markets ||
-weather?.output ||
-[];
-
-
-if (!Array.isArray(rawOpportunities)) {
-rawOpportunities = [];
-}
-
-
-/*
-Flatten city groups if necessary.
-*/
-
-if (
-rawOpportunities.length &&
-rawOpportunities[0]?.markets &&
-Array.isArray(rawOpportunities[0].markets)
-) {
-
-rawOpportunities =
-rawOpportunities.flatMap(
-group => group.markets || []
-);
-}
-
-
-/* -----------------------------------------------
-Normalize + FILTER
------------------------------------------------- */
-
-const eligible = [];
-
-
-for (const opportunity of rawOpportunities) {
-
-const ticker =
-getTicker(opportunity);
-
-const market =
-ticker
-? lookup.get(ticker)
-: null;
-
-
-const normalized =
-normalizeOpportunity(
-opportunity,
-market
+document.getElementById(
+"showMove"
+).textContent =
+cents(
+data.filters.minExpectedPriceMove
 );
 
 
-/*
-If we don't have market metadata, don't show it.
-This prevents the dashboard from accidentally
-showing an old/stale opportunity.
-*/
+/* Account */
 
-if (!market) {
-continue;
-}
+document.getElementById(
+"infoTrade"
+).textContent =
+money(data.maxTrade);
 
+document.getElementById(
+"infoDay"
+).textContent =
+money(data.maxDay);
 
-if (
-isEligible(
-market,
-normalized,
-filters
-)
-) {
+document.getElementById(
+"infoSpent"
+).textContent =
+money(data.spentToday);
 
-eligible.push(normalized);
-}
-}
-
-
-/*
-Sort highest edge first.
-*/
-
-eligible.sort(
-(a, b) =>
-Number(b.edge || 0) -
-Number(a.edge || 0)
-);
-
-
-/* -----------------------------------------------
-Summary cards
------------------------------------------------- */
-
-document.getElementById("opportunities").textContent =
-eligible.length;
-
-
-if (eligible.length) {
-
-const best =
-eligible[0];
-
-document.getElementById("bestEdge").textContent =
-percent(best.edge);
-
-document.getElementById("bestCity").textContent =
-best.city || "—";
-
-} else {
-
-document.getElementById("bestEdge").textContent =
-"—";
-
-document.getElementById("bestCity").textContent =
-"None";
-}
-
-
-document.getElementById("updated").textContent =
-new Date().toLocaleTimeString();
-
-
-/* -----------------------------------------------
-Trading status
------------------------------------------------- */
-
-const enabled =
-status?.enabled === true;
-
-document.getElementById("tradingStatus").textContent =
-enabled
-? "REAL TRADING ON"
-: "REAL TRADING OFF";
-
-document.getElementById("statusDot")
-.classList.toggle(
-"off",
-!enabled
-);
-
-
-document.getElementById("maxTrade").textContent =
-money(status?.maxTrade);
-
-document.getElementById("maxDay").textContent =
-money(status?.maxDay);
-
-document.getElementById("spentToday").textContent =
-money(status?.spentToday);
-
-document.getElementById("openPositions").textContent =
-Array.isArray(status?.entries)
-? status.entries.length
+document.getElementById(
+"infoPositions"
+).textContent =
+Array.isArray(data.entries)
+? data.entries.length
 : 0;
 
+}
 
-/* -----------------------------------------------
-Table
------------------------------------------------- */
+
+/* =========================
+SAVE SETTINGS
+========================= */
+
+async function saveSettings(){
+
+try{
+
+const body = {
+
+maxTrade:
+Number(
+document.getElementById(
+"maxTrade"
+).value
+),
+
+maxDay:
+Number(
+document.getElementById(
+"maxDay"
+).value
+),
+
+takeProfit:
+Number(
+document.getElementById(
+"takeProfit"
+).value
+) / 100,
+
+minMinutesToClose:
+Number(
+document.getElementById(
+"minMinutes"
+).value
+),
+
+minEdge:
+Number(
+document.getElementById(
+"minEdge"
+).value
+) / 100,
+
+minExpectedPriceMove:
+Number(
+document.getElementById(
+"minMove"
+).value
+) / 100
+
+};
+
+
+await api(
+"/api/auto-trade",
+{
+method:"POST",
+
+body:
+JSON.stringify(body)
+}
+);
+
+
+message(
+"Settings saved successfully."
+);
+
+await loadStatus();
+
+await loadWeather();
+
+}catch(error){
+
+message(
+"ERROR: " +
+error.message
+);
+
+}
+
+}
+
+
+/* =========================
+START TRADING
+========================= */
+
+async function startTrading(){
+
+const confirmation =
+prompt(
+'Type exactly "ENABLE REAL TRADING" to start real orders.'
+);
+
+if(
+confirmation !==
+"ENABLE REAL TRADING"
+){
+
+message(
+"Trading was NOT started."
+);
+
+return;
+
+}
+
+
+try{
+
+await api(
+"/api/auto-trade",
+{
+method:"POST",
+
+body:
+JSON.stringify({
+
+enabled:true,
+
+confirm:
+"ENABLE REAL TRADING"
+
+})
+}
+);
+
+
+message(
+"REAL TRADING IS NOW ON."
+);
+
+await loadStatus();
+
+}catch(error){
+
+message(
+"ERROR: " +
+error.message
+);
+
+}
+
+}
+
+
+/* =========================
+STOP TRADING
+========================= */
+
+async function stopTrading(){
+
+if(
+!confirm(
+"Stop the auto-trader?"
+)
+){
+
+return;
+
+}
+
+
+try{
+
+await api(
+"/api/auto-trade",
+{
+method:"POST",
+
+body:
+JSON.stringify({
+
+enabled:false
+
+})
+}
+);
+
+
+message(
+"REAL TRADING IS NOW OFF."
+);
+
+await loadStatus();
+
+}catch(error){
+
+message(
+"ERROR: " +
+error.message
+);
+
+}
+
+}
+
+
+/* =========================
+WEATHER
+========================= */
+
+async function loadWeather(){
+
+const data =
+await api(
+"/api/weather?t=" +
+Date.now()
+);
+
+const opportunities =
+Array.isArray(
+data.opportunities
+)
+? data.opportunities
+: [];
+
+
+document.getElementById(
+"opportunities"
+).textContent =
+opportunities.length;
+
+
+if(
+opportunities.length
+){
+
+document.getElementById(
+"bestEdge"
+).textContent =
+percent(
+opportunities[0].edge
+);
+
+document.getElementById(
+"bestCity"
+).textContent =
+opportunities[0].city;
+
+}else{
+
+document.getElementById(
+"bestEdge"
+).textContent =
+"—";
+
+document.getElementById(
+"bestCity"
+).textContent =
+"None";
+
+}
+
+
+document.getElementById(
+"updated"
+).textContent =
+new Date()
+.toLocaleTimeString();
+
 
 const table =
-document.getElementById("marketTable");
+document.getElementById(
+"marketTable"
+);
 
 
-if (!eligible.length) {
+if(!opportunities.length){
 
 table.innerHTML = `
 <tr>
 <td colspan="9" class="empty">
 No markets currently pass all auto-trader filters.
 <br><br>
-The bot will wait for a qualifying market.
+The bot is waiting for a qualifying market.
 </td>
 </tr>
 `;
 
-} else {
+return;
+
+}
+
 
 table.innerHTML =
-eligible.map(item => {
+opportunities
+.map(
+item=>{
 
 const action =
-item.action.includes("NO")
+item.side === "NO"
 ? "BUY NO"
 : "BUY YES";
 
-
 const actionClass =
-action.includes("YES")
-? "yes"
-: "no";
-
+item.side === "NO"
+? "no"
+: "yes";
 
 const target =
-Number.isFinite(item.price)
-? item.price * (1 + filters.takeProfit)
-: NaN;
-
+Number(item.kalshiAsk) *
+(
+1 +
+Number(data.filters.takeProfit)
+);
 
 return `
+
 <tr>
 
 <td>
-<strong>${escapeHTML(item.city)}</strong>
+<strong>
+${escapeHTML(item.city)}
+</strong>
 </td>
 
 <td>
 ${escapeHTML(item.title)}
 </td>
 
-<td class="buy ${actionClass}">
+<td class="${actionClass}">
 ${action}
 </td>
 
-<td class="price">
-${cents(item.price)}
+<td>
+${cents(item.kalshiAsk)}
 </td>
 
 <td>
-${percent(item.model)}
+${percent(item.modelProbability)}
 </td>
 
 <td class="edge">
 +${percent(item.edge)}
 </td>
 
-<td class="eligible">
-${formatMinutes(item.minutesToClose)}
+<td>
+${minutes(item.minutesToClose)}
 </td>
 
 <td>
@@ -1174,148 +1327,55 @@ ${cents(target)}
 </td>
 
 <td>
-${formatDate(item.closeTime)}
+${item.market?.close_time
+? new Date(
+item.market.close_time
+).toLocaleString()
+: "—"}
 </td>
 
 </tr>
+
 `;
 
-}).join("");
+}
+)
+.join("");
+
 }
 
 
-/* -----------------------------------------------
-Chart
------------------------------------------------- */
+/* =========================
+LOAD EVERYTHING
+========================= */
 
-drawChart(eligible);
+async function loadAll(){
 
+try{
 
-} catch (error) {
+await loadStatus();
+
+await loadWeather();
+
+}catch(error){
+
+message(
+"ERROR: " +
+error.message
+);
 
 console.error(error);
 
-document.getElementById("marketTable").innerHTML = `
-<tr>
-<td colspan="9" class="empty">
-Error loading dashboard.
-<br><br>
-${escapeHTML(error.message)}
-</td>
-</tr>
-`;
-}
-}
-
-
-/* -------------------------------------------------------
-Chart
-------------------------------------------------------- */
-
-function drawChart(markets) {
-
-const canvas =
-document.getElementById("marketChart");
-
-if (chart) {
-chart.destroy();
-}
-
-
-const labels =
-markets.map(
-m =>
-(m.city || "") +
-" " +
-(m.action || "")
-);
-
-
-const modelData =
-markets.map(
-m =>
-Number(m.model || 0) * 100
-);
-
-
-const kalshiData =
-markets.map(
-m =>
-Number(m.price || 0) * 100
-);
-
-
-chart =
-new Chart(canvas, {
-
-type: "bar",
-
-data: {
-labels,
-
-datasets: [
-
-{
-label: "Model %",
-data: modelData
-},
-
-{
-label: "Kalshi Price %",
-data: kalshiData
-}
-
-]
-},
-
-options: {
-
-responsive: true,
-
-scales: {
-
-y: {
-beginAtZero: true,
-max: 100
-}
-
-},
-
-plugins: {
-
-legend: {
-labels: {
-color: "#dce7f2"
-}
 }
 
 }
-}
-
-});
-}
 
 
-/* -------------------------------------------------------
-HTML escaping
-------------------------------------------------------- */
+/* =========================
+START
+========================= */
 
-function escapeHTML(value) {
-
-return String(value ?? "")
-.replaceAll("&", "&amp;")
-.replaceAll("<", "&lt;")
-.replaceAll(">", "&gt;")
-.replaceAll('"', "&quot;")
-.replaceAll("'", "&#039;");
-}
-
-
-/* -------------------------------------------------------
-Start
-------------------------------------------------------- */
-
-loadDashboard();
+loadAll();
 
 
 /*
@@ -1323,7 +1383,7 @@ Refresh every 30 seconds.
 */
 
 setInterval(
-loadDashboard,
+loadAll,
 30000
 );
 
