@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
 
 <title>Position Ledger — Kalshi Dashboard</title>
 
@@ -20,7 +26,7 @@ font-family: Arial, Helvetica, sans-serif;
 }
 
 header {
-padding: 24px;
+padding: 22px;
 border-bottom: 1px solid #202632;
 background: #0c1017;
 position: sticky;
@@ -34,7 +40,6 @@ margin: auto;
 display: flex;
 justify-content: space-between;
 align-items: center;
-gap: 15px;
 }
 
 h1 {
@@ -130,10 +135,6 @@ background: #27d17f;
 color: #06150d;
 }
 
-.btn-buy:hover {
-filter: brightness(1.08);
-}
-
 .btn-secondary {
 background: #1b2330;
 color: white;
@@ -171,7 +172,6 @@ line-height: 1.3;
 color: #8993a4;
 font-size: 12px;
 margin-top: 6px;
-line-height: 1.4;
 }
 
 .score {
@@ -249,18 +249,25 @@ flex: 1;
 
 .nfl-list {
 display: grid;
-gap: 10px;
+gap: 12px;
 }
 
 .nfl-game {
 background: #10151e;
 border: 1px solid #222a36;
-border-radius: 12px;
-padding: 14px;
+border-radius: 14px;
+padding: 16px;
 }
 
-.nfl-title {
+.nfl-game-title {
+font-size: 18px;
 font-weight: bold;
+}
+
+.nfl-game-meta {
+color: #8993a4;
+font-size: 12px;
+margin-top: 5px;
 }
 
 .nfl-market {
@@ -268,11 +275,16 @@ display: grid;
 grid-template-columns: 1fr 90px 90px;
 gap: 8px;
 align-items: center;
-margin-top: 9px;
+margin-top: 12px;
+}
+
+.team-name {
+font-weight: bold;
 }
 
 .price {
 background: #0a0f15;
+color: white;
 border: 1px solid #27303d;
 padding: 9px;
 border-radius: 8px;
@@ -282,6 +294,21 @@ font-weight: bold;
 
 .price:hover {
 background: #16202c;
+}
+
+.empty {
+padding: 25px;
+text-align: center;
+color: #7e899b;
+background: #10151e;
+border: 1px solid #222a36;
+border-radius: 12px;
+}
+
+.error {
+color: #ff7777;
+font-size: 13px;
+margin-top: 10px;
 }
 
 .modal-backdrop {
@@ -340,22 +367,7 @@ margin-top: 17px;
 flex: 1;
 }
 
-.empty {
-padding: 25px;
-text-align: center;
-color: #7e899b;
-background: #10151e;
-border: 1px solid #222a36;
-border-radius: 12px;
-}
-
-.error {
-color: #ff7777;
-font-size: 13px;
-margin-top: 10px;
-}
-
-@media(max-width: 850px) {
+@media(max-width:850px) {
 
 .cards {
 grid-template-columns: 1fr;
@@ -367,7 +379,7 @@ grid-template-columns: 1fr;
 
 }
 
-@media(max-width: 600px) {
+@media(max-width:600px) {
 
 main {
 padding: 14px;
@@ -377,10 +389,6 @@ header {
 padding: 17px;
 }
 
-.header-row {
-align-items: flex-start;
-}
-
 .nfl-market {
 grid-template-columns: 1fr 75px 75px;
 }
@@ -388,6 +396,7 @@ grid-template-columns: 1fr 75px 75px;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -397,13 +406,21 @@ grid-template-columns: 1fr 75px 75px;
 <div class="header-row">
 
 <div>
-<h1>Position Ledger</h1>
+
+<h1>
+Position Ledger
+</h1>
+
 <div class="subtitle">
 Kalshi Dashboard
 </div>
+
 </div>
 
-<div class="status" id="status">
+<div
+class="status"
+id="status"
+>
 Connecting...
 </div>
 
@@ -414,52 +431,69 @@ Connecting...
 
 <main>
 
+
 <!-- ACCOUNT -->
 
 <div class="cards">
 
 <div class="card">
+
 <div class="card-label">
 Available Balance
 </div>
 
-<div class="card-value" id="balance">
+<div
+class="card-value"
+id="balance"
+>
 —
 </div>
+
 </div>
 
 
 <div class="card">
+
 <div class="card-label">
 Portfolio Value
 </div>
 
-<div class="card-value" id="portfolioValue">
+<div
+class="card-value"
+id="portfolioValue"
+>
 —
 </div>
+
 </div>
 
 
 <div class="card">
+
 <div class="card-label">
 Open Positions
 </div>
 
-<div class="card-value" id="positionCount">
+<div
+class="card-value"
+id="positionCount"
+>
 —
 </div>
-</div>
 
 </div>
 
+</div>
 
-<!-- TOP OPPORTUNITIES -->
+
+<!-- OPPORTUNITIES -->
 
 <section class="section">
 
 <div class="section-header">
 
 <div>
+
 <div class="section-title">
 Top Opportunities
 </div>
@@ -467,6 +501,7 @@ Top Opportunities
 <div class="subtitle">
 Non-political open markets
 </div>
+
 </div>
 
 
@@ -507,6 +542,7 @@ max="99"
 placeholder="Max spread"
 >
 
+
 <button
 class="btn-secondary"
 onclick="loadMarkets()"
@@ -519,7 +555,10 @@ Refresh
 </div>
 
 
-<div id="marketsGrid" class="market-grid">
+<div
+id="marketsGrid"
+class="market-grid"
+>
 
 <div class="empty">
 Loading markets...
@@ -537,14 +576,17 @@ Loading markets...
 <div class="section-header">
 
 <div>
+
 <div class="section-title">
 NFL
 </div>
 
 <div class="subtitle">
-Live Kalshi NFL markets
+NFL game markets grouped by game
 </div>
+
 </div>
+
 
 <button
 class="btn-secondary"
@@ -556,10 +598,13 @@ Refresh
 </div>
 
 
-<div id="nflList" class="nfl-list">
+<div
+id="nflList"
+class="nfl-list"
+>
 
 <div class="empty">
-Loading NFL markets...
+Loading NFL...
 </div>
 
 </div>
@@ -620,7 +665,7 @@ NO
 <div class="modal-row">
 
 <div class="modal-label">
-Price — cents
+Price
 </div>
 
 <input
@@ -653,7 +698,8 @@ value="1"
 
 <div class="cost">
 
-Max cost:
+Maximum cost:
+
 <strong id="maxCost">
 $0.50
 </strong>
@@ -698,23 +744,22 @@ const WORKER_URL =
 
 let allMarkets = [];
 let nflMarkets = [];
-
 let selectedMarket = null;
 
 
-/* ---------------------------------------
+/* ================================
 HELPERS
---------------------------------------- */
+================================ */
 
-function money(value) {
+function num(value) {
 
-const n = Number(value || 0);
-
-return "$" + n.toFixed(2);
+if (
+value === null ||
+value === undefined ||
+value === ""
+) {
+return 0;
 }
-
-
-function number(value) {
 
 const n = Number(value);
 
@@ -724,83 +769,112 @@ return Number.isFinite(n)
 }
 
 
-function getPrice(market, side) {
+function money(value) {
 
-if (side === "yes") {
-
-return number(
-market.yes_ask ??
-market.yes_ask_dollars * 100 ??
-market.yes_bid ??
-0
-);
+return "$" +
+num(value).toFixed(2);
 
 }
 
-return number(
-market.no_ask ??
-market.no_ask_dollars * 100 ??
-market.no_bid ??
-0
-);
+
+function escapeHtml(value) {
+
+return String(value || "")
+.replace(/&/g, "&amp;")
+.replace(/</g, "&lt;")
+.replace(/>/g, "&gt;")
+.replace(/"/g, "&quot;")
+.replace(/'/g, "&#039;");
+
 }
 
 
-function getYesAsk(market) {
+/* ================================
+PRICES
+================================ */
 
-if (market.yes_ask !== undefined)
-return number(market.yes_ask);
+function yesBid(m) {
 
-if (market.yes_ask_dollars !== undefined)
-return number(market.yes_ask_dollars) * 100;
+if (m.yes_bid !== undefined)
+return num(m.yes_bid);
+
+if (m.yes_bid_dollars !== undefined)
+return num(m.yes_bid_dollars) * 100;
 
 return 0;
 }
 
 
-function getYesBid(market) {
+function yesAsk(m) {
 
-if (market.yes_bid !== undefined)
-return number(market.yes_bid);
+if (m.yes_ask !== undefined)
+return num(m.yes_ask);
 
-if (market.yes_bid_dollars !== undefined)
-return number(market.yes_bid_dollars) * 100;
-
-return 0;
-}
-
-
-function getNoAsk(market) {
-
-if (market.no_ask !== undefined)
-return number(market.no_ask);
-
-if (market.no_ask_dollars !== undefined)
-return number(market.no_ask_dollars) * 100;
+if (m.yes_ask_dollars !== undefined)
+return num(m.yes_ask_dollars) * 100;
 
 return 0;
 }
 
 
-function getNoBid(market) {
+function noBid(m) {
 
-if (market.no_bid !== undefined)
-return number(market.no_bid);
+if (m.no_bid !== undefined)
+return num(m.no_bid);
 
-if (market.no_bid_dollars !== undefined)
-return number(market.no_bid_dollars) * 100;
+if (m.no_bid_dollars !== undefined)
+return num(m.no_bid_dollars) * 100;
 
 return 0;
 }
 
 
-/* ---------------------------------------
+function noAsk(m) {
+
+if (m.no_ask !== undefined)
+return num(m.no_ask);
+
+if (m.no_ask_dollars !== undefined)
+return num(m.no_ask_dollars) * 100;
+
+return 0;
+}
+
+
+/* ================================
+SPREAD
+================================ */
+
+function getSpread(market) {
+
+const bid = yesBid(market);
+const ask = yesAsk(market);
+
+if (
+bid > 0 &&
+ask > 0 &&
+ask >= bid
+) {
+return ask - bid;
+}
+
+/*
+IMPORTANT:
+Unknown spread is null,
+NOT 99.
+*/
+
+return null;
+}
+
+
+/* ================================
 SETTLEMENT
---------------------------------------- */
+================================ */
 
 function getSettlementDate(market) {
 
-const fields = [
+const values = [
 
 market.settlement_time,
 
@@ -816,71 +890,81 @@ market.close_time
 
 ];
 
-for (const value of fields) {
+
+for (const value of values) {
 
 if (!value) continue;
 
-const date = new Date(value);
+const d = new Date(value);
 
-if (!Number.isNaN(date.getTime())) {
-return date;
+if (!Number.isNaN(d.getTime())) {
+return d;
 }
 
 }
+
 
 return null;
 }
 
 
-function formatSettlement(market) {
+function settlementInfo(market) {
 
 const date =
 getSettlementDate(market);
 
+
 if (!date) {
 
 return {
-text: "Settlement unknown",
-countdown: "—",
-ms: Infinity
+ms: Infinity,
+countdown: "Unknown",
+date: "Settlement unavailable"
 };
 
 }
 
 
-const now = Date.now();
-
 const diff =
-date.getTime() - now;
+date.getTime() -
+Date.now();
 
 
 if (diff <= 0) {
 
 return {
-text: "Due now",
+ms: diff,
 countdown: "Due now",
-ms: diff
+date: date.toLocaleString()
 };
 
 }
 
 
-const totalMinutes =
-Math.floor(diff / 60000);
+const minutes =
+Math.floor(
+diff / 60000
+);
+
 
 const days =
-Math.floor(totalMinutes / 1440);
+Math.floor(
+minutes / 1440
+);
+
 
 const hours =
 Math.floor(
-(totalMinutes % 1440) / 60
+(minutes % 1440) / 60
 );
 
-const minutes =
-totalMinutes % 60;
+
+const mins =
+minutes % 60;
 
 
-let countdown = "";
+let countdown;
+
 
 if (days > 0) {
 
@@ -890,17 +974,23 @@ countdown =
 } else if (hours > 0) {
 
 countdown =
-`${hours}h ${minutes}m`;
+`${hours}h ${mins}m`;
 
 } else {
 
 countdown =
-`${minutes}m`;
+`${mins}m`;
 
 }
 
 
-const text =
+return {
+
+ms: diff,
+
+countdown,
+
+date:
 date.toLocaleString(
 undefined,
 {
@@ -909,26 +999,21 @@ day: "numeric",
 hour: "numeric",
 minute: "2-digit"
 }
-);
+)
 
-
-return {
-text,
-countdown,
-ms: diff
 };
 
 }
 
 
-/* ---------------------------------------
+/* ================================
 OPPORTUNITY SCORE
---------------------------------------- */
+================================ */
 
 function scoreMarket(market) {
 
 const volume =
-number(
+num(
 market.volume_number ??
 market.volume ??
 market.volume_fp
@@ -936,7 +1021,7 @@ market.volume_fp
 
 
 const volume24 =
-number(
+num(
 market.volume_24h_number ??
 market.volume_24h ??
 market.volume_24h_fp
@@ -944,75 +1029,47 @@ market.volume_24h_fp
 
 
 const liquidity =
-number(
+num(
 market.liquidity_number ??
 market.liquidity ??
 market.liquidity_dollars
 );
 
 
-const yesBid =
-getYesBid(market);
-
-const yesAsk =
-getYesAsk(market);
-
-const noBid =
-getNoBid(market);
-
-const noAsk =
-getNoAsk(market);
-
-
-let spread = 99;
-
-if (yesBid > 0 && yesAsk > 0) {
-
-spread =
-yesAsk - yesBid;
-
-}
+const spread =
+getSpread(market);
 
 
 let score = 0;
 
 
-/*
-Liquidity
-*/
+/* Liquidity */
 
-score +=
-Math.min(
+score += Math.min(
 liquidity / 100,
 20
 );
 
 
-/*
-Volume
-*/
+/* Total volume */
 
-score +=
-Math.min(
+score += Math.min(
 volume / 1000,
 20
 );
 
 
-/*
-24h activity
-*/
+/* 24h volume */
 
-score +=
-Math.min(
+score += Math.min(
 volume24 / 500,
 20
 );
 
 
-/*
-Spread
-*/
+/* Spread */
+
+if (spread !== null) {
 
 if (spread <= 2)
 score += 20;
@@ -1026,18 +1083,19 @@ score += 10;
 else if (spread <= 8)
 score += 5;
 
+}
 
-/*
-Price structure
 
-Avoid markets where the displayed
-side is extremely close to 0 or 100.
-*/
+/* Price structure */
 
 const last =
-number(
+num(
 market.last_price ??
-market.last_price_dollars * 100
+(
+market.last_price_dollars !== undefined
+? market.last_price_dollars * 100
+: 0
+)
 );
 
 
@@ -1051,13 +1109,16 @@ score += 10;
 }
 
 
-return Math.round(score * 10) / 10;
+return Math.round(
+score * 10
+) / 10;
+
 }
 
 
-/* ---------------------------------------
-LOAD PORTFOLIO
---------------------------------------- */
+/* ================================
+PORTFOLIO
+================================ */
 
 async function loadPortfolio() {
 
@@ -1069,27 +1130,22 @@ WORKER_URL +
 "/api/portfolio"
 );
 
+
 const data =
 await response.json();
 
 
-if (!data.ok) {
-
+if (!data.ok)
 throw new Error(
 JSON.stringify(data.error)
 );
 
-}
-
-
-const balanceRaw =
-data.balance?.balance ??
-data.balance?.available_balance ??
-0;
-
 
 const balance =
-number(balanceRaw) / 100;
+num(
+data.balance?.balance ??
+data.balance?.available_balance
+) / 100;
 
 
 document.getElementById(
@@ -1112,48 +1168,10 @@ document.getElementById(
 positions.length;
 
 
-let portfolioValue = balance;
-
-
-for (const position of positions) {
-
-const qty =
-Math.abs(
-number(
-position.position ??
-position.quantity ??
-0
-)
-);
-
-
-const price =
-number(
-position.market_value ??
-position.current_value ??
-0
-);
-
-
-if (price > 0) {
-
-portfolioValue +=
-price / 100;
-
-} else {
-
-portfolioValue +=
-qty;
-
-}
-
-}
-
-
 document.getElementById(
 "portfolioValue"
 ).textContent =
-money(portfolioValue);
+money(balance);
 
 
 document.getElementById(
@@ -1175,9 +1193,9 @@ document.getElementById(
 }
 
 
-/* ---------------------------------------
-LOAD MARKETS
---------------------------------------- */
+/* ================================
+MARKETS
+================================ */
 
 async function loadMarkets() {
 
@@ -1187,13 +1205,13 @@ document.getElementById(
 );
 
 
-try {
-
 grid.innerHTML =
 `<div class="empty">
-Loading opportunities...
+Loading markets...
 </div>`;
 
+
+try {
 
 const response =
 await fetch(
@@ -1206,13 +1224,10 @@ const data =
 await response.json();
 
 
-if (!data.ok) {
-
+if (!data.ok)
 throw new Error(
 JSON.stringify(data.error)
 );
-
-}
 
 
 allMarkets =
@@ -1222,6 +1237,7 @@ Array.isArray(data.markets)
 
 
 renderMarkets();
+
 
 } catch (error) {
 
@@ -1242,9 +1258,9 @@ error.message
 }
 
 
-/* ---------------------------------------
+/* ================================
 RENDER MARKETS
---------------------------------------- */
+================================ */
 
 function renderMarkets() {
 
@@ -1255,7 +1271,7 @@ document.getElementById(
 
 
 const minVolume =
-number(
+num(
 document.getElementById(
 "minVolume"
 ).value
@@ -1263,7 +1279,7 @@ document.getElementById(
 
 
 const maxSpread =
-number(
+num(
 document.getElementById(
 "maxSpread"
 ).value
@@ -1281,36 +1297,30 @@ allMarkets.filter(
 market => {
 
 const volume =
-number(
+num(
 market.volume_number ??
 market.volume ??
 market.volume_fp
 );
 
 
-const yesBid =
-getYesBid(market);
-
-const yesAsk =
-getYesAsk(market);
+const spread =
+getSpread(market);
 
 
-let spread = 99;
+/*
+If spread is unknown,
+don't eliminate the market.
+*/
 
-if (
-yesBid > 0 &&
-yesAsk > 0
-) {
-
-spread =
-yesAsk - yesBid;
-
-}
+const spreadOkay =
+spread === null ||
+spread <= maxSpread;
 
 
 return (
 volume >= minVolume &&
-spread <= maxSpread
+spreadOkay
 );
 
 }
@@ -1319,17 +1329,24 @@ spread <= maxSpread
 
 markets =
 markets.map(
-market => ({
+market => {
+
+const settlement =
+settlementInfo(market);
+
+
+return {
 
 ...market,
 
 opportunityScore:
 scoreMarket(market),
 
-settlement:
-formatSettlement(market)
+settlement
 
-})
+};
+
+}
 );
 
 
@@ -1360,11 +1377,11 @@ a.opportunityScore
 }
 
 
-const visible =
+const top =
 markets.slice(0, 3);
 
 
-if (!visible.length) {
+if (!top.length) {
 
 grid.innerHTML =
 `<div class="empty">
@@ -1377,7 +1394,7 @@ return;
 
 
 grid.innerHTML =
-visible.map(
+top.map(
 (market, index) =>
 marketCard(
 market,
@@ -1388,24 +1405,26 @@ index
 }
 
 
-/* ---------------------------------------
+/* ================================
 MARKET CARD
---------------------------------------- */
+================================ */
 
 function marketCard(
 market,
 index
 ) {
 
-const yesAsk =
-getYesAsk(market);
+const settlement =
+market.settlement ||
+settlementInfo(market);
 
-const noAsk =
-getNoAsk(market);
+
+const spread =
+getSpread(market);
 
 
 const volume =
-number(
+num(
 market.volume_number ??
 market.volume ??
 market.volume_fp
@@ -1413,29 +1432,11 @@ market.volume_fp
 
 
 const liquidity =
-number(
+num(
 market.liquidity_number ??
 market.liquidity ??
 market.liquidity_dollars
 );
-
-
-const settlement =
-formatSettlement(market);
-
-
-const settlementClass =
-settlement.ms <
-24 * 60 * 60 * 1000
-
-? "fast"
-
-: settlement.ms <
-3 * 24 * 60 * 60 * 1000
-
-? "warning"
-
-: "muted";
 
 
 const medals = [
@@ -1479,6 +1480,7 @@ market.ticker
 <div class="score">
 
 Opportunity Score:
+
 <strong>
 ${market.opportunityScore}
 </strong>
@@ -1492,13 +1494,15 @@ ${market.opportunityScore}
 Expected Settlement
 </div>
 
-<div
-class="settlement-value ${settlementClass}"
->
+<div class="settlement-value">
 
 ${settlement.countdown}
+
 ·
-${settlement.text}
+
+${escapeHtml(
+settlement.date
+)}
 
 </div>
 
@@ -1536,13 +1540,17 @@ ${liquidity.toLocaleString()}
 <div class="metric">
 
 <div class="metric-label">
-YES Ask
+Spread
 </div>
 
 <div class="metric-value">
-${yesAsk
-? yesAsk.toFixed(0) + "¢"
-: "—"}
+
+${
+spread === null
+? "—"
+: spread.toFixed(0) + "¢"
+}
+
 </div>
 
 </div>
@@ -1551,13 +1559,17 @@ ${yesAsk
 <div class="metric">
 
 <div class="metric-label">
-NO Ask
+YES Ask
 </div>
 
 <div class="metric-value">
-${noAsk
-? noAsk.toFixed(0) + "¢"
-: "—"}
+
+${
+yesAsk(market)
+? yesAsk(market).toFixed(0) + "¢"
+: "—"
+}
+
 </div>
 
 </div>
@@ -1595,9 +1607,9 @@ BUY NO
 }
 
 
-/* ---------------------------------------
+/* ================================
 NFL
---------------------------------------- */
+================================ */
 
 async function loadNFL() {
 
@@ -1607,13 +1619,13 @@ document.getElementById(
 );
 
 
-try {
-
 list.innerHTML =
 `<div class="empty">
 Loading NFL...
 </div>`;
 
+
+try {
 
 const response =
 await fetch(
@@ -1626,13 +1638,10 @@ const data =
 await response.json();
 
 
-if (!data.ok) {
-
+if (!data.ok)
 throw new Error(
 JSON.stringify(data.error)
 );
-
-}
 
 
 nflMarkets =
@@ -1643,6 +1652,7 @@ Array.isArray(data.markets)
 
 renderNFL();
 
+
 } catch (error) {
 
 console.error(error);
@@ -1650,12 +1660,231 @@ console.error(error);
 list.innerHTML =
 `<div class="empty">
 Unable to load NFL markets.
+<div class="error">
+${escapeHtml(
+error.message
+)}
+</div>
 </div>`;
 
 }
 
 }
 
+
+/* ================================
+NFL TEAM NAME EXTRACTION
+================================ */
+
+function cleanTeamName(value) {
+
+if (!value)
+return "";
+
+
+let name =
+String(value).trim();
+
+
+name =
+name
+.replace(/^will\s+/i, "")
+.replace(/^the\s+/i, "")
+.replace(/\s+to\s+win.*$/i, "")
+.replace(/\s+win.*$/i, "")
+.replace(/\?$/g, "")
+.trim();
+
+
+return name;
+
+}
+
+
+function getTeamName(market) {
+
+const candidates = [
+
+market.subtitle,
+
+market.yes_sub_title,
+
+market.yes_subtitle,
+
+market.team,
+
+market.team_name,
+
+market.title
+
+];
+
+
+for (const value of candidates) {
+
+const cleaned =
+cleanTeamName(value);
+
+
+if (
+cleaned &&
+cleaned.length < 70
+) {
+return cleaned;
+}
+
+}
+
+
+return "";
+
+}
+
+
+/* ================================
+NFL GROUPING
+================================ */
+
+function groupNFLMarkets() {
+
+const groups = {};
+
+
+for (const market of nflMarkets) {
+
+/*
+event_ticker is the important part.
+
+All markets belonging to the same
+NFL game go into the same group.
+*/
+
+const key =
+market.event_ticker ||
+market.event_ticker_name ||
+market.ticker;
+
+
+if (!groups[key]) {
+
+groups[key] = [];
+
+}
+
+
+groups[key].push(market);
+
+}
+
+
+return Object.entries(groups)
+.map(
+([eventTicker, markets]) => ({
+
+eventTicker,
+
+markets
+
+})
+);
+
+}
+
+
+/* ================================
+NFL GAME NAME
+================================ */
+
+function getGameName(group) {
+
+const teams = [];
+
+
+for (const market of group.markets) {
+
+const team =
+getTeamName(market);
+
+
+if (
+team &&
+!teams.includes(team)
+) {
+
+teams.push(team);
+
+}
+
+}
+
+
+/*
+If two actual team names are
+available, use them.
+*/
+
+if (teams.length >= 2) {
+
+return (
+teams[0] +
+" vs. " +
+teams[1]
+);
+
+}
+
+
+/*
+Some Kalshi responses put the
+matchup directly in title.
+*/
+
+for (const market of group.markets) {
+
+const title =
+String(
+market.title || ""
+);
+
+
+const match =
+title.match(
+/(.+?)\s+(?:vs\.?|at|@)\s+(.+)/i
+);
+
+
+if (match) {
+
+return (
+cleanTeamName(
+match[1]
+) +
+" vs. " +
+cleanTeamName(
+match[2]
+)
+);
+
+}
+
+}
+
+
+/*
+Last-resort fallback.
+*/
+
+return (
+group.eventTicker ||
+"NFL Game"
+);
+
+}
+
+
+/* ================================
+NFL RENDER
+================================ */
 
 function renderNFL() {
 
@@ -1677,65 +1906,71 @@ return;
 }
 
 
-const groups = {};
-
-
-for (const market of nflMarkets) {
-
-const key =
-market.event_ticker ||
-market.ticker;
-
-
-if (!groups[key]) {
-groups[key] = [];
-}
-
-
-groups[key].push(market);
-
-}
-
-
 const games =
-Object.values(groups);
+groupNFLMarkets();
 
 
 list.innerHTML =
 games.map(
-markets => {
+group => {
 
-const first =
-markets[0];
-
-
-return `
-
-<div class="nfl-game">
-
-<div class="nfl-title">
-
-${escapeHtml(
-first.title ||
-first.event_ticker ||
-"NFL Market"
-)}
-
-</div>
+const gameName =
+getGameName(group);
 
 
-${markets.map(
-market => {
-
-const yes =
-getYesAsk(market);
-
-const no =
-getNoAsk(market);
+const dates =
+group.markets
+.map(
+market =>
+settlementInfo(market)
+)
+.filter(
+x =>
+x.ms !== Infinity
+)
+.sort(
+(a,b) =>
+a.ms - b.ms
+);
 
 
 const settlement =
-formatSettlement(market);
+dates[0] ||
+{
+countdown: "Unknown",
+date: "Settlement unavailable"
+};
+
+
+/*
+Deduplicate team markets.
+*/
+
+const seen = new Set();
+
+
+const marketRows =
+group.markets
+.map(
+market => {
+
+const team =
+getTeamName(market);
+
+
+const identifier =
+team ||
+market.ticker;
+
+
+if (
+seen.has(identifier)
+) {
+return "";
+}
+
+
+seen.add(identifier);
 
 
 return `
@@ -1744,15 +1979,21 @@ return `
 
 <div>
 
+<div class="team-name">
+
 ${escapeHtml(
-market.subtitle ||
+team ||
+market.title ||
 market.ticker
 )}
 
+</div>
+
 <div class="subtitle">
 
-Settles:
-${settlement.countdown}
+${escapeHtml(
+market.ticker
+)}
 
 </div>
 
@@ -1765,10 +2006,16 @@ onclick='openBuy(${JSON.stringify(
 market
 )}, "yes")'
 >
+
 YES
-${yes
-? yes.toFixed(0) + "¢"
-: "—"}
+
+${
+yesAsk(market)
+? yesAsk(market)
+.toFixed(0) + "¢"
+: "—"
+}
+
 </button>
 
 
@@ -1778,10 +2025,16 @@ onclick='openBuy(${JSON.stringify(
 market
 )}, "no")'
 >
+
 NO
-${no
-? no.toFixed(0) + "¢"
-: "—"}
+
+${
+noAsk(market)
+? noAsk(market)
+.toFixed(0) + "¢"
+: "—"
+}
+
 </button>
 
 </div>
@@ -1789,7 +2042,40 @@ ${no
 `;
 
 }
-).join("")}
+)
+.join("");
+
+
+return `
+
+<div class="nfl-game">
+
+<div class="nfl-game-title">
+
+${escapeHtml(
+gameName
+)}
+
+</div>
+
+
+<div class="nfl-game-meta">
+
+Expected settlement:
+${escapeHtml(
+settlement.countdown
+)}
+
+·
+
+${escapeHtml(
+settlement.date
+)}
+
+</div>
+
+
+${marketRows}
 
 </div>
 
@@ -1801,9 +2087,9 @@ ${no
 }
 
 
-/* ---------------------------------------
+/* ================================
 BUY MODAL
---------------------------------------- */
+================================ */
 
 function openBuy(
 market,
@@ -1830,8 +2116,8 @@ side;
 
 const price =
 side === "yes"
-? getYesAsk(market)
-: getNoAsk(market);
+? yesAsk(market)
+: noAsk(market);
 
 
 document.getElementById(
@@ -1858,6 +2144,12 @@ document.getElementById(
 
 
 document.getElementById(
+"orderError"
+).style.color =
+"#ff7777";
+
+
+document.getElementById(
 "modalBackdrop"
 ).style.display =
 "flex";
@@ -1881,7 +2173,7 @@ null;
 function updateCost() {
 
 const price =
-number(
+num(
 document.getElementById(
 "orderPrice"
 ).value
@@ -1889,46 +2181,28 @@ document.getElementById(
 
 
 const count =
-number(
+num(
 document.getElementById(
 "orderCount"
 ).value
 );
 
 
-const cost =
-(price * count) / 100;
-
-
 document.getElementById(
 "maxCost"
 ).textContent =
-money(cost);
+money(
+(price * count) / 100
+);
 
 }
 
 
-document.getElementById(
-"orderPrice"
-).addEventListener(
-"input",
-updateCost
-);
+/* ================================
+BUY
+================================ */
 
-
-document.getElementById(
-"orderCount"
-).addEventListener(
-"input",
-updateCost
-);
-
-
-document.getElementById(
-"orderSide"
-).addEventListener(
-"change",
-() => {
+async function confirmBuy() {
 
 if (!selectedMarket)
 return;
@@ -1941,45 +2215,7 @@ document.getElementById(
 
 
 const price =
-side === "yes"
-? getYesAsk(selectedMarket)
-: getNoAsk(selectedMarket);
-
-
-if (price) {
-
-document.getElementById(
-"orderPrice"
-).value =
-Math.round(price);
-
-updateCost();
-
-}
-
-}
-);
-
-
-/* ---------------------------------------
-CONFIRM BUY
---------------------------------------- */
-
-async function confirmBuy() {
-
-if (!selectedMarket) {
-return;
-}
-
-
-const side =
-document.getElementById(
-"orderSide"
-).value;
-
-
-const price =
-number(
+num(
 document.getElementById(
 "orderPrice"
 ).value
@@ -1987,7 +2223,7 @@ document.getElementById(
 
 
 const count =
-number(
+num(
 document.getElementById(
 "orderCount"
 ).value
@@ -2000,17 +2236,13 @@ document.getElementById(
 );
 
 
-errorBox.textContent =
-"";
-
-
 if (
 price < 1 ||
 price > 99
 ) {
 
 errorBox.textContent =
-"Price must be 1–99 cents.";
+"Price must be 1-99 cents.";
 
 return;
 
@@ -2031,7 +2263,7 @@ return;
 
 
 const cost =
-(price * count) / 100;
+price * count / 100;
 
 
 const confirmed =
@@ -2040,9 +2272,8 @@ confirm(
 );
 
 
-if (!confirmed) {
+if (!confirmed)
 return;
-}
 
 
 try {
@@ -2084,7 +2315,10 @@ const data =
 await response.json();
 
 
-if (!response.ok || !data.ok) {
+if (
+!response.ok ||
+!data.ok
+) {
 
 throw new Error(
 JSON.stringify(
@@ -2112,6 +2346,7 @@ closeModal,
 
 loadPortfolio();
 
+
 } catch (error) {
 
 console.error(error);
@@ -2128,40 +2363,9 @@ error.message;
 }
 
 
-/* ---------------------------------------
-ESCAPE HTML
---------------------------------------- */
-
-function escapeHtml(value) {
-
-return String(value || "")
-.replace(
-/&/g,
-"&amp;"
-)
-.replace(
-/</g,
-"&lt;"
-)
-.replace(
-/>/g,
-"&gt;"
-)
-.replace(
-/"/g,
-"&quot;"
-)
-.replace(
-/'/g,
-"&#039;"
-);
-
-}
-
-
-/* ---------------------------------------
-FILTER EVENTS
---------------------------------------- */
+/* ================================
+EVENTS
+================================ */
 
 document.getElementById(
 "sortSelect"
@@ -2187,18 +2391,69 @@ renderMarkets
 );
 
 
-/* ---------------------------------------
-INITIAL LOAD
---------------------------------------- */
+document.getElementById(
+"orderPrice"
+).addEventListener(
+"input",
+updateCost
+);
+
+
+document.getElementById(
+"orderCount"
+).addEventListener(
+"input",
+updateCost
+);
+
+
+document.getElementById(
+"orderSide"
+).addEventListener(
+"change",
+() => {
+
+if (!selectedMarket)
+return;
+
+
+const side =
+document.getElementById(
+"orderSide"
+).value;
+
+
+const price =
+side === "yes"
+? yesAsk(selectedMarket)
+: noAsk(selectedMarket);
+
+
+if (price) {
+
+document.getElementById(
+"orderPrice"
+).value =
+Math.round(price);
+
+updateCost();
+
+}
+
+}
+);
+
+
+/* ================================
+START
+================================ */
 
 loadPortfolio();
 loadMarkets();
 loadNFL();
 
 
-/* ---------------------------------------
-AUTO REFRESH
---------------------------------------- */
+/* Portfolio */
 
 setInterval(
 loadPortfolio,
@@ -2206,11 +2461,15 @@ loadPortfolio,
 );
 
 
+/* Markets */
+
 setInterval(
 loadMarkets,
 30000
 );
 
+
+/* NFL */
 
 setInterval(
 loadNFL,
@@ -2218,14 +2477,17 @@ loadNFL,
 );
 
 
-/* Refresh countdowns without
-hitting the API every second. */
+/* Update settlement countdowns */
 
 setInterval(
 () => {
 
 if (allMarkets.length) {
 renderMarkets();
+}
+
+if (nflMarkets.length) {
+renderNFL();
 }
 
 },
@@ -2235,4 +2497,5 @@ renderMarkets();
 </script>
 
 </body>
+
 </html>
