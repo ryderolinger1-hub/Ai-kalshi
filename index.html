@@ -456,7 +456,7 @@ margin-top:12px;
 <div>
 <h1>Position Ledger — Kalshi Weather</h1>
 <div class="subtitle">
-Weather-model BUY signals • Kalshi-only SELL logic
+The Weather Company BUY signals • Kalshi-only SELL logic
 </div>
 </div>
 
@@ -853,11 +853,15 @@ return;
 
 try{
 
-await api("/api/auto-trade/start",{
+await api("/api/auto-trade/settings",{
 method:"POST",
 body:JSON.stringify({
+
+enabled:true,
+
 confirmation:
 confirmation
+
 })
 });
 
@@ -886,9 +890,11 @@ async function stopTrading(){
 
 try{
 
-await api("/api/auto-trade/stop",{
+await api("/api/auto-trade/settings",{
 method:"POST",
-body:JSON.stringify({})
+body:JSON.stringify({
+enabled:false
+})
 });
 
 showMessage(
@@ -960,41 +966,19 @@ market,
 
 
 function normalizeEdge(edge){
-
-if(edge === null)
-return null;
-
-/*
-Worker normally returns decimal edge:
-.393 = 39.3%
-
-Some versions may return:
-39.3
-
-Normalize both.
-*/
-
-if(Math.abs(edge) <= 1)
-return edge * 100;
-
-return edge;
+if(edge === null || edge === undefined) return null;
+const n = Number(edge);
+if(!Number.isFinite(n)) return null;
+return Math.abs(n) <= 1 ? n * 100 : n;
 }
 
 
 function getExpectedMove(market){
-
-const edge = normalizeEdge(getEdge(market));
-
-if(edge === null)
-return null;
-
-/*
-Expected Move matches Edge exactly:
-+37.8% Edge = +37.8¢ Expected Move
-*/
-
-return edge;
-
+const edge = getEdge(market);
+if(edge === null || edge === undefined) return null;
+const n = Number(edge);
+if(!Number.isFinite(n)) return null;
+return Math.abs(n) <= 1 ? n * 100 : n;
 }
 
 
@@ -1128,26 +1112,13 @@ return parts.length
 
 function getTitle(market){
 
-const city =
-market.city ||
-market.location ||
-market.cityName ||
-market.rawMarket?.city ||
-market.rawMarket?.location ||
-market.rawMarket?.cityName ||
-"";
-
-const question =
+return (
 market.title ||
 market.question ||
 market.name ||
 market.subtitle ||
-"Weather market";
-
-if(city)
-return `${city} — ${question}`;
-
-return question;
+"Weather market"
+);
 
 }
 
@@ -1186,25 +1157,15 @@ return p;
 
 
 function getModelProbability(market){
-
 const kalshi = getPrice(market);
-const edge = normalizeEdge(getEdge(market));
-
-if(kalshi === null || edge === null)
-return null;
-
-/*
-Model follows:
-Kalshi % + Edge %
-
-Example:
-Kalshi 50%
-Edge +37.8%
-Model 87.8%
-*/
-
-return kalshi + edge;
-
+const edge = getEdge(market);
+if(kalshi === null || edge === null) return null;
+const p = Number(kalshi);
+const e = Number(edge);
+if(!Number.isFinite(p) || !Number.isFinite(e)) return null;
+const pricePct = Math.abs(p) <= 1 ? p * 100 : p;
+const edgePct = Math.abs(e) <= 1 ? e * 100 : e;
+return 100 - (pricePct + edgePct);
 }
 
 
@@ -1821,7 +1782,7 @@ Refresh automatically every 30 seconds so the dashboard
 keeps showing changing Kalshi prices and eligibility.
 */
 
-setInterval(refreshAll,10000);
+setInterval(refreshAll,30000);
 
 
 /*
