@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Position Ledger — Kalshi Weather Dashboard</title>
+<title>Position Ledger — Kalshi Weather</title>
 
 <style>
 :root{
@@ -216,6 +216,36 @@ button.blue{
   color:white;
 }
 
+.discovery{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin-bottom:15px;
+}
+
+.discovery-card{
+  background:#0b1017;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:10px;
+}
+
+.discovery-city{
+  font-weight:700;
+  font-size:12px;
+}
+
+.discovery-detail{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.45;
+}
+
+.discovery-error{
+  color:var(--red);
+}
+
 .market{
   background:var(--panel);
   border:1px solid var(--border);
@@ -242,6 +272,7 @@ button.blue{
   color:var(--muted);
   font-size:12px;
   margin-top:5px;
+  line-height:1.5;
 }
 
 .decision{
@@ -386,32 +417,6 @@ button.blue{
   font-size:11px;
 }
 
-.discovery{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;
-  margin-bottom:15px;
-}
-
-.discovery-card{
-  background:#0b1017;
-  border:1px solid var(--border);
-  border-radius:9px;
-  padding:10px;
-}
-
-.discovery-city{
-  font-weight:700;
-  font-size:12px;
-}
-
-.discovery-detail{
-  margin-top:4px;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.4;
-}
-
 .history-card{
   background:var(--panel);
   border:1px solid var(--border);
@@ -534,6 +539,7 @@ tr:last-child td{
 }
 
 @media(max-width:1000px){
+
   .grid{
     grid-template-columns:repeat(2,1fr);
   }
@@ -556,6 +562,7 @@ tr:last-child td{
 }
 
 @media(max-width:600px){
+
   .container{
     padding:12px;
   }
@@ -584,16 +591,16 @@ tr:last-child td{
     grid-template-columns:1fr;
   }
 
-  .market-head{
-    flex-direction:column;
-  }
-
   .history-stats{
     grid-template-columns:repeat(2,1fr);
   }
 
   .discovery{
     grid-template-columns:1fr;
+  }
+
+  .market-head{
+    flex-direction:column;
   }
 }
 </style>
@@ -604,43 +611,96 @@ tr:last-child td{
 <div class="container">
 
 <header>
+
   <div>
-    <h1>Position Ledger — Kalshi Weather</h1>
+
+    <h1>
+      Position Ledger — Kalshi Weather
+    </h1>
+
     <div class="subtitle">
       Weather-model BUY signals • Kalshi-only SELL logic
     </div>
+
   </div>
 
-  <div id="tradingStatus" class="status-pill off">
+  <div
+    id="tradingStatus"
+    class="status-pill off"
+  >
     REAL TRADING OFF
   </div>
+
 </header>
 
 
 <!-- =========================================================
-TOP SUMMARY
+SUMMARY
 ========================================================= -->
 
 <div class="grid">
 
   <div class="card">
-    <div class="card-label">Max / Trade</div>
-    <div class="card-value" id="maxTradeDisplay">$5.00</div>
+
+    <div class="card-label">
+      Max / Trade
+    </div>
+
+    <div
+      class="card-value"
+      id="maxTradeDisplay"
+    >
+      $5.00
+    </div>
+
   </div>
 
-  <div class="card">
-    <div class="card-label">Max / Day</div>
-    <div class="card-value" id="maxDayDisplay">$20.00</div>
-  </div>
 
   <div class="card">
-    <div class="card-label">Spent Today</div>
-    <div class="card-value" id="spentDisplay">$0.00</div>
+
+    <div class="card-label">
+      Max / Day
+    </div>
+
+    <div
+      class="card-value"
+      id="maxDayDisplay"
+    >
+      $20.00
+    </div>
+
   </div>
 
+
   <div class="card">
-    <div class="card-label">Open Positions</div>
-    <div class="card-value" id="positionsDisplay">0</div>
+
+    <div class="card-label">
+      Spent Today
+    </div>
+
+    <div
+      class="card-value"
+      id="spentDisplay"
+    >
+      $0.00
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="card-label">
+      Open Positions
+    </div>
+
+    <div
+      class="card-value"
+      id="positionsDisplay"
+    >
+      0
+    </div>
+
   </div>
 
 </div>
@@ -656,10 +716,14 @@ SETTINGS
     AUTO-TRADER SETTINGS
   </div>
 
+
   <div class="settings-grid">
 
     <div>
-      <label>Max $ / Trade</label>
+      <label>
+        Max $ / Trade
+      </label>
+
       <input
         id="maxTrade"
         type="number"
@@ -669,8 +733,12 @@ SETTINGS
       >
     </div>
 
+
     <div>
-      <label>Max $ / Day</label>
+      <label>
+        Max $ / Day
+      </label>
+
       <input
         id="maxDay"
         type="number"
@@ -680,8 +748,12 @@ SETTINGS
       >
     </div>
 
+
     <div>
-      <label>Take Profit + Odds Points</label>
+      <label>
+        Take Profit + Odds Points
+      </label>
+
       <input
         id="takeProfit"
         type="number"
@@ -691,8 +763,12 @@ SETTINGS
       >
     </div>
 
+
     <div>
-      <label>Min Minutes Until Close</label>
+      <label>
+        Min Minutes Until Close
+      </label>
+
       <input
         id="minMinutes"
         type="number"
@@ -702,8 +778,12 @@ SETTINGS
       >
     </div>
 
+
     <div>
-      <label>Min Weather Edge %</label>
+      <label>
+        Min Weather Edge %
+      </label>
+
       <input
         id="minEdge"
         type="number"
@@ -713,8 +793,12 @@ SETTINGS
       >
     </div>
 
+
     <div>
-      <label>Min Expected Move ¢</label>
+      <label>
+        Min Expected Move ¢
+      </label>
+
       <input
         id="minMove"
         type="number"
@@ -736,12 +820,14 @@ SETTINGS
       SAVE SETTINGS
     </button>
 
+
     <button
       class="green"
       onclick="openStartModal()"
     >
       START REAL TRADING
     </button>
+
 
     <button
       class="red"
@@ -750,45 +836,62 @@ SETTINGS
       STOP REAL TRADING
     </button>
 
+
     <button onclick="refreshAll()">
       REFRESH
     </button>
 
   </div>
 
-  <div id="settingsMessage" class="message"></div>
+
+  <div
+    id="settingsMessage"
+    class="message"
+  ></div>
 
 </div>
 
 
 <!-- =========================================================
-WEATHER MARKETS
+MARKETS
 ========================================================= -->
 
 <div class="section-title">
   Today's Weather Markets
 </div>
 
+
 <div class="summary">
 
   <div class="badge">
     Markets:
-    <strong id="marketCount">0</strong>
+    <strong id="marketCount">
+      0
+    </strong>
   </div>
+
 
   <div class="badge">
     Eligible:
-    <strong id="eligibleCount">0</strong>
+    <strong id="eligibleCount">
+      0
+    </strong>
   </div>
+
 
   <div class="badge">
     Rejected:
-    <strong id="rejectedCount">0</strong>
+    <strong id="rejectedCount">
+      0
+    </strong>
   </div>
+
 
   <div class="badge">
     Last update:
-    <strong id="lastUpdate">—</strong>
+    <strong id="lastUpdate">
+      —
+    </strong>
   </div>
 
 </div>
@@ -798,94 +901,120 @@ WEATHER MARKETS
 
 
 <div id="markets">
+
   <div class="empty">
     Loading markets...
   </div>
+
 </div>
 
 
 <!-- =========================================================
-7-DAY TRANSACTION HISTORY
+7 DAY HISTORY
 ========================================================= -->
 
 <div class="section-title">
   7-Day Transaction History
 </div>
 
+
 <div class="history-card">
 
   <div class="history-stats">
 
     <div class="history-stat">
+
       <div class="history-stat-label">
         Spent
       </div>
+
       <div
         class="history-stat-value"
         id="weekSpent"
       >
         $0.00
       </div>
+
     </div>
 
+
     <div class="history-stat">
+
       <div class="history-stat-label">
         Proceeds
       </div>
+
       <div
         class="history-stat-value"
         id="weekProceeds"
       >
         $0.00
       </div>
+
     </div>
 
+
     <div class="history-stat">
+
       <div class="history-stat-label">
         Realized P/L
       </div>
+
       <div
         class="history-stat-value"
         id="weekPnl"
       >
         $0.00
       </div>
+
     </div>
 
+
     <div class="history-stat">
+
       <div class="history-stat-label">
         Buys
       </div>
+
       <div
         class="history-stat-value"
         id="weekBuys"
       >
         0
       </div>
+
     </div>
 
+
     <div class="history-stat">
+
       <div class="history-stat-label">
         Sells
       </div>
+
       <div
         class="history-stat-value"
         id="weekSells"
       >
         0
       </div>
+
     </div>
 
+
     <div class="history-stat">
+
       <div class="history-stat-label">
         Transactions
       </div>
+
       <div
         class="history-stat-value"
         id="weekTransactions"
       >
         0
       </div>
+
     </div>
 
   </div>
@@ -904,34 +1033,63 @@ WEATHER MARKETS
     id="historyTableWrap"
     class="table-wrap"
   >
+
     <table>
 
       <thead>
+
         <tr>
-          <th>Time</th>
-          <th>Action</th>
-          <th>Market</th>
-          <th>Side</th>
-          <th>Contracts</th>
-          <th>Price</th>
-          <th>Amount</th>
-          <th>P/L</th>
+
+          <th>
+            Time
+          </th>
+
+          <th>
+            Action
+          </th>
+
+          <th>
+            Market
+          </th>
+
+          <th>
+            Side
+          </th>
+
+          <th>
+            Contracts
+          </th>
+
+          <th>
+            Price
+          </th>
+
+          <th>
+            Amount
+          </th>
+
+          <th>
+            P/L
+          </th>
+
         </tr>
+
       </thead>
+
 
       <tbody id="historyBody"></tbody>
 
     </table>
+
   </div>
 
 </div>
-
 
 </div>
 
 
 <!-- =========================================================
-START CONFIRMATION
+REAL TRADING MODAL
 ========================================================= -->
 
 <div
@@ -941,16 +1099,23 @@ START CONFIRMATION
 
   <div class="modal-box">
 
-    <h2>Start Real Trading</h2>
+    <h2>
+      Start Real Trading
+    </h2>
+
 
     <p>
-      This enables the Worker to place real Kalshi orders.
-      Type the exact confirmation below.
+      This enables the Worker to place real Kalshi
+      orders. Type the exact confirmation below.
     </p>
 
+
     <p>
-      <strong>ENABLE REAL TRADING</strong>
+      <strong>
+        ENABLE REAL TRADING
+      </strong>
     </p>
+
 
     <input
       id="confirmation"
@@ -958,6 +1123,7 @@ START CONFIRMATION
       autocomplete="off"
       placeholder="ENABLE REAL TRADING"
     >
+
 
     <div class="modal-actions">
 
@@ -968,7 +1134,10 @@ START CONFIRMATION
         CONFIRM & START
       </button>
 
-      <button onclick="closeStartModal()">
+
+      <button
+        onclick="closeStartModal()"
+      >
         CANCEL
       </button>
 
@@ -993,7 +1162,7 @@ const DISPLAY_TIMEZONE =
 
 
 /* ============================================================
-BASIC HELPERS
+HELPERS
 ============================================================ */
 
 function $(id){
@@ -1002,40 +1171,65 @@ function $(id){
 
 
 function money(value){
-  const n = Number(value || 0);
-  return "$" + n.toFixed(2);
+
+  const n =
+    Number(value || 0);
+
+  return "$" +
+    n.toFixed(2);
+
 }
 
 
 function pct(value){
-  const n = Number(value || 0);
-  return n.toFixed(1) + "%";
+
+  const n =
+    Number(value || 0);
+
+  return n.toFixed(1) +
+    "%";
+
 }
 
 
 function cents(value){
-  const n = Number(value || 0);
-  return n.toFixed(1) + "¢";
+
+  const n =
+    Number(value || 0);
+
+  return n.toFixed(1) +
+    "¢";
+
 }
 
 
 function escapeHtml(value){
+
   return String(value ?? "")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
+
 }
 
 
-function showMessage(text,type=""){
-  const el = $("settingsMessage");
+function showMessage(
+  text,
+  type=""
+){
 
-  el.textContent = text;
+  const el =
+    $("settingsMessage");
+
+  el.textContent =
+    text;
 
   el.className =
-    "message show " + type;
+    "message show " +
+    type;
+
 }
 
 
@@ -1043,27 +1237,44 @@ function showMessage(text,type=""){
 API
 ============================================================ */
 
-async function api(path, options = {}){
+async function api(
+  path,
+  options={}
+){
 
   const response =
-    await fetch(WORKER + path,{
-      ...options,
-      cache:"no-store",
-      headers:{
-        "Content-Type":"application/json",
-        ...(options.headers || {})
+    await fetch(
+      WORKER + path,
+      {
+        ...options,
+        cache:"no-store",
+
+        headers:{
+          "Content-Type":
+            "application/json",
+
+          ...(options.headers || {})
+        }
       }
-    });
+    );
+
 
   let data;
 
+
   try{
-    data = await response.json();
+
+    data =
+      await response.json();
+
   }catch{
+
     throw new Error(
       "Worker returned invalid JSON."
     );
+
   }
+
 
   if(!response.ok){
 
@@ -1075,12 +1286,14 @@ async function api(path, options = {}){
 
   }
 
+
   return data;
+
 }
 
 
 /* ============================================================
-SETTINGS / STATUS
+STATUS
 ============================================================ */
 
 async function loadStatus(){
@@ -1092,23 +1305,37 @@ async function loadStatus(){
         "/api/auto-trade/status"
       );
 
+
     $("maxTrade").value =
-      Number(s.maxTrade ?? 5);
+      Number(
+        s.maxTrade ??
+        5
+      );
+
 
     $("maxDay").value =
-      Number(s.maxDay ?? 20);
+      Number(
+        s.maxDay ??
+        20
+      );
+
 
     /*
-    Worker stores takeProfit as decimal.
-
-    .01 = one percentage point.
+    Worker:
+      .01 = +1 percentage point
     */
 
     $("takeProfit").value =
-      Number(s.takeProfit ?? .01) * 100;
+      Number(
+        s.takeProfit ??
+        .01
+      ) * 100;
+
 
     const f =
-      s.filters || {};
+      s.filters ||
+      {};
+
 
     $("minMinutes").value =
       Number(
@@ -1117,12 +1344,14 @@ async function loadStatus(){
         180
       );
 
+
     $("minEdge").value =
       Number(
         f.minEdge ??
         s.minEdge ??
         .01
       ) * 100;
+
 
     $("minMove").value =
       Number(
@@ -1133,39 +1362,49 @@ async function loadStatus(){
 
 
     $("maxTradeDisplay").textContent =
-      money(s.maxTrade);
+      money(
+        s.maxTrade
+      );
+
 
     $("maxDayDisplay").textContent =
-      money(s.maxDay);
+      money(
+        s.maxDay
+      );
+
 
     $("spentDisplay").textContent =
-      money(s.spentToday);
+      money(
+        s.spentToday
+      );
 
 
     $("positionsDisplay").textContent =
-      Array.isArray(s.entries)
+      Array.isArray(
+        s.entries
+      )
         ? s.entries.length
         : 0;
 
 
-    const status =
+    const tradingStatus =
       $("tradingStatus");
 
 
     if(s.enabled){
 
-      status.textContent =
+      tradingStatus.textContent =
         "REAL TRADING ON";
 
-      status.className =
+      tradingStatus.className =
         "status-pill on";
 
     }else{
 
-      status.textContent =
+      tradingStatus.textContent =
         "REAL TRADING OFF";
 
-      status.className =
+      tradingStatus.className =
         "status-pill off";
 
     }
@@ -1180,17 +1419,19 @@ async function loadStatus(){
 
 
     renderTradeHistory(
-      Array.isArray(s.tradeHistory)
+      Array.isArray(
+        s.tradeHistory
+      )
         ? s.tradeHistory
         : []
     );
 
 
-  }catch(err){
+  }catch(error){
 
     showMessage(
-      "Could not load auto-trader status: " +
-      err.message,
+      "Could not load status: " +
+      error.message,
       "error"
     );
 
@@ -1207,7 +1448,7 @@ async function saveSettings(){
 
   try{
 
-    const body = {
+    const settings = {
 
       maxTrade:
         Number(
@@ -1218,11 +1459,6 @@ async function saveSettings(){
         Number(
           $("maxDay").value
         ),
-
-      /*
-      1 = 1 percentage point.
-      Sent to Worker as .01.
-      */
 
       takeProfit:
         Number(
@@ -1251,7 +1487,10 @@ async function saveSettings(){
       "/api/auto-trade/settings",
       {
         method:"POST",
-        body:JSON.stringify(body)
+        body:
+          JSON.stringify(
+            settings
+          )
       }
     );
 
@@ -1265,11 +1504,11 @@ async function saveSettings(){
     await refreshAll();
 
 
-  }catch(err){
+  }catch(error){
 
     showMessage(
       "Could not save settings: " +
-      err.message,
+      error.message,
       "error"
     );
 
@@ -1279,7 +1518,7 @@ async function saveSettings(){
 
 
 /* ============================================================
-REAL TRADING
+TRADING CONTROLS
 ============================================================ */
 
 function openStartModal(){
@@ -1291,9 +1530,14 @@ function openStartModal(){
     .classList
     .add("show");
 
-  setTimeout(()=>{
-    $("confirmation").focus();
-  },100);
+
+  setTimeout(
+    ()=>{
+      $("confirmation")
+        .focus();
+    },
+    100
+  );
 
 }
 
@@ -1326,6 +1570,7 @@ async function startTrading(){
     );
 
     return;
+
   }
 
 
@@ -1335,10 +1580,12 @@ async function startTrading(){
       "/api/auto-trade/start",
       {
         method:"POST",
-        body:JSON.stringify({
-          confirmation:
-            confirmation
-        })
+
+        body:
+          JSON.stringify({
+            confirmation:
+              confirmation
+          })
       }
     );
 
@@ -1355,11 +1602,11 @@ async function startTrading(){
     await refreshAll();
 
 
-  }catch(err){
+  }catch(error){
 
     alert(
       "Could not start real trading:\n\n" +
-      err.message
+      error.message
     );
 
   }
@@ -1375,7 +1622,7 @@ async function stopTrading(){
       "/api/auto-trade/stop",
       {
         method:"POST",
-        body:JSON.stringify({})
+        body:"{}"
       }
     );
 
@@ -1389,11 +1636,11 @@ async function stopTrading(){
     await refreshAll();
 
 
-  }catch(err){
+  }catch(error){
 
     showMessage(
       "Could not stop trading: " +
-      err.message,
+      error.message,
       "error"
     );
 
@@ -1403,12 +1650,17 @@ async function stopTrading(){
 
 
 /* ============================================================
-VALUE HELPERS
+NUMERIC HELPERS
 ============================================================ */
 
-function getNumber(obj,...keys){
+function getNumber(
+  obj,
+  ...keys
+){
 
-  for(const key of keys){
+  for(
+    const key of keys
+  ){
 
     if(
       obj &&
@@ -1418,85 +1670,85 @@ function getNumber(obj,...keys){
     ){
 
       const n =
-        Number(obj[key]);
+        Number(
+          obj[key]
+        );
 
-      if(Number.isFinite(n))
+
+      if(
+        Number.isFinite(n)
+      ){
+
         return n;
 
-    }
-
-  }
-
-  return null;
-}
-
-
-function getMinutes(market){
-
-  const direct =
-    getNumber(
-      market,
-      "minutesToClose",
-      "minutes_to_close"
-    );
-
-  if(direct !== null)
-    return direct;
-
-
-  const close =
-    market?.closeTime ||
-    market?.close_time;
-
-
-  if(close){
-
-    const t =
-      new Date(close)
-        .getTime();
-
-    if(Number.isFinite(t)){
-
-      return Math.round(
-        (t - Date.now()) / 60000
-      );
+      }
 
     }
 
   }
 
+
   return null;
+
 }
 
 
-function normalizePercent(value){
+function normalizePercent(
+  value
+){
 
-  if(value === null)
+  if(
+    value === null ||
+    value === undefined
+  ){
+
     return null;
 
-  const n = Number(value);
+  }
 
-  if(!Number.isFinite(n))
+
+  const n =
+    Number(value);
+
+
+  if(
+    !Number.isFinite(n)
+  ){
+
     return null;
+
+  }
+
 
   /*
-  Worker values are decimals:
-  .01 = 1%
+  Worker returns decimals:
+    0.01 = 1%
+
   */
 
-  if(Math.abs(n) <= 1)
+  if(
+    Math.abs(n) <= 1
+  ){
+
     return n * 100;
 
+  }
+
+
   return n;
+
 }
 
 
-function getEdge(market){
+function getEdge(
+  market
+){
 
   return normalizePercent(
     getNumber(
       market,
       "edge",
+      "edgePercent",
       "edgePct",
       "edge_percent"
     )
@@ -1505,9 +1757,11 @@ function getEdge(market){
 }
 
 
-function getExpectedMove(market){
+function getExpectedMove(
+  market
+){
 
-  let v =
+  const raw =
     getNumber(
       market,
       "expectedMove",
@@ -1518,27 +1772,95 @@ function getExpectedMove(market){
     );
 
 
-  if(v === null)
+  if(
+    raw === null
+  ){
+
     return null;
+
+  }
 
 
   /*
-  Worker stores expectedMove as decimal dollars.
-
-  .01 = 1 cent.
-
-  Values >= 1 are treated as already-cents.
+  Worker returns .01 for 1 cent.
   */
 
-  if(Math.abs(v) < 1)
-    return v * 100;
+  if(
+    Math.abs(raw) < 1
+  ){
 
-  return v;
+    return raw * 100;
+
+  }
+
+
+  return raw;
 
 }
 
 
-function getPrice(market){
+function getMinutes(
+  market
+){
+
+  const direct =
+    getNumber(
+      market,
+      "minutesToClose",
+      "minutes_to_close"
+    );
+
+
+  if(
+    direct !== null
+  ){
+
+    return direct;
+
+  }
+
+
+  const closeTime =
+    market?.closeTime ||
+    market?.close_time;
+
+
+  if(
+    closeTime
+  ){
+
+    const timestamp =
+      new Date(
+        closeTime
+      ).getTime();
+
+
+    if(
+      Number.isFinite(
+        timestamp
+      )
+    ){
+
+      return Math.round(
+        (
+          timestamp -
+          Date.now()
+        ) / 60000
+      );
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+function getPrice(
+  market
+){
 
   let p =
     getNumber(
@@ -1550,12 +1872,22 @@ function getPrice(market){
     );
 
 
-  if(p === null)
+  if(
+    p === null
+  ){
+
     return null;
 
+  }
 
-  if(p < 1)
+
+  if(
+    p < 1
+  ){
+
     p *= 100;
+
+  }
 
 
   return p;
@@ -1563,23 +1895,35 @@ function getPrice(market){
 }
 
 
-function getModelProbability(market){
+function getModelProbability(
+  market
+){
 
   let p =
     getNumber(
       market,
       "modelProbability",
-      "modelProb",
-      "probability"
+      "probability",
+      "modelProb"
     );
 
 
-  if(p === null)
+  if(
+    p === null
+  ){
+
     return null;
 
+  }
 
-  if(p <= 1)
+
+  if(
+    p <= 1
+  ){
+
     p *= 100;
+
+  }
 
 
   return p;
@@ -1591,53 +1935,12 @@ function getModelProbability(market){
 SETTLEMENT
 ============================================================ */
 
-function getSettlementText(market){
-
-  if(market?.settlement){
-
-    if(
-      typeof market.settlement ===
-      "string"
-    ){
-      return market.settlement;
-    }
-
-    const s =
-      market.settlement;
-
-    if(
-      s.type === "range" &&
-      s.minTemp != null &&
-      s.maxTemp != null
-    ){
-
-      return `${s.minTemp}° to ${s.maxTemp}°`;
-
-    }
-
-    if(
-      s.type === "below" &&
-      s.maxTemp != null
-    ){
-
-      return `${s.maxTemp}° or lower`;
-
-    }
-
-    if(
-      s.type === "above" &&
-      s.minTemp != null
-    ){
-
-      return `${s.minTemp}° or higher`;
-
-    }
-
-  }
-
+function getSettlementText(
+  market
+){
 
   if(
-    market.winningRule
+    market?.winningRule
   ){
 
     return market.winningRule;
@@ -1646,7 +1949,7 @@ function getSettlementText(market){
 
 
   if(
-    market.exactWinningTemperatures
+    market?.exactWinningTemperatures
   ){
 
     return market.exactWinningTemperatures;
@@ -1654,14 +1957,73 @@ function getSettlementText(market){
   }
 
 
+  const settlement =
+    market?.settlement;
+
+
+  if(
+    settlement &&
+    typeof settlement ===
+    "object"
+  ){
+
+    if(
+      settlement.type ===
+        "range" &&
+      settlement.minTemp != null &&
+      settlement.maxTemp != null
+    ){
+
+      return (
+        settlement.minTemp +
+        "° to " +
+        settlement.maxTemp +
+        "°"
+      );
+
+    }
+
+
+    if(
+      settlement.type ===
+        "below" &&
+      settlement.maxTemp != null
+    ){
+
+      return (
+        settlement.maxTemp +
+        "° or lower"
+      );
+
+    }
+
+
+    if(
+      settlement.type ===
+        "above" &&
+      settlement.minTemp != null
+    ){
+
+      return (
+        settlement.minTemp +
+        "° or higher"
+      );
+
+    }
+
+  }
+
+
   const type =
-    market.settlementType;
+    market?.settlementType;
+
 
   const min =
-    market.minTemp;
+    market?.minTemp;
+
 
   const max =
-    market.maxTemp;
+    market?.maxTemp;
 
 
   if(
@@ -1670,7 +2032,12 @@ function getSettlementText(market){
     max != null
   ){
 
-    return `${min}° to ${max}°`;
+    return (
+      min +
+      "° to " +
+      max +
+      "°"
+    );
 
   }
 
@@ -1680,7 +2047,10 @@ function getSettlementText(market){
     max != null
   ){
 
-    return `${max}° or lower`;
+    return (
+      max +
+      "° or lower"
+    );
 
   }
 
@@ -1690,7 +2060,10 @@ function getSettlementText(market){
     min != null
   ){
 
-    return `${min}° or higher`;
+    return (
+      min +
+      "° or higher"
+    );
 
   }
 
@@ -1700,7 +2073,9 @@ function getSettlementText(market){
 }
 
 
-function hasSettlementRule(market){
+function hasSettlementRule(
+  market
+){
 
   return Boolean(
     market?.winningRule ||
@@ -1716,7 +2091,42 @@ function hasSettlementRule(market){
 ORDER BOOK
 ============================================================ */
 
-function hasOrderBook(market){
+function displayBookPrice(
+  value
+){
+
+  if(
+    value == null
+  ){
+
+    return null;
+
+  }
+
+
+  const n =
+    Number(value);
+
+
+  if(
+    !Number.isFinite(n)
+  ){
+
+    return null;
+
+  }
+
+
+  return n <= 1
+    ? n * 100
+    : n;
+
+}
+
+
+function hasOrderBook(
+  market
+){
 
   const yesBid =
     getNumber(
@@ -1725,6 +2135,7 @@ function hasOrderBook(market){
       "yes_bid"
     );
 
+
   const yesAsk =
     getNumber(
       market,
@@ -1732,12 +2143,14 @@ function hasOrderBook(market){
       "yes_ask"
     );
 
+
   const noBid =
     getNumber(
       market,
       "noBid",
       "no_bid"
     );
+
 
   const noAsk =
     getNumber(
@@ -1747,38 +2160,20 @@ function hasOrderBook(market){
     );
 
 
-  return (
+  return Boolean(
     yesBid != null ||
     yesAsk != null ||
     noBid != null ||
     noAsk != null ||
-    Boolean(
-      market?.orderbook
-    )
+    market?.orderbook
   );
 
 }
 
 
-function displayBookPrice(value){
-
-  if(value == null)
-    return null;
-
-  const n =
-    Number(value);
-
-  if(!Number.isFinite(n))
-    return null;
-
-  return n <= 1
-    ? n * 100
-    : n;
-
-}
-
-
-function getOrderBookDetail(market){
+function getOrderBookDetail(
+  market
+){
 
   const yesBid =
     displayBookPrice(
@@ -1789,6 +2184,7 @@ function getOrderBookDetail(market){
       )
     );
 
+
   const yesAsk =
     displayBookPrice(
       getNumber(
@@ -1798,6 +2194,7 @@ function getOrderBookDetail(market){
       )
     );
 
+
   const noBid =
     displayBookPrice(
       getNumber(
@@ -1806,6 +2203,7 @@ function getOrderBookDetail(market){
         "no_bid"
       )
     );
+
 
   const noAsk =
     displayBookPrice(
@@ -1820,28 +2218,52 @@ function getOrderBookDetail(market){
   const parts = [];
 
 
-  if(yesBid != null)
+  if(
+    yesBid != null
+  ){
+
     parts.push(
-      `YES bid ${cents(yesBid)}`
+      "YES bid " +
+      cents(yesBid)
     );
 
+  }
 
-  if(yesAsk != null)
+
+  if(
+    yesAsk != null
+  ){
+
     parts.push(
-      `YES ask ${cents(yesAsk)}`
+      "YES ask " +
+      cents(yesAsk)
     );
 
+  }
 
-  if(noBid != null)
+
+  if(
+    noBid != null
+  ){
+
     parts.push(
-      `NO bid ${cents(noBid)}`
+      "NO bid " +
+      cents(noBid)
     );
 
+  }
 
-  if(noAsk != null)
+
+  if(
+    noAsk != null
+  ){
+
     parts.push(
-      `NO ask ${cents(noAsk)}`
+      "NO ask " +
+      cents(noAsk)
     );
+
+  }
 
 
   return parts.length
@@ -1855,15 +2277,17 @@ function getOrderBookDetail(market){
 TITLE
 ============================================================ */
 
-function getTitle(market){
+function getTitle(
+  market
+){
 
   const city =
     market?.city ||
     market?.location ||
-    market?.cityName ||
     "";
 
-  const question =
+
+  const title =
     market?.title ||
     market?.question ||
     market?.name ||
@@ -1872,11 +2296,9 @@ function getTitle(market){
     "Weather market";
 
 
-  if(city)
-    return `${city} — ${question}`;
-
-
-  return question;
+  return city
+    ? city + " — " + title
+    : title;
 
 }
 
@@ -1885,18 +2307,20 @@ function getTitle(market){
 DECISION
 ============================================================ */
 
-function getDecision(market){
+function getDecision(
+  market
+){
 
-  return (
+  return String(
     market?.decision ||
     market?.signal ||
     market?.action ||
-    (market?.eligible === true
-      ? "BUY"
-      : "WAIT")
-  )
-  .toString()
-  .toUpperCase();
+    (
+      market?.eligible === true
+        ? "BUY"
+        : "WAIT"
+    )
+  ).toUpperCase();
 
 }
 
@@ -1939,52 +2363,53 @@ function buildDiagnostics(
   */
 
   const minutes =
-    getMinutes(market);
+    getMinutes(
+      market
+    );
 
-  let timePass = false;
+
+  let timePass =
+    false;
+
 
   let timeDetail =
     "";
 
 
-  if(minutes === null){
+  if(
+    minutes === null
+  ){
 
-    /*
-    If the Worker has explicitly marked
-    the market eligible and there is no
-    local close-time field, don't falsely
-    label it as failed.
-    */
-
-    if(market?.eligible === true){
-
-      timePass = true;
-
-      timeDetail =
-        "Worker marked market eligible.";
-
-    }else{
-
-      timeDetail =
-        "No close-time information returned.";
-
-    }
+    timeDetail =
+      "No close-time information returned.";
 
   }else{
 
     timePass =
-      minutes >= minMinutes;
+      minutes >=
+      minMinutes;
+
 
     timeDetail =
-      `${minutes.toFixed(0)} min remaining • required ${minMinutes} min`;
+      minutes.toFixed(0) +
+      " min remaining • required " +
+      minMinutes +
+      " min";
 
   }
 
 
   checks.push({
-    name:"Time until close",
-    pass:timePass,
-    detail:timeDetail
+
+    name:
+      "Time until close",
+
+    pass:
+      timePass,
+
+    detail:
+      timeDetail
+
   });
 
 
@@ -1993,44 +2418,58 @@ function buildDiagnostics(
   */
 
   const edge =
-    getEdge(market);
-
-  let edgePass = false;
-
-  let edgeDetail = "";
+    getEdge(
+      market
+    );
 
 
-  if(edge === null){
+  let edgePass =
+    false;
 
-    if(market?.eligible === true){
 
-      edgePass = true;
+  let edgeDetail =
+    "";
 
-      edgeDetail =
-        "Worker marked market eligible.";
 
-    }else{
+  if(
+    edge === null
+  ){
 
-      edgeDetail =
-        "Weather-model edge unavailable.";
-
-    }
+    edgeDetail =
+      "Weather-model edge unavailable.";
 
   }else{
 
     edgePass =
-      edge >= minEdge;
+      edge >=
+      minEdge;
+
 
     edgeDetail =
-      `${edge >= 0 ? "+" : ""}${edge.toFixed(1)}% • required +${minEdge.toFixed(1)}%`;
+      (
+        edge >= 0
+          ? "+"
+          : ""
+      ) +
+      edge.toFixed(1) +
+      "% • required +" +
+      minEdge.toFixed(1) +
+      "%";
 
   }
 
 
   checks.push({
-    name:"Weather model edge",
-    pass:edgePass,
-    detail:edgeDetail
+
+    name:
+      "Weather model edge",
+
+    pass:
+      edgePass,
+
+    detail:
+      edgeDetail
+
   });
 
 
@@ -2039,44 +2478,53 @@ function buildDiagnostics(
   */
 
   const move =
-    getExpectedMove(market);
-
-  let movePass = false;
-
-  let moveDetail = "";
+    getExpectedMove(
+      market
+    );
 
 
-  if(move === null){
+  let movePass =
+    false;
 
-    if(market?.eligible === true){
 
-      movePass = true;
+  let moveDetail =
+    "";
 
-      moveDetail =
-        "Worker marked market eligible.";
 
-    }else{
+  if(
+    move === null
+  ){
 
-      moveDetail =
-        "Expected price movement unavailable.";
-
-    }
+    moveDetail =
+      "Expected price movement unavailable.";
 
   }else{
 
     movePass =
-      move >= minMove;
+      move >=
+      minMove;
+
 
     moveDetail =
-      `${move.toFixed(1)}¢ expected • required ${minMove.toFixed(1)}¢`;
+      move.toFixed(1) +
+      "¢ expected • required " +
+      minMove.toFixed(1) +
+      "¢";
 
   }
 
 
   checks.push({
-    name:"Expected price move",
-    pass:movePass,
-    detail:moveDetail
+
+    name:
+      "Expected price move",
+
+    pass:
+      movePass,
+
+    detail:
+      moveDetail
+
   });
 
 
@@ -2085,16 +2533,26 @@ function buildDiagnostics(
   */
 
   const settlementPass =
-    hasSettlementRule(market);
+    hasSettlementRule(
+      market
+    );
 
 
   checks.push({
-    name:"Settlement rule",
-    pass:settlementPass,
+
+    name:
+      "Settlement rule",
+
+    pass:
+      settlementPass,
+
     detail:
       settlementPass
-        ? getSettlementText(market)
+        ? getSettlementText(
+            market
+          )
         : "Could not identify the temperature settlement rule."
+
   });
 
 
@@ -2102,32 +2560,64 @@ function buildDiagnostics(
   ORDER BOOK
   */
 
-  const orderBookPass =
-    hasOrderBook(market);
+  const orderbookPass =
+    hasOrderBook(
+      market
+    );
 
 
   checks.push({
-    name:"Kalshi order book",
-    pass:orderBookPass,
+
+    name:
+      "Kalshi order book",
+
+    pass:
+      orderbookPass,
+
     detail:
-      orderBookPass
-        ? getOrderBookDetail(market)
+      orderbookPass
+        ? getOrderBookDetail(
+            market
+          )
         : "No usable bid/ask information returned."
+
   });
 
 
   /*
-  Explicit Worker rejection reason
+  Worker is the source of truth.
   */
 
-  const workerRejected =
-    market?.eligible === false;
+  let eligible;
 
 
-  let reason = "";
+  if(
+    market?.eligible !==
+    undefined
+  ){
+
+    eligible =
+      market.eligible ===
+      true;
+
+  }else{
+
+    eligible =
+      checks.every(
+        x => x.pass
+      );
+
+  }
 
 
-  if(workerRejected){
+  let reason =
+    "";
+
+
+  if(
+    market?.eligible ===
+    false
+  ){
 
     reason =
       market.rejectionReason ||
@@ -2142,13 +2632,17 @@ function buildDiagnostics(
       );
 
 
-    if(failed.length){
+    if(
+      failed.length
+    ){
 
       reason =
         failed
           .map(
             x =>
-              `${x.name}: ${x.detail}`
+              x.name +
+              ": " +
+              x.detail
           )
           .join(" | ");
 
@@ -2162,38 +2656,14 @@ function buildDiagnostics(
   }
 
 
-  /*
-  IMPORTANT:
-  Worker is source of truth.
-
-  If Worker says eligible=true,
-  don't let a cosmetic frontend check
-  turn it into rejected.
-  */
-
-  let eligible;
-
-  if(
-    market?.eligible !== undefined
-  ){
-
-    eligible =
-      market.eligible === true;
-
-  }else{
-
-    eligible =
-      checks.every(
-        x => x.pass
-      );
-
-  }
-
-
   return {
+
     checks,
+
     eligible,
+
     reason
+
   };
 
 }
@@ -2216,15 +2686,21 @@ function renderMarket(
 
 
   const title =
-    getTitle(market);
+    getTitle(
+      market
+    );
 
 
   const decision =
-    getDecision(market);
+    getDecision(
+      market
+    );
 
 
   const price =
-    getPrice(market);
+    getPrice(
+      market
+    );
 
 
   const model =
@@ -2234,15 +2710,21 @@ function renderMarket(
 
 
   const edge =
-    getEdge(market);
+    getEdge(
+      market
+    );
 
 
   const move =
-    getExpectedMove(market);
+    getExpectedMove(
+      market
+    );
 
 
   const minutes =
-    getMinutes(market);
+    getMinutes(
+      market
+    );
 
 
   const settlement =
@@ -2279,79 +2761,101 @@ function renderMarket(
 
   const checksHtml =
     diagnostics.checks
-      .map(check => {
+      .map(
+        check => {
 
-        const icon =
-          check.pass
-            ? "✓"
-            : "✗";
-
-
-        return `
-          <div class="check ${
+          const icon =
             check.pass
-              ? "pass"
-              : "fail"
-          }">
+              ? "✓"
+              : "✗";
 
-            <div class="top">
 
-              <span>
-                ${icon}
-                ${escapeHtml(
-                  check.name
-                )}
-              </span>
+          return `
 
-              <span class="${
-                check.pass
-                  ? "good"
-                  : "bad"
-              }">
-                ${
+            <div class="check ${
+              check.pass
+                ? "pass"
+                : "fail"
+            }">
+
+              <div class="top">
+
+                <span>
+                  ${icon}
+                  ${escapeHtml(
+                    check.name
+                  )}
+                </span>
+
+                <span class="${
                   check.pass
-                    ? "PASS"
-                    : "FAIL"
-                }
-              </span>
+                    ? "good"
+                    : "bad"
+                }">
+
+                  ${
+                    check.pass
+                      ? "PASS"
+                      : "FAIL"
+                  }
+
+                </span>
+
+              </div>
+
+
+              <div class="detail">
+                ${escapeHtml(
+                  check.detail
+                )}
+              </div>
 
             </div>
 
-            <div class="detail">
-              ${escapeHtml(
-                check.detail
-              )}
-            </div>
+          `;
 
-          </div>
-        `;
-
-      })
+        }
+      )
       .join("");
 
 
-  const eligibleHtml =
+  const statusHtml =
     diagnostics.eligible
 
       ? `
+
         <div class="eligible">
           🟢 ELIGIBLE — BOT CAN TRADE THIS MARKET
         </div>
+
       `
 
       : `
+
         <div class="ineligible">
-          🔴 NOT ELIGIBLE —
-          ${escapeHtml(
-            diagnostics.reason
-          )}
+
+          🔴 NOT ELIGIBLE
+
+          <br>
+
+          <span
+            style="
+              font-weight:500;
+              font-size:12px;
+            "
+          >
+            ${escapeHtml(
+              diagnostics.reason
+            )}
+          </span>
+
         </div>
+
       `;
 
 
   const workerReason =
     market?.rejectionReason ||
-    market?.reason ||
     "";
 
 
@@ -2364,8 +2868,11 @@ function renderMarket(
         <div>
 
           <div class="market-title">
-            ${escapeHtml(title)}
+            ${escapeHtml(
+              title
+            )}
           </div>
+
 
           <div class="market-meta">
 
@@ -2376,17 +2883,26 @@ function renderMarket(
               )}
             </strong>
 
+
             ${
               minutes !== null
-                ? ` • ${minutes.toFixed(0)} min until close`
+                ? (
+                    " • " +
+                    minutes.toFixed(0) +
+                    " min until close"
+                  )
                 : ""
             }
 
+
             ${
               market.marketDate
-                ? ` • ${escapeHtml(
-                    market.marketDate
-                  )}`
+                ? (
+                    " • " +
+                    escapeHtml(
+                      market.marketDate
+                    )
+                  )
                 : ""
             }
 
@@ -2395,12 +2911,16 @@ function renderMarket(
         </div>
 
 
-        <div class="decision ${
-          decisionClass
-        }">
+        <div
+          class="decision ${
+            decisionClass
+          }"
+        >
+
           ${escapeHtml(
             decision
           )}
+
         </div>
 
       </div>
@@ -2415,11 +2935,13 @@ function renderMarket(
           </div>
 
           <div class="metric-value">
+
             ${
               price !== null
                 ? cents(price)
                 : "—"
             }
+
           </div>
 
         </div>
@@ -2432,11 +2954,13 @@ function renderMarket(
           </div>
 
           <div class="metric-value">
+
             ${
               model !== null
                 ? pct(model)
                 : "—"
             }
+
           </div>
 
         </div>
@@ -2448,21 +2972,31 @@ function renderMarket(
             Edge
           </div>
 
-          <div class="metric-value ${
-            edge !== null &&
-            edge >= 0
-              ? "good"
-              : "bad"
-          }">
+          <div
+            class="metric-value ${
+              edge !== null &&
+              edge >= 0
+                ? "good"
+                : "bad"
+            }"
+          >
+
             ${
               edge !== null
-                ? `${
-                    edge >= 0
-                      ? "+"
-                      : ""
-                  }${edge.toFixed(1)}%`
+
+                ? (
+                    (
+                      edge >= 0
+                        ? "+"
+                        : ""
+                    ) +
+                    edge.toFixed(1) +
+                    "%"
+                  )
+
                 : "—"
             }
+
           </div>
 
         </div>
@@ -2475,11 +3009,13 @@ function renderMarket(
           </div>
 
           <div class="metric-value">
+
             ${
               move !== null
                 ? cents(move)
                 : "—"
             }
+
           </div>
 
         </div>
@@ -2492,15 +3028,9 @@ function renderMarket(
           </div>
 
           <div class="metric-value">
-            +
-            ${
-              (
-                Number(
-                  filters.takeProfit ??
-                  .01
-                ) * 100
-              ).toFixed(0)
-            } pt
+
+            +1 pt
+
           </div>
 
         </div>
@@ -2513,11 +3043,16 @@ function renderMarket(
           </div>
 
           <div class="metric-value">
+
             ${
               market.forecast != null
-                ? `${market.forecast}°F`
+                ? (
+                    market.forecast +
+                    "°F"
+                  )
                 : "—"
             }
+
           </div>
 
         </div>
@@ -2531,24 +3066,31 @@ function renderMarket(
           AUTO-TRADER ELIGIBILITY
         </div>
 
+
         <div class="checks">
           ${checksHtml}
         </div>
 
-        ${eligibleHtml}
+
+        ${statusHtml}
+
 
         ${
           workerReason
             ? `
+
               <div
                 class="small"
                 style="margin-top:8px"
               >
-                Worker reason:
+
+                Worker rejection:
                 ${escapeHtml(
                   workerReason
                 )}
+
               </div>
+
             `
             : ""
         }
@@ -2563,14 +3105,14 @@ function renderMarket(
 
 
 /* ============================================================
-DISCOVERY DISPLAY
+DISCOVERY
 ============================================================ */
 
 function renderDiscovery(
   discovery
 ){
 
-  const el =
+  const container =
     $("discovery");
 
 
@@ -2581,7 +3123,7 @@ function renderDiscovery(
     discovery.length === 0
   ){
 
-    el.innerHTML =
+    container.innerHTML =
       "";
 
     return;
@@ -2589,87 +3131,98 @@ function renderDiscovery(
   }
 
 
-  el.innerHTML =
+  container.innerHTML =
     discovery
-      .map(item => {
+      .map(
+        item => {
 
-        return `
+          return `
 
-          <div class="discovery-card">
+            <div class="discovery-card">
 
-            <div class="discovery-city">
-              ${escapeHtml(
-                item.city ||
-                item.series ||
-                "Unknown"
-              )}
-            </div>
+              <div class="discovery-city">
 
-            <div class="discovery-detail">
-
-              Series:
-              ${escapeHtml(
-                item.series ||
-                "—"
-              )}
-
-              <br>
-
-              Markets found:
-              <strong>
-                ${Number(
-                  item.marketsFound ||
-                  0
+                ${escapeHtml(
+                  item.city ||
+                  item.series ||
+                  "Unknown"
                 )}
-              </strong>
 
-              <br>
+              </div>
 
-              Forecast:
-              ${
-                item.forecast != null
-                  ? `${item.forecast}°F`
-                  : "—"
-              }
 
-              ${
-                item.error
-                  ? `
-                    <br>
-                    <span class="bad">
-                      ${escapeHtml(
-                        item.error
-                      )}
-                    </span>
-                  `
-                  : ""
-              }
+              <div class="discovery-detail">
+
+                Series:
+                <strong>
+                  ${escapeHtml(
+                    item.series ||
+                    "—"
+                  )}
+                </strong>
+
+                <br>
+
+                Markets found:
+                <strong>
+                  ${Number(
+                    item.marketsFound ||
+                    0
+                  )}
+                </strong>
+
+                <br>
+
+                Forecast:
+                ${
+                  item.forecast != null
+                    ? (
+                        item.forecast +
+                        "°F"
+                      )
+                    : "—"
+                }
+
+
+                ${
+                  item.error
+                    ? `
+
+                      <br>
+
+                      <span class="discovery-error">
+                        ${escapeHtml(
+                          item.error
+                        )}
+                      </span>
+
+                    `
+                    : ""
+                }
+
+              </div>
 
             </div>
 
-          </div>
+          `;
 
-        `;
-
-      })
+        }
+      )
       .join("");
 
 }
 
 
 /* ============================================================
-WEEKLY HISTORY
+WEEK STATS
 ============================================================ */
 
 function buildWeekStatsFromHistory(
   history
 ){
 
-  const now =
-    Date.now();
-
   const cutoff =
-    now -
+    Date.now() -
     (
       7 *
       24 *
@@ -2680,14 +3233,29 @@ function buildWeekStatsFromHistory(
 
 
   const list =
-    Array.isArray(history)
+    Array.isArray(
+      history
+    )
       ? history.filter(
-          item =>
-            new Date(
-              item.time ||
-              item.timestamp ||
-              0
-            ).getTime() >= cutoff
+          item => {
+
+            const timestamp =
+              new Date(
+                item.time ||
+                item.timestamp ||
+                0
+              ).getTime();
+
+
+            return (
+              Number.isFinite(
+                timestamp
+              ) &&
+              timestamp >=
+              cutoff
+            );
+
+          }
         )
       : [];
 
@@ -2697,8 +3265,6 @@ function buildWeekStatsFromHistory(
   let realizedPnl = 0;
   let buys = 0;
   let sells = 0;
-  let contractsBought = 0;
-  let contractsSold = 0;
 
 
   for(
@@ -2707,20 +3273,14 @@ function buildWeekStatsFromHistory(
 
     const action =
       String(
-        item.action || ""
+        item.action ||
+        ""
       ).toUpperCase();
 
 
     const amount =
       Number(
-        item.amount || 0
-      );
-
-
-    const contracts =
-      Number(
-        item.contracts ||
-        item.count ||
+        item.amount ||
         0
       );
 
@@ -2734,9 +3294,6 @@ function buildWeekStatsFromHistory(
 
       buys++;
 
-      contractsBought +=
-        contracts;
-
     }
 
 
@@ -2749,12 +3306,10 @@ function buildWeekStatsFromHistory(
 
       sells++;
 
-      contractsSold +=
-        contracts;
-
       realizedPnl +=
         Number(
-          item.pnl || 0
+          item.pnl ||
+          0
         );
 
     }
@@ -2763,15 +3318,20 @@ function buildWeekStatsFromHistory(
 
 
   return {
+
     spent,
+
     proceeds,
+
     realizedPnl,
+
     buys,
+
     sells,
-    contractsBought,
-    contractsSold,
+
     transactionCount:
       list.length
+
   };
 
 }
@@ -2813,13 +3373,15 @@ function renderWeekStats(
 
   $("weekBuys").textContent =
     Number(
-      s.buys || 0
+      s.buys ||
+      0
     );
 
 
   $("weekSells").textContent =
     Number(
-      s.sells || 0
+      s.sells ||
+      0
     );
 
 
@@ -2834,21 +3396,22 @@ function renderWeekStats(
     $("weekPnl");
 
 
-  if(
+  const pnlValue =
     Number(
       s.realizedPnl ||
       0
-    ) > 0
+    );
+
+
+  if(
+    pnlValue > 0
   ){
 
     pnl.className =
       "history-stat-value pnl-positive";
 
   }else if(
-    Number(
-      s.realizedPnl ||
-      0
-    ) < 0
+    pnlValue < 0
   ){
 
     pnl.className =
@@ -2865,20 +3428,22 @@ function renderWeekStats(
 
 
 /* ============================================================
-TIME FORMAT
+TIME
 ============================================================ */
 
 function formatHistoryTime(
   value
 ){
 
-  const d =
-    new Date(value);
+  const date =
+    new Date(
+      value
+    );
 
 
   if(
     !Number.isFinite(
-      d.getTime()
+      date.getTime()
     )
   ){
 
@@ -2887,15 +3452,23 @@ function formatHistoryTime(
   }
 
 
-  return d.toLocaleString(
+  return date.toLocaleString(
     "en-US",
     {
       timeZone:
         DISPLAY_TIMEZONE,
-      month:"short",
-      day:"numeric",
-      hour:"numeric",
-      minute:"2-digit"
+
+      month:
+        "short",
+
+      day:
+        "numeric",
+
+      hour:
+        "numeric",
+
+      minute:
+        "2-digit"
     }
   );
 
@@ -2903,7 +3476,7 @@ function formatHistoryTime(
 
 
 /* ============================================================
-TRADE HISTORY TABLE
+HISTORY TABLE
 ============================================================ */
 
 function renderTradeHistory(
@@ -2913,8 +3486,10 @@ function renderTradeHistory(
   const body =
     $("historyBody");
 
+
   const empty =
     $("historyEmpty");
+
 
   const wrap =
     $("historyTableWrap");
@@ -2952,41 +3527,51 @@ function renderTradeHistory(
 
   const list =
     history
-      .filter(item => {
+      .filter(
+        item => {
 
-        const t =
-          new Date(
-            item.time ||
-            item.timestamp ||
-            0
-          ).getTime();
-
-        return (
-          Number.isFinite(t) &&
-          t >= cutoff
-        );
-
-      })
-      .sort((a,b) => {
-
-        return (
-          new Date(
-            b.time ||
-            b.timestamp ||
-            0
-          ).getTime()
-          -
-          new Date(
-            a.time ||
-            a.timestamp ||
-            0
-          ).getTime()
-        );
-
-      });
+          const timestamp =
+            new Date(
+              item.time ||
+              item.timestamp ||
+              0
+            ).getTime();
 
 
-  if(list.length === 0){
+          return (
+            Number.isFinite(
+              timestamp
+            ) &&
+            timestamp >=
+            cutoff
+          );
+
+        }
+      )
+      .sort(
+        (a,b) => {
+
+          return (
+            new Date(
+              b.time ||
+              b.timestamp ||
+              0
+            ).getTime()
+            -
+            new Date(
+              a.time ||
+              a.timestamp ||
+              0
+            ).getTime()
+          );
+
+        }
+      );
+
+
+  if(
+    list.length === 0
+  ){
 
     body.innerHTML =
       "";
@@ -3005,151 +3590,174 @@ function renderTradeHistory(
   empty.style.display =
     "none";
 
+
   wrap.style.display =
     "block";
 
 
   body.innerHTML =
-    list.map(item => {
+    list
+      .map(
+        item => {
 
-      const action =
-        String(
-          item.action ||
-          ""
-        ).toUpperCase();
-
-
-      const side =
-        String(
-          item.side ||
-          "—"
-        ).toUpperCase();
+          const action =
+            String(
+              item.action ||
+              ""
+            ).toUpperCase();
 
 
-      const contracts =
-        Number(
-          item.contracts ||
-          item.count ||
-          0
-        );
+          const side =
+            String(
+              item.side ||
+              "—"
+            ).toUpperCase();
 
 
-      let price =
-        Number(
-          item.priceCents ||
-          item.price ||
-          0
-        );
+          const contracts =
+            Number(
+              item.contracts ||
+              item.count ||
+              0
+            );
 
 
-      if(
-        price > 0 &&
-        price < 1
-      ){
-
-        price *= 100;
-
-      }
+          let price =
+            Number(
+              item.priceCents ||
+              item.price ||
+              0
+            );
 
 
-      const amount =
-        Number(
-          item.amount ||
-          0
-        );
+          if(
+            price > 0 &&
+            price < 1
+          ){
+
+            price *=
+              100;
+
+          }
 
 
-      const pnl =
-        Number(
-          item.pnl ||
-          0
-        );
+          const amount =
+            Number(
+              item.amount ||
+              0
+            );
 
 
-      const pnlClass =
-        pnl > 0
-          ? "pnl-positive"
-          : pnl < 0
-            ? "pnl-negative"
-            : "";
+          const pnl =
+            Number(
+              item.pnl ||
+              0
+            );
 
 
-      const actionClass =
-        action === "BUY"
-          ? "buy-text"
-          : "sell-text";
+          const actionClass =
+            action === "BUY"
+              ? "buy-text"
+              : "sell-text";
 
 
-      const city =
-        item.city ||
-        "";
+          const pnlClass =
+            pnl > 0
+              ? "pnl-positive"
+              : pnl < 0
+                ? "pnl-negative"
+                : "";
 
 
-      const ticker =
-        item.ticker ||
-        "—";
+          const market =
+            item.city
+              ? (
+                  item.city +
+                  " — " +
+                  (
+                    item.ticker ||
+                    "Market"
+                  )
+                )
+              : (
+                  item.ticker ||
+                  "Market"
+                );
 
 
-      const market =
-        city
-          ? `${city} — ${ticker}`
-          : ticker;
+          return `
+
+            <tr>
+
+              <td>
+                ${escapeHtml(
+                  formatHistoryTime(
+                    item.time ||
+                    item.timestamp
+                  )
+                )}
+              </td>
 
 
-      return `
+              <td class="${actionClass}">
+                ${escapeHtml(
+                  action
+                )}
+              </td>
 
-        <tr>
 
-          <td>
-            ${escapeHtml(
-              formatHistoryTime(
-                item.time ||
-                item.timestamp
-              )
-            )}
-          </td>
+              <td>
+                ${escapeHtml(
+                  market
+                )}
+              </td>
 
-          <td class="${actionClass}">
-            ${escapeHtml(action)}
-          </td>
 
-          <td>
-            ${escapeHtml(market)}
-          </td>
+              <td>
+                ${escapeHtml(
+                  side
+                )}
+              </td>
 
-          <td>
-            ${escapeHtml(side)}
-          </td>
 
-          <td>
-            ${contracts}
-          </td>
+              <td>
+                ${contracts}
+              </td>
 
-          <td>
-            ${cents(price)}
-          </td>
 
-          <td>
-            ${money(amount)}
-          </td>
+              <td>
+                ${cents(
+                  price
+                )}
+              </td>
 
-          <td class="${pnlClass}">
-            ${money(pnl)}
-          </td>
 
-        </tr>
+              <td>
+                ${money(
+                  amount
+                )}
+              </td>
 
-      `;
 
-    }).join("");
+              <td class="${pnlClass}">
+                ${money(
+                  pnl
+                )}
+              </td>
+
+            </tr>
+
+          `;
+
+        }
+      )
+      .join("");
 
 }
 
 
 /* ============================================================
 LOAD MARKETS
-IMPORTANT FIX:
-USE weather.markets FIRST
 ============================================================ */
 
 async function loadMarkets(){
@@ -3161,8 +3769,15 @@ async function loadMarkets(){
       status
     ] =
       await Promise.all([
-        api("/api/weather"),
-        api("/api/auto-trade/status")
+
+        api(
+          "/api/weather"
+        ),
+
+        api(
+          "/api/auto-trade/status"
+        )
+
       ]);
 
 
@@ -3198,22 +3813,19 @@ async function loadMarkets(){
 
 
     /*
-    ==========================================================
-    CRITICAL FIX
+    IMPORTANT:
 
-    The Worker returns:
+    Prefer weather.markets.
 
-      opportunities = eligible only
-      rejected      = rejected only
-      markets       = ALL analyzed markets
+    This contains ALL analyzed markets.
 
-    We use markets first so the dashboard does NOT
-    incorrectly say there are no markets simply because
-    none currently qualify.
-    ==========================================================
+    Do NOT use opportunities first,
+    otherwise the dashboard looks empty
+    whenever zero markets qualify.
     */
 
-    let markets = [];
+    let markets =
+      [];
 
 
     if(
@@ -3251,7 +3863,9 @@ async function loadMarkets(){
       ];
 
     }else if(
-      Array.isArray(weather)
+      Array.isArray(
+        weather
+      )
     ){
 
       markets =
@@ -3270,7 +3884,7 @@ async function loadMarkets(){
 
 
     /*
-    De-duplicate by ticker.
+    De-duplicate.
     */
 
     const seen =
@@ -3302,7 +3916,9 @@ async function loadMarkets(){
 
 
           if(
-            seen.has(key)
+            seen.has(
+              key
+            )
           ){
 
             return false;
@@ -3310,17 +3926,16 @@ async function loadMarkets(){
           }
 
 
-          seen.add(key);
+          seen.add(
+            key
+          );
+
 
           return true;
 
         }
       );
 
-
-    /*
-    Header counts.
-    */
 
     $("marketCount").textContent =
       markets.length;
@@ -3329,45 +3944,44 @@ async function loadMarkets(){
     let eligibleCount =
       0;
 
+
     let rejectedCount =
       0;
 
 
-    /*
-    Render all markets.
-    */
-
     const html =
-      markets.map(
-        market => {
+      markets
+        .map(
+          market => {
 
-          const diagnostics =
-            buildDiagnostics(
+            const diagnostics =
+              buildDiagnostics(
+                market,
+                filters
+              );
+
+
+            if(
+              diagnostics.eligible
+            ){
+
+              eligibleCount++;
+
+            }else{
+
+              rejectedCount++;
+
+            }
+
+
+            return renderMarket(
               market,
               filters
             );
 
-
-          if(
-            diagnostics.eligible
-          ){
-
-            eligibleCount++;
-
-          }else{
-
-            rejectedCount++;
-
           }
-
-
-          return renderMarket(
-            market,
-            filters
-          );
-
-        }
-      ).join("");
+        )
+        .join("");
 
 
     $("eligibleCount").textContent =
@@ -3383,19 +3997,13 @@ async function loadMarkets(){
         .toLocaleTimeString();
 
 
-    /*
-    Discovery diagnostics.
-    */
-
     renderDiscovery(
       weather?.discovery
     );
 
 
     /*
-    NOTHING RETURNED AT ALL
-
-    This is now a true empty-result message.
+    TRUE EMPTY RESULT
     */
 
     if(
@@ -3410,68 +4018,6 @@ async function loadMarkets(){
           : [];
 
 
-      let discoveryHtml =
-        "";
-
-
-      if(
-        discovery.length
-      ){
-
-        discoveryHtml = `
-          <div
-            style="
-              margin-top:15px;
-              text-align:left;
-            "
-          >
-            ${discovery.map(item => `
-
-              <div
-                style="
-                  margin-top:8px;
-                  padding:9px;
-                  background:#0b1017;
-                  border-radius:8px;
-                "
-              >
-
-                <strong>
-                  ${escapeHtml(
-                    item.city ||
-                    item.series ||
-                    "Unknown"
-                  )}
-                </strong>
-
-                —
-                ${Number(
-                  item.marketsFound ||
-                  0
-                )}
-                markets found
-
-                ${
-                  item.error
-                    ? `
-                      <div class="bad">
-                        ${escapeHtml(
-                          item.error
-                        )}
-                      </div>
-                    `
-                    : ""
-                }
-
-              </div>
-
-            `).join("")}
-          </div>
-        `;
-
-      }
-
-
       $("markets").innerHTML = `
 
         <div class="empty">
@@ -3483,12 +4029,71 @@ async function loadMarkets(){
           <br><br>
 
           <span class="small">
-            This means the discovery step returned zero
-            analyzed markets. Check the discovery details
-            below.
+            The Worker returned zero analyzed markets.
+            The discovery information above shows
+            whether the forecast API or Kalshi caused it.
           </span>
 
-          ${discoveryHtml}
+          ${
+            discovery.length
+              ? `
+
+                <div
+                  style="
+                    margin-top:15px;
+                    text-align:left;
+                  "
+                >
+
+                  ${discovery.map(
+                    item => `
+
+                      <div
+                        style="
+                          margin-top:7px;
+                          padding:9px;
+                          border-radius:8px;
+                          background:#0b1017;
+                        "
+                      >
+
+                        <strong>
+                          ${escapeHtml(
+                            item.city ||
+                            item.series ||
+                            "Unknown"
+                          )}
+                        </strong>
+
+                        —
+                        ${Number(
+                          item.marketsFound ||
+                          0
+                        )}
+                        markets found
+
+                        ${
+                          item.error
+                            ? `
+                              <div class="bad">
+                                ${escapeHtml(
+                                  item.error
+                                )}
+                              </div>
+                            `
+                            : ""
+                        }
+
+                      </div>
+
+                    `
+                  ).join("")}
+
+                </div>
+
+              `
+              : ""
+          }
 
         </div>
 
@@ -3497,10 +4102,10 @@ async function loadMarkets(){
     }else{
 
       /*
-      MARKETS EXIST.
+      Markets exist.
 
-      Even if eligibleCount is zero,
-      display all rejected markets.
+      Show them even when
+      eligible = 0.
       */
 
       $("markets").innerHTML =
@@ -3509,7 +4114,7 @@ async function loadMarkets(){
     }
 
 
-  }catch(err){
+  }catch(error){
 
     $("markets").innerHTML = `
 
@@ -3522,7 +4127,7 @@ async function loadMarkets(){
         <br><br>
 
         ${escapeHtml(
-          err.message
+          error.message
         )}
 
       </div>
@@ -3548,14 +4153,17 @@ async function refreshAll(){
 
 
 /* ============================================================
-INITIAL LOAD
+INITIAL
 ============================================================ */
 
 refreshAll();
 
 
 /*
-Refresh every 30 seconds.
+Refresh dashboard every 30 seconds.
+
+The Worker should cache the weather forecast,
+so this does NOT need to repeatedly hit Open-Meteo.
 */
 
 setInterval(
@@ -3565,7 +4173,7 @@ setInterval(
 
 
 /* ============================================================
-KEYBOARD CONTROLS
+KEYBOARD
 ============================================================ */
 
 $("confirmation")
@@ -3574,8 +4182,7 @@ $("confirmation")
     function(event){
 
       if(
-        event.key ===
-        "Enter"
+        event.key === "Enter"
       ){
 
         startTrading();
@@ -3584,8 +4191,7 @@ $("confirmation")
 
 
       if(
-        event.key ===
-        "Escape"
+        event.key === "Escape"
       ){
 
         closeStartModal();
@@ -3595,10 +4201,6 @@ $("confirmation")
     }
   );
 
-
-/*
-Close modal if the dark background is clicked.
-*/
 
 $("startModal")
   .addEventListener(
