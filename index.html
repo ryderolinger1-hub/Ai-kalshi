@@ -3,42 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Position Ledger — Kalshi Dashboard</title>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-:root {
-    --bg: #08090b;
-    --panel: #101216;
-    --panel2: #15171c;
-    --border: #252830;
-    --text: #f2f2f0;
-    --muted: #858993;
-    --green: #53d769;
-    --red: #ff5c67;
-    --yellow: #f4c95d;
-    --blue: #6ea8fe;
-}
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
 
 * {
     box-sizing: border-box;
 }
 
+html {
+    background: #080909;
+}
+
 body {
     margin: 0;
     background:
-        radial-gradient(circle at top right, rgba(90,100,130,.12), transparent 35%),
-        var(--bg);
-    color: var(--text);
+        radial-gradient(
+            circle at top left,
+            rgba(255,255,255,0.035),
+            transparent 35%
+        ),
+        #080909;
+    color: #f0f0ed;
     font-family: Inter, sans-serif;
     min-height: 100vh;
 }
 
 .container {
-    width: min(1200px, calc(100% - 28px));
+    width: min(1200px, calc(100% - 32px));
     margin: 0 auto;
-    padding: 28px 0 50px;
+    padding: 30px 0 60px;
 }
 
 /* HEADER */
@@ -51,138 +51,197 @@ body {
     margin-bottom: 28px;
 }
 
-.title {
-    margin: 0;
+.brand {
     font-family: Fraunces, serif;
-    font-size: clamp(32px, 7vw, 58px);
-    line-height: .95;
-    letter-spacing: -2px;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -1px;
 }
 
 .subtitle {
-    color: var(--muted);
-    margin-top: 10px;
+    color: #858785;
     font-size: 13px;
-    font-family: "IBM Plex Mono", monospace;
+    margin-top: 6px;
 }
 
 .status {
     display: flex;
     align-items: center;
     gap: 8px;
-    color: var(--muted);
-    font-size: 12px;
     font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    color: #777b78;
 }
 
 .status-dot {
-    width: 9px;
-    height: 9px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 12px rgba(83,215,105,.7);
+    background: #777;
 }
 
-.status-dot.error {
-    background: var(--red);
-    box-shadow: 0 0 12px rgba(255,92,103,.6);
-}
-
-/* BUTTON */
-
-button {
-    border: 1px solid var(--border);
-    background: var(--panel2);
-    color: var(--text);
-    border-radius: 9px;
-    padding: 10px 14px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: .15s ease;
-}
-
-button:hover {
-    border-color: #454a55;
-    background: #1b1e24;
-}
-
-button:active {
-    transform: scale(.98);
-}
-
-.refresh-button {
-    font-family: "IBM Plex Mono", monospace;
+.status-dot.live {
+    background: #7fcf9b;
+    box-shadow: 0 0 10px rgba(127,207,155,.5);
 }
 
 /* CARDS */
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
     gap: 12px;
     margin-bottom: 14px;
 }
 
 .card {
-    background: linear-gradient(145deg, var(--panel2), var(--panel));
-    border: 1px solid var(--border);
-    border-radius: 14px;
+    background: #101212;
+    border: 1px solid #202322;
+    border-radius: 12px;
     padding: 18px;
-    min-height: 125px;
 }
 
 .card-label {
-    color: var(--muted);
+    color: #7f8380;
     font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 1.3px;
-    font-family: "IBM Plex Mono", monospace;
+    letter-spacing: .08em;
+    margin-bottom: 9px;
 }
 
 .card-value {
-    margin-top: 17px;
     font-family: "IBM Plex Mono", monospace;
-    font-size: clamp(23px, 4vw, 34px);
+    font-size: 25px;
     font-weight: 600;
     letter-spacing: -1px;
 }
 
-.card-value.green {
-    color: var(--green);
+.positive {
+    color: #86d7a1;
 }
 
-.card-value.red {
-    color: var(--red);
+.negative {
+    color: #e18484;
 }
 
-/* MAIN PANEL */
+.neutral {
+    color: #e7e7e3;
+}
+
+/* PANELS */
 
 .panel {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 14px;
+    background: #101212;
+    border: 1px solid #202322;
+    border-radius: 12px;
     overflow: hidden;
-    margin-top: 14px;
+    margin-bottom: 14px;
 }
 
 .panel-header {
     padding: 18px 20px;
+    border-bottom: 1px solid #202322;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 15px;
-    border-bottom: 1px solid var(--border);
 }
 
 .panel-title {
     font-family: Fraunces, serif;
-    font-size: 22px;
+    font-size: 19px;
 }
 
 .panel-meta {
-    color: var(--muted);
+    color: #777c79;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: .04em;
+}
+
+/* CHART */
+
+.chart-wrap {
+    height: 280px;
+    padding: 18px;
+    position: relative;
+}
+
+#plChart {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.chart-empty {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #646866;
     font-family: "IBM Plex Mono", monospace;
     font-size: 11px;
+    pointer-events: none;
+}
+
+/* NFL */
+
+.nfl-game {
+    display: grid;
+    grid-template-columns: 125px 1fr 90px 55px;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    border-bottom: 1px solid #1c1f1e;
+}
+
+.nfl-game:last-child {
+    border-bottom: 0;
+}
+
+.nfl-time {
+    color: #8a8e8b;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.nfl-time strong {
+    color: #e5e5e1;
+    font-size: 12px;
+}
+
+.nfl-matchup {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+}
+
+.nfl-at {
+    color: #666b68;
+    margin: 0 7px;
+}
+
+.nfl-network {
+    color: #737875;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    text-align: right;
+}
+
+.nfl-live {
+    color: #e18484;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    text-align: right;
+}
+
+.nfl-final {
+    color: #777c79;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    text-align: right;
 }
 
 /* TABLE */
@@ -194,92 +253,54 @@ button:active {
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 720px;
+    min-width: 700px;
 }
 
 th {
     text-align: left;
-    padding: 12px 18px;
-    color: var(--muted);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    padding: 12px 16px;
+    color: #737875;
     font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
     font-weight: 500;
-    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border-bottom: 1px solid #202322;
 }
 
 td {
-    padding: 15px 18px;
-    border-bottom: 1px solid #1c1e23;
+    padding: 15px 16px;
+    border-bottom: 1px solid #1c1f1e;
     font-family: "IBM Plex Mono", monospace;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 tr:last-child td {
     border-bottom: 0;
 }
 
-.market {
-    font-family: Inter, sans-serif;
-    font-weight: 600;
-    color: var(--text);
-}
-
-.ticker {
-    display: block;
-    color: var(--muted);
-    font-size: 10px;
-    margin-top: 4px;
-}
-
-.yes {
-    color: var(--green);
-}
-
-.no {
-    color: var(--red);
-}
-
 .empty {
-    padding: 45px 20px;
+    padding: 35px 20px;
     text-align: center;
-    color: var(--muted);
+    color: #676b69;
     font-family: "IBM Plex Mono", monospace;
-    font-size: 13px;
-}
-
-/* ERROR */
-
-.error-box {
-    display: none;
-    background: rgba(255,92,103,.08);
-    border: 1px solid rgba(255,92,103,.3);
-    color: #ff9da5;
-    border-radius: 12px;
-    padding: 15px;
-    margin-top: 14px;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 12px;
-    line-height: 1.6;
-    white-space: pre-wrap;
+    font-size: 11px;
 }
 
 /* FOOTER */
 
 .footer {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    color: var(--muted);
+    text-align: center;
+    color: #555a57;
     font-family: "IBM Plex Mono", monospace;
     font-size: 10px;
-    margin-top: 16px;
+    margin-top: 25px;
 }
 
 /* MOBILE */
 
-@media (max-width: 850px) {
+@media (max-width: 800px) {
+
     .cards {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -288,33 +309,57 @@ tr:last-child td {
         align-items: flex-start;
         flex-direction: column;
     }
+
+    .nfl-game {
+        grid-template-columns: 90px 1fr;
+        gap: 5px 12px;
+    }
+
+    .nfl-network {
+        text-align: left;
+        grid-column: 2;
+    }
+
+    .nfl-live,
+    .nfl-final {
+        text-align: left;
+        grid-column: 2;
+    }
 }
 
 @media (max-width: 500px) {
+
     .container {
-        width: min(100% - 18px, 1200px);
+        width: min(100% - 20px, 1200px);
         padding-top: 20px;
     }
 
+    .brand {
+        font-size: 27px;
+    }
+
     .cards {
-        grid-template-columns: 1fr 1fr;
         gap: 8px;
     }
 
     .card {
-        min-height: 110px;
         padding: 14px;
     }
 
     .card-value {
-        margin-top: 13px;
-        font-size: 22px;
+        font-size: 20px;
     }
 
-    .panel-header {
-        padding: 15px;
+    .chart-wrap {
+        height: 220px;
+        padding: 10px;
+    }
+
+    .nfl-game {
+        padding: 13px 14px;
     }
 }
+
 </style>
 </head>
 
@@ -322,63 +367,191 @@ tr:last-child td {
 
 <div class="container">
 
+    <!-- HEADER -->
+
     <header class="header">
 
         <div>
-            <h1 class="title">Position Ledger</h1>
+            <div class="brand">
+                Position Ledger
+            </div>
+
             <div class="subtitle">
-                KALSHI PORTFOLIO DASHBOARD
+                Kalshi portfolio dashboard
             </div>
         </div>
 
-        <div>
-            <div class="status">
-                <span class="status-dot" id="statusDot"></span>
-                <span id="statusText">CONNECTING</span>
-            </div>
+        <div class="status">
 
-            <button
-                class="refresh-button"
-                onclick="loadPortfolio()"
-                style="margin-top:10px;"
-            >
-                ↻ Refresh
-            </button>
+            <span
+                id="statusDot"
+                class="status-dot"
+            ></span>
+
+            <span id="statusText">
+                CONNECTING
+            </span>
+
         </div>
 
     </header>
 
 
-    <!-- SUMMARY CARDS -->
+    <!-- ACCOUNT CARDS -->
 
     <section class="cards">
 
         <div class="card">
-            <div class="card-label">Available Balance</div>
-            <div class="card-value" id="balance">$0.00</div>
+
+            <div class="card-label">
+                Available Balance
+            </div>
+
+            <div
+                id="balance"
+                class="card-value neutral"
+            >
+                $0.00
+            </div>
+
         </div>
 
-        <div class="card">
-            <div class="card-label">Portfolio Value</div>
-            <div class="card-value" id="portfolioValue">$0.00</div>
-        </div>
 
         <div class="card">
-            <div class="card-label">Total Account Value</div>
-            <div class="card-value green" id="totalValue">$0.00</div>
+
+            <div class="card-label">
+                Portfolio Value
+            </div>
+
+            <div
+                id="portfolioValue"
+                class="card-value neutral"
+            >
+                $0.00
+            </div>
+
         </div>
 
+
         <div class="card">
-            <div class="card-label">Open Positions</div>
-            <div class="card-value" id="positionCount">0</div>
+
+            <div class="card-label">
+                Total Account Value
+            </div>
+
+            <div
+                id="totalValue"
+                class="card-value neutral"
+            >
+                $0.00
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-label">
+                Live P/L
+            </div>
+
+            <div
+                id="livePL"
+                class="card-value neutral"
+            >
+                $0.00
+            </div>
+
         </div>
 
     </section>
 
 
-    <!-- ERROR -->
+    <!-- P/L CHART -->
 
-    <div class="error-box" id="errorBox"></div>
+    <section class="panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <div class="panel-title">
+                    Live P/L
+                </div>
+
+                <div
+                    id="chartMeta"
+                    class="panel-meta"
+                >
+                    Tracking from first dashboard reading
+                </div>
+
+            </div>
+
+            <div
+                id="lastUpdated"
+                class="panel-meta"
+            >
+                —
+            </div>
+
+        </div>
+
+        <div class="chart-wrap">
+
+            <canvas id="plChart"></canvas>
+
+            <div
+                id="chartEmpty"
+                class="chart-empty"
+            >
+                Waiting for account data...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- NFL -->
+
+    <section class="panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <div class="panel-title">
+                    NFL — Current Week
+                </div>
+
+                <div
+                    id="nflWeekMeta"
+                    class="panel-meta"
+                >
+                    Loading current NFL week...
+                </div>
+
+            </div>
+
+            <div
+                id="nflGameCount"
+                class="panel-meta"
+            >
+                LOADING
+            </div>
+
+        </div>
+
+        <div id="nflSchedule">
+
+            <div class="empty">
+                Loading NFL schedule...
+            </div>
+
+        </div>
+
+    </section>
 
 
     <!-- POSITIONS -->
@@ -387,15 +560,27 @@ tr:last-child td {
 
         <div class="panel-header">
 
-            <div class="panel-title">
-                Open Positions
+            <div>
+
+                <div class="panel-title">
+                    Open Positions
+                </div>
+
+                <div class="panel-meta">
+                    LIVE KALSHI POSITIONS
+                </div>
+
             </div>
 
-            <div class="panel-meta" id="updated">
-                Waiting for data...
+            <div
+                id="positionCount"
+                class="panel-meta"
+            >
+                0
             </div>
 
         </div>
+
 
         <div class="table-wrap">
 
@@ -404,12 +589,31 @@ tr:last-child td {
                 <thead>
 
                     <tr>
-                        <th>Market</th>
-                        <th>Side</th>
-                        <th>Contracts</th>
-                        <th>Avg Price</th>
-                        <th>Market Value</th>
-                        <th>P/L</th>
+
+                        <th>
+                            Market
+                        </th>
+
+                        <th>
+                            Side
+                        </th>
+
+                        <th>
+                            Contracts
+                        </th>
+
+                        <th>
+                            Avg Price
+                        </th>
+
+                        <th>
+                            Market Value
+                        </th>
+
+                        <th>
+                            P/L
+                        </th>
+
                     </tr>
 
                 </thead>
@@ -417,8 +621,11 @@ tr:last-child td {
                 <tbody id="positionsBody">
 
                     <tr>
-                        <td colspan="6" class="empty">
-                            Loading portfolio...
+                        <td
+                            colspan="6"
+                            class="empty"
+                        >
+                            Loading positions...
                         </td>
                     </tr>
 
@@ -432,8 +639,7 @@ tr:last-child td {
 
 
     <div class="footer">
-        <span>CONNECTED THROUGH CLOUDFLARE WORKER</span>
-        <span id="lastRefresh">—</span>
+        Kalshi • Position Ledger • Auto refresh
     </div>
 
 </div>
@@ -441,411 +647,292 @@ tr:last-child td {
 
 <script>
 
-/*
-==========================================================
- KALSHI WORKER
-==========================================================
-*/
+/* =========================================================
+   CONFIG
+========================================================= */
 
 const WORKER_URL =
     "https://worker1.ryderolinger1.workers.dev/api/portfolio";
 
 
-/*
-==========================================================
- HELPERS
-==========================================================
-*/
+/* =========================================================
+   STORAGE
+========================================================= */
+
+const HISTORY_KEY =
+    "kalshi_pl_history_v1";
+
+const BASELINE_KEY =
+    "kalshi_pl_baseline_v1";
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
 
 function money(value) {
 
-    const number = Number(value);
+    const number =
+        Number(value) || 0;
 
-    if (!Number.isFinite(number)) {
-        return "$0.00";
-    }
-
-    return number.toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+    return "$" +
+        number.toLocaleString(
+            "en-US",
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        );
 }
 
 
-function number(value) {
+function signedMoney(value) {
 
-    const n = Number(value);
+    const number =
+        Number(value) || 0;
 
-    if (!Number.isFinite(n)) {
-        return 0;
+    const sign =
+        number >= 0
+            ? "+"
+            : "-";
+
+    return sign +
+        money(
+            Math.abs(number)
+        );
+}
+
+
+function setValueClass(element, value) {
+
+    element.classList.remove(
+        "positive",
+        "negative",
+        "neutral"
+    );
+
+    if (value > 0) {
+
+        element.classList.add(
+            "positive"
+        );
+
+    } else if (value < 0) {
+
+        element.classList.add(
+            "negative"
+        );
+
+    } else {
+
+        element.classList.add(
+            "neutral"
+        );
+
+    }
+}
+
+
+/* =========================================================
+   KALSHI DATA
+========================================================= */
+
+function getBalance(data) {
+
+    const balance =
+        data?.balance?.balance_dollars;
+
+    if (
+        balance !== undefined &&
+        balance !== null
+    ) {
+        return Number(balance);
     }
 
-    return n;
+    return (
+        Number(
+            data?.balance?.balance
+        ) || 0
+    ) / 100;
+}
+
+
+function getPortfolioValue(data) {
+
+    const value =
+        data?.positions?.portfolio_value;
+
+    if (
+        value !== undefined &&
+        value !== null
+    ) {
+
+        const number =
+            Number(value);
+
+        /*
+         * Kalshi portfolio values can
+         * be returned in cents.
+         */
+
+        if (number > 100000) {
+            return number / 100;
+        }
+
+        return number;
+    }
+
+    return 0;
 }
 
 
 function getPositions(data) {
 
-    const positions =
-        data?.positions?.market_positions;
-
-    if (Array.isArray(positions)) {
-        return positions;
-    }
-
-    return [];
+    return (
+        data?.positions?.market_positions ||
+        []
+    );
 }
 
 
-/*
-==========================================================
- BALANCE
-==========================================================
-*/
+/* =========================================================
+   POSITION HELPERS
+========================================================= */
 
-function getBalance(data) {
+function positionMarket(position) {
 
-    const balanceData = data?.balance;
-
-    if (!balanceData) {
-        return 0;
-    }
-
-    /*
-        Kalshi returns balance_dollars in the
-        portfolio balance response.
-    */
-
-    if (balanceData.balance_dollars !== undefined) {
-        return Number(balanceData.balance_dollars) || 0;
-    }
-
-    /*
-        Fallback if the API returns balance in cents.
-    */
-
-    if (balanceData.balance !== undefined) {
-
-        const raw = Number(balanceData.balance);
-
-        if (Number.isFinite(raw)) {
-
-            /*
-                Very large values are usually cents.
-            */
-
-            if (Math.abs(raw) > 1000) {
-                return raw / 100;
-            }
-
-            return raw;
-        }
-    }
-
-    return 0;
+    return (
+        position.ticker ||
+        position.market_ticker ||
+        position.market ||
+        "Unknown"
+    );
 }
 
 
-/*
-==========================================================
- PORTFOLIO VALUE
-==========================================================
-*/
+function positionSide(position) {
 
-function getPortfolioValue(data) {
-
-    const positions = data?.positions;
-
-    if (!positions) {
-        return 0;
-    }
-
-    if (positions.portfolio_value !== undefined) {
-
-        const value = Number(
-            positions.portfolio_value
+    const positionValue =
+        Number(
+            position.position
         );
 
-        if (Number.isFinite(value)) {
-            return value;
-        }
+    if (
+        positionValue !== undefined &&
+        !Number.isNaN(positionValue)
+    ) {
+
+        return positionValue >= 0
+            ? "YES"
+            : "NO";
     }
 
-    return 0;
-}
-
-
-/*
-==========================================================
- MARKET NAME
-==========================================================
-*/
-
-function getMarketName(position) {
-
     return (
-        position.market_title ||
-        position.title ||
-        position.market_name ||
-        position.ticker ||
-        position.market_ticker ||
-        "Unknown Market"
+        position.side ||
+        "—"
     );
 }
 
 
-function getTicker(position) {
+function positionContracts(position) {
 
-    return (
-        position.ticker ||
-        position.market_ticker ||
-        position.market_id ||
-        ""
+    return Math.abs(
+        Number(
+            position.position ||
+            position.contracts ||
+            0
+        )
     );
 }
 
 
-/*
-==========================================================
- SIDE
-==========================================================
-*/
+function positionAverage(position) {
 
-function getSide(position) {
+    const value =
+        Number(
+            position.average_price_dollars ??
+            position.avg_price_dollars ??
+            position.average_price ??
+            position.avg_price ??
+            0
+        );
 
-    if (
-        position.position !== undefined
-    ) {
-        return String(position.position).toUpperCase();
+    if (!value) {
+        return 0;
     }
 
-    if (
-        position.side !== undefined
-    ) {
-        return String(position.side).toUpperCase();
+    if (value > 1) {
+        return value / 100;
     }
 
-    if (
-        position.yes !== undefined
-    ) {
-        return "YES";
-    }
-
-    return "—";
+    return value;
 }
 
 
-/*
-==========================================================
- CONTRACT COUNT
-==========================================================
-*/
+function positionMarketValue(position) {
 
-function getContracts(position) {
+    const value =
+        Number(
+            position.market_value_dollars ??
+            position.market_value ??
+            0
+        );
 
-    const candidates = [
-
-        position.total_contracts,
-
-        position.contracts,
-
-        position.position,
-
-        position.quantity,
-
-        position.count
-
-    ];
-
-    for (const candidate of candidates) {
-
-        if (
-            typeof candidate === "number" &&
-            Number.isFinite(candidate)
-        ) {
-            return Math.abs(candidate);
-        }
-
-        if (
-            typeof candidate === "string" &&
-            candidate.trim() !== "" &&
-            !isNaN(Number(candidate))
-        ) {
-            return Math.abs(Number(candidate));
-        }
+    if (value > 1000) {
+        return value / 100;
     }
 
-    return 0;
+    return value;
 }
 
 
-/*
-==========================================================
- PRICE
-==========================================================
-*/
+function positionPL(position) {
 
-function getAveragePrice(position) {
+    const value =
+        Number(
+            position.realized_pnl_dollars ??
+            position.unrealized_pnl_dollars ??
+            position.pnl_dollars ??
+            position.pnl ??
+            0
+        );
 
-    const candidates = [
-
-        position.average_price,
-
-        position.avg_price,
-
-        position.average_entry_price,
-
-        position.avg_entry_price,
-
-        position.entry_price
-
-    ];
-
-    for (const candidate of candidates) {
-
-        if (
-            candidate !== undefined &&
-            candidate !== null &&
-            candidate !== ""
-        ) {
-
-            const value = Number(candidate);
-
-            if (Number.isFinite(value)) {
-
-                /*
-                    Kalshi prices may be represented
-                    as cents or dollars depending on
-                    endpoint/version.
-                */
-
-                if (value > 1) {
-                    return value / 100;
-                }
-
-                return value;
-            }
-        }
+    if (Math.abs(value) > 1000) {
+        return value / 100;
     }
 
-    return null;
+    return value;
 }
 
 
-/*
-==========================================================
- MARKET VALUE
-==========================================================
-*/
-
-function getMarketValue(position) {
-
-    const candidates = [
-
-        position.market_value,
-
-        position.market_value_dollars,
-
-        position.value,
-
-        position.current_value
-
-    ];
-
-    for (const candidate of candidates) {
-
-        if (
-            candidate !== undefined &&
-            candidate !== null &&
-            candidate !== ""
-        ) {
-
-            const value = Number(candidate);
-
-            if (Number.isFinite(value)) {
-
-                /*
-                    Large values are likely cents.
-                */
-
-                if (Math.abs(value) > 1000) {
-                    return value / 100;
-                }
-
-                return value;
-            }
-        }
-    }
-
-    return null;
-}
-
-
-/*
-==========================================================
- P/L
-==========================================================
-*/
-
-function getPnL(position) {
-
-    const candidates = [
-
-        position.realized_pnl,
-
-        position.unrealized_pnl,
-
-        position.pnl,
-
-        position.profit_loss,
-
-        position.profit
-
-    ];
-
-    for (const candidate of candidates) {
-
-        if (
-            candidate !== undefined &&
-            candidate !== null &&
-            candidate !== ""
-        ) {
-
-            const value = Number(candidate);
-
-            if (Number.isFinite(value)) {
-
-                if (Math.abs(value) > 1000) {
-                    return value / 100;
-                }
-
-                return value;
-            }
-        }
-    }
-
-    return null;
-}
-
-
-/*
-==========================================================
- RENDER POSITIONS
-==========================================================
-*/
+/* =========================================================
+   POSITION TABLE
+========================================================= */
 
 function renderPositions(positions) {
 
     const body =
-        document.getElementById("positionsBody");
+        document.getElementById(
+            "positionsBody"
+        );
+
+    const count =
+        document.getElementById(
+            "positionCount"
+        );
+
+    count.textContent =
+        positions.length;
+
 
     if (!positions.length) {
 
         body.innerHTML = `
             <tr>
-                <td colspan="6" class="empty">
+                <td
+                    colspan="6"
+                    class="empty"
+                >
                     No open positions
                 </td>
             </tr>
@@ -855,168 +942,337 @@ function renderPositions(positions) {
     }
 
 
-    body.innerHTML = positions.map(position => {
+    body.innerHTML =
+        positions.map(position => {
 
-        const market =
-            getMarketName(position);
+            const market =
+                positionMarket(position);
 
-        const ticker =
-            getTicker(position);
+            const side =
+                positionSide(position);
 
-        const side =
-            getSide(position);
+            const contracts =
+                positionContracts(position);
 
-        const contracts =
-            getContracts(position);
+            const average =
+                positionAverage(position);
 
-        const avg =
-            getAveragePrice(position);
+            const marketValue =
+                positionMarketValue(position);
 
-        const value =
-            getMarketValue(position);
-
-        const pnl =
-            getPnL(position);
+            const pnl =
+                positionPL(position);
 
 
-        const sideClass =
-            side === "YES"
-                ? "yes"
-                : side === "NO"
-                    ? "no"
-                    : "";
+            return `
+                <tr>
 
+                    <td>
+                        ${market}
+                    </td>
 
-        let pnlHTML = "—";
+                    <td>
+                        ${side}
+                    </td>
 
-        if (pnl !== null) {
+                    <td>
+                        ${contracts}
+                    </td>
 
-            const pnlClass =
-                pnl >= 0
-                    ? "yes"
-                    : "no";
+                    <td>
+                        ${money(average)}
+                    </td>
 
-            const sign =
-                pnl >= 0
-                    ? "+"
-                    : "";
+                    <td>
+                        ${money(marketValue)}
+                    </td>
 
-            pnlHTML = `
-                <span class="${pnlClass}">
-                    ${sign}${money(pnl)}
-                </span>
+                    <td class="${
+                        pnl > 0
+                            ? "positive"
+                            : pnl < 0
+                                ? "negative"
+                                : ""
+                    }">
+                        ${signedMoney(pnl)}
+                    </td>
+
+                </tr>
             `;
-        }
 
-
-        return `
-
-            <tr>
-
-                <td>
-
-                    <div class="market">
-                        ${escapeHTML(market)}
-                    </div>
-
-                    <span class="ticker">
-                        ${escapeHTML(ticker)}
-                    </span>
-
-                </td>
-
-                <td>
-                    <strong class="${sideClass}">
-                        ${escapeHTML(side)}
-                    </strong>
-                </td>
-
-                <td>
-                    ${contracts.toLocaleString()}
-                </td>
-
-                <td>
-                    ${
-                        avg === null
-                            ? "—"
-                            : money(avg)
-                    }
-                </td>
-
-                <td>
-                    ${
-                        value === null
-                            ? "—"
-                            : money(value)
-                    }
-                </td>
-
-                <td>
-                    ${pnlHTML}
-                </td>
-
-            </tr>
-
-        `;
-
-    }).join("");
+        }).join("");
 }
 
 
-/*
-==========================================================
- HTML ESCAPE
-==========================================================
-*/
+/* =========================================================
+   P/L HISTORY
+========================================================= */
 
-function escapeHTML(value) {
+function getHistory() {
 
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                HISTORY_KEY
+            ) || "[]"
+        );
+
+    } catch {
+
+        return [];
+
+    }
 }
 
 
-/*
-==========================================================
- LOAD PORTFOLIO
-==========================================================
-*/
+function saveHistory(history) {
 
-async function loadPortfolio() {
-
-    const statusText =
-        document.getElementById("statusText");
-
-    const statusDot =
-        document.getElementById("statusDot");
-
-    const errorBox =
-        document.getElementById("errorBox");
-
-    const positionsBody =
-        document.getElementById("positionsBody");
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(history)
+    );
+}
 
 
-    statusText.textContent =
-        "UPDATING";
+function getBaseline() {
 
-    statusDot.classList.remove("error");
+    const value =
+        Number(
+            localStorage.getItem(
+                BASELINE_KEY
+            )
+        );
 
-    errorBox.style.display =
+    return Number.isFinite(value)
+        ? value
+        : null;
+}
+
+
+function setBaseline(value) {
+
+    localStorage.setItem(
+        BASELINE_KEY,
+        String(value)
+    );
+}
+
+
+/* =========================================================
+   CHART
+========================================================= */
+
+function drawChart(history) {
+
+    const canvas =
+        document.getElementById(
+            "plChart"
+        );
+
+    const empty =
+        document.getElementById(
+            "chartEmpty"
+        );
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    const dpr =
+        window.devicePixelRatio || 1;
+
+    canvas.width =
+        rect.width * dpr;
+
+    canvas.height =
+        rect.height * dpr;
+
+    const ctx =
+        canvas.getContext("2d");
+
+    ctx.scale(dpr, dpr);
+
+
+    const width =
+        rect.width;
+
+    const height =
+        rect.height;
+
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    if (history.length < 2) {
+
+        empty.style.display =
+            "flex";
+
+        return;
+
+    }
+
+
+    empty.style.display =
         "none";
 
+
+    const values =
+        history.map(
+            point =>
+                Number(point.pl) || 0
+        );
+
+
+    const min =
+        Math.min(
+            ...values,
+            0
+        );
+
+    const max =
+        Math.max(
+            ...values,
+            0
+        );
+
+
+    const range =
+        max - min || 1;
+
+
+    const left = 5;
+    const right = width - 5;
+    const top = 10;
+    const bottom = height - 15;
+
+
+    const x =
+        index =>
+            left +
+            (
+                index /
+                (values.length - 1)
+            ) *
+            (right - left);
+
+
+    const y =
+        value =>
+            bottom -
+            (
+                (value - min) /
+                range
+            ) *
+            (bottom - top);
+
+
+    /* ZERO LINE */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        left,
+        y(0)
+    );
+
+    ctx.lineTo(
+        right,
+        y(0)
+    );
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,.08)";
+
+    ctx.lineWidth = 1;
+
+    ctx.stroke();
+
+
+    /* LINE */
+
+    ctx.beginPath();
+
+    values.forEach(
+        (value, index) => {
+
+            const px =
+                x(index);
+
+            const py =
+                y(value);
+
+            if (index === 0) {
+
+                ctx.moveTo(
+                    px,
+                    py
+                );
+
+            } else {
+
+                ctx.lineTo(
+                    px,
+                    py
+                );
+
+            }
+
+        }
+    );
+
+
+    ctx.strokeStyle =
+        values[values.length - 1] >= 0
+            ? "#86d7a1"
+            : "#e18484";
+
+    ctx.lineWidth = 2;
+
+    ctx.stroke();
+
+
+    /* LAST POINT */
+
+    const last =
+        values.length - 1;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x(last),
+        y(values[last]),
+        3,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        values[last] >= 0
+            ? "#86d7a1"
+            : "#e18484";
+
+    ctx.fill();
+}
+
+
+/* =========================================================
+   KALSHI LOAD
+========================================================= */
+
+async function loadPortfolio() {
 
     try {
 
         const response =
             await fetch(
-                WORKER_URL + "?t=" + Date.now(),
+                WORKER_URL,
                 {
-                    method: "GET",
                     cache: "no-store"
                 }
             );
@@ -1024,15 +1280,11 @@ async function loadPortfolio() {
 
         if (!response.ok) {
 
-            const text =
-                await response.text();
-
             throw new Error(
-                "Worker returned HTTP " +
-                response.status +
-                "\n\n" +
-                text
+                "Worker returned " +
+                response.status
             );
+
         }
 
 
@@ -1043,174 +1295,797 @@ async function loadPortfolio() {
         if (!data.ok) {
 
             throw new Error(
-                JSON.stringify(
-                    data,
-                    null,
-                    2
-                )
+                data.error ||
+                "Kalshi request failed"
             );
+
         }
 
-
-        /*
-        -----------------------------
-        BALANCE
-        -----------------------------
-        */
 
         const balance =
             getBalance(data);
 
-
-        document.getElementById(
-            "balance"
-        ).textContent =
-            money(balance);
-
-
-        /*
-        -----------------------------
-        PORTFOLIO VALUE
-        -----------------------------
-        */
-
-        const portfolioValue =
+        const portfolio =
             getPortfolioValue(data);
-
-
-        document.getElementById(
-            "portfolioValue"
-        ).textContent =
-            money(portfolioValue);
-
-
-        /*
-        -----------------------------
-        TOTAL VALUE
-        -----------------------------
-        */
 
         const total =
             balance +
-            portfolioValue;
+            portfolio;
 
 
-        document.getElementById(
-            "totalValue"
-        ).textContent =
+        /* BASELINE */
+
+        let baseline =
+            getBaseline();
+
+
+        if (baseline === null) {
+
+            baseline =
+                total;
+
+            setBaseline(
+                baseline
+            );
+
+        }
+
+
+        const pl =
+            total -
+            baseline;
+
+
+        /* CARDS */
+
+        const balanceElement =
+            document.getElementById(
+                "balance"
+            );
+
+        const portfolioElement =
+            document.getElementById(
+                "portfolioValue"
+            );
+
+        const totalElement =
+            document.getElementById(
+                "totalValue"
+            );
+
+        const plElement =
+            document.getElementById(
+                "livePL"
+            );
+
+
+        balanceElement.textContent =
+            money(balance);
+
+        portfolioElement.textContent =
+            money(portfolio);
+
+        totalElement.textContent =
             money(total);
 
+        plElement.textContent =
+            signedMoney(pl);
+
+
+        setValueClass(
+            balanceElement,
+            balance
+        );
+
+        setValueClass(
+            portfolioElement,
+            portfolio
+        );
+
+        setValueClass(
+            totalElement,
+            total
+        );
+
+        setValueClass(
+            plElement,
+            pl
+        );
+
+
+        /* HISTORY */
+
+        const history =
+            getHistory();
+
+        history.push({
+            time:
+                Date.now(),
+            value:
+                total,
+            pl:
+                pl
+        });
+
 
         /*
-        -----------------------------
-        POSITIONS
-        -----------------------------
-        */
+         * 8640 points =
+         * 24 hours at 10 seconds.
+         */
 
-        const positions =
-            getPositions(data);
+        while (
+            history.length >
+            8640
+        ) {
+
+            history.shift();
+
+        }
 
 
-        document.getElementById(
-            "positionCount"
-        ).textContent =
-            positions.length;
+        saveHistory(
+            history
+        );
 
+
+        drawChart(
+            history
+        );
+
+
+        /* POSITIONS */
 
         renderPositions(
-            positions
+            getPositions(data)
         );
 
 
-        /*
-        -----------------------------
-        STATUS
-        -----------------------------
-        */
+        /* STATUS */
 
-        statusText.textContent =
-            "CONNECTED";
+        document
+            .getElementById(
+                "statusDot"
+            )
+            .classList.add(
+                "live"
+            );
 
-        statusDot.classList.remove(
-            "error"
-        );
-
-
-        const now =
-            new Date();
-
-
-        document.getElementById(
-            "updated"
-        ).textContent =
-            "Updated " +
-            now.toLocaleTimeString();
+        document
+            .getElementById(
+                "statusText"
+            )
+            .textContent =
+                "LIVE";
 
 
-        document.getElementById(
-            "lastRefresh"
-        ).textContent =
-            "Last refresh: " +
-            now.toLocaleTimeString();
+        document
+            .getElementById(
+                "lastUpdated"
+            )
+            .textContent =
+                new Date()
+                    .toLocaleTimeString(
+                        undefined,
+                        {
+                            hour: "numeric",
+                            minute: "2-digit",
+                            second: "2-digit"
+                        }
+                    );
 
 
     } catch (error) {
 
         console.error(
-            "Portfolio error:",
+            "Kalshi error:",
             error
         );
 
 
-        statusText.textContent =
-            "CONNECTION ERROR";
-
-
-        statusDot.classList.add(
-            "error"
-        );
-
-
-        errorBox.style.display =
-            "block";
-
-
-        errorBox.textContent =
-            "ERROR\n\n" +
-            (
-                error?.message ||
-                String(error)
+        document
+            .getElementById(
+                "statusDot"
+            )
+            .classList.remove(
+                "live"
             );
 
 
-        positionsBody.innerHTML = `
-            <tr>
-                <td colspan="6" class="empty">
-                    Could not load portfolio
-                </td>
-            </tr>
-        `;
+        document
+            .getElementById(
+                "statusText"
+            )
+            .textContent =
+                "OFFLINE";
+
     }
 
 }
 
 
+/* =========================================================
+   NFL — AUTOMATIC CURRENT WEEK
+========================================================= */
+
+async function loadNFLSchedule() {
+
+    const container =
+        document.getElementById(
+            "nflSchedule"
+        );
+
+
+    try {
+
+        /*
+         * First request today's NFL
+         * scoreboard. ESPN returns the
+         * current NFL week in the
+         * response metadata.
+         */
+
+        const today =
+            new Date();
+
+
+        const yyyy =
+            today.getFullYear();
+
+        const mm =
+            String(
+                today.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+        const dd =
+            String(
+                today.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const currentUrl =
+            "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard" +
+            `?dates=${yyyy}${mm}${dd}&limit=100`;
+
+
+        const currentResponse =
+            await fetch(
+                currentUrl,
+                {
+                    cache: "no-store"
+                }
+            );
+
+
+        if (!currentResponse.ok) {
+
+            throw new Error(
+                "Could not determine NFL week"
+            );
+
+        }
+
+
+        const currentData =
+            await currentResponse.json();
+
+
+        const weekNumber =
+            currentData?.week?.number ||
+            currentData?.leagues?.[0]?.season?.slug
+                ? null
+                : null;
+
+
+        /*
+         * ESPN normally provides the
+         * week in the scoreboard
+         * response. If it doesn't,
+         * calculate the regular-season
+         * week from the NFL calendar.
+         */
+
+        let week =
+            Number(
+                currentData?.week?.number
+            );
+
+
+        if (
+            !Number.isFinite(week) ||
+            week < 1
+        ) {
+
+            /*
+             * 2026 regular season:
+             * Week 1 began Sep 10.
+             */
+
+            const seasonStart =
+                new Date(
+                    "2026-09-10T00:00:00"
+                );
+
+            const now =
+                new Date();
+
+
+            week =
+                Math.floor(
+                    (
+                        now -
+                        seasonStart
+                    ) /
+                    (
+                        7 *
+                        24 *
+                        60 *
+                        60 *
+                        1000
+                    )
+                ) + 1;
+
+
+            week =
+                Math.max(
+                    1,
+                    Math.min(
+                        18,
+                        week
+                    )
+                );
+
+        }
+
+
+        /*
+         * Now request the ENTIRE
+         * current NFL week.
+         */
+
+        const weekUrl =
+            "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard" +
+            `?dates=${yyyy}&seasontype=2&week=${week}&limit=100`;
+
+
+        const response =
+            await fetch(
+                weekUrl,
+                {
+                    cache: "no-store"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "NFL schedule request failed"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        const events =
+            data.events || [];
+
+
+        const games =
+            events
+                .map(event => {
+
+                    const competition =
+                        event.competitions?.[0];
+
+
+                    if (!competition) {
+                        return null;
+                    }
+
+
+                    const teams =
+                        competition.competitors ||
+                        [];
+
+
+                    const away =
+                        teams.find(
+                            team =>
+                                team.homeAway ===
+                                "away"
+                        );
+
+
+                    const home =
+                        teams.find(
+                            team =>
+                                team.homeAway ===
+                                "home"
+                        );
+
+
+                    if (
+                        !away ||
+                        !home
+                    ) {
+
+                        return null;
+
+                    }
+
+
+                    const status =
+                        event.status?.type;
+
+
+                    let state =
+                        status?.state ||
+                        "pre";
+
+
+                    let statusText =
+                        status?.description ||
+                        "Scheduled";
+
+
+                    if (
+                        status?.completed
+                    ) {
+
+                        state =
+                            "post";
+
+                    }
+
+
+                    let network =
+                        "";
+
+
+                    if (
+                        competition.broadcasts &&
+                        competition.broadcasts.length
+                    ) {
+
+                        network =
+                            competition
+                                .broadcasts[0]
+                                ?.names
+                                ?.join(", ") ||
+                            "";
+
+                    }
+
+
+                    return {
+
+                        id:
+                            event.id,
+
+                        date:
+                            event.date,
+
+                        away:
+                            away.team?.abbreviation ||
+                            away.team?.shortDisplayName ||
+                            "AWAY",
+
+                        home:
+                            home.team?.abbreviation ||
+                            home.team?.shortDisplayName ||
+                            "HOME",
+
+                        state:
+                            state,
+
+                        status:
+                            statusText,
+
+                        network:
+                            network
+
+                    };
+
+                })
+                .filter(Boolean);
+
+
+        renderNFLSchedule(
+            games,
+            week
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "NFL schedule error:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div class="empty">
+                NFL schedule unavailable
+            </div>
+        `;
+
+        document
+            .getElementById(
+                "nflWeekMeta"
+            )
+            .textContent =
+                "Unable to load schedule";
+
+        document
+            .getElementById(
+                "nflGameCount"
+            )
+            .textContent =
+                "—";
+
+    }
+
+}
+
+
+/* =========================================================
+   NFL RENDER
+========================================================= */
+
+function renderNFLSchedule(
+    games,
+    week
+) {
+
+    const container =
+        document.getElementById(
+            "nflSchedule"
+        );
+
+
+    const count =
+        document.getElementById(
+            "nflGameCount"
+        );
+
+
+    const meta =
+        document.getElementById(
+            "nflWeekMeta"
+        );
+
+
+    /*
+     * Remove duplicate events.
+     */
+
+    const unique =
+        Array.from(
+            new Map(
+                games.map(
+                    game =>
+                        [
+                            game.id,
+                            game
+                        ]
+                )
+            ).values()
+        );
+
+
+    /*
+     * Sort by kickoff.
+     */
+
+    unique.sort(
+        (a, b) =>
+            new Date(a.date) -
+            new Date(b.date)
+    );
+
+
+    count.textContent =
+        `${unique.length} GAME${
+            unique.length === 1
+                ? ""
+                : "S"
+        }`;
+
+
+    meta.textContent =
+        `WEEK ${week} • AUTO UPDATED`;
+
+
+    if (!unique.length) {
+
+        container.innerHTML = `
+            <div class="empty">
+                No NFL games scheduled this week.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        unique
+            .map(game => {
+
+                const kickoff =
+                    new Date(
+                        game.date
+                    );
+
+
+                const dateText =
+                    kickoff.toLocaleDateString(
+                        undefined,
+                        {
+                            weekday: "short",
+                            month: "short",
+                            day: "numeric"
+                        }
+                    );
+
+
+                const timeText =
+                    kickoff.toLocaleTimeString(
+                        undefined,
+                        {
+                            hour: "numeric",
+                            minute: "2-digit"
+                        }
+                    );
+
+
+                const live =
+                    game.state === "in";
+
+
+                const final =
+                    game.state === "post";
+
+
+                let statusHtml =
+                    "";
+
+
+                if (live) {
+
+                    statusHtml = `
+                        <div class="nfl-live">
+                            LIVE
+                        </div>
+                    `;
+
+                } else if (final) {
+
+                    statusHtml = `
+                        <div class="nfl-final">
+                            FINAL
+                        </div>
+                    `;
+
+                }
+
+
+                return `
+                    <div class="nfl-game">
+
+                        <div class="nfl-time">
+
+                            <div>
+                                ${dateText}
+                            </div>
+
+                            <strong>
+                                ${timeText}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="nfl-matchup">
+
+                            <strong>
+                                ${game.away}
+                            </strong>
+
+                            <span class="nfl-at">
+                                @
+                            </span>
+
+                            <strong>
+                                ${game.home}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="nfl-network">
+                            ${
+                                game.network ||
+                                ""
+                            }
+                        </div>
+
+
+                        ${statusHtml}
+
+                    </div>
+                `;
+
+            })
+            .join("");
+
+}
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+async function refreshEverything() {
+
+    await loadPortfolio();
+
+}
+
+
 /*
-==========================================================
- AUTO REFRESH
-==========================================================
-*/
+ * Kalshi:
+ * refresh every 10 seconds.
+ */
 
-loadPortfolio();
-
-
-/*
-    Refresh every 10 seconds.
-*/
+refreshEverything();
 
 setInterval(
-    loadPortfolio,
-    10000
+    refreshEverything,
+    10 * 1000
+);
+
+
+/*
+ * NFL:
+ * refresh every 5 minutes.
+ *
+ * This means when a new week starts,
+ * the old games automatically disappear
+ * and the new week's games load.
+ */
+
+loadNFLSchedule();
+
+setInterval(
+    loadNFLSchedule,
+    5 * 60 * 1000
+);
+
+
+/* =========================================================
+   RESIZE
+========================================================= */
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        drawChart(
+            getHistory()
+        );
+
+    }
 );
 
 </script>
