@@ -1,311 +1,1365 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="UTF-8">
 
 <meta
-  name="viewport"
-  content="width=device-width,initial-scale=1"
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 >
 
 <title>
-Kalshi Weather Auto Trader
+Position Ledger — Kalshi Weather
 </title>
+
 
 <style>
 
 :root{
+
 --bg:#07090d;
 --panel:#0d1118;
 --panel2:#111722;
 --border:#202936;
 --text:#f2f5f8;
 --muted:#8c98a8;
+
 --green:#39e58c;
 --red:#ff5d6c;
---blue:#5ca9ff;
 --yellow:#ffd166;
+--blue:#5ca9ff;
+
 }
+
 
 *{
 box-sizing:border-box;
 }
 
+
 body{
+
 margin:0;
-background:var(--bg);
-color:var(--text);
-font:14px Arial,sans-serif;
+
+background:
+var(--bg);
+
+color:
+var(--text);
+
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"Segoe UI",
+Roboto,
+Arial,
+sans-serif;
+
 }
 
-.wrap{
-max-width:1200px;
-margin:auto;
-padding:18px;
+
+.container{
+
+max-width:
+1250px;
+
+margin:
+0 auto;
+
+padding:
+18px;
+
+}
+
+
+header{
+
+display:flex;
+
+justify-content:
+space-between;
+
+align-items:
+center;
+
+gap:
+15px;
+
+margin-bottom:
+18px;
+
+}
+
+
+h1{
+
+margin:
+0;
+
+font-size:
+25px;
+
+}
+
+
+.subtitle{
+
+color:
+var(--muted);
+
+font-size:
+13px;
+
+margin-top:
+5px;
+
+}
+
+
+.status-pill{
+
+padding:
+9px 13px;
+
+border-radius:
+999px;
+
+background:
+#151b24;
+
+border:
+1px solid
+var(--border);
+
+font-size:
+12px;
+
+white-space:
+nowrap;
+
+}
+
+
+.status-pill.on{
+
+color:
+var(--green);
+
+border-color:
+#205c42;
+
+}
+
+
+.status-pill.off{
+
+color:
+var(--red);
+
+border-color:
+#632b33;
+
+}
+
+
+/* =========================================================
+TOP CARDS
+========================================================= */
+
+.grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:
+12px;
+
+margin-bottom:
+18px;
+
+}
+
+
+.card{
+
+background:
+var(--panel);
+
+border:
+1px solid
+var(--border);
+
+border-radius:
+14px;
+
+padding:
+15px;
+
+}
+
+
+.card-label{
+
+color:
+var(--muted);
+
+font-size:
+11px;
+
+text-transform:
+uppercase;
+
+letter-spacing:
+.08em;
+
+}
+
+
+.card-value{
+
+margin-top:
+7px;
+
+font-size:
+23px;
+
+font-weight:
+700;
+
+}
+
+
+/* =========================================================
+SETTINGS
+========================================================= */
+
+.settings{
+
+margin-bottom:
+18px;
+
+}
+
+
+.settings-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(6,1fr);
+
+gap:
+10px;
+
+margin-top:
+12px;
+
+}
+
+
+label{
+
+display:block;
+
+color:
+var(--muted);
+
+font-size:
+11px;
+
+margin-bottom:
+5px;
+
+}
+
+
+input{
+
+width:
+100%;
+
+background:
+#080c12;
+
+border:
+1px solid
+#293340;
+
+color:
+white;
+
+border-radius:
+9px;
+
+padding:
+10px;
+
+outline:
+none;
+
+}
+
+
+input:focus{
+
+border-color:
+var(--blue);
+
+}
+
+
+.actions{
+
+display:flex;
+
+flex-wrap:
+wrap;
+
+gap:
+8px;
+
+margin-top:
+12px;
+
+}
+
+
+button{
+
+border:
+0;
+
+border-radius:
+9px;
+
+padding:
+11px 14px;
+
+font-weight:
+700;
+
+cursor:
+pointer;
+
+color:
+#fff;
+
+background:
+#202936;
+
+}
+
+
+button:hover{
+
+filter:
+brightness(1.15);
+
+}
+
+
+button.green{
+
+background:
+#176b45;
+
+}
+
+
+button.red{
+
+background:
+#7b2835;
+
+}
+
+
+button.blue{
+
+background:
+#245a91;
+
+}
+
+
+.message{
+
+margin-top:
+10px;
+
+padding:
+10px 12px;
+
+border-radius:
+9px;
+
+background:
+#0a0f15;
+
+color:
+var(--muted);
+
+font-size:
+13px;
+
+display:
+none;
+
+}
+
+
+.message.show{
+
+display:
+block;
+
+}
+
+
+.message.error{
+
+color:
+#ff8791;
+
+border:
+1px solid
+#54242b;
+
+}
+
+
+.message.success{
+
+color:
+var(--green);
+
+border:
+1px solid
+#205c42;
+
+}
+
+
+/* =========================================================
+SECTION / BADGES
+========================================================= */
+
+.section-title{
+
+font-size:
+20px;
+
+font-weight:
+700;
+
+margin:
+24px 0 10px;
+
+}
+
+
+.summary{
+
+display:flex;
+
+gap:
+8px;
+
+flex-wrap:
+wrap;
+
+margin-bottom:
+12px;
+
+}
+
+
+.badge{
+
+background:
+#111720;
+
+border:
+1px solid
+var(--border);
+
+padding:
+7px 10px;
+
+border-radius:
+8px;
+
+color:
+var(--muted);
+
+font-size:
+12px;
+
+}
+
+
+.badge strong{
+
+color:
+white;
+
+}
+
+
+/* =========================================================
+MARKETS
+========================================================= */
+
+.market{
+
+background:
+var(--panel);
+
+border:
+1px solid
+var(--border);
+
+border-radius:
+15px;
+
+margin-bottom:
+12px;
+
+overflow:
+hidden;
+
+}
+
+
+.market-head{
+
+padding:
+15px;
+
+display:flex;
+
+justify-content:
+space-between;
+
+gap:
+12px;
+
+align-items:
+flex-start;
+
+}
+
+
+.market-title{
+
+font-weight:
+700;
+
+font-size:
+15px;
+
+line-height:
+1.4;
+
+}
+
+
+.market-meta{
+
+color:
+var(--muted);
+
+font-size:
+12px;
+
+margin-top:
+5px;
+
+}
+
+
+.decision{
+
+padding:
+7px 10px;
+
+border-radius:
+8px;
+
+font-size:
+12px;
+
+font-weight:
+800;
+
+white-space:
+nowrap;
+
+}
+
+
+.decision.buy{
+
+background:
+#123c29;
+
+color:
+var(--green);
+
+}
+
+
+.decision.wait{
+
+background:
+#29230f;
+
+color:
+var(--yellow);
+
+}
+
+
+.decision.no{
+
+background:
+#2a1519;
+
+color:
+var(--red);
+
+}
+
+
+.metrics{
+
+display:grid;
+
+grid-template-columns:
+repeat(5,1fr);
+
+gap:
+8px;
+
+padding:
+0 15px 15px;
+
+}
+
+
+.metric{
+
+background:
+var(--panel2);
+
+border-radius:
+9px;
+
+padding:
+10px;
+
+}
+
+
+.metric-label{
+
+color:
+var(--muted);
+
+font-size:
+10px;
+
+text-transform:
+uppercase;
+
+}
+
+
+.metric-value{
+
+margin-top:
+4px;
+
+font-size:
+15px;
+
+font-weight:
+700;
+
+}
+
+
+.good{
+
+color:
+var(--green);
+
+}
+
+
+.bad{
+
+color:
+var(--red);
+
+}
+
+
+.warn{
+
+color:
+var(--yellow);
+
+}
+
+
+/* =========================================================
+DIAGNOSTICS
+========================================================= */
+
+.diagnostics{
+
+border-top:
+1px solid
+var(--border);
+
+padding:
+13px 15px 15px;
+
+}
+
+
+.diag-title{
+
+font-size:
+12px;
+
+font-weight:
+800;
+
+text-transform:
+uppercase;
+
+letter-spacing:
+.06em;
+
+margin-bottom:
+9px;
+
+}
+
+
+.checks{
+
+display:grid;
+
+grid-template-columns:
+repeat(2,1fr);
+
+gap:
+7px;
+
+}
+
+
+.check{
+
+padding:
+9px 10px;
+
+border-radius:
+8px;
+
+background:
+#0a0f15;
+
+border:
+1px solid
+#1d2631;
+
+font-size:
+12px;
+
+}
+
+
+.check.pass{
+
+border-color:
+#205c42;
+
+}
+
+
+.check.fail{
+
+border-color:
+#632b33;
+
+}
+
+
+.check .top{
+
+display:flex;
+
+justify-content:
+space-between;
+
+gap:
+8px;
+
+font-weight:
+700;
+
+}
+
+
+.check .detail{
+
+color:
+var(--muted);
+
+margin-top:
+3px;
+
+line-height:
+1.35;
+
+}
+
+
+.eligible{
+
+margin-top:
+9px;
+
+padding:
+11px;
+
+border-radius:
+9px;
+
+background:
+#0c2419;
+
+border:
+1px solid
+#205c42;
+
+color:
+var(--green);
+
+font-weight:
+800;
+
+}
+
+
+.ineligible{
+
+margin-top:
+9px;
+
+padding:
+11px;
+
+border-radius:
+9px;
+
+background:
+#251115;
+
+border:
+1px solid
+#632b33;
+
+color:
+#ff8791;
+
+font-weight:
+800;
+
+}
+
+
+/* =========================================================
+EMPTY
+========================================================= */
+
+.empty{
+
+padding:
+25px;
+
+text-align:
+center;
+
+color:
+var(--muted);
+
+background:
+var(--panel);
+
+border:
+1px solid
+var(--border);
+
+border-radius:
+14px;
+
+}
+
+
+.small{
+
+color:
+var(--muted);
+
+font-size:
+11px;
+
+}
+
+
+/* =========================================================
+MODAL
+========================================================= */
+
+.modal{
+
+position:
+fixed;
+
+inset:
+0;
+
+background:
+rgba(0,0,0,.78);
+
+display:
+none;
+
+align-items:
+center;
+
+justify-content:
+center;
+
+padding:
+20px;
+
+z-index:
+100;
+
+}
+
+
+.modal.show{
+
+display:
+flex;
+
+}
+
+
+.modal-box{
+
+width:
+min(430px,100%);
+
+background:
+#0d1118;
+
+border:
+1px solid
+#293340;
+
+border-radius:
+15px;
+
+padding:
+20px;
+
+}
+
+
+.modal-box h2{
+
+margin-top:
+0;
+
+}
+
+
+.modal-box p{
+
+color:
+var(--muted);
+
+font-size:
+13px;
+
+line-height:
+1.5;
+
+}
+
+
+.modal-actions{
+
+display:flex;
+
+gap:
+8px;
+
+margin-top:
+12px;
+
+}
+
+
+/* =========================================================
+7-DAY HISTORY
+========================================================= */
+
+.history-header{
+
+display:flex;
+
+justify-content:
+space-between;
+
+align-items:
+center;
+
+gap:
+16px;
+
+margin-bottom:
+16px;
+
+}
+
+
+.history-subtitle{
+
+margin-top:
+5px;
+
+font-size:
+12px;
+
+opacity:
+.65;
+
+}
+
+
+.history-summary{
+
+display:grid;
+
+grid-template-columns:
+repeat(5,minmax(0,1fr));
+
+gap:
+10px;
+
+margin-bottom:
+16px;
+
+}
+
+
+.history-stat{
+
+padding:
+12px 14px;
+
+border:
+1px solid
+rgba(255,255,255,.08);
+
+border-radius:
+12px;
+
+background:
+rgba(255,255,255,.025);
+
+}
+
+
+.history-stat-label{
+
+font-size:
+11px;
+
+text-transform:
+uppercase;
+
+letter-spacing:
+.08em;
+
+opacity:
+.58;
+
+margin-bottom:
+5px;
+
+}
+
+
+.history-stat-value{
+
+font-size:
+20px;
+
+font-weight:
+700;
+
+}
+
+
+.history-table-wrap{
+
+overflow:
+auto;
+
+border:
+1px solid
+rgba(255,255,255,.08);
+
+border-radius:
+12px;
+
+}
+
+
+.history-table{
+
+width:
+100%;
+
+border-collapse:
+collapse;
+
+min-width:
+800px;
+
+}
+
+
+.history-table th,
+.history-table td{
+
+padding:
+11px 12px;
+
+text-align:
+left;
+
+border-bottom:
+1px solid
+rgba(255,255,255,.06);
+
+font-size:
+12px;
+
+white-space:
+nowrap;
+
+}
+
+
+.history-table th{
+
+font-size:
+10px;
+
+text-transform:
+uppercase;
+
+letter-spacing:
+.08em;
+
+opacity:
+.55;
+
+}
+
+
+.history-table tr:last-child td{
+
+border-bottom:
+0;
+
+}
+
+
+.history-buy{
+
+font-weight:
+800;
+
+color:
+var(--blue);
+
+}
+
+
+.history-sell{
+
+font-weight:
+800;
+
+color:
+var(--yellow);
+
+}
+
+
+.history-positive{
+
+font-weight:
+700;
+
+color:
+var(--green);
+
+}
+
+
+.history-negative{
+
+font-weight:
+700;
+
+color:
+var(--red);
+
+}
+
+
+.history-empty{
+
+text-align:
+center !important;
+
+padding:
+24px !important;
+
+opacity:
+.55;
+
+}
+
+
+/* =========================================================
+RESPONSIVE
+========================================================= */
+
+@media(
+max-width:900px
+){
+
+.grid{
+
+grid-template-columns:
+repeat(2,1fr);
+
+}
+
+.settings-grid{
+
+grid-template-columns:
+repeat(3,1fr);
+
+}
+
+.metrics{
+
+grid-template-columns:
+repeat(3,1fr);
+
+}
+
+.history-summary{
+
+grid-template-columns:
+repeat(2,1fr);
+
+}
+
+}
+
+
+@media(
+max-width:600px
+){
+
+.container{
+
+padding:
+12px;
+
 }
 
 header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:14px;
-margin-bottom:14px;
+
+align-items:
+flex-start;
+
 }
 
 h1{
-margin:0;
-font-size:25px;
-}
 
-.muted{
-color:var(--muted);
-}
+font-size:
+21px;
 
-.pill{
-padding:8px 12px;
-border:1px solid #632b33;
-border-radius:999px;
-color:var(--red);
-font-weight:800;
-font-size:12px;
-}
-
-.pill.on{
-color:var(--green);
-border-color:#205c42;
 }
 
 .grid{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:10px;
-margin-bottom:12px;
+
+grid-template-columns:
+repeat(2,1fr);
+
 }
 
-.card{
-background:var(--panel);
-border:1px solid var(--border);
-border-radius:13px;
-padding:14px;
-margin-bottom:12px;
-}
+.settings-grid{
 
-.value{
-font-size:22px;
-font-weight:800;
-margin-top:5px;
-}
+grid-template-columns:
+repeat(2,1fr);
 
-.label{
-color:var(--muted);
-font-size:10px;
-text-transform:uppercase;
-}
-
-.settings{
-display:grid;
-grid-template-columns:repeat(6,1fr);
-gap:9px;
-margin-top:10px;
-}
-
-.settings label{
-display:block;
-color:var(--muted);
-font-size:11px;
-}
-
-.settings input{
-width:100%;
-margin-top:4px;
-padding:9px;
-background:#080c12;
-border:1px solid #293340;
-color:#fff;
-border-radius:8px;
-}
-
-.actions{
-display:flex;
-flex-wrap:wrap;
-gap:8px;
-margin-top:11px;
-}
-
-button{
-border:0;
-padding:10px 13px;
-border-radius:8px;
-background:#202936;
-color:#fff;
-font-weight:800;
-cursor:pointer;
-}
-
-button.blue{
-background:#245a91;
-}
-
-button.green{
-background:#176b45;
-}
-
-button.red{
-background:#7b2835;
-}
-
-.summary{
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-margin:12px 0;
-}
-
-.badge{
-padding:7px 9px;
-background:#111720;
-border:1px solid var(--border);
-border-radius:8px;
-color:var(--muted);
-}
-
-.badge strong{
-color:#fff;
-}
-
-.market{
-background:var(--panel);
-border:1px solid var(--border);
-border-radius:13px;
-margin:10px 0;
-overflow:hidden;
-}
-
-.marketHead{
-display:flex;
-justify-content:space-between;
-gap:10px;
-padding:13px;
-}
-
-.title{
-font-weight:800;
-}
-
-.meta{
-font-size:11px;
-color:var(--muted);
-margin-top:4px;
-}
-
-.eligible{
-padding:7px 9px;
-border-radius:8px;
-background:#123c29;
-color:var(--green);
-font-weight:800;
-font-size:11px;
-height:max-content;
-}
-
-.notEligible{
-padding:7px 9px;
-border-radius:8px;
-background:#2a1519;
-color:#ff8791;
-font-weight:800;
-font-size:11px;
-height:max-content;
 }
 
 .metrics{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:8px;
-padding:0 13px 13px;
+
+grid-template-columns:
+repeat(2,1fr);
+
 }
 
-.metric{
-background:var(--panel2);
-padding:9px;
-border-radius:8px;
+.checks{
+
+grid-template-columns:
+1fr;
+
 }
 
-.metric span{
-display:block;
-color:var(--muted);
-font-size:9px;
-text-transform:uppercase;
-}
+.market-head{
 
-.metric b{
-display:block;
-margin-top:3px;
-}
+flex-direction:
+column;
 
-.good{
-color:var(--green);
-}
-
-.bad{
-color:var(--red);
-}
-
-.reason{
-border-top:1px solid var(--border);
-padding:10px 13px;
-color:var(--muted);
-font-size:11px;
-}
-
-.bot{
-font-size:12px;
-line-height:1.5;
-margin-top:10px;
-}
-
-.modal{
-position:fixed;
-inset:0;
-background:#000b;
-display:none;
-align-items:center;
-justify-content:center;
-}
-
-.modal.show{
-display:flex;
-}
-
-.modalBox{
-width:min(420px,90vw);
-background:var(--panel);
-border:1px solid var(--border);
-border-radius:13px;
-padding:20px;
-}
-
-.modalBox input{
-width:100%;
-margin-top:8px;
-padding:10px;
-background:#080c12;
-color:#fff;
-border:1px solid #293340;
-border-radius:8px;
-}
-
-@media(max-width:900px){
-
-.grid,
-.settings,
-.metrics{
-grid-template-columns:repeat(2,1fr);
 }
 
 }
+
 
 </style>
 
@@ -314,8 +1368,13 @@ grid-template-columns:repeat(2,1fr);
 
 <body>
 
-<div class="wrap">
 
+<div class="container">
+
+
+<!-- ========================================================
+HEADER
+======================================================== -->
 
 <header>
 
@@ -325,16 +1384,16 @@ grid-template-columns:repeat(2,1fr);
 Position Ledger — Kalshi Weather
 </h1>
 
-<div class="muted">
-Weather-model BUY + automatic take-profit SELL
+<div class="subtitle">
+Weather-model BUY signals • Kalshi-only SELL logic
 </div>
 
 </div>
 
 
 <div
-id="status"
-class="pill"
+id="tradingStatus"
+class="status-pill off"
 >
 REAL TRADING OFF
 </div>
@@ -342,20 +1401,24 @@ REAL TRADING OFF
 </header>
 
 
+<!-- ========================================================
+TOP SUMMARY
+======================================================== -->
+
 <div class="grid">
 
 
 <div class="card">
 
-<div class="label">
+<div class="card-label">
 Max / Trade
 </div>
 
 <div
-id="maxTradeD"
-class="value"
+class="card-value"
+id="maxTradeDisplay"
 >
-$5.00
+$5
 </div>
 
 </div>
@@ -363,15 +1426,15 @@ $5.00
 
 <div class="card">
 
-<div class="label">
+<div class="card-label">
 Max / Day
 </div>
 
 <div
-id="maxDayD"
-class="value"
+class="card-value"
+id="maxDayDisplay"
 >
-$20.00
+$20
 </div>
 
 </div>
@@ -379,13 +1442,13 @@ $20.00
 
 <div class="card">
 
-<div class="label">
+<div class="card-label">
 Spent Today
 </div>
 
 <div
-id="spentD"
-class="value"
+class="card-value"
+id="spentDisplay"
 >
 $0.00
 </div>
@@ -395,47 +1458,222 @@ $0.00
 
 <div class="card">
 
-<div class="label">
-Kalshi Balance
-</div>
-
-<div
-id="balanceD"
-class="value"
->
-—
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="label">
+<div class="card-label">
 Open Positions
 </div>
 
 <div
-id="positionsD"
-class="value"
+class="card-value"
+id="positionsDisplay"
 >
 0
 </div>
 
 </div>
 
+
 </div>
 
+
+<!-- ========================================================
+7-DAY TRANSACTION HISTORY
+======================================================== -->
 
 <div class="card">
 
 
-<div class="label">
+<div class="history-header">
+
+<div>
+
+<div class="card-label">
+TRANSACTION HISTORY — LAST 7 DAYS
+</div>
+
+<div
+class="history-subtitle"
+id="historySubtitle"
+>
+Loading weekly transactions…
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="history-summary"
+>
+
+
+<div class="history-stat">
+
+<div class="history-stat-label">
+Spent
+</div>
+
+<div
+class="history-stat-value"
+id="weekSpent"
+>
+$0.00
+</div>
+
+</div>
+
+
+<div class="history-stat">
+
+<div class="history-stat-label">
+Proceeds
+</div>
+
+<div
+class="history-stat-value"
+id="weekProceeds"
+>
+$0.00
+</div>
+
+</div>
+
+
+<div class="history-stat">
+
+<div class="history-stat-label">
+Realized P/L
+</div>
+
+<div
+class="history-stat-value"
+id="weekPnl"
+>
+$0.00
+</div>
+
+</div>
+
+
+<div class="history-stat">
+
+<div class="history-stat-label">
+Buys
+</div>
+
+<div
+class="history-stat-value"
+id="weekBuys"
+>
+0
+</div>
+
+</div>
+
+
+<div class="history-stat">
+
+<div class="history-stat-label">
+Sells
+</div>
+
+<div
+class="history-stat-value"
+id="weekSells"
+>
+0
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="history-table-wrap">
+
+
+<table class="history-table">
+
+
+<thead>
+
+<tr>
+
+<th>
+Time
+</th>
+
+<th>
+Action
+</th>
+
+<th>
+Market
+</th>
+
+<th>
+Side
+</th>
+
+<th>
+Contracts
+</th>
+
+<th>
+Price
+</th>
+
+<th>
+Amount
+</th>
+
+<th>
+P/L
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="historyBody">
+
+<tr>
+
+<td
+colspan="8"
+class="history-empty"
+>
+No transactions in the last 7 days.
+</td>
+
+</tr>
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+</div>
+
+
+<!-- ========================================================
+SETTINGS
+======================================================== -->
+
+<div class="card settings">
+
+
+<div class="card-label">
 AUTO-TRADER SETTINGS
 </div>
 
 
-<div class="settings">
+<div class="settings-grid">
 
 
 <div>
@@ -475,15 +1713,15 @@ value="20"
 <div>
 
 <label>
-Take Profit %
+Take Profit + Odds Points
 </label>
 
 <input
-id="tp"
+id="takeProfit"
 type="number"
 min="1"
 step="1"
-value="25"
+value="1"
 >
 
 </div>
@@ -492,11 +1730,11 @@ value="25"
 <div>
 
 <label>
-Min Minutes
+Min Minutes Until Close
 </label>
 
 <input
-id="mins"
+id="minMinutes"
 type="number"
 min="1"
 step="15"
@@ -513,7 +1751,7 @@ Min Weather Edge %
 </label>
 
 <input
-id="edge"
+id="minEdge"
 type="number"
 min="0"
 step="1"
@@ -530,7 +1768,7 @@ Min Expected Move ¢
 </label>
 
 <input
-id="move"
+id="minMove"
 type="number"
 min="0"
 step="0.1"
@@ -538,6 +1776,7 @@ value="1"
 >
 
 </div>
+
 
 </div>
 
@@ -555,7 +1794,7 @@ SAVE SETTINGS
 
 <button
 class="green"
-onclick="openStart()"
+onclick="openStartModal()"
 >
 START REAL TRADING
 </button>
@@ -578,7 +1817,7 @@ RUN AUTO BUYER NOW
 
 
 <button
-onclick="refresh()"
+onclick="refreshAll()"
 >
 REFRESH
 </button>
@@ -588,40 +1827,21 @@ REFRESH
 
 
 <div
-id="msg"
-class="bot"
-></div>
+id="settingsMessage"
+class="message"
+>
+</div>
 
-
-<div class="bot">
-
-<div>
-
-<b>
-Last action:
-</b>
-
-<span id="lastAction">
-—
-</span>
 
 </div>
 
 
-<div>
+<!-- ========================================================
+MARKETS
+======================================================== -->
 
-<b>
-Last error:
-</b>
-
-<span id="lastError">
-—
-</span>
-
-</div>
-
-</div>
-
+<div class="section-title">
+Today's Weather Markets
 </div>
 
 
@@ -629,76 +1849,63 @@ Last error:
 
 
 <div class="badge">
-
-Markets
-
-<strong
-id="marketCount"
->
+Markets:
+<strong id="marketCount">
 0
 </strong>
-
 </div>
 
 
 <div class="badge">
-
-Eligible
-
-<strong
-id="eligibleCount"
->
+Eligible:
+<strong id="eligibleCount">
 0
 </strong>
-
 </div>
 
 
 <div class="badge">
-
-Rejected
-
-<strong
-id="rejectedCount"
->
+Rejected:
+<strong id="rejectedCount">
 0
 </strong>
-
 </div>
 
 
 <div class="badge">
-
-Updated
-
-<strong
-id="updated"
->
+Last update:
+<strong id="lastUpdate">
 —
 </strong>
+</div>
+
+
+</div>
+
+
+<div id="markets">
+
+<div class="empty">
+Loading markets...
+</div>
 
 </div>
 
 
 </div>
 
+
+<!-- ========================================================
+START MODAL
+======================================================== -->
 
 <div
-id="markets"
->
-</div>
-
-
-</div>
-
-
-<div
-id="modal"
+id="startModal"
 class="modal"
 >
 
 
-<div class="modalBox">
+<div class="modal-box">
 
 
 <h2>
@@ -706,24 +1913,28 @@ Start Real Trading
 </h2>
 
 
-<div class="muted">
-Type exactly:
-</div>
+<p>
+This enables the Worker to place real Kalshi orders.
+Type the exact confirmation below.
+</p>
 
 
-<b>
+<p>
+<strong>
 ENABLE REAL TRADING
-</b>
+</strong>
+</p>
 
 
 <input
-id="confirm"
-placeholder="ENABLE REAL TRADING"
+id="confirmation"
+type="text"
 autocomplete="off"
+placeholder="ENABLE REAL TRADING"
 >
 
 
-<div class="actions">
+<div class="modal-actions">
 
 
 <button
@@ -735,7 +1946,7 @@ CONFIRM & START
 
 
 <button
-onclick="closeStart()"
+onclick="closeStartModal()"
 >
 CANCEL
 </button>
@@ -749,655 +1960,1853 @@ CANCEL
 </div>
 
 
+
 <script>
+
+/* ============================================================
+CONFIG
+============================================================ */
 
 const WORKER =
 "https://worker1.ryderolinger1.workers.dev";
 
 
-const $ =
-id =>
-document.getElementById(
+/* ============================================================
+HELPERS
+============================================================ */
+
+function $(
+id
+){
+
+return document.getElementById(
 id
 );
 
+}
 
-const esc =
-s =>
-String(
-  s ?? ""
+
+function money(
+value
+){
+
+return "$" +
+Number(
+value || 0
+).toFixed(2);
+
+}
+
+
+function pct(
+value
+){
+
+return Number(
+value || 0
 )
-.replace(
-  /&/g,
-  "&amp;"
+.toFixed(1) +
+"%";
+
+}
+
+
+function cents(
+value
+){
+
+return Number(
+value || 0
 )
-.replace(
-  /</g,
-  "&lt;"
+.toFixed(1) +
+"¢";
+
+}
+
+
+function escapeHtml(
+value
+){
+
+return String(
+value ?? ""
 )
+
 .replace(
-  />/g,
-  "&gt;"
+/&/g,
+"&amp;"
 )
+
 .replace(
-  /"/g,
-  "&quot;"
+/</g,
+"&lt;"
+)
+
+.replace(
+/>/g,
+"&gt;"
+)
+
+.replace(
+/"/g,
+"&quot;"
+)
+
+.replace(
+/'/g,
+"&#039;"
+);
+
+}
+
+
+function showMessage(
+text,
+type = ""
+){
+
+const el =
+$("settingsMessage");
+
+el.textContent =
+text;
+
+el.className =
+"message show " +
+type;
+
+}
+
+
+/* ============================================================
+API
+============================================================ */
+
+async function api(
+path,
+options = {}
+){
+
+const response =
+await fetch(
+WORKER +
+path,
+{
+
+...options,
+
+headers:{
+
+"Content-Type":
+"application/json",
+
+...(options.headers || {})
+
+}
+
+}
 );
 
 
-const money =
-n =>
-`$${Number(
-  n || 0
-).toFixed(2)}`;
+let data;
 
 
-const pct =
-v =>
-(
-  Number(
-    v || 0
-  ) *
-  100
-).toFixed(1) +
-"%";
+try{
+
+data =
+await response.json();
+
+}
+
+catch{
+
+throw new Error(
+"Worker returned invalid JSON."
+);
+
+}
 
 
-const cents =
-v =>
+if(
+!response.ok
+){
+
+throw new Error(
+data.error ||
+data.message ||
+`Worker error ${response.status}`
+);
+
+}
+
+
+return data;
+
+}
+
+
+/* ============================================================
+HISTORY
+============================================================ */
+
+function historyMoney(
+value
+){
+
+return "$" +
 Number(
-  v || 0
-).toFixed(1) +
-"¢";
+value || 0
+).toFixed(2);
 
-
-/* =========================================================
-API
-========================================================= */
-
-async function api(
-  path,
-  options = {}
-) {
-  const response =
-    await fetch(
-      WORKER +
-      path,
-
-      {
-        ...options,
-
-        headers: {
-          "Content-Type":
-            "application/json",
-
-          ...(options.headers || {})
-        }
-      }
-    );
-
-  let data = {};
-
-  try {
-    data =
-      await response.json();
-  }
-
-  catch {
-    throw new Error(
-      "Worker returned invalid JSON."
-    );
-  }
-
-  if (
-    !response.ok
-  ) {
-    throw new Error(
-      data.error ||
-      data.message ||
-      `HTTP ${response.status}`
-    );
-  }
-
-  return data;
 }
 
 
-/* =========================================================
-MESSAGES
-========================================================= */
+function historyPnl(
+value
+){
 
-function showMessage(
-  text,
-  error = false
-) {
-  $("msg").textContent =
-    text;
+const n =
+Number(
+value || 0
+);
 
-  $("msg").style.color =
-    error
-      ? "#ff5d6c"
-      : "#39e58c";
-}
 
-function actionText(
-  action
-) {
-  if (!action) {
-    return "—";
-  }
+if(
+n > 0
+){
 
-  return [
-    action.type,
+return "+$" +
+n.toFixed(2);
 
-    action.ticker,
-
-    action.side,
-
-    action.contracts
-      ? `${action.contracts} contracts`
-      : "",
-
-    action.reason,
-
-    action.message
-  ]
-  .filter(Boolean)
-  .join(
-    " • "
-  );
 }
 
 
-/* =========================================================
+if(
+n < 0
+){
+
+return "-$" +
+Math.abs(
+n
+).toFixed(2);
+
+}
+
+
+return "$0.00";
+
+}
+
+
+function historyTime(
+iso
+){
+
+const date =
+new Date(
+iso
+);
+
+
+if(
+Number.isNaN(
+date.getTime()
+)
+){
+
+return "—";
+
+}
+
+
+return date.toLocaleString(
+"en-US",
+{
+
+timeZone:
+"America/Phoenix",
+
+month:
+"short",
+
+day:
+"numeric",
+
+hour:
+"numeric",
+
+minute:
+"2-digit"
+
+}
+);
+
+}
+
+
+function renderHistory(
+history,
+stats
+){
+
+const items =
+Array.isArray(
+history
+)
+
+?
+[
+...history
+]
+.sort(
+(a,b) => {
+
+const first =
+new Date(
+a.time ||
+0
+).getTime();
+
+const second =
+new Date(
+b.time ||
+0
+).getTime();
+
+return second -
+first;
+
+}
+)
+
+:
+[];
+
+
+const weekly =
+stats ||
+{};
+
+
+$("weekSpent").textContent =
+historyMoney(
+weekly.spent
+);
+
+
+$("weekProceeds").textContent =
+historyMoney(
+weekly.proceeds
+);
+
+
+$("weekPnl").textContent =
+historyPnl(
+weekly.realizedPnl
+);
+
+
+$("weekBuys").textContent =
+Number(
+weekly.buys ||
+0
+);
+
+
+$("weekSells").textContent =
+Number(
+weekly.sells ||
+0
+);
+
+
+$("historySubtitle").textContent =
+`${items.length} transaction${
+items.length === 1
+? ""
+: "s"
+} from the rolling last 7 days`;
+
+
+if(
+!items.length
+){
+
+$("historyBody").innerHTML =
+`
+<tr>
+
+<td
+colspan="8"
+class="history-empty"
+>
+
+No transactions in the last 7 days.
+
+</td>
+
+</tr>
+`;
+
+return;
+
+}
+
+
+$("historyBody").innerHTML =
+items.map(
+item => {
+
+
+const action =
+String(
+item.action ||
+""
+)
+.toUpperCase();
+
+
+const pnl =
+Number(
+item.pnl ||
+0
+);
+
+
+let pnlClass =
+"";
+
+
+if(
+pnl > 0
+){
+
+pnlClass =
+"history-positive";
+
+}
+
+else if(
+pnl < 0
+){
+
+pnlClass =
+"history-negative";
+
+}
+
+
+const actionClass =
+action ===
+"BUY"
+
+?
+"history-buy"
+
+:
+"history-sell";
+
+
+return `
+
+<tr>
+
+<td>
+
+${escapeHtml(
+historyTime(
+item.time
+)
+)}
+
+</td>
+
+
+<td
+class="${actionClass}"
+>
+
+${escapeHtml(
+action ||
+"—"
+)}
+
+</td>
+
+
+<td>
+
+${escapeHtml(
+item.city
+?
+`${item.city} · ${
+item.ticker ||
+""
+}`
+
+:
+
+item.ticker ||
+"—"
+)}
+
+</td>
+
+
+<td>
+
+${escapeHtml(
+String(
+item.side ||
+""
+)
+.toUpperCase() ||
+"—"
+)}
+
+</td>
+
+
+<td>
+
+${
+Number(
+item.contracts ||
+0
+)
+}
+
+</td>
+
+
+<td>
+
+${
+Number(
+item.priceCents ||
+0
+)
+.toFixed(1)
+}¢
+
+</td>
+
+
+<td>
+
+${
+historyMoney(
+item.amount
+)
+}
+
+</td>
+
+
+<td
+class="${pnlClass}"
+>
+
+${
+action ===
+"SELL"
+
+?
+
+historyPnl(
+pnl
+)
+
+:
+
+"—"
+
+}
+
+</td>
+
+</tr>
+
+`;
+
+}
+)
+.join(
+""
+);
+
+}
+
+
+/* ============================================================
 STATUS
-========================================================= */
+============================================================ */
 
-async function loadStatus() {
+async function loadStatus(){
 
-  const state =
-    await api(
-      "/api/auto-trade/status"
-    );
+try{
 
-
-  $("status").textContent =
-    state.enabled
-      ? "REAL TRADING ON"
-      : "REAL TRADING OFF";
+const s =
+await api(
+"/api/auto-trade/status"
+);
 
 
-  $("status").className =
-    "pill" +
-    (
-      state.enabled
-        ? " on"
-        : ""
-    );
+$("maxTrade").value =
+Number(
+s.maxTrade ??
+5
+);
 
 
-  $("maxTrade").value =
-    state.maxTrade ??
-    5;
+$("maxDay").value =
+Number(
+s.maxDay ??
+20
+);
 
 
-  $("maxDay").value =
-    state.maxDay ??
-    20;
+$("takeProfit").value =
+Number(
+s.takeProfit ??
+.01
+) *
+100;
 
 
-  $("tp").value =
-    Number(
-      state.takeProfit ??
-      0.25
-    ) *
-    100;
+const f =
+s.filters ||
+{};
 
 
-  const filters =
-    state.filters ||
-    {};
+$("minMinutes").value =
+Number(
+f.minMinutesToClose ??
+180
+);
 
 
-  $("mins").value =
-    filters.minMinutesToClose ??
-    180;
+$("minEdge").value =
+Number(
+f.minEdge ??
+.01
+) *
+100;
 
 
-  $("edge").value =
-    Number(
-      filters.minEdge ??
-      0.01
-    ) *
-    100;
+$("minMove").value =
+Number(
+f.minExpectedPriceMove ??
+.01
+) *
+100;
 
 
-  $("move").value =
-    Number(
-      filters.minExpectedPriceMove ??
-      0.01
-    ) *
-    100;
+$("maxTradeDisplay").textContent =
+money(
+s.maxTrade
+);
 
 
-  $("maxTradeD").textContent =
-    money(
-      state.maxTrade
-    );
+$("maxDayDisplay").textContent =
+money(
+s.maxDay
+);
 
 
-  $("maxDayD").textContent =
-    money(
-      state.maxDay
-    );
+$("spentDisplay").textContent =
+money(
+s.spentToday
+);
 
 
-  $("spentD").textContent =
-    money(
-      state.spentToday
-    );
+$("positionsDisplay").textContent =
+Array.isArray(
+s.entries
+)
+
+?
+
+s.entries.length
+
+:
+
+0;
 
 
-  $("positionsD").textContent =
-    Array.isArray(
-      state.entries
-    )
-      ? state.entries.length
-      : 0;
+renderHistory(
+Array.isArray(
+s.tradeHistory
+)
+?
+s.tradeHistory
+:
+[],
+
+s.weekStats ||
+{}
+);
 
 
-  $("lastAction").textContent =
-    actionText(
-      state.lastAction
-    );
+const status =
+$("tradingStatus");
 
 
-  $("lastError").textContent =
-    state.lastError ||
-    "—";
+if(
+s.enabled
+){
 
+status.textContent =
+"REAL TRADING ON";
 
-  return state;
+status.className =
+"status-pill on";
+
+}
+
+else{
+
+status.textContent =
+"REAL TRADING OFF";
+
+status.className =
+"status-pill off";
+
+}
+
+}
+
+catch(
+error
+){
+
+showMessage(
+"Could not load status: " +
+error.message,
+"error"
+);
+
+}
+
 }
 
 
-/* =========================================================
-BALANCE
-========================================================= */
+/* ============================================================
+SAVE SETTINGS
+============================================================ */
 
-async function loadBalance() {
-  try {
-    const balance =
-      await api(
-        "/api/account/balance"
-      );
+async function saveSettings(){
 
-    $("balanceD").textContent =
-      money(
-        balance.balanceDollars
-      );
-  }
+try{
 
-  catch {
-    $("balanceD").textContent =
-      "—";
-  }
+const body = {
+
+maxTrade:
+Number(
+$("maxTrade").value
+),
+
+maxDay:
+Number(
+$("maxDay").value
+),
+
+/*
+User sees 1.
+Worker receives 0.01.
+*/
+
+takeProfit:
+Number(
+$("takeProfit").value
+) /
+100,
+
+minMinutesToClose:
+Number(
+$("minMinutes").value
+),
+
+minEdge:
+Number(
+$("minEdge").value
+) /
+100,
+
+minExpectedPriceMove:
+Number(
+$("minMove").value
+) /
+100
+
+};
+
+
+await api(
+"/api/auto-trade/settings",
+{
+
+method:
+"POST",
+
+body:
+JSON.stringify(
+body
+)
+
+}
+);
+
+
+showMessage(
+"Settings saved successfully.",
+"success"
+);
+
+
+await refreshAll();
+
+}
+
+catch(
+error
+){
+
+showMessage(
+"Could not save settings: " +
+error.message,
+"error"
+);
+
+}
+
 }
 
 
-/* =========================================================
-SETTINGS
-========================================================= */
+/* ============================================================
+REAL TRADING
+============================================================ */
 
-async function saveSettings() {
+function openStartModal(){
 
-  try {
+$("confirmation").value =
+"";
 
-    await api(
-      "/api/auto-trade/settings",
-      {
-        method:
-          "POST",
-
-        body:
-          JSON.stringify({
-
-            maxTrade:
-              Number(
-                $("maxTrade").value
-              ),
-
-            maxDay:
-              Number(
-                $("maxDay").value
-              ),
-
-            takeProfit:
-              Number(
-                $("tp").value
-              ) /
-              100,
-
-            minMinutesToClose:
-              Number(
-                $("mins").value
-              ),
-
-            /*
-            Default = 1%
-            */
-
-            minEdge:
-              Number(
-                $("edge").value
-              ) /
-              100,
-
-            minExpectedPriceMove:
-              Number(
-                $("move").value
-              ) /
-              100
-          })
-      }
-    );
+$("startModal")
+.classList
+.add(
+"show"
+);
 
 
-    showMessage(
-      "Settings saved."
-    );
+setTimeout(
+() => {
 
+$("confirmation")
+.focus();
 
-    await refresh();
+},
+100
+);
 
-  }
-
-  catch (error) {
-
-    showMessage(
-      error.message,
-      true
-    );
-  }
 }
 
 
-/* =========================================================
-START
-========================================================= */
+function closeStartModal(){
 
-function openStart() {
+$("startModal")
+.classList
+.remove(
+"show"
+);
 
-  $("modal")
-    .classList
-    .add(
-      "show"
-    );
-
-  $("confirm").value =
-    "";
-
-  setTimeout(
-    () =>
-      $("confirm").focus(),
-    50
-  );
-}
-
-function closeStart() {
-
-  $("modal")
-    .classList
-    .remove(
-      "show"
-    );
 }
 
 
-async function startTrading() {
+async function startTrading(){
 
-  if (
-    $("confirm")
-      .value
-      .trim() !==
-      "ENABLE REAL TRADING"
-  ) {
-    alert(
-      "Type ENABLE REAL TRADING exactly."
-    );
-
-    return;
-  }
-
-  try {
-
-    await api(
-      "/api/auto-trade/start",
-      {
-        method:
-          "POST",
-
-        body:
-          JSON.stringify({
-            confirmation:
-              "ENABLE REAL TRADING"
-          })
-      }
-    );
+const confirmation =
+$("confirmation")
+.value
+.trim();
 
 
-    closeStart();
+if(
+confirmation !==
+"ENABLE REAL TRADING"
+){
 
+alert(
+"You must type exactly:\n\nENABLE REAL TRADING"
+);
 
-    showMessage(
-      "REAL TRADING ON — initial scan started."
-    );
+return;
 
-
-    setTimeout(
-      refresh,
-      1200
-    );
-
-  }
-
-  catch (error) {
-
-    showMessage(
-      error.message,
-      true
-    );
-  }
 }
 
 
-/* =========================================================
-STOP
-========================================================= */
+try{
 
-async function stopTrading() {
+await api(
+"/api/auto-trade/start",
+{
 
-  try {
+method:
+"POST",
 
-    await api(
-      "/api/auto-trade/stop",
-      {
-        method:
-          "POST",
+body:
+JSON.stringify(
+{
+confirmation
+}
+)
 
-        body:
-          "{}"
-      }
-    );
-
-
-    showMessage(
-      "Real trading stopped."
-    );
+}
+);
 
 
-    await refresh();
+closeStartModal();
 
-  }
 
-  catch (error) {
+showMessage(
+"REAL TRADING IS NOW ON.",
+"success"
+);
 
-    showMessage(
-      error.message,
-      true
-    );
-  }
+
+await refreshAll();
+
+}
+
+catch(
+error
+){
+
+alert(
+"Could not start real trading:\n\n" +
+error.message
+);
+
+}
+
 }
 
 
-/* =========================================================
+async function stopTrading(){
+
+try{
+
+await api(
+"/api/auto-trade/stop",
+{
+
+method:
+"POST"
+
+}
+);
+
+
+showMessage(
+"Real trading stopped.",
+"success"
+);
+
+
+await refreshAll();
+
+}
+
+catch(
+error
+){
+
+showMessage(
+"Could not stop trading: " +
+error.message,
+"error"
+);
+
+}
+
+}
+
+
+/* ============================================================
 RUN NOW
-========================================================= */
+============================================================ */
 
-async function runNow() {
+async function runNow(){
 
-  try {
+try{
 
-    const result =
-      await api(
-        "/api/auto-trade/run-now",
-        {
-          method:
-            "POST",
-
-          body:
-            "{}"
-        }
-      );
+showMessage(
+"Running auto buyer…"
+);
 
 
-    showMessage(
-      result.message ||
-      "Auto-buyer/take-profit run queued."
-    );
+await api(
+"/api/auto-trade/run-now",
+{
+
+method:
+"POST"
+
+}
+);
 
 
-    setTimeout(
-      refresh,
-      1200
-    );
+showMessage(
+"Auto buyer run completed.",
+"success"
+);
 
-  }
 
-  catch (error) {
+await refreshAll();
 
-    showMessage(
-      error.message,
-      true
-    );
+}
 
-    await loadStatus();
-  }
+catch(
+error
+){
+
+showMessage(
+"Auto buyer: " +
+error.message,
+"error"
+);
+
+}
+
 }
 
 
-/* =========================================================
+/* ============================================================
+MARKET HELPERS
+============================================================ */
+
+function getNumber(
+object,
+...keys
+){
+
+for(
+const key of
+keys
+){
+
+if(
+object &&
+object[key] !==
+undefined &&
+object[key] !==
+null &&
+object[key] !==
+""
+){
+
+const n =
+Number(
+object[key]
+);
+
+
+if(
+Number.isFinite(
+n
+)
+){
+
+return n;
+
+}
+
+}
+
+}
+
+return null;
+
+}
+
+
+function getMinutes(
+market
+){
+
+return getNumber(
+market,
+
+"minutesToClose",
+
+"minutes_to_close"
+);
+
+}
+
+
+function getEdge(
+market
+){
+
+return getNumber(
+market,
+
+"edge",
+
+"edgePct",
+
+"edge_percent"
+);
+
+}
+
+
+function normalizeEdge(
+edge
+){
+
+if(
+edge ===
+null
+){
+
+return null;
+
+}
+
+
+/*
+Worker returns decimal:
+0.01 = 1%
+*/
+
+if(
+Math.abs(
+edge
+) <=
+1
+){
+
+return edge *
+100;
+
+}
+
+
+return edge;
+
+}
+
+
+function getExpectedMove(
+market
+){
+
+const value =
+getNumber(
+market,
+
+"expectedMove",
+
+"expectedPriceMove",
+
+"expectedPriceMoveCents",
+
+"expected_move",
+
+"priceMove"
+);
+
+
+if(
+value ===
+null
+){
+
+return null;
+
+}
+
+
+/*
+Worker returns decimal:
+0.01 = 1 cent.
+*/
+
+if(
+Math.abs(
+value
+) <
+1
+){
+
+return value *
+100;
+
+}
+
+
+return value;
+
+}
+
+
+function getModelProbability(
+market
+){
+
+let probability =
+getNumber(
+market,
+
+"modelProbability",
+
+"modelProb",
+
+"probability"
+);
+
+
+if(
+probability ===
+null
+){
+
+return null;
+
+}
+
+
+/*
+Worker returns decimal:
+0.40 = 40%.
+*/
+
+if(
+Math.abs(
+probability
+) <=
+1
+){
+
+probability *=
+100;
+
+}
+
+
+return probability;
+
+}
+
+
+function getPrice(
+market
+){
+
+let price =
+getNumber(
+market,
+
+"entryPrice",
+
+"price",
+
+"buyPrice",
+
+"priceCents"
+);
+
+
+if(
+price ===
+null
+){
+
+return null;
+
+}
+
+
+/*
+Worker returns cents:
+42 = 42¢.
+*/
+
+if(
+price <
+1
+){
+
+price *=
+100;
+
+}
+
+
+return price;
+
+}
+
+
+function getSettlementText(
+market
+){
+
+if(
+market.settlement?.label
+){
+
+return market.settlement.label;
+
+}
+
+
+if(
+market.settlement?.type ===
+"threshold"
+){
+
+const value =
+market.settlement.threshold;
+
+
+if(
+market.settlement.direction ===
+"above"
+){
+
+return `>${value}°`;
+
+}
+
+
+if(
+market.settlement.direction ===
+"below"
+){
+
+return `<${value}°`;
+
+}
+
+}
+
+
+if(
+market.settlement?.type ===
+"range"
+){
+
+return `${market.settlement.low}–${market.settlement.high}°`;
+
+}
+
+
+return "Settlement rule recognized";
+
+}
+
+
+function getTitle(
+market
+){
+
+const city =
+market.city ||
+"";
+
+
+const title =
+market.title ||
+market.ticker ||
+"Weather market";
+
+
+if(
+city
+){
+
+return `${city} — ${title}`;
+
+}
+
+
+return title;
+
+}
+
+
+/* ============================================================
+DIAGNOSTICS
+============================================================ */
+
+function buildDiagnostics(
+market,
+filters
+){
+
+const checks = [];
+
+
+const minMinutes =
+Number(
+filters.minMinutesToClose ??
+180
+);
+
+
+const minEdge =
+Number(
+filters.minEdge ??
+.01
+) *
+100;
+
+
+const minMove =
+Number(
+filters.minExpectedPriceMove ??
+.01
+) *
+100;
+
+
+/*
+TIME
+*/
+
+const minutes =
+getMinutes(
+market
+);
+
+
+const timePass =
+minutes !==
+null &&
+minutes >=
+minMinutes;
+
+
+checks.push({
+
+name:
+"Time until close",
+
+pass:
+timePass,
+
+detail:
+minutes !==
+null
+
+?
+`${minutes.toFixed(0)} min remaining • required ${minMinutes} min`
+
+:
+
+"Close-time information unavailable."
+
+});
+
+
+/*
+EDGE
+*/
+
+const edge =
+normalizeEdge(
+getEdge(
+market
+)
+);
+
+
+const edgePass =
+edge !==
+null &&
+edge >=
+minEdge;
+
+
+checks.push({
+
+name:
+"Weather model edge",
+
+pass:
+edgePass,
+
+detail:
+edge !==
+null
+
+?
+
+`${edge >= 0 ? "+" : ""}${edge.toFixed(1)}% • required +${minEdge.toFixed(1)}%`
+
+:
+
+"Weather edge unavailable."
+
+});
+
+
+/*
+EXPECTED MOVE
+*/
+
+const move =
+getExpectedMove(
+market
+);
+
+
+const movePass =
+move !==
+null &&
+move >=
+minMove;
+
+
+checks.push({
+
+name:
+"Expected price move",
+
+pass:
+movePass,
+
+detail:
+move !==
+null
+
+?
+
+`${move.toFixed(1)}¢ expected • required ${minMove.toFixed(1)}¢`
+
+:
+
+"Expected price movement unavailable."
+
+});
+
+
+/*
+SETTLEMENT
+*/
+
+const settlement =
+market.settlement;
+
+
+const settlementPass =
+Boolean(
+settlement
+);
+
+
+checks.push({
+
+name:
+"Settlement rule",
+
+pass:
+settlementPass,
+
+detail:
+settlementPass
+
+?
+getSettlementText(
+market
+)
+
+:
+
+"Could not identify settlement rule."
+
+});
+
+
+/*
+ORDER BOOK
+*/
+
+const orderbook =
+market.orderbook;
+
+
+const orderbookPass =
+Boolean(
+orderbook
+);
+
+
+checks.push({
+
+name:
+"Kalshi order book",
+
+pass:
+orderbookPass,
+
+detail:
+orderbookPass
+
+?
+"Executable Kalshi pricing available."
+
+:
+
+"No usable order book returned."
+
+});
+
+
+const failed =
+checks.filter(
+item =>
+!item.pass
+);
+
+
+return {
+
+checks,
+
+eligible:
+failed.length ===
+0,
+
+reason:
+failed.length
+
+?
+
+failed
+.map(
+item =>
+`${item.name}: ${item.detail}`
+)
+.join(
+" | "
+)
+
+:
+
+"Every auto-trader filter currently passes."
+
+};
+
+}
+
+
+/* ============================================================
 MARKET CARD
-========================================================= */
+============================================================ */
 
 function renderMarket(
-  market,
-  filters
-) {
-  const eligible =
-    market.eligible ===
-    true;
+market,
+filters
+){
 
-  const edge =
-    Number(
-      market.edge
-    );
-
-  const model =
-    Number(
-      market.modelProbability
-    );
-
-  const expectedMove =
-    Number(
-      market.expectedMove
-    );
-
-  const entryPrice =
-    Number(
-      market.entryPrice
-    );
-
-  const close =
-    market.closeTime
-      ? new Date(
-          market.closeTime
-        ).toLocaleTimeString()
-      : "—";
+const diagnostics =
+buildDiagnostics(
+market,
+filters
+);
 
 
-  return `
+const title =
+getTitle(
+market
+);
+
+
+const price =
+getPrice(
+market
+);
+
+
+const model =
+getModelProbability(
+market
+);
+
+
+const edge =
+normalizeEdge(
+getEdge(
+market
+)
+);
+
+
+const move =
+getExpectedMove(
+market
+);
+
+
+const minutes =
+getMinutes(
+market
+);
+
+
+const settlement =
+getSettlementText(
+market
+);
+
+
+const decision =
+market.eligible
+?
+
+"BUY"
+
+:
+
+"WAIT";
+
+
+const decisionClass =
+market.eligible
+?
+
+"buy"
+
+:
+
+"wait";
+
+
+const checksHtml =
+diagnostics.checks
+.map(
+check => {
+
+return `
+
+<div
+class="check ${
+check.pass
+?
+"pass"
+:
+"fail"
+}"
+>
+
+<div class="top">
+
+<span>
+
+${
+check.pass
+?
+"✓"
+:
+"✗"
+}
+
+${escapeHtml(
+check.name
+)}
+
+</span>
+
+
+<span
+class="${
+check.pass
+?
+"good"
+:
+"bad"
+}"
+>
+
+${
+check.pass
+?
+"PASS"
+:
+"FAIL"
+}
+
+</span>
+
+</div>
+
+
+<div class="detail">
+
+${escapeHtml(
+check.detail
+)}
+
+</div>
+
+</div>
+
+`;
+
+}
+)
+.join(
+""
+);
+
+
+return `
 
 <div class="market">
 
 
-<div class="marketHead">
+<div class="market-head">
 
 
 <div>
 
 
-<div class="title">
+<div class="market-title">
 
-${
-  esc(
-    market.city
-      ? market.city +
-        " — " +
-        (
-          market.title ||
-          market.ticker
-        )
-
-      : (
-          market.title ||
-          market.ticker ||
-          "Market"
-        )
-  )
-}
+${escapeHtml(
+title
+)}
 
 </div>
 
 
-<div class="meta">
+<div class="market-meta">
 
-${esc(
-  market.ticker ||
-  ""
+Settlement:
+
+<strong>
+
+${escapeHtml(
+settlement
 )}
 
-•
+</strong>
 
-Side:
-${esc(
-  String(
-    market.side ||
-    "—"
-  ).toUpperCase()
-)}
+${
+minutes !==
+null
 
-•
+?
+` • ${minutes.toFixed(0)} min until close`
 
-Forecast:
-${market.forecast ?? "—"}°
+:
+""
 
-•
-
-Close:
-${esc(
-  close
-)}
+}
 
 </div>
 
@@ -1406,18 +3815,10 @@ ${esc(
 
 
 <div
-class="${
-  eligible
-    ? "eligible"
-    : "notEligible"
-}"
+class="decision ${decisionClass}"
 >
 
-${
-  eligible
-    ? "ELIGIBLE — BOT CAN BUY"
-    : "NOT ELIGIBLE"
-}
+${decision}
 
 </div>
 
@@ -1430,136 +3831,203 @@ ${
 
 <div class="metric">
 
-<span>
+<div class="metric-label">
 Kalshi
-</span>
+</div>
 
-<b>
+<div class="metric-value">
 
 ${
-  Number.isFinite(
-    entryPrice
-  )
-    ? cents(
-        entryPrice
-      )
-    : "—"
+price !==
+null
+?
+cents(
+price
+)
+:
+"—"
 }
 
-</b>
+</div>
 
 </div>
 
 
 <div class="metric">
 
-<span>
+<div class="metric-label">
 Model
-</span>
+</div>
 
-<b>
+<div class="metric-value">
 
 ${
-  Number.isFinite(
-    model
-  )
-    ? pct(model)
-    : "—"
+model !==
+null
+?
+pct(
+model
+)
+:
+"—"
 }
 
-</b>
+</div>
 
 </div>
 
 
 <div class="metric">
 
-<span>
+<div class="metric-label">
 Edge
-</span>
+</div>
 
-<b
-class="${
-  edge >= 0
-    ? "good"
-    : "bad"
+<div
+class="metric-value ${
+edge !== null &&
+edge >= 0
+?
+"good"
+:
+"bad"
 }"
 >
 
 ${
-  Number.isFinite(
-    edge
-  )
-    ? pct(edge)
-    : "—"
+edge !==
+null
+?
+`${edge >= 0 ? "+" : ""}${edge.toFixed(1)}%`
+:
+"—"
 }
 
-</b>
+</div>
 
 </div>
 
 
 <div class="metric">
 
-<span>
+<div class="metric-label">
 Expected Move
-</span>
+</div>
 
-<b>
+<div class="metric-value">
 
 ${
-  Number.isFinite(
-    expectedMove
-  )
-    ? cents(
-        expectedMove
-      )
-    : "—"
+move !==
+null
+?
+cents(
+move
+)
+:
+"—"
 }
 
-</b>
+</div>
 
 </div>
 
 
 <div class="metric">
 
-<span>
+<div class="metric-label">
 Take Profit
-</span>
-
-<b>
-
-${
-  (
-    Number(
-      filters.takeProfit ??
-      0.25
-    ) *
-    100
-  ).toFixed(0)
-}%
-
-</b>
-
 </div>
 
-
-</div>
-
-
-<div class="reason">
+<div class="metric-value">
 
 ${
-  eligible
-    ? "🟢"
-    : "🔴"
+price !==
+null
+
+?
+
+cents(
+Math.min(
+99,
+
+Math.ceil(
+price +
+(
+Number(
+filters.takeProfit ??
+.01
+) *
+100
+)
+)
+)
+)
+
+:
+
+"—"
 }
 
-${esc(
-  market.rejectionReason ||
-  "Every auto-trader filter passes."
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="diagnostics">
+
+
+<div class="diag-title">
+
+AUTO-TRADER ELIGIBILITY
+
+</div>
+
+
+<div class="checks">
+
+${checksHtml}
+
+</div>
+
+
+${
+diagnostics.eligible
+
+?
+
+`
+
+<div class="eligible">
+
+🟢 ELIGIBLE — BOT CAN TRADE THIS MARKET
+
+</div>
+
+`
+
+:
+
+`
+
+<div class="ineligible">
+
+🔴 NOT ELIGIBLE
+
+<br><br>
+
+${escapeHtml(
+diagnostics.reason
 )}
+
+</div>
+
+`
+
+}
+
 
 </div>
 
@@ -1567,185 +4035,324 @@ ${esc(
 </div>
 
 `;
+
 }
 
 
-/* =========================================================
+/* ============================================================
 MARKETS
-========================================================= */
+============================================================ */
 
-async function loadMarkets() {
+async function loadMarkets(){
 
-  const [
-    weather,
-    status
-  ] =
-    await Promise.all([
-      api(
-        "/api/weather"
-      ),
-
-      api(
-        "/api/auto-trade/status"
-      )
-    ]);
+try{
 
 
-  const filters =
-    status.filters ||
-    {
-      minMinutesToClose:
-        180,
+const [
+weather,
+status
+] =
+await Promise.all(
+[
 
-      minEdge:
-        0.01,
+api(
+"/api/weather"
+),
 
-      minExpectedPriceMove:
-        0.01,
+api(
+"/api/auto-trade/status"
+)
 
-      takeProfit:
-        0.25
-    };
-
-
-  const markets =
-    Array.isArray(
-      weather.markets
-    )
-      ? weather.markets
-      : (
-          Array.isArray(
-            weather.opportunities
-          )
-            ? weather.opportunities
-            : []
-        );
-
-
-  $("marketCount")
-    .textContent =
-      markets.length;
-
-
-  $("eligibleCount")
-    .textContent =
-      markets.filter(
-        market =>
-          market.eligible
-      ).length;
-
-
-  $("rejectedCount")
-    .textContent =
-      markets.filter(
-        market =>
-          !market.eligible
-      ).length;
-
-
-  $("updated")
-    .textContent =
-      new Date()
-        .toLocaleTimeString();
-
-
-  $("markets")
-    .innerHTML =
-      markets.length
-
-        ? markets
-            .map(
-              market =>
-                renderMarket(
-                  market,
-                  filters
-                )
-            )
-            .join("")
-
-        : `
-          <div class="card muted">
-            No market data returned.
-          </div>
-          `;
-}
-
-
-/* =========================================================
-REFRESH
-========================================================= */
-
-async function refresh() {
-
-  try {
-
-    await loadStatus();
-
-    await loadBalance();
-
-    await loadMarkets();
-
-  }
-
-  catch (error) {
-
-    $("markets")
-      .innerHTML = `
-        <div class="card">
-          ${esc(
-            error.message
-          )}
-        </div>
-      `;
-  }
-}
-
-
-refresh();
-
-
-/*
-IMPORTANT:
-The dashboard now ONLY refreshes.
-
-It does NOT call run-now every
-10 seconds anymore, which was
-contributing to Kalshi 429 errors.
-*/
-
-setInterval(
-  refresh,
-  30000
+]
 );
 
 
-/* =========================================================
-KEYBOARD
-========================================================= */
+const filters =
+status.filters ||
+{
 
-$("confirm")
-  .addEventListener(
-    "keydown",
-    event => {
+minMinutesToClose:
+180,
 
-      if (
-        event.key ===
-        "Enter"
-      ) {
-        startTrading();
-      }
+minEdge:
+.01,
 
-      if (
-        event.key ===
-        "Escape"
-      ) {
-        closeStart();
-      }
+minExpectedPriceMove:
+.01,
 
-    }
-  );
+takeProfit:
+Number(
+status.takeProfit ??
+.01
+)
+
+};
+
+
+let markets =
+[];
+
+
+if(
+Array.isArray(
+weather
+)
+){
+
+markets =
+weather;
+
+}
+
+
+else if(
+Array.isArray(
+weather.markets
+)
+){
+
+markets =
+weather.markets;
+
+}
+
+
+else if(
+Array.isArray(
+weather.opportunities
+)
+){
+
+markets =
+weather.opportunities
+.concat(
+Array.isArray(
+weather.rejected
+)
+?
+weather.rejected
+:
+[]
+);
+
+}
+
+
+$("marketCount").textContent =
+markets.length;
+
+
+let eligibleCount =
+0;
+
+let rejectedCount =
+0;
+
+
+const html =
+markets
+.map(
+market => {
+
+const diagnostics =
+buildDiagnostics(
+market,
+filters
+);
+
+
+if(
+diagnostics.eligible
+){
+
+eligibleCount++;
+
+}
+
+else{
+
+rejectedCount++;
+
+}
+
+
+return renderMarket(
+market,
+filters
+);
+
+}
+)
+.join(
+""
+);
+
+
+$("eligibleCount").textContent =
+eligibleCount;
+
+
+$("rejectedCount").textContent =
+rejectedCount;
+
+
+$("lastUpdate").textContent =
+new Date()
+.toLocaleTimeString();
+
+
+if(
+!markets.length
+){
+
+$("markets").innerHTML =
+`
+
+<div class="empty">
+
+No today's weather markets were returned.
+
+<br><br>
+
+<span class="small">
+
+The Worker may currently be waiting for
+qualifying Kalshi weather markets.
+
+</span>
+
+</div>
+
+`;
+
+}
+
+else{
+
+$("markets").innerHTML =
+html;
+
+}
+
+}
+
+catch(
+error
+){
+
+$("markets").innerHTML =
+`
+
+<div class="empty">
+
+<strong>
+Could not load weather markets.
+</strong>
+
+<br><br>
+
+${escapeHtml(
+error.message
+)}
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* ============================================================
+REFRESH
+============================================================ */
+
+async function refreshAll(){
+
+await Promise.all(
+[
+loadStatus(),
+loadMarkets()
+]
+);
+
+}
+
+
+/* ============================================================
+INITIAL LOAD
+============================================================ */
+
+refreshAll();
+
+
+/*
+Dashboard refreshes every 30 seconds.
+It does NOT automatically call run-now.
+*/
+
+setInterval(
+refreshAll,
+30000
+);
+
+
+/* ============================================================
+KEYBOARD CONTROLS
+============================================================ */
+
+$("confirmation")
+.addEventListener(
+"keydown",
+function(event){
+
+if(
+event.key ===
+"Enter"
+){
+
+startTrading();
+
+}
+
+if(
+event.key ===
+"Escape"
+){
+
+closeStartModal();
+
+}
+
+}
+);
+
+
+/* ============================================================
+CLICK OUTSIDE MODAL TO CLOSE
+============================================================ */
+
+$("startModal")
+.addEventListener(
+"click",
+function(event){
+
+if(
+event.target ===
+this
+){
+
+closeStartModal();
+
+}
+
+}
+);
 
 </script>
 
+
 </body>
+
 </html>
