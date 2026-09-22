@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 
 <meta
@@ -13,97 +11,83 @@ content="width=device-width, initial-scale=1.0"
 <title>Position Ledger — Kalshi Dashboard</title>
 
 <style>
-
 * {
 box-sizing: border-box;
 }
 
 body {
 margin: 0;
-background: #080b10;
-color: #f4f7fb;
-font-family: Arial, Helvetica, sans-serif;
+background: #08090d;
+color: #f5f5f5;
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"Segoe UI",
+sans-serif;
 }
 
-header {
-padding: 22px;
-border-bottom: 1px solid #202632;
-background: #0c1017;
-position: sticky;
-top: 0;
-z-index: 10;
-}
-
-.header-row {
-max-width: 1200px;
-margin: auto;
-display: flex;
-justify-content: space-between;
-align-items: center;
+.wrap {
+width: min(1250px, 94%);
+margin: 0 auto;
+padding: 28px 0 60px;
 }
 
 h1 {
 margin: 0;
-font-size: 25px;
+font-size: 30px;
 }
 
-.subtitle {
-color: #8993a4;
-margin-top: 5px;
-font-size: 13px;
+h2 {
+margin: 0 0 16px;
+font-size: 22px;
 }
 
-.status {
-font-size: 12px;
-color: #8cffb0;
+h3 {
+margin: 0 0 8px;
 }
 
-main {
-max-width: 1200px;
-margin: auto;
-padding: 22px;
+.sub {
+color: #8e93a1;
+margin-top: 6px;
+margin-bottom: 24px;
 }
 
-.cards {
+.grid {
 display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 15px;
+grid-template-columns: repeat(4, 1fr);
+gap: 12px;
+margin-bottom: 25px;
 }
 
-.card {
-background: #10151e;
-border: 1px solid #222a36;
+.stat {
+background: #11131a;
+border: 1px solid #222632;
 border-radius: 14px;
 padding: 18px;
 }
 
-.card-label {
-color: #8c97a8;
-font-size: 12px;
+.stat-label {
+color: #858b9a;
+font-size: 13px;
+margin-bottom: 8px;
 }
 
-.card-value {
-font-size: 27px;
-font-weight: bold;
-margin-top: 8px;
+.stat-value {
+font-size: 24px;
+font-weight: 700;
 }
 
-.section {
+section {
 margin-top: 30px;
 }
 
-.section-header {
+.section-head {
 display: flex;
-justify-content: space-between;
 align-items: center;
+justify-content: space-between;
 gap: 15px;
-margin-bottom: 14px;
+margin-bottom: 15px;
 flex-wrap: wrap;
-}
-
-.section-title {
-font-size: 20px;
-font-weight: bold;
 }
 
 .controls {
@@ -114,402 +98,318 @@ flex-wrap: wrap;
 
 select,
 input {
-background: #111722;
+background: #11131a;
 color: white;
-border: 1px solid #2a3443;
-border-radius: 8px;
-padding: 9px 11px;
+border: 1px solid #2b3040;
+border-radius: 9px;
+padding: 10px 12px;
 outline: none;
 }
 
-button {
-border: 0;
-border-radius: 9px;
-padding: 10px 14px;
-font-weight: bold;
-cursor: pointer;
+input:focus,
+select:focus {
+border-color: #666d80;
 }
 
-.btn-buy {
-background: #27d17f;
-color: #06150d;
-}
-
-.btn-secondary {
-background: #1b2330;
-color: white;
-}
-
-.market-grid {
+.opportunity-grid,
+.nfl-grid {
 display: grid;
-grid-template-columns: repeat(3, 1fr);
+grid-template-columns: repeat(2, minmax(0, 1fr));
 gap: 14px;
 }
 
-.market {
-background: #10151e;
-border: 1px solid #222a36;
-border-radius: 14px;
+.card {
+background: #11131a;
+border: 1px solid #252a36;
+border-radius: 15px;
 padding: 17px;
-position: relative;
 }
 
-.rank {
-position: absolute;
-right: 14px;
-top: 14px;
-font-size: 20px;
+.card-top {
+display: flex;
+justify-content: space-between;
+gap: 12px;
+align-items: flex-start;
 }
 
-.market-title {
-font-size: 16px;
-font-weight: bold;
-padding-right: 35px;
+.title {
+font-size: 17px;
+font-weight: 700;
 line-height: 1.3;
 }
 
-.market-subtitle {
-color: #8993a4;
-font-size: 12px;
-margin-top: 6px;
-}
-
-.score {
-margin-top: 13px;
-font-size: 13px;
-color: #8cffb0;
-}
-
-.metric-row {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 8px;
-margin-top: 13px;
-}
-
-.metric {
-background: #0b0f15;
-border-radius: 9px;
-padding: 9px;
-}
-
-.metric-label {
-font-size: 10px;
-color: #778294;
-text-transform: uppercase;
-}
-
-.metric-value {
-margin-top: 4px;
-font-size: 13px;
-font-weight: bold;
-}
-
-.settlement {
-margin-top: 10px;
-padding: 10px;
-border-radius: 9px;
-background: #111b27;
-border: 1px solid #253345;
-}
-
-.settlement-label {
-color: #8290a3;
-font-size: 10px;
-text-transform: uppercase;
-}
-
-.settlement-value {
-margin-top: 4px;
-font-size: 13px;
-font-weight: bold;
-}
-
-.fast {
-color: #8cffb0;
-}
-
-.warning {
-color: #ffd166;
-}
-
 .muted {
-color: #7f8a9c;
+color: #858b9a;
+font-size: 13px;
 }
 
-.actions {
-display: flex;
-gap: 8px;
-margin-top: 14px;
-}
-
-.actions button {
-flex: 1;
-}
-
-.nfl-list {
-display: grid;
-gap: 12px;
-}
-
-.nfl-game {
-background: #10151e;
-border: 1px solid #222a36;
-border-radius: 14px;
-padding: 16px;
-}
-
-.nfl-game-title {
-font-size: 18px;
-font-weight: bold;
-}
-
-.nfl-game-meta {
-color: #8993a4;
-font-size: 12px;
-margin-top: 5px;
-}
-
-.nfl-market {
-display: grid;
-grid-template-columns: 1fr 90px 90px;
-gap: 8px;
+.badge {
+display: inline-flex;
 align-items: center;
-margin-top: 12px;
+padding: 5px 9px;
+border-radius: 999px;
+background: #202532;
+color: #d7dbe4;
+font-size: 12px;
+font-weight: 700;
+white-space: nowrap;
 }
 
-.team-name {
-font-weight: bold;
+.yes {
+color: #66e3a2;
+}
+
+.no {
+color: #ff8585;
 }
 
 .price {
-background: #0a0f15;
-color: white;
-border: 1px solid #27303d;
-padding: 9px;
-border-radius: 8px;
-text-align: center;
-font-weight: bold;
+font-size: 30px;
+font-weight: 800;
+margin: 12px 0;
 }
 
-.price:hover {
-background: #16202c;
-}
-
-.empty {
-padding: 25px;
-text-align: center;
-color: #7e899b;
-background: #10151e;
-border: 1px solid #222a36;
-border-radius: 12px;
-}
-
-.error {
-color: #ff7777;
-font-size: 13px;
-margin-top: 10px;
-}
-
-.modal-backdrop {
-position: fixed;
-inset: 0;
-background: rgba(0,0,0,.72);
-display: none;
-align-items: center;
-justify-content: center;
-padding: 20px;
-z-index: 50;
-}
-
-.modal {
-width: 100%;
-max-width: 460px;
-background: #10151e;
-border: 1px solid #2b3544;
-border-radius: 15px;
-padding: 20px;
-}
-
-.modal h2 {
-margin-top: 0;
-}
-
-.modal-row {
+.stats-row {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 8px;
 margin-top: 13px;
 }
 
-.modal-label {
-color: #8993a4;
+.mini {
+background: #0b0d12;
+border-radius: 9px;
+padding: 9px;
+}
+
+.mini-label {
+color: #777e8d;
+font-size: 11px;
+margin-bottom: 3px;
+}
+
+.mini-value {
+font-size: 14px;
+font-weight: 700;
+}
+
+.reason {
+color: #aeb4c1;
+font-size: 13px;
+line-height: 1.45;
+margin-top: 13px;
+}
+
+.calculator {
+margin-top: 15px;
+border-top: 1px solid #252a36;
+padding-top: 14px;
+}
+
+.calculator label {
+display: block;
+color: #8b91a0;
 font-size: 12px;
-margin-bottom: 5px;
+margin-bottom: 6px;
 }
 
-.modal input,
-.modal select {
+.money-input {
 width: 100%;
+font-size: 16px;
 }
 
-.cost {
-margin-top: 14px;
-padding: 13px;
-background: #0b0f15;
-border-radius: 10px;
+.calc-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 8px;
+margin-top: 10px;
 }
 
-.modal-actions {
-display: flex;
-gap: 9px;
-margin-top: 17px;
+.calc-box {
+background: #0b0d12;
+border-radius: 9px;
+padding: 10px;
 }
 
-.modal-actions button {
-flex: 1;
+.calc-label {
+color: #777e8d;
+font-size: 11px;
+margin-bottom: 4px;
 }
 
-@media(max-width:850px) {
-
-.cards {
-grid-template-columns: 1fr;
+.calc-value {
+font-size: 15px;
+font-weight: 700;
 }
 
-.market-grid {
-grid-template-columns: 1fr;
+button {
+width: 100%;
+border: 0;
+border-radius: 9px;
+padding: 11px 14px;
+cursor: pointer;
+font-weight: 800;
+margin-top: 12px;
+background: #e8eaf0;
+color: #0b0d12;
 }
 
+button:hover {
+opacity: .9;
 }
 
-@media(max-width:600px) {
-
-main {
-padding: 14px;
-}
-
-header {
+.nfl-game {
+background: #11131a;
+border: 1px solid #252a36;
+border-radius: 15px;
 padding: 17px;
 }
 
-.nfl-market {
-grid-template-columns: 1fr 75px 75px;
+.game-title {
+font-size: 18px;
+font-weight: 800;
+margin-bottom: 12px;
 }
 
+.teams {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+margin-bottom: 10px;
 }
 
+.team {
+background: #0b0d12;
+border-radius: 10px;
+padding: 12px;
+}
+
+.team-name {
+font-weight: 700;
+margin-bottom: 5px;
+}
+
+.side-buttons {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+}
+
+.side-btn {
+margin-top: 0;
+}
+
+.empty {
+background: #11131a;
+border: 1px solid #252a36;
+border-radius: 14px;
+padding: 25px;
+color: #858b9a;
+text-align: center;
+grid-column: 1 / -1;
+}
+
+.status {
+margin: 12px 0;
+padding: 10px 12px;
+border-radius: 9px;
+background: #11131a;
+border: 1px solid #252a36;
+color: #aeb4c1;
+font-size: 13px;
+}
+
+.success {
+color: #66e3a2;
+}
+
+.error {
+color: #ff8585;
+}
+
+@media (max-width: 900px) {
+.grid {
+grid-template-columns: repeat(2, 1fr);
+}
+
+.opportunity-grid,
+.nfl-grid {
+grid-template-columns: 1fr;
+}
+}
+
+@media (max-width: 600px) {
+.grid {
+grid-template-columns: 1fr 1fr;
+}
+
+.stats-row,
+.calc-grid {
+grid-template-columns: repeat(2, 1fr);
+}
+
+h1 {
+font-size: 25px;
+}
+}
 </style>
-
 </head>
 
 <body>
 
-<header>
+<div class="wrap">
 
-<div class="header-row">
+<h1>Position Ledger</h1>
+<div class="sub">
+Kalshi market dashboard
+</div>
+
+<div id="status" class="status">
+Loading...
+</div>
+
+<div class="grid">
+
+<div class="stat">
+<div class="stat-label">Balance</div>
+<div id="balance" class="stat-value">$0.00</div>
+</div>
+
+<div class="stat">
+<div class="stat-label">Open Positions</div>
+<div id="positionCount" class="stat-value">0</div>
+</div>
+
+<div class="stat">
+<div class="stat-label">Opportunities</div>
+<div id="opportunityCount" class="stat-value">0</div>
+</div>
+
+<div class="stat">
+<div class="stat-label">NFL Markets</div>
+<div id="nflCount" class="stat-value">0</div>
+</div>
+
+</div>
+
+
+<!-- TOP OPPORTUNITIES -->
+
+<section>
+
+<div class="section-head">
 
 <div>
-
-<h1>
-Position Ledger
-</h1>
-
-<div class="subtitle">
-Kalshi Dashboard
+<h2>Top Opportunities</h2>
+<div class="muted">
+Non-political binary markets selected by the signal
 </div>
-
 </div>
-
-<div
-class="status"
-id="status"
->
-Connecting...
-</div>
-
-</div>
-
-</header>
-
-
-<main>
-
-
-<!-- ACCOUNT -->
-
-<div class="cards">
-
-<div class="card">
-
-<div class="card-label">
-Available Balance
-</div>
-
-<div
-class="card-value"
-id="balance"
->
-—
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="card-label">
-Portfolio Value
-</div>
-
-<div
-class="card-value"
-id="portfolioValue"
->
-—
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="card-label">
-Open Positions
-</div>
-
-<div
-class="card-value"
-id="positionCount"
->
-—
-</div>
-
-</div>
-
-</div>
-
-
-<!-- OPPORTUNITIES -->
-
-<section class="section">
-
-<div class="section-header">
-
-<div>
-
-<div class="section-title">
-Top Opportunities
-</div>
-
-<div class="subtitle">
-Non-political open markets
-</div>
-
-</div>
-
 
 <div class="controls">
 
 <select id="sortSelect">
-
-<option value="score">
+<option value="opportunity">
 Opportunity
 </option>
 
@@ -520,769 +420,599 @@ Soonest Settlement
 <option value="latest">
 Latest Settlement
 </option>
-
 </select>
 
-
-<input
-id="minVolume"
-type="number"
-value="50"
-min="0"
-placeholder="Min volume"
->
-
-
-<input
-id="maxSpread"
-type="number"
-value="8"
-min="1"
-max="99"
-placeholder="Max spread"
->
-
-
-<button
-class="btn-secondary"
-onclick="loadMarkets()"
->
-Refresh
-</button>
-
 </div>
 
 </div>
-
 
 <div
-id="marketsGrid"
-class="market-grid"
->
-
-<div class="empty">
-Loading markets...
-</div>
-
-</div>
+id="opportunities"
+class="opportunity-grid"
+></div>
 
 </section>
 
 
 <!-- NFL -->
 
-<section class="section">
+<section>
 
-<div class="section-header">
+<div class="section-head">
 
 <div>
-
-<div class="section-title">
-NFL
+<h2>NFL</h2>
+<div class="muted">
+Games grouped by event
 </div>
-
-<div class="subtitle">
-NFL game markets grouped by game
 </div>
 
 </div>
-
-
-<button
-class="btn-secondary"
-onclick="loadNFL()"
->
-Refresh
-</button>
-
-</div>
-
 
 <div
-id="nflList"
-class="nfl-list"
->
-
-<div class="empty">
-Loading NFL...
-</div>
-
-</div>
-
-</section>
-
-</main>
-
-
-<!-- BUY MODAL -->
-
-<div
-id="modalBackdrop"
-class="modal-backdrop"
->
-
-<div class="modal">
-
-<h2>
-Buy Position
-</h2>
-
-
-<div class="modal-row">
-
-<div class="modal-label">
-Market
-</div>
-
-<div id="modalMarket">
-—
-</div>
-
-</div>
-
-
-<div class="modal-row">
-
-<div class="modal-label">
-Side
-</div>
-
-<select id="orderSide">
-
-<option value="yes">
-YES
-</option>
-
-<option value="no">
-NO
-</option>
-
-</select>
-
-</div>
-
-
-<div class="modal-row">
-
-<div class="modal-label">
-Price
-</div>
-
-<input
-id="orderPrice"
-type="number"
-min="1"
-max="99"
-value="50"
->
-
-</div>
-
-
-<div class="modal-row">
-
-<div class="modal-label">
-Contracts
-</div>
-
-<input
-id="orderCount"
-type="number"
-min="1"
-max="1000"
-value="1"
->
-
-</div>
-
-
-<div class="cost">
-
-Maximum cost:
-
-<strong id="maxCost">
-$0.50
-</strong>
-
-</div>
-
-
-<div
-id="orderError"
-class="error"
+id="nfl"
+class="nfl-grid"
 ></div>
 
-
-<div class="modal-actions">
-
-<button
-class="btn-secondary"
-onclick="closeModal()"
->
-Cancel
-</button>
-
-<button
-class="btn-buy"
-onclick="confirmBuy()"
->
-Confirm BUY
-</button>
-
-</div>
-
-</div>
+</section>
 
 </div>
 
 
 <script>
 
-const WORKER_URL =
+const API =
 "https://worker1.ryderolinger1.workers.dev";
 
 
-let allMarkets = [];
+let markets = [];
 let nflMarkets = [];
-let selectedMarket = null;
+let portfolio = null;
 
 
-/* ================================
-HELPERS
-================================ */
-
-function num(value) {
-
-if (
-value === null ||
-value === undefined ||
-value === ""
-) {
-return 0;
-}
-
-const n = Number(value);
-
-return Number.isFinite(n)
-? n
-: 0;
-}
-
+// ------------------------------------
+// General helpers
+// ------------------------------------
 
 function money(value) {
+const n = Number(value) || 0;
 
-return "$" +
-num(value).toFixed(2);
-
+return "$" + n.toFixed(2);
 }
 
+function cents(value) {
+const n = Number(value) || 0;
+
+return Math.round(n * 100);
+}
+
+function formatDate(value) {
+if (!value) return "Unknown";
+
+const d = new Date(value);
+
+if (Number.isNaN(d.getTime())) {
+return "Unknown";
+}
+
+return d.toLocaleString();
+}
 
 function escapeHtml(value) {
-
-return String(value || "")
+return String(value ?? "")
 .replace(/&/g, "&amp;")
 .replace(/</g, "&lt;")
 .replace(/>/g, "&gt;")
 .replace(/"/g, "&quot;")
 .replace(/'/g, "&#039;");
-
 }
 
 
-/* ================================
-PRICES
-================================ */
+// ------------------------------------
+// Prices
+// ------------------------------------
 
-function yesBid(m) {
+function yesAsk(market) {
 
-if (m.yes_bid !== undefined)
-return num(m.yes_bid);
+const direct =
+Number(market.yes_ask_dollars);
 
-if (m.yes_bid_dollars !== undefined)
-return num(m.yes_bid_dollars) * 100;
+if (direct > 0 && direct < 1) {
+return direct;
+}
 
-return 0;
+const noBid =
+Number(market.no_bid_dollars);
+
+if (noBid > 0 && noBid < 1) {
+return 1 - noBid;
+}
+
+return Number(market.last_price_dollars) || 0;
 }
 
 
-function yesAsk(m) {
+function noAsk(market) {
 
-if (m.yes_ask !== undefined)
-return num(m.yes_ask);
+const direct =
+Number(market.no_ask_dollars);
 
-if (m.yes_ask_dollars !== undefined)
-return num(m.yes_ask_dollars) * 100;
+if (direct > 0 && direct < 1) {
+return direct;
+}
 
-return 0;
+const yesBid =
+Number(market.yes_bid_dollars);
+
+if (yesBid > 0 && yesBid < 1) {
+return 1 - yesBid;
+}
+
+const last =
+Number(market.last_price_dollars) || 0;
+
+return last > 0
+? 1 - last
+: 0;
 }
 
 
-function noBid(m) {
+// ------------------------------------
+// Signal / algorithm
+// ------------------------------------
 
-if (m.no_bid !== undefined)
-return num(m.no_bid);
+function sideAnalysis(market) {
 
-if (m.no_bid_dollars !== undefined)
-return num(m.no_bid_dollars) * 100;
+const last =
+Number(market.last_price_dollars) || 0;
 
-return 0;
-}
+const previous =
+Number(market.previous_price_dollars) || last;
 
+const yesAskPrice = yesAsk(market);
+const noAskPrice = noAsk(market);
 
-function noAsk(m) {
+const yesMomentum =
+last - previous;
 
-if (m.no_ask !== undefined)
-return num(m.no_ask);
-
-if (m.no_ask_dollars !== undefined)
-return num(m.no_ask_dollars) * 100;
-
-return 0;
-}
-
-
-/* ================================
-SPREAD
-================================ */
-
-function getSpread(market) {
-
-const bid = yesBid(market);
-const ask = yesAsk(market);
-
-if (
-bid > 0 &&
-ask > 0 &&
-ask >= bid
-) {
-return ask - bid;
-}
-
-/*
-IMPORTANT:
-Unknown spread is null,
-NOT 99.
-*/
-
-return null;
-}
-
-
-/* ================================
-SETTLEMENT
-================================ */
-
-function getSettlementDate(market) {
-
-const values = [
-
-market.settlement_time,
-
-market.expected_expiration_time,
-
-market.expiration_time,
-
-market.latest_expiration_time,
-
-market.settlement_ts,
-
-market.close_time
-
-];
-
-
-for (const value of values) {
-
-if (!value) continue;
-
-const d = new Date(value);
-
-if (!Number.isNaN(d.getTime())) {
-return d;
-}
-
-}
-
-
-return null;
-}
-
-
-function settlementInfo(market) {
-
-const date =
-getSettlementDate(market);
-
-
-if (!date) {
-
-return {
-ms: Infinity,
-countdown: "Unknown",
-date: "Settlement unavailable"
-};
-
-}
-
-
-const diff =
-date.getTime() -
-Date.now();
-
-
-if (diff <= 0) {
-
-return {
-ms: diff,
-countdown: "Due now",
-date: date.toLocaleString()
-};
-
-}
-
-
-const minutes =
-Math.floor(
-diff / 60000
-);
-
-
-const days =
-Math.floor(
-minutes / 1440
-);
-
-
-const hours =
-Math.floor(
-(minutes % 1440) / 60
-);
-
-
-const mins =
-minutes % 60;
-
-
-let countdown;
-
-
-if (days > 0) {
-
-countdown =
-`${days}d ${hours}h`;
-
-} else if (hours > 0) {
-
-countdown =
-`${hours}h ${mins}m`;
-
-} else {
-
-countdown =
-`${mins}m`;
-
-}
-
-
-return {
-
-ms: diff,
-
-countdown,
-
-date:
-date.toLocaleString(
-undefined,
-{
-month: "short",
-day: "numeric",
-hour: "numeric",
-minute: "2-digit"
-}
-)
-
-};
-
-}
-
-
-/* ================================
-OPPORTUNITY SCORE
-================================ */
-
-function scoreMarket(market) {
-
-const volume =
-num(
-market.volume_number ??
-market.volume ??
-market.volume_fp
-);
-
-
-const volume24 =
-num(
-market.volume_24h_number ??
-market.volume_24h ??
-market.volume_24h_fp
-);
+const noMomentum =
+-yesMomentum;
 
 
 const liquidity =
-num(
-market.liquidity_number ??
-market.liquidity ??
-market.liquidity_dollars
-);
+Number(market.liquidity_number) || 0;
 
+const volume =
+Number(market.volume_number) || 0;
+
+const volume24 =
+Number(market.volume_24h_number) || 0;
+
+
+function score(side, price, momentum) {
+
+if (!(price > 0 && price < 1)) {
+return -Infinity;
+}
+
+const probabilityProxy =
+side === "yes"
+? last
+: 1 - last;
+
+const momentumScore =
+Math.max(0, Math.min(1, momentum / 0.10));
+
+const liquidityScore =
+Math.min(1, liquidity / 5000);
+
+const volumeScore =
+Math.min(1, volume / 10000);
+
+const volume24Score =
+Math.min(1, volume24 / 5000);
+
+
+let spreadScore = 0;
+
+const bid =
+side === "yes"
+? Number(market.yes_bid_dollars)
+: Number(market.no_bid_dollars);
+
+if (bid > 0 && price > bid) {
 
 const spread =
-getSpread(market);
+price - bid;
 
-
-let score = 0;
-
-
-/* Liquidity */
-
-score += Math.min(
-liquidity / 100,
-20
+spreadScore =
+Math.max(
+0,
+Math.min(1, 0.05 / spread)
 );
-
-
-/* Total volume */
-
-score += Math.min(
-volume / 1000,
-20
-);
-
-
-/* 24h volume */
-
-score += Math.min(
-volume24 / 500,
-20
-);
-
-
-/* Spread */
-
-if (spread !== null) {
-
-if (spread <= 2)
-score += 20;
-
-else if (spread <= 4)
-score += 15;
-
-else if (spread <= 6)
-score += 10;
-
-else if (spread <= 8)
-score += 5;
-
 }
 
 
-/* Price structure */
-
-const last =
-num(
-market.last_price ??
-(
-market.last_price_dollars !== undefined
-? market.last_price_dollars * 100
-: 0
-)
+return (
+probabilityProxy * 45 +
+momentumScore * 20 +
+liquidityScore * 15 +
+volumeScore * 10 +
+volume24Score * 5 +
+spreadScore * 5
 );
+}
+
+
+const yesScore =
+score(
+"yes",
+yesAskPrice,
+yesMomentum
+);
+
+const noScore =
+score(
+"no",
+noAskPrice,
+noMomentum
+);
+
+
+const side =
+yesScore >= noScore
+? "yes"
+: "no";
+
+
+const chosenScore =
+side === "yes"
+? yesScore
+: noScore;
+
+
+const chosenPrice =
+side === "yes"
+? yesAskPrice
+: noAskPrice;
+
+
+const reasons = [];
 
 
 if (
-last >= 20 &&
-last <= 80
+side === "yes"
+? yesMomentum > 0
+: noMomentum > 0
+) {
+reasons.push("positive momentum");
+}
+
+if (liquidity > 0) {
+reasons.push("liquidity");
+}
+
+if (volume24 > 0) {
+reasons.push("recent activity");
+}
+
+if (chosenPrice > 0.65) {
+reasons.push("strong market price");
+}
+
+
+return {
+side,
+price: chosenPrice,
+score: chosenScore,
+reason:
+reasons.length
+? reasons.join(", ")
+: "market-price signal"
+};
+}
+
+
+// ------------------------------------
+// Calculator
+// ------------------------------------
+
+function calculateInvestment(
+amount,
+price
 ) {
 
-score += 10;
+const dollars =
+Math.max(0, Number(amount) || 0);
 
+const priceCents =
+Math.round(price * 100);
+
+if (
+priceCents <= 0 ||
+priceCents >= 100
+) {
+return {
+contracts: 0,
+actualCost: 0,
+payout: 0,
+profit: 0,
+returnPct: 0,
+unused: dollars
+};
 }
 
 
-return Math.round(
-score * 10
-) / 10;
+const contracts =
+Math.floor(
+dollars * 100 / priceCents
+);
 
+
+const actualCost =
+contracts * priceCents / 100;
+
+
+const payout =
+contracts;
+
+
+const profit =
+payout - actualCost;
+
+
+const returnPct =
+actualCost > 0
+? profit / actualCost * 100
+: 0;
+
+
+const unused =
+dollars - actualCost;
+
+
+return {
+contracts,
+actualCost,
+payout,
+profit,
+returnPct,
+unused
+};
 }
 
 
-/* ================================
-PORTFOLIO
-================================ */
+// ------------------------------------
+// Opportunity card
+// ------------------------------------
 
-async function loadPortfolio() {
+function opportunityCard(market) {
 
-try {
+const analysis =
+sideAnalysis(market);
 
-const response =
-await fetch(
-WORKER_URL +
-"/api/portfolio"
-);
-
-
-const data =
-await response.json();
-
-
-if (!data.ok)
-throw new Error(
-JSON.stringify(data.error)
-);
-
-
-const balance =
-num(
-data.balance?.balance ??
-data.balance?.available_balance
-) / 100;
-
-
-document.getElementById(
-"balance"
-).textContent =
-money(balance);
-
-
-const positions =
-Array.isArray(
-data.positions?.market_positions
-)
-? data.positions.market_positions
-: [];
-
-
-document.getElementById(
-"positionCount"
-).textContent =
-positions.length;
-
-
-document.getElementById(
-"portfolioValue"
-).textContent =
-money(balance);
-
-
-document.getElementById(
-"status"
-).textContent =
-"Connected";
-
-} catch (error) {
-
-console.error(error);
-
-document.getElementById(
-"status"
-).textContent =
-"Connection error";
-
-}
-
+if (!Number.isFinite(analysis.score)) {
+return "";
 }
 
 
-/* ================================
-MARKETS
-================================ */
+const ticker =
+market.ticker || "";
 
-async function loadMarkets() {
+const title =
+market.title ||
+market.yes_sub_title ||
+"Untitled market";
 
-const grid =
-document.getElementById(
-"marketsGrid"
+
+const price =
+analysis.price;
+
+
+const initialAmount = 100;
+
+const calc =
+calculateInvestment(
+initialAmount,
+price
 );
 
 
-grid.innerHTML =
-`<div class="empty">
-Loading markets...
-</div>`;
+return `
+
+<div
+class="card opportunity-card"
+data-ticker="${escapeHtml(ticker)}"
+data-side="${analysis.side}"
+data-price="${price}"
+>
+
+<div class="card-top">
+
+<div>
+
+<div class="title">
+${escapeHtml(title)}
+</div>
+
+<div class="muted">
+${escapeHtml(ticker)}
+</div>
+
+</div>
+
+<div class="badge">
+BUY ${analysis.side.toUpperCase()}
+</div>
+
+</div>
 
 
-try {
-
-const response =
-await fetch(
-WORKER_URL +
-"/api/markets"
-);
+<div class="price ${analysis.side}">
+${(price * 100).toFixed(1)}¢
+</div>
 
 
-const data =
-await response.json();
+<div class="stats-row">
+
+<div class="mini">
+<div class="mini-label">
+Signal
+</div>
+
+<div class="mini-value">
+${analysis.score.toFixed(1)}
+</div>
+</div>
 
 
-if (!data.ok)
-throw new Error(
-JSON.stringify(data.error)
-);
+<div class="mini">
+<div class="mini-label">
+Settlement
+</div>
 
-
-allMarkets =
-Array.isArray(data.markets)
-? data.markets
-: [];
-
-
-renderMarkets();
-
-
-} catch (error) {
-
-console.error(error);
-
-grid.innerHTML =
-`<div class="empty">
-Unable to load markets.
-<div class="error">
-${escapeHtml(
-error.message
+<div class="mini-value">
+${formatDate(
+market.settlement_time
 )}
 </div>
-</div>`;
+</div>
 
+
+<div class="mini">
+<div class="mini-label">
+Volume
+</div>
+
+<div class="mini-value">
+${Number(
+market.volume_number || 0
+).toLocaleString()}
+</div>
+</div>
+
+</div>
+
+
+<div class="reason">
+Signal factors: ${escapeHtml(
+analysis.reason
+)}.
+This is a market-data heuristic,
+not a guarantee of outcome.
+</div>
+
+
+<div class="calculator">
+
+<label>
+Investment amount
+</label>
+
+<input
+class="money-input investment-input"
+type="number"
+min="0"
+step="0.01"
+value="${initialAmount}"
+/>
+
+
+<div class="calc-grid">
+
+<div class="calc-box">
+<div class="calc-label">
+Contracts
+</div>
+
+<div class="calc-value contracts">
+${calc.contracts}
+</div>
+</div>
+
+
+<div class="calc-box">
+<div class="calc-label">
+Actual Cost
+</div>
+
+<div class="calc-value actual-cost">
+${money(calc.actualCost)}
+</div>
+</div>
+
+
+<div class="calc-box">
+<div class="calc-label">
+Potential Payout
+</div>
+
+<div class="calc-value payout">
+${money(calc.payout)}
+</div>
+</div>
+
+
+<div class="calc-box">
+<div class="calc-label">
+Potential Profit
+</div>
+
+<div class="calc-value profit">
+${money(calc.profit)}
+</div>
+</div>
+
+
+<div class="calc-box">
+<div class="calc-label">
+Return
+</div>
+
+<div class="calc-value return-pct">
+${calc.returnPct.toFixed(1)}%
+</div>
+</div>
+
+
+<div class="calc-box">
+<div class="calc-label">
+Unused
+</div>
+
+<div class="calc-value unused">
+${money(calc.unused)}
+</div>
+</div>
+
+</div>
+
+
+<button
+class="buy-opportunity"
+data-ticker="${escapeHtml(ticker)}"
+data-side="${analysis.side}"
+data-price="${price}"
+>
+BUY ${analysis.side.toUpperCase()}
+</button>
+
+</div>
+
+</div>
+`;
 }
 
-}
 
+// ------------------------------------
+// Render opportunities
+// ------------------------------------
 
-/* ================================
-RENDER MARKETS
-================================ */
+function renderOpportunities() {
 
-function renderMarkets() {
-
-const grid =
+const container =
 document.getElementById(
-"marketsGrid"
-);
-
-
-const minVolume =
-num(
-document.getElementById(
-"minVolume"
-).value
-);
-
-
-const maxSpread =
-num(
-document.getElementById(
-"maxSpread"
-).value
+"opportunities"
 );
 
 
@@ -1292,310 +1022,318 @@ document.getElementById(
 ).value;
 
 
-let markets =
-allMarkets.filter(
-market => {
-
-const volume =
-num(
-market.volume_number ??
-market.volume ??
-market.volume_fp
+let list =
+markets
+.map(market => ({
+market,
+analysis: sideAnalysis(market)
+}))
+.filter(item =>
+Number.isFinite(item.analysis.score)
 );
 
 
-const spread =
-getSpread(market);
+if (sort === "opportunity") {
 
-
-/*
-If spread is unknown,
-don't eliminate the market.
-*/
-
-const spreadOkay =
-spread === null ||
-spread <= maxSpread;
-
-
-return (
-volume >= minVolume &&
-spreadOkay
-);
-
-}
-);
-
-
-markets =
-markets.map(
-market => {
-
-const settlement =
-settlementInfo(market);
-
-
-return {
-
-...market,
-
-opportunityScore:
-scoreMarket(market),
-
-settlement
-
-};
-
-}
-);
-
-
-if (sort === "soonest") {
-
-markets.sort(
+list.sort(
 (a, b) =>
-a.settlement.ms -
-b.settlement.ms
+b.analysis.score -
+a.analysis.score
+);
+
+} else if (sort === "soonest") {
+
+list.sort(
+(a, b) =>
+new Date(
+a.market.settlement_time || 0
+) -
+new Date(
+b.market.settlement_time || 0
+)
 );
 
 } else if (sort === "latest") {
 
-markets.sort(
+list.sort(
 (a, b) =>
-b.settlement.ms -
-a.settlement.ms
+new Date(
+b.market.settlement_time || 0
+) -
+new Date(
+a.market.settlement_time || 0
+)
 );
-
-} else {
-
-markets.sort(
-(a, b) =>
-b.opportunityScore -
-a.opportunityScore
-);
-
 }
 
 
-const top =
-markets.slice(0, 3);
+list =
+list.slice(0, 20);
 
 
-if (!top.length) {
+document.getElementById(
+"opportunityCount"
+).textContent = list.length;
 
-grid.innerHTML =
-`<div class="empty">
-No markets match your filters.
-</div>`;
+
+if (!list.length) {
+
+container.innerHTML = `
+<div class="empty">
+No markets match the current filters.
+</div>
+`;
 
 return;
-
 }
 
 
-grid.innerHTML =
-top.map(
-(market, index) =>
-marketCard(
-market,
-index
+container.innerHTML =
+list
+.map(item =>
+opportunityCard(item.market)
 )
-).join("");
-
+.join("");
 }
 
 
-/* ================================
-MARKET CARD
-================================ */
+// ------------------------------------
+// NFL team names
+// ------------------------------------
 
-function marketCard(
-market,
-index
-) {
+const NFL_TEAMS = {
 
-const settlement =
-market.settlement ||
-settlementInfo(market);
+ARI: "Arizona Cardinals",
+ATL: "Atlanta Falcons",
+BAL: "Baltimore Ravens",
+BUF: "Buffalo Bills",
+CAR: "Carolina Panthers",
+CHI: "Chicago Bears",
+CIN: "Cincinnati Bengals",
+CLE: "Cleveland Browns",
+DAL: "Dallas Cowboys",
+DEN: "Denver Broncos",
+DET: "Detroit Lions",
+GB: "Green Bay Packers",
+HOU: "Houston Texans",
+IND: "Indianapolis Colts",
+JAX: "Jacksonville Jaguars",
+KC: "Kansas City Chiefs",
+LV: "Las Vegas Raiders",
+LAC: "Los Angeles Chargers",
+LAR: "Los Angeles Rams",
+MIA: "Miami Dolphins",
+MIN: "Minnesota Vikings",
+NE: "New England Patriots",
+NO: "New Orleans Saints",
+NYG: "New York Giants",
+NYJ: "New York Jets",
+PHI: "Philadelphia Eagles",
+PIT: "Pittsburgh Steelers",
+SF: "San Francisco 49ers",
+SEA: "Seattle Seahawks",
+TB: "Tampa Bay Buccaneers",
+TEN: "Tennessee Titans",
+WAS: "Washington Commanders"
+
+};
 
 
-const spread =
-getSpread(market);
+function getTeamName(market) {
 
+const candidates = [
 
-const volume =
-num(
-market.volume_number ??
-market.volume ??
-market.volume_fp
-);
+market.yes_sub_title,
+market.yes_subtitle,
+market.subtitle,
+market.team_name,
+market.team
 
-
-const liquidity =
-num(
-market.liquidity_number ??
-market.liquidity ??
-market.liquidity_dollars
-);
-
-
-const medals = [
-"🥇",
-"🥈",
-"🥉"
 ];
+
+
+for (const value of candidates) {
+
+if (value) {
+
+const text =
+String(value).trim();
+
+if (text) {
+
+const upper =
+text.toUpperCase();
+
+if (NFL_TEAMS[upper]) {
+return NFL_TEAMS[upper];
+}
+
+return text;
+}
+}
+}
+
+
+const ticker =
+String(market.ticker || "");
+
+
+const parts =
+ticker.split("-");
+
+
+const last =
+parts[parts.length - 1];
+
+
+if (NFL_TEAMS[last]) {
+return NFL_TEAMS[last];
+}
+
+
+return "NFL Team";
+}
+
+
+// ------------------------------------
+// NFL grouping
+// ------------------------------------
+
+function getEventKey(market) {
+
+return (
+market.event_ticker ||
+market.eventTicker ||
+market.event_id ||
+market.ticker ||
+"unknown"
+);
+}
+
+
+function renderNFL() {
+
+const container =
+document.getElementById("nfl");
+
+
+const groups = {};
+
+
+for (const market of nflMarkets) {
+
+const key =
+getEventKey(market);
+
+
+if (!groups[key]) {
+groups[key] = [];
+}
+
+
+groups[key].push(market);
+}
+
+
+const groupList =
+Object.entries(groups);
+
+
+if (!groupList.length) {
+
+container.innerHTML = `
+<div class="empty">
+No NFL markets found.
+</div>
+`;
+
+return;
+}
+
+
+container.innerHTML =
+groupList
+.map(
+([eventTicker, group]) => {
+
+const teams = {};
+
+
+for (const market of group) {
+
+const team =
+getTeamName(market);
+
+if (!teams[team]) {
+teams[team] = [];
+}
+
+teams[team].push(market);
+}
+
+
+const teamNames =
+Object.keys(teams);
+
+
+const title =
+teamNames.length >= 2
+? `${teamNames[0]} vs ${teamNames[1]}`
+: (
+group[0].title ||
+"NFL Game"
+);
+
+
+const buttons =
+group
+.map(market => {
+
+const yes =
+yesAsk(market);
+
+const no =
+noAsk(market);
+
+const ticker =
+market.ticker || "";
+
+const team =
+getTeamName(market);
 
 
 return `
 
-<div class="market">
+<div class="team">
 
-<div class="rank">
-${medals[index] || ""}
+<div class="team-name">
+${escapeHtml(team)}
 </div>
 
-
-<div class="market-title">
-
+<div class="muted">
 ${escapeHtml(
-market.title ||
-market.subtitle ||
-market.ticker
+ticker
 )}
-
 </div>
 
-
-<div class="market-subtitle">
-
-${escapeHtml(
-market.subtitle ||
-market.event_ticker ||
-market.ticker
-)}
-
-</div>
-
-
-<div class="score">
-
-Opportunity Score:
-
-<strong>
-${market.opportunityScore}
-</strong>
-
-</div>
-
-
-<div class="settlement">
-
-<div class="settlement-label">
-Expected Settlement
-</div>
-
-<div class="settlement-value">
-
-${settlement.countdown}
-
-·
-
-${escapeHtml(
-settlement.date
-)}
-
-</div>
-
-</div>
-
-
-<div class="metric-row">
-
-<div class="metric">
-
-<div class="metric-label">
-Volume
-</div>
-
-<div class="metric-value">
-${volume.toLocaleString()}
-</div>
-
-</div>
-
-
-<div class="metric">
-
-<div class="metric-label">
-Liquidity
-</div>
-
-<div class="metric-value">
-${liquidity.toLocaleString()}
-</div>
-
-</div>
-
-
-<div class="metric">
-
-<div class="metric-label">
-Spread
-</div>
-
-<div class="metric-value">
-
-${
-spread === null
-? "—"
-: spread.toFixed(0) + "¢"
-}
-
-</div>
-
-</div>
-
-
-<div class="metric">
-
-<div class="metric-label">
-YES Ask
-</div>
-
-<div class="metric-value">
-
-${
-yesAsk(market)
-? yesAsk(market).toFixed(0) + "¢"
-: "—"
-}
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="actions">
+<div class="side-buttons">
 
 <button
-class="btn-buy"
-onclick='openBuy(${JSON.stringify(
-market
-)}, "yes")'
+class="side-btn nfl-order"
+data-ticker="${escapeHtml(ticker)}"
+data-side="yes"
+data-price="${yes}"
 >
-BUY YES
+YES ${(yes * 100).toFixed(1)}¢
 </button>
 
-
 <button
-class="btn-buy"
-onclick='openBuy(${JSON.stringify(
-market
-)}, "no")'
+class="side-btn nfl-order"
+data-ticker="${escapeHtml(ticker)}"
+data-side="no"
+data-price="${no}"
 >
-BUY NO
+NO ${(no * 100).toFixed(1)}¢
 </button>
 
 </div>
@@ -1603,45 +1341,139 @@ BUY NO
 </div>
 
 `;
+})
+.join("");
 
+
+return `
+
+<div class="nfl-game">
+
+<div class="game-title">
+${escapeHtml(title)}
+</div>
+
+<div class="muted">
+${escapeHtml(eventTicker)}
+</div>
+
+<div class="teams">
+${buttons}
+</div>
+
+</div>
+
+`;
+}
+)
+.join("");
 }
 
 
-/* ================================
-NFL
-================================ */
+// ------------------------------------
+// Portfolio
+// ------------------------------------
 
-async function loadNFL() {
-
-const list =
-document.getElementById(
-"nflList"
-);
-
-
-list.innerHTML =
-`<div class="empty">
-Loading NFL...
-</div>`;
-
-
-try {
+async function loadPortfolio() {
 
 const response =
 await fetch(
-WORKER_URL +
-"/api/nfl"
+`${API}/api/portfolio`
 );
+
+
+if (!response.ok) {
+throw new Error(
+"Portfolio request failed."
+);
+}
+
+
+portfolio =
+await response.json();
+
+
+const balanceValue =
+portfolio?.balance?.balance;
+
+
+const dollars =
+Number(balanceValue || 0) / 100;
+
+
+document.getElementById(
+"balance"
+).textContent =
+money(dollars);
+
+
+const positions =
+portfolio?.positions?.market_positions ||
+portfolio?.positions?.positions ||
+[];
+
+
+document.getElementById(
+"positionCount"
+).textContent =
+positions.length;
+}
+
+
+// ------------------------------------
+// Markets
+// ------------------------------------
+
+async function loadMarkets() {
+
+const response =
+await fetch(
+`${API}/api/markets`
+);
+
+
+if (!response.ok) {
+throw new Error(
+"Markets request failed."
+);
+}
 
 
 const data =
 await response.json();
 
 
-if (!data.ok)
-throw new Error(
-JSON.stringify(data.error)
+markets =
+Array.isArray(data.markets)
+? data.markets
+: [];
+
+
+renderOpportunities();
+}
+
+
+// ------------------------------------
+// NFL
+// ------------------------------------
+
+async function loadNFL() {
+
+const response =
+await fetch(
+`${API}/api/nfl`
 );
+
+
+if (!response.ok) {
+throw new Error(
+"NFL request failed."
+);
+}
+
+
+const data =
+await response.json();
 
 
 nflMarkets =
@@ -1650,642 +1482,102 @@ Array.isArray(data.markets)
 : [];
 
 
+document.getElementById(
+"nflCount"
+).textContent =
+nflMarkets.length;
+
+
 renderNFL();
-
-
-} catch (error) {
-
-console.error(error);
-
-list.innerHTML =
-`<div class="empty">
-Unable to load NFL markets.
-<div class="error">
-${escapeHtml(
-error.message
-)}
-</div>
-</div>`;
-
-}
-
 }
 
 
-/* ================================
-NFL TEAM NAME EXTRACTION
-================================ */
-
-function cleanTeamName(value) {
-
-if (!value)
-return "";
-
-
-let name =
-String(value).trim();
-
-
-name =
-name
-.replace(/^will\s+/i, "")
-.replace(/^the\s+/i, "")
-.replace(/\s+to\s+win.*$/i, "")
-.replace(/\s+win.*$/i, "")
-.replace(/\?$/g, "")
-.trim();
-
-
-return name;
-
-}
-
-
-function getTeamName(market) {
-
-const candidates = [
-
-market.subtitle,
-
-market.yes_sub_title,
-
-market.yes_subtitle,
-
-market.team,
-
-market.team_name,
-
-market.title
-
-];
-
-
-for (const value of candidates) {
-
-const cleaned =
-cleanTeamName(value);
-
-
-if (
-cleaned &&
-cleaned.length < 70
-) {
-return cleaned;
-}
-
-}
-
-
-return "";
-
-}
-
-
-/* ================================
-NFL GROUPING
-================================ */
-
-function groupNFLMarkets() {
-
-const groups = {};
-
-
-for (const market of nflMarkets) {
-
-/*
-event_ticker is the important part.
-
-All markets belonging to the same
-NFL game go into the same group.
-*/
-
-const key =
-market.event_ticker ||
-market.event_ticker_name ||
-market.ticker;
-
-
-if (!groups[key]) {
-
-groups[key] = [];
-
-}
-
-
-groups[key].push(market);
-
-}
-
-
-return Object.entries(groups)
-.map(
-([eventTicker, markets]) => ({
-
-eventTicker,
-
-markets
-
-})
-);
-
-}
-
-
-/* ================================
-NFL GAME NAME
-================================ */
-
-function getGameName(group) {
-
-const teams = [];
-
-
-for (const market of group.markets) {
-
-const team =
-getTeamName(market);
-
-
-if (
-team &&
-!teams.includes(team)
-) {
-
-teams.push(team);
-
-}
-
-}
-
-
-/*
-If two actual team names are
-available, use them.
-*/
-
-if (teams.length >= 2) {
-
-return (
-teams[0] +
-" vs. " +
-teams[1]
-);
-
-}
-
-
-/*
-Some Kalshi responses put the
-matchup directly in title.
-*/
-
-for (const market of group.markets) {
-
-const title =
-String(
-market.title || ""
-);
-
-
-const match =
-title.match(
-/(.+?)\s+(?:vs\.?|at|@)\s+(.+)/i
-);
-
-
-if (match) {
-
-return (
-cleanTeamName(
-match[1]
-) +
-" vs. " +
-cleanTeamName(
-match[2]
-)
-);
-
-}
-
-}
-
-
-/*
-Last-resort fallback.
-*/
-
-return (
-group.eventTicker ||
-"NFL Game"
-);
-
-}
-
-
-/* ================================
-NFL RENDER
-================================ */
-
-function renderNFL() {
-
-const list =
-document.getElementById(
-"nflList"
-);
-
-
-if (!nflMarkets.length) {
-
-list.innerHTML =
-`<div class="empty">
-No open NFL markets found.
-</div>`;
-
-return;
-
-}
-
-
-const games =
-groupNFLMarkets();
-
-
-list.innerHTML =
-games.map(
-group => {
-
-const gameName =
-getGameName(group);
-
-
-const dates =
-group.markets
-.map(
-market =>
-settlementInfo(market)
-)
-.filter(
-x =>
-x.ms !== Infinity
-)
-.sort(
-(a,b) =>
-a.ms - b.ms
-);
-
-
-const settlement =
-dates[0] ||
-{
-countdown: "Unknown",
-date: "Settlement unavailable"
-};
-
-
-/*
-Deduplicate team markets.
-*/
-
-const seen = new Set();
-
-
-const marketRows =
-group.markets
-.map(
-market => {
-
-const team =
-getTeamName(market);
-
-
-const identifier =
-team ||
-market.ticker;
-
-
-if (
-seen.has(identifier)
-) {
-return "";
-}
-
-
-seen.add(identifier);
-
-
-return `
-
-<div class="nfl-market">
-
-<div>
-
-<div class="team-name">
-
-${escapeHtml(
-team ||
-market.title ||
-market.ticker
-)}
-
-</div>
-
-<div class="subtitle">
-
-${escapeHtml(
-market.ticker
-)}
-
-</div>
-
-</div>
-
-
-<button
-class="price"
-onclick='openBuy(${JSON.stringify(
-market
-)}, "yes")'
->
-
-YES
-
-${
-yesAsk(market)
-? yesAsk(market)
-.toFixed(0) + "¢"
-: "—"
-}
-
-</button>
-
-
-<button
-class="price"
-onclick='openBuy(${JSON.stringify(
-market
-)}, "no")'
->
-
-NO
-
-${
-noAsk(market)
-? noAsk(market)
-.toFixed(0) + "¢"
-: "—"
-}
-
-</button>
-
-</div>
-
-`;
-
-}
-)
-.join("");
-
-
-return `
-
-<div class="nfl-game">
-
-<div class="nfl-game-title">
-
-${escapeHtml(
-gameName
-)}
-
-</div>
-
-
-<div class="nfl-game-meta">
-
-Expected settlement:
-${escapeHtml(
-settlement.countdown
-)}
-
-·
-
-${escapeHtml(
-settlement.date
-)}
-
-</div>
-
-
-${marketRows}
-
-</div>
-
-`;
-
-}
-).join("");
-
-}
-
-
-/* ================================
-BUY MODAL
-================================ */
-
-function openBuy(
-market,
-side
-) {
-
-selectedMarket =
-market;
-
-
-document.getElementById(
-"modalMarket"
-).textContent =
-market.title ||
-market.subtitle ||
-market.ticker;
-
-
-document.getElementById(
-"orderSide"
-).value =
-side;
-
-
-const price =
-side === "yes"
-? yesAsk(market)
-: noAsk(market);
-
-
-document.getElementById(
-"orderPrice"
-).value =
+// ------------------------------------
+// Order
+// ------------------------------------
+
+async function placeOrder(
+ticker,
+side,
 price
-? Math.round(price)
-: 50;
+) {
 
-
-document.getElementById(
-"orderCount"
-).value =
-1;
-
-
-updateCost();
-
-
-document.getElementById(
-"orderError"
-).textContent =
-"";
-
-
-document.getElementById(
-"orderError"
-).style.color =
-"#ff7777";
-
-
-document.getElementById(
-"modalBackdrop"
-).style.display =
-"flex";
-
-}
-
-
-function closeModal() {
-
-document.getElementById(
-"modalBackdrop"
-).style.display =
-"none";
-
-selectedMarket =
-null;
-
-}
-
-
-function updateCost() {
-
-const price =
-num(
-document.getElementById(
-"orderPrice"
-).value
+const amount =
+prompt(
+`How many dollars do you want to invest in ${side.toUpperCase()}?`,
+"10"
 );
 
 
-const count =
-num(
-document.getElementById(
-"orderCount"
-).value
-);
-
-
-document.getElementById(
-"maxCost"
-).textContent =
-money(
-(price * count) / 100
-);
-
-}
-
-
-/* ================================
-BUY
-================================ */
-
-async function confirmBuy() {
-
-if (!selectedMarket)
+if (amount === null) {
 return;
+}
 
 
-const side =
-document.getElementById(
-"orderSide"
-).value;
-
-
-const price =
-num(
-document.getElementById(
-"orderPrice"
-).value
-);
-
-
-const count =
-num(
-document.getElementById(
-"orderCount"
-).value
-);
-
-
-const errorBox =
-document.getElementById(
-"orderError"
-);
+const dollars =
+Number(amount);
 
 
 if (
-price < 1 ||
-price > 99
+!Number.isFinite(dollars) ||
+dollars <= 0
 ) {
 
-errorBox.textContent =
-"Price must be 1-99 cents.";
+alert(
+"Enter a valid dollar amount."
+);
 
 return;
-
 }
 
 
-if (
-!Number.isInteger(count) ||
-count < 1
-) {
+const calculation =
+calculateInvestment(
+dollars,
+price
+);
 
-errorBox.textContent =
-"Contracts must be at least 1.";
+
+if (calculation.contracts <= 0) {
+
+alert(
+"That amount is too small for even 1 contract at the current price."
+);
 
 return;
-
 }
-
-
-const cost =
-price * count / 100;
 
 
 const confirmed =
 confirm(
-`BUY ${count} ${side.toUpperCase()} contract(s) at ${price}¢ each?\n\nMaximum cost: ${money(cost)}`
+[
+`BUY ${side.toUpperCase()}`,
+``,
+`Ticker: ${ticker}`,
+`Contracts: ${calculation.contracts}`,
+`Estimated cost: ${money(calculation.actualCost)}`,
+`Current price: ${(price * 100).toFixed(1)}¢`,
+``,
+`Place order?`
+].join("\n")
 );
 
 
-if (!confirmed)
+if (!confirmed) {
 return;
+}
 
 
 try {
 
-errorBox.textContent =
-"Submitting order...";
+setStatus(
+"Placing order..."
+);
 
 
 const response =
 await fetch(
-WORKER_URL +
-"/api/order",
+`${API}/api/order`,
 {
 method: "POST",
 
@@ -2295,18 +1587,13 @@ headers: {
 },
 
 body: JSON.stringify({
-
-ticker:
-selectedMarket.ticker,
-
+ticker,
 side,
-
-price,
-
-count
-
+count:
+calculation.contracts,
+price_cents:
+Math.round(price * 100)
 })
-
 }
 );
 
@@ -2315,187 +1602,242 @@ const data =
 await response.json();
 
 
-if (
-!response.ok ||
-!data.ok
-) {
+if (!response.ok) {
 
 throw new Error(
-JSON.stringify(
-data.error ||
-data.order ||
-data
-)
+data?.error ||
+"Order failed."
 );
-
 }
 
 
-errorBox.style.color =
-"#8cffb0";
-
-errorBox.textContent =
-"Order submitted successfully.";
-
-
-setTimeout(
-closeModal,
-1200
+setStatus(
+"Order submitted.",
+true
 );
 
 
-loadPortfolio();
+await loadPortfolio();
 
+} catch (error) {
+
+setStatus(
+error.message ||
+"Order failed.",
+false
+);
+}
+}
+
+
+// ------------------------------------
+// Status
+// ------------------------------------
+
+function setStatus(
+message,
+success = null
+) {
+
+const el =
+document.getElementById(
+"status"
+);
+
+
+el.textContent =
+message;
+
+
+el.className =
+"status";
+
+
+if (success === true) {
+el.classList.add("success");
+}
+
+if (success === false) {
+el.classList.add("error");
+}
+}
+
+
+// ------------------------------------
+// Events
+// ------------------------------------
+
+document.addEventListener(
+"input",
+event => {
+
+if (
+!event.target.classList.contains(
+"investment-input"
+)
+) {
+return;
+}
+
+
+const card =
+event.target.closest(
+".opportunity-card"
+);
+
+
+if (!card) return;
+
+
+const amount =
+Number(event.target.value);
+
+
+const price =
+Number(
+card.dataset.price
+);
+
+
+const calc =
+calculateInvestment(
+amount,
+price
+);
+
+
+card.querySelector(
+".contracts"
+).textContent =
+calc.contracts;
+
+
+card.querySelector(
+".actual-cost"
+).textContent =
+money(calc.actualCost);
+
+
+card.querySelector(
+".payout"
+).textContent =
+money(calc.payout);
+
+
+card.querySelector(
+".profit"
+).textContent =
+money(calc.profit);
+
+
+card.querySelector(
+".return-pct"
+).textContent =
+calc.returnPct.toFixed(1) + "%";
+
+
+card.querySelector(
+".unused"
+).textContent =
+money(calc.unused);
+
+}
+);
+
+
+document.addEventListener(
+"click",
+event => {
+
+const button =
+event.target.closest(
+".buy-opportunity, .nfl-order"
+);
+
+
+if (!button) {
+return;
+}
+
+
+const ticker =
+button.dataset.ticker;
+
+
+const side =
+button.dataset.side;
+
+
+const price =
+Number(
+button.dataset.price
+);
+
+
+if (!ticker || !side || !price) {
+return;
+}
+
+
+placeOrder(
+ticker,
+side,
+price
+);
+}
+);
+
+
+document
+.getElementById("sortSelect")
+.addEventListener(
+"change",
+renderOpportunities
+);
+
+
+// ------------------------------------
+// Start
+// ------------------------------------
+
+async function start() {
+
+try {
+
+setStatus(
+"Loading dashboard..."
+);
+
+
+await Promise.all([
+loadPortfolio(),
+loadMarkets(),
+loadNFL()
+]);
+
+
+setStatus(
+"Dashboard loaded.",
+true
+);
 
 } catch (error) {
 
 console.error(error);
 
-errorBox.style.color =
-"#ff7777";
 
-errorBox.textContent =
-"Order failed: " +
-error.message;
-
+setStatus(
+error.message ||
+"Failed to load dashboard.",
+false
+);
+}
 }
 
-}
 
-
-/* ================================
-EVENTS
-================================ */
-
-document.getElementById(
-"sortSelect"
-).addEventListener(
-"change",
-renderMarkets
-);
-
-
-document.getElementById(
-"minVolume"
-).addEventListener(
-"input",
-renderMarkets
-);
-
-
-document.getElementById(
-"maxSpread"
-).addEventListener(
-"input",
-renderMarkets
-);
-
-
-document.getElementById(
-"orderPrice"
-).addEventListener(
-"input",
-updateCost
-);
-
-
-document.getElementById(
-"orderCount"
-).addEventListener(
-"input",
-updateCost
-);
-
-
-document.getElementById(
-"orderSide"
-).addEventListener(
-"change",
-() => {
-
-if (!selectedMarket)
-return;
-
-
-const side =
-document.getElementById(
-"orderSide"
-).value;
-
-
-const price =
-side === "yes"
-? yesAsk(selectedMarket)
-: noAsk(selectedMarket);
-
-
-if (price) {
-
-document.getElementById(
-"orderPrice"
-).value =
-Math.round(price);
-
-updateCost();
-
-}
-
-}
-);
-
-
-/* ================================
-START
-================================ */
-
-loadPortfolio();
-loadMarkets();
-loadNFL();
-
-
-/* Portfolio */
-
-setInterval(
-loadPortfolio,
-10000
-);
-
-
-/* Markets */
-
-setInterval(
-loadMarkets,
-30000
-);
-
-
-/* NFL */
-
-setInterval(
-loadNFL,
-30000
-);
-
-
-/* Update settlement countdowns */
-
-setInterval(
-() => {
-
-if (allMarkets.length) {
-renderMarkets();
-}
-
-if (nflMarkets.length) {
-renderNFL();
-}
-
-},
-30000
-);
+start();
 
 </script>
 
 </body>
-
 </html>
