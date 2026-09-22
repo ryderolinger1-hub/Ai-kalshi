@@ -793,7 +793,7 @@ Number($("minMove").value) / 100
 
 };
 
-await api("/api/auto-trade",{
+await api("/api/auto-trade/settings",{
 method:"POST",
 body:JSON.stringify(body)
 });
@@ -853,11 +853,9 @@ return;
 
 try{
 
-await api("/api/auto-trade",{
+await api("/api/auto-trade/start",{
 method:"POST",
 body:JSON.stringify({
-
-enabled:true,
 
 confirmation:
 confirmation
@@ -890,11 +888,9 @@ async function stopTrading(){
 
 try{
 
-await api("/api/auto-trade",{
+await api("/api/auto-trade/stop",{
 method:"POST",
-body:JSON.stringify({
-enabled:false
-})
+body:JSON.stringify({})
 });
 
 showMessage(
