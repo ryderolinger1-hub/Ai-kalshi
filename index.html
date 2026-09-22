@@ -1,9 +1,17 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kalshi Weather Auto Trader</title>
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1"
+>
+
+<title>
+Kalshi Weather Auto Trader
+</title>
 
 <style>
 
@@ -17,349 +25,257 @@
 --green:#39e58c;
 --red:#ff5d6c;
 --blue:#5ca9ff;
---yellow:#ffd166
 }
 
 *{
-box-sizing:border-box
+box-sizing:border-box;
 }
 
 body{
 margin:0;
 background:var(--bg);
 color:var(--text);
-font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif
+font:14px Arial,sans-serif;
 }
 
 .wrap{
-max-width:1200px;
+max-width:1100px;
 margin:auto;
-padding:18px
+padding:18px;
 }
 
-header{
+.top{
 display:flex;
 justify-content:space-between;
-gap:15px;
 align-items:center;
-margin-bottom:16px
+gap:10px;
 }
 
 h1{
 margin:0;
-font-size:25px
+font-size:25px;
 }
 
 .muted{
-color:var(--muted)
+color:var(--muted);
 }
 
 .pill{
-padding:9px 12px;
-border:1px solid var(--border);
+padding:8px 12px;
+border:1px solid #632b33;
 border-radius:999px;
-font-weight:700;
-font-size:12px
-}
-
-.on{
-color:var(--green);
-border-color:#205c42
-}
-
-.off{
 color:var(--red);
-border-color:#632b33
+font-weight:800;
 }
 
-.cards{
+.pill.on{
+color:var(--green);
+border-color:#205c42;
+}
+
+.row{
 display:grid;
 grid-template-columns:repeat(5,1fr);
 gap:10px;
-margin-bottom:14px
+margin-top:15px;
 }
 
 .card{
 background:var(--panel);
 border:1px solid var(--border);
-border-radius:14px;
-padding:14px
+border-radius:12px;
+padding:14px;
+margin-bottom:12px;
 }
 
-.label{
-color:var(--muted);
-font-size:10px;
-text-transform:uppercase;
-letter-spacing:.08em
-}
-
-.value{
+.v{
 font-size:22px;
 font-weight:800;
-margin-top:5px
+margin-top:5px;
 }
 
-.form{
+.fields{
 display:grid;
 grid-template-columns:repeat(6,1fr);
-gap:9px;
-margin-top:10px
+gap:8px;
+margin-top:10px;
 }
 
-.field label{
+.fields label{
 display:block;
 color:var(--muted);
 font-size:11px;
-margin-bottom:5px
 }
 
-.field input,
-.modalbox input{
+.fields input{
 width:100%;
+padding:9px;
+margin-top:4px;
 background:#080c12;
 border:1px solid #293340;
 color:#fff;
-border-radius:9px;
-padding:10px
+border-radius:8px;
 }
 
-.actions{
+.buttons{
 display:flex;
-flex-wrap:wrap;
 gap:8px;
-margin-top:11px
+flex-wrap:wrap;
+margin-top:10px;
 }
 
 button{
 border:0;
-border-radius:9px;
-padding:10px 13px;
-font-weight:800;
-color:#fff;
+padding:10px 12px;
+border-radius:8px;
 background:#202936;
-cursor:pointer
-}
-
-button:hover{
-filter:brightness(1.12)
+color:#fff;
+font-weight:800;
+cursor:pointer;
 }
 
 button.blue{
-background:#245a91
+background:#245a91;
 }
 
 button.green{
-background:#176b45
+background:#176b45;
 }
 
 button.red{
-background:#7b2835
-}
-
-.msg{
-display:none;
-margin-top:10px;
-padding:10px;
-border-radius:9px;
-background:#0a0f15;
-border:1px solid var(--border)
-}
-
-.msg.show{
-display:block
-}
-
-.msg.error{
-color:#ff8791;
-border-color:#632b33
-}
-
-.msg.good{
-color:var(--green);
-border-color:#205c42
-}
-
-.bot{
-margin-top:10px;
-padding:10px;
-border-radius:9px;
-background:#0a0f15;
-border:1px solid var(--border);
-font-size:12px;
-line-height:1.5
-}
-
-.summary{
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-margin:14px 0
-}
-
-.badge{
-padding:7px 9px;
-background:#111720;
-border:1px solid var(--border);
-border-radius:8px;
-color:var(--muted)
-}
-
-.badge strong{
-color:#fff
+background:#7b2835;
 }
 
 .market{
 background:var(--panel);
 border:1px solid var(--border);
-border-radius:14px;
-margin-bottom:10px;
-overflow:hidden
+border-radius:12px;
+padding:13px;
+margin:10px 0;
 }
 
-.top{
+.market-top{
 display:flex;
 justify-content:space-between;
 gap:10px;
-padding:13px
 }
 
-.title{
-font-weight:800
+.market-title{
+font-weight:800;
 }
 
-.meta{
+.status-buy{
+color:var(--green);
+font-weight:800;
+}
+
+.status-no{
+color:var(--red);
+font-weight:800;
+}
+
+.market-meta{
 color:var(--muted);
 font-size:11px;
-margin-top:4px
-}
-
-.status{
-padding:7px 9px;
-border-radius:8px;
-font-size:11px;
-font-weight:800;
-white-space:nowrap;
-height:max-content
-}
-
-.buy{
-background:#123c29;
-color:var(--green)
-}
-
-.wait{
-background:#2a1519;
-color:#ff8791
+margin-top:4px;
 }
 
 .metrics{
 display:grid;
 grid-template-columns:repeat(5,1fr);
 gap:8px;
-padding:0 13px 13px
+margin-top:10px;
 }
 
 .metric{
 background:var(--panel2);
 padding:9px;
-border-radius:8px
+border-radius:8px;
 }
 
 .metric span{
 display:block;
 color:var(--muted);
-font-size:9px;
-text-transform:uppercase
+font-size:10px;
+text-transform:uppercase;
 }
 
-.metric strong{
+.metric b{
 display:block;
-margin-top:3px
+margin-top:3px;
 }
 
 .good{
-color:var(--green)
+color:var(--green);
 }
 
 .bad{
-color:var(--red)
+color:var(--red);
 }
 
 .reason{
-padding:10px 13px;
+padding-top:10px;
+margin-top:10px;
 border-top:1px solid var(--border);
 color:var(--muted);
-font-size:11px
+font-size:11px;
 }
 
 .modal{
+display:none;
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.78);
-display:none;
+background:#000b;
 align-items:center;
 justify-content:center;
-padding:20px
 }
 
 .modal.show{
-display:flex
+display:flex;
 }
 
 .modalbox{
-width:min(420px,100%);
 background:var(--panel);
 border:1px solid var(--border);
-border-radius:14px;
-padding:20px
+border-radius:12px;
+padding:20px;
+width:360px;
 }
 
-@media(max-width:900px){
-
-.cards{
-grid-template-columns:repeat(2,1fr)
+.modalbox input{
+width:100%;
+box-sizing:border-box;
+padding:10px;
+margin:8px 0;
+background:#080c12;
+color:white;
+border:1px solid #293340;
+border-radius:8px;
 }
 
-.form{
-grid-template-columns:repeat(3,1fr)
+#msg{
+margin-top:10px;
 }
 
+@media(max-width:800px){
+
+.row,
+.fields,
 .metrics{
-grid-template-columns:repeat(3,1fr)
-}
-
-}
-
-@media(max-width:600px){
-
-.wrap{
-padding:11px
-}
-
-header{
-align-items:flex-start
-}
-
-.cards,
-.form,
-.metrics{
-grid-template-columns:repeat(2,1fr)
-}
-
-.top{
-flex-direction:column
+grid-template-columns:repeat(2,1fr);
 }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="wrap">
 
-<header>
+<div class="top">
 
 <div>
 
@@ -368,90 +284,100 @@ Position Ledger — Kalshi Weather
 </h1>
 
 <div class="muted">
-Weather-model BUY signals • Kalshi V2 orders • Kalshi-only take profit
+Weather BUY + automatic take-profit SELL
 </div>
 
 </div>
 
 <div
 id="status"
-class="pill off"
+class="pill"
 >
 REAL TRADING OFF
 </div>
 
-</header>
+</div>
 
 
-<div class="cards">
+<div class="row">
 
 <div class="card">
-<div class="label">
+
+<div class="muted">
 Max / Trade
 </div>
 
 <div
 id="maxTradeD"
-class="value"
+class="v"
 >
 $5.00
 </div>
+
 </div>
 
 
 <div class="card">
-<div class="label">
+
+<div class="muted">
 Max / Day
 </div>
 
 <div
 id="maxDayD"
-class="value"
+class="v"
 >
 $20.00
 </div>
+
 </div>
 
 
 <div class="card">
-<div class="label">
+
+<div class="muted">
 Spent Today
 </div>
 
 <div
 id="spentD"
-class="value"
+class="v"
 >
 $0.00
 </div>
+
 </div>
 
 
 <div class="card">
-<div class="label">
+
+<div class="muted">
 Kalshi Balance
 </div>
 
 <div
 id="balanceD"
-class="value"
+class="v"
 >
 —
 </div>
+
 </div>
 
 
 <div class="card">
-<div class="label">
+
+<div class="muted">
 Open Positions
 </div>
 
 <div
 id="positionsD"
-class="value"
+class="v"
 >
 0
 </div>
+
 </div>
 
 </div>
@@ -459,14 +385,14 @@ class="value"
 
 <div class="card">
 
-<div class="label">
+<b>
 AUTO-TRADER SETTINGS
-</div>
+</b>
 
+<div class="fields">
 
-<div class="form">
+<div>
 
-<div class="field">
 <label>
 Max $ / Trade
 </label>
@@ -474,14 +400,14 @@ Max $ / Trade
 <input
 id="maxTrade"
 type="number"
-min="1"
-step="1"
 value="5"
 >
+
 </div>
 
 
-<div class="field">
+<div>
+
 <label>
 Max $ / Day
 </label>
@@ -489,14 +415,14 @@ Max $ / Day
 <input
 id="maxDay"
 type="number"
-min="1"
-step="1"
 value="20"
 >
+
 </div>
 
 
-<div class="field">
+<div>
+
 <label>
 Take Profit %
 </label>
@@ -504,14 +430,14 @@ Take Profit %
 <input
 id="tp"
 type="number"
-min="1"
-step="1"
 value="25"
 >
+
 </div>
 
 
-<div class="field">
+<div>
+
 <label>
 Min Minutes
 </label>
@@ -519,14 +445,14 @@ Min Minutes
 <input
 id="mins"
 type="number"
-min="1"
-step="15"
 value="180"
 >
+
 </div>
 
 
-<div class="field">
+<div>
+
 <label>
 Min Weather Edge %
 </label>
@@ -534,14 +460,14 @@ Min Weather Edge %
 <input
 id="edge"
 type="number"
-min="0"
-step="1"
 value="1"
 >
+
 </div>
 
 
-<div class="field">
+<div>
+
 <label>
 Min Expected Move ¢
 </label>
@@ -549,16 +475,15 @@ Min Expected Move ¢
 <input
 id="move"
 type="number"
-min="0"
-step="0.1"
 value="1"
 >
-</div>
 
 </div>
 
+</div>
 
-<div class="actions">
+
+<div class="buttons">
 
 <button
 class="blue"
@@ -597,72 +522,83 @@ REFRESH
 </div>
 
 
-<div
-id="msg"
-class="msg"
-></div>
+<div id="msg"></div>
 
 
-<div class="bot">
+<div class="muted">
 
 <div>
-<b>Last action:</b>
+<b>
+Last action:
+</b>
+
 <span id="lastAction">
 —
 </span>
+
 </div>
 
+
 <div>
-<b>Last error:</b>
+
+<b>
+Last error:
+</b>
+
 <span id="lastError">
 —
 </span>
-</div>
 
 </div>
 
 </div>
 
+</div>
 
-<div class="summary">
 
-<div class="badge">
-Markets
-<strong id="marketCount">
+<div class="card">
+
+<b>
+Markets:
+</b>
+
+<span id="marketCount">
 0
-</strong>
-</div>
+</span>
 
-<div class="badge">
-Eligible
-<strong id="eligibleCount">
+&nbsp;
+
+<b>
+Eligible:
+</b>
+
+<span id="eligibleCount">
 0
-</strong>
-</div>
+</span>
 
-<div class="badge">
-Rejected
-<strong id="rejectedCount">
+&nbsp;
+
+<b>
+Rejected:
+</b>
+
+<span id="rejectedCount">
 0
-</strong>
-</div>
+</span>
 
-<div class="badge">
-Updated
-<strong id="updated">
+&nbsp;
+
+<span
+class="muted"
+id="updated"
+>
 —
-</strong>
-</div>
+</span>
 
 </div>
 
 
 <div id="markets">
-
-<div class="card muted">
-Loading…
-</div>
-
 </div>
 
 </div>
@@ -679,9 +615,9 @@ class="modal"
 Start Real Trading
 </h2>
 
-<p class="muted">
-Type the exact confirmation below.
-</p>
+<div class="muted">
+Type exactly:
+</div>
 
 <b>
 ENABLE REAL TRADING
@@ -690,10 +626,9 @@ ENABLE REAL TRADING
 <input
 id="confirm"
 placeholder="ENABLE REAL TRADING"
-autocomplete="off"
 >
 
-<div class="actions">
+<div class="buttons">
 
 <button
 class="green"
@@ -717,21 +652,21 @@ CANCEL
 
 <script>
 
-const WORKER =
+const WORKER=
 "https://worker1.ryderolinger1.workers.dev";
 
 
-const $ =
-id =>
+const $=
+id=>
 document.getElementById(
 id
 );
 
 
-const esc =
-s =>
+const esc=
+s=>
 String(
-  s ?? ""
+  s??""
 )
 .replace(
   /&/g,
@@ -751,117 +686,143 @@ String(
 );
 
 
-const money =
-n =>
+const money=
+n=>
 `$${Number(
-  n || 0
+  n||0
 ).toFixed(2)}`;
 
 
-const pct =
-v =>
+const pct=
+v=>
 (
   Number(
-    v || 0
+    v||0
   )*
   100
 ).toFixed(1)+
 "%";
 
 
-const cents =
-v =>
+const cents=
+v=>
 Number(
-  v || 0
+  v||0
 ).toFixed(1)+
 "¢";
 
 
 async function api(
-  path,
-  options={}
+path,
+options={}
 ){
 
-  const r=
-    await fetch(
-      WORKER+
-      path,
-      {
-        ...options,
+const r=
+await fetch(
+WORKER+
+path,
+{
+  ...options,
 
-        headers:{
-          "Content-Type":
-            "application/json",
+  headers:{
+    "Content-Type":
+      "application/json",
 
-          ...(options.headers||{})
-        }
-      }
-    );
-
-  let d={};
-
-  try{
-    d=
-      await r.json();
+    ...(options.headers||{})
   }
+}
+);
 
-  catch{
-    throw new Error(
-      "Worker returned invalid JSON."
-    );
-  }
 
-  if(
-    !r.ok
-  ){
-    throw new Error(
-      d.error||
-      d.message||
-      `HTTP ${r.status}`
-    );
-  }
+let d;
 
-  return d;
+try{
+
+d=
+await r.json();
+
+}
+
+catch{
+
+throw new Error(
+"Worker returned invalid JSON."
+);
+
 }
 
 
-function show(
-  text,
-  type="good"
+if(
+!r.ok
 ){
-  $("msg").textContent=
-    text;
 
-  $("msg").className=
-    "msg show "+
-    type;
+throw new Error(
+d.error||
+d.message||
+`HTTP ${r.status}`
+);
+
 }
 
 
-function actionText(a){
+return d;
 
-  if(
-    !a
-  ){
-    return "—";
-  }
+}
 
-  return [
-    a.type,
-    a.ticker,
-    a.side,
 
-    a.contracts
-      ? `${a.contracts} contracts`
-      : "",
+function actionText(
+a
+){
 
-    a.reason,
-    a.message
-  ]
-  .filter(Boolean)
-  .join(
-    " • "
-  );
+if(
+!a
+){
+
+return "—";
+
+}
+
+
+return [
+
+a.type,
+
+a.ticker,
+
+a.side,
+
+a.contracts
+  ? `${a.contracts} contracts`
+  : "",
+
+a.reason,
+
+a.message
+
+]
+.filter(Boolean)
+.join(
+" • "
+);
+
+}
+
+
+function message(
+text,
+error=false
+){
+
+$("msg")
+.textContent=
+text;
+
+$("msg")
+.style.color=
+error
+  ? "#ff5d6c"
+  : "#39e58c";
+
 }
 
 
@@ -871,99 +832,119 @@ STATUS
 
 async function loadStatus(){
 
-  const s=
-    await api(
-      "/api/auto-trade/status"
-    );
+const s=
+await api(
+"/api/auto-trade/status"
+);
 
-  $("status").textContent=
-    s.enabled
-      ? "REAL TRADING ON"
-      : "REAL TRADING OFF";
 
-  $("status").className=
-    "pill "+
-    (
-      s.enabled
-        ? "on"
-        : "off"
-    );
+$("status")
+.textContent=
+s.enabled
+  ? "REAL TRADING ON"
+  : "REAL TRADING OFF";
 
-  $("maxTrade").value=
-    s.maxTrade??
-    5;
 
-  $("maxDay").value=
-    s.maxDay??
-    20;
+$("status")
+.className=
+"pill"+
+(
+  s.enabled
+    ? " on"
+    : ""
+);
 
-  $("tp").value=
-    Number(
-      s.takeProfit??
-      .25
-    )*
-    100;
 
-  const f=
-    s.filters||
-    {};
+$("maxTrade")
+.value=
+s.maxTrade??5;
 
-  $("mins").value=
-    f.minMinutesToClose??
-    180;
 
-  $("edge").value=
-    Number(
-      f.minEdge??
-      .01
-    )*
-    100;
+$("maxDay")
+.value=
+s.maxDay??20;
 
-  $("move").value=
-    Number(
-      f.minExpectedPriceMove??
-      .01
-    )*
-    100;
 
-  $("maxTradeD")
-    .textContent=
-      money(
-        s.maxTrade
-      );
+$("tp")
+.value=
+Number(
+  s.takeProfit??.25
+)*
+100;
 
-  $("maxDayD")
-    .textContent=
-      money(
-        s.maxDay
-      );
 
-  $("spentD")
-    .textContent=
-      money(
-        s.spentToday
-      );
+const f=
+s.filters||
+{};
 
-  $("positionsD")
-    .textContent=
-      Array.isArray(
-        s.entries
-      )
-        ? s.entries.length
-        : 0;
 
-  $("lastAction")
-    .textContent=
-      actionText(
-        s.lastAction
-      );
+$("mins")
+.value=
+f.minMinutesToClose??
+180;
 
-  $("lastError")
-    .textContent=
-      s.lastError||
-      "—";
 
-  return s;
+$("edge")
+.value=
+Number(
+  f.minEdge??.01
+)*
+100;
+
+
+$("move")
+.value=
+Number(
+  f.minExpectedPriceMove??.01
+)*
+100;
+
+
+$("maxTradeD")
+.textContent=
+money(
+  s.maxTrade
+);
+
+
+$("maxDayD")
+.textContent=
+money(
+  s.maxDay
+);
+
+
+$("spentD")
+.textContent=
+money(
+  s.spentToday
+);
+
+
+$("positionsD")
+.textContent=
+Array.isArray(
+  s.entries
+)
+  ? s.entries.length
+  : 0;
+
+
+$("lastAction")
+.textContent=
+actionText(
+  s.lastAction
+);
+
+
+$("lastError")
+.textContent=
+s.lastError||
+"—";
+
+
+return s;
+
 }
 
 
@@ -973,27 +954,30 @@ BALANCE
 
 async function loadBalance(){
 
-  try{
+try{
 
-    const b=
-      await api(
-        "/api/account/balance"
-      );
+const b=
+await api(
+"/api/account/balance"
+);
 
-    $("balanceD")
-      .textContent=
-        money(
-          b.balanceDollars
-        );
 
-  }
+$("balanceD")
+.textContent=
+money(
+  b.balanceDollars
+);
 
-  catch{
+}
 
-    $("balanceD")
-      .textContent=
-        "—";
-  }
+catch{
+
+$("balanceD")
+.textContent=
+"—";
+
+}
+
 }
 
 
@@ -1003,195 +987,215 @@ SETTINGS
 
 async function saveSettings(){
 
-  try{
+try{
 
-    await api(
-      "/api/auto-trade/settings",
-      {
-        method:
-          "POST",
+await api(
+"/api/auto-trade/settings",
+{
+  method:
+    "POST",
 
-        body:
-          JSON.stringify({
+  body:
+    JSON.stringify({
 
-            maxTrade:
-              Number(
-                $("maxTrade")
-                  .value
-              ),
+      maxTrade:
+        Number(
+          $("maxTrade")
+            .value
+        ),
 
-            maxDay:
-              Number(
-                $("maxDay")
-                  .value
-              ),
+      maxDay:
+        Number(
+          $("maxDay")
+            .value
+        ),
 
-            takeProfit:
-              Number(
-                $("tp")
-                  .value
-              )/
-              100,
+      takeProfit:
+        Number(
+          $("tp")
+            .value
+        )/
+        100,
 
-            minMinutesToClose:
-              Number(
-                $("mins")
-                  .value
-              ),
+      minMinutesToClose:
+        Number(
+          $("mins")
+            .value
+        ),
 
-            minEdge:
-              Number(
-                $("edge")
-                  .value
-              )/
-              100,
+      minEdge:
+        Number(
+          $("edge")
+            .value
+        )/
+        100,
 
-            minExpectedPriceMove:
-              Number(
-                $("move")
-                  .value
-              )/
-              100
+      minExpectedPriceMove:
+        Number(
+          $("move")
+            .value
+        )/
+        100
 
-          })
-      }
-    );
+    })
+}
+);
 
-    show(
-      "Settings saved."
-    );
 
-    await refresh();
+message(
+"Settings saved."
+);
 
-  }
 
-  catch(e){
+await refresh();
 
-    show(
-      e.message,
-      "error"
-    );
-  }
+}
+
+catch(e){
+
+message(
+e.message,
+true
+);
+
+}
+
 }
 
 
 /* =========================================================
-START / STOP
+START
 ========================================================= */
 
 function openStart(){
 
-  $("modal")
-    .classList
-    .add(
-      "show"
-    );
+$("modal")
+.classList
+.add(
+"show"
+);
 
-  $("confirm")
-    .value=
-      "";
+$("confirm")
+.value=
+"";
 
-  setTimeout(
-    () =>
-      $("confirm")
-        .focus(),
-    50
-  );
+$("confirm")
+.focus();
+
 }
+
 
 function closeStart(){
 
-  $("modal")
-    .classList
-    .remove(
-      "show"
-    );
+$("modal")
+.classList
+.remove(
+"show"
+);
+
 }
 
 
 async function startTrading(){
 
-  if(
-    $("confirm")
-      .value
-      .trim()!==
-      "ENABLE REAL TRADING"
-  ){
-    alert(
-      "Type ENABLE REAL TRADING exactly."
-    );
+if(
+$("confirm")
+.value
+.trim()!==
+"ENABLE REAL TRADING"
+){
 
-    return;
-  }
+alert(
+"Type ENABLE REAL TRADING exactly."
+);
 
-  try{
+return;
 
-    await api(
-      "/api/auto-trade/start",
-      {
-        method:
-          "POST",
-
-        body:
-          JSON.stringify({
-            confirmation:
-              "ENABLE REAL TRADING"
-          })
-      }
-    );
-
-    closeStart();
-
-    show(
-      "REAL TRADING ON — initial scan started."
-    );
-
-    setTimeout(
-      refresh,
-      1200
-    );
-  }
-
-  catch(e){
-
-    show(
-      e.message,
-      "error"
-    );
-  }
 }
 
 
+try{
+
+await api(
+"/api/auto-trade/start",
+{
+  method:
+    "POST",
+
+  body:
+    JSON.stringify({
+      confirmation:
+        "ENABLE REAL TRADING"
+    })
+}
+);
+
+
+closeStart();
+
+
+message(
+"REAL TRADING ON — initial scan started."
+);
+
+
+setTimeout(
+refresh,
+1200
+);
+
+}
+
+catch(e){
+
+message(
+e.message,
+true
+);
+
+}
+
+}
+
+
+/* =========================================================
+STOP
+========================================================= */
+
 async function stopTrading(){
 
-  try{
+try{
 
-    await api(
-      "/api/auto-trade/stop",
-      {
-        method:
-          "POST",
+await api(
+"/api/auto-trade/stop",
+{
+  method:
+    "POST",
 
-        body:
-          JSON.stringify({})
-      }
-    );
+  body:
+    "{}"
+}
+);
 
-    show(
-      "Real trading stopped."
-    );
 
-    await refresh();
+message(
+"Real trading stopped."
+);
 
-  }
 
-  catch(e){
+await refresh();
 
-    show(
-      e.message,
-      "error"
-    );
-  }
+}
+
+catch(e){
+
+message(
+e.message,
+true
+);
+
+}
+
 }
 
 
@@ -1201,40 +1205,45 @@ RUN NOW
 
 async function runNow(){
 
-  try{
+try{
 
-    const d=
-      await api(
-        "/api/auto-trade/run-now",
-        {
-          method:
-            "POST",
+const r=
+await api(
+"/api/auto-trade/run-now",
+{
+  method:
+    "POST",
 
-          body:
-            JSON.stringify({})
-        }
-      );
+  body:
+    "{}"
+}
+);
 
-    show(
-      d.message||
-      "Auto-buyer run queued."
-    );
 
-    setTimeout(
-      refresh,
-      1200
-    );
-  }
+message(
+r.message||
+"Auto-buyer/take-profit run queued."
+);
 
-  catch(e){
 
-    show(
-      e.message,
-      "error"
-    );
+setTimeout(
+refresh,
+1200
+);
 
-    await loadStatus();
-  }
+}
+
+catch(e){
+
+message(
+e.message,
+true
+);
+
+await loadStatus();
+
+}
+
 }
 
 
@@ -1243,51 +1252,57 @@ MARKET CARD
 ========================================================= */
 
 function renderMarket(
-  m,
-  filters
+m,
+f
 ){
 
-  const edge=
-    Number(
-      m.edge
-    );
-
-  const model=
-    Number(
-      m.modelProbability
-    );
-
-  const em=
-    Number(
-      m.expectedMove
-    );
-
-  const px=
-    Number(
-      m.entryPrice
-    );
-
-  const eligible=
-    m.eligible===
-    true;
-
-  const close=
-    m.closeTime
-      ? new Date(
-          m.closeTime
-        ).toLocaleTimeString()
-      : "—";
+const eligible=
+m.eligible===
+true;
 
 
-  return `
+const edge=
+Number(
+m.edge
+);
+
+
+const model=
+Number(
+m.modelProbability
+);
+
+
+const em=
+Number(
+m.expectedMove
+);
+
+
+const px=
+Number(
+m.entryPrice
+);
+
+
+const close=
+m.closeTime
+  ? new Date(
+      m.closeTime
+    ).toLocaleTimeString()
+  : "—";
+
+
+return `
 
 <div class="market">
 
-<div class="top">
+<div class="market-top">
 
 <div>
 
-<div class="title">
+<div class="market-title">
+
 ${esc(
   m.city
     ? m.city+
@@ -1302,9 +1317,11 @@ ${esc(
         "Market"
       )
 )}
+
 </div>
 
-<div class="meta">
+
+<div class="market-meta">
 
 ${esc(
   m.ticker||
@@ -1337,11 +1354,12 @@ ${esc(
 
 </div>
 
+
 <div
-class="status ${
+class="${
   eligible
-    ? "buy"
-    : "wait"
+    ? "status-buy"
+    : "status-no"
 }"
 >
 
@@ -1358,13 +1376,14 @@ ${
 
 <div class="metrics">
 
+
 <div class="metric">
 
 <span>
 Kalshi
 </span>
 
-<strong>
+<b>
 
 ${
   Number.isFinite(
@@ -1374,7 +1393,7 @@ ${
     : "—"
 }
 
-</strong>
+</b>
 
 </div>
 
@@ -1385,7 +1404,7 @@ ${
 Model
 </span>
 
-<strong>
+<b>
 
 ${
   Number.isFinite(
@@ -1395,7 +1414,7 @@ ${
     : "—"
 }
 
-</strong>
+</b>
 
 </div>
 
@@ -1406,7 +1425,7 @@ ${
 Edge
 </span>
 
-<strong
+<b
 class="${
   edge>=0
     ? "good"
@@ -1422,7 +1441,7 @@ ${
     : "—"
 }
 
-</strong>
+</b>
 
 </div>
 
@@ -1433,7 +1452,7 @@ ${
 Expected Move
 </span>
 
-<strong>
+<b>
 
 ${
   Number.isFinite(
@@ -1443,7 +1462,7 @@ ${
     : "—"
 }
 
-</strong>
+</b>
 
 </div>
 
@@ -1454,21 +1473,21 @@ ${
 Take Profit
 </span>
 
-<strong>
+<b>
 
 ${
   (
     Number(
-      filters.takeProfit??
-      .25
+      f.takeProfit??.25
     )*
     100
   ).toFixed(0)
 }%
 
-</strong>
+</b>
 
 </div>
+
 
 </div>
 
@@ -1491,6 +1510,7 @@ ${esc(
 </div>
 
 `;
+
 }
 
 
@@ -1500,91 +1520,101 @@ MARKETS
 
 async function loadMarkets(){
 
-  const [
-    weather,
-    status
-  ]=
-    await Promise.all([
-      api(
-        "/api/weather"
-      ),
+const [
+  weather,
+  status
+]=
+await Promise.all([
 
-      api(
-        "/api/auto-trade/status"
+  api(
+    "/api/weather"
+  ),
+
+  api(
+    "/api/auto-trade/status"
+  )
+
+]);
+
+
+const f=
+status.filters||
+{
+  minMinutesToClose:
+    180,
+
+  minEdge:
+    .01,
+
+  minExpectedPriceMove:
+    .01,
+
+  takeProfit:
+    .25
+};
+
+
+const markets=
+Array.isArray(
+  weather.markets
+)
+  ? weather.markets
+  : (
+      Array.isArray(
+        weather.opportunities
       )
-    ]);
+        ? weather.opportunities
+        : []
+    );
 
-  const filters=
-    status.filters||
-    {
-      minMinutesToClose:
-        180,
 
-      minEdge:
-        .01,
+$("marketCount")
+.textContent=
+markets.length;
 
-      minExpectedPriceMove:
-        .01,
 
-      takeProfit:
-        .25
-    };
+$("eligibleCount")
+.textContent=
+markets.filter(
+  m=>
+    m.eligible
+).length;
 
-  const markets=
-    Array.isArray(
-      weather.markets
-    )
-      ? weather.markets
-      : (
-          Array.isArray(
-            weather.opportunities
+
+$("rejectedCount")
+.textContent=
+markets.filter(
+  m=>
+    !m.eligible
+).length;
+
+
+$("updated")
+.textContent=
+new Date()
+.toLocaleTimeString();
+
+
+$("markets")
+.innerHTML=
+markets.length
+
+  ? markets
+      .map(
+        m=>
+          renderMarket(
+            m,
+            f
           )
-            ? weather.opportunities
-            : []
-        );
+      )
+      .join("")
 
-  $("marketCount")
-    .textContent=
-      markets.length;
+  : `
+    <div class="card muted">
+      No market data returned.
+    </div>
+    `;
 
-  $("eligibleCount")
-    .textContent=
-      markets.filter(
-        m =>
-          m.eligible
-      ).length;
-
-  $("rejectedCount")
-    .textContent=
-      markets.filter(
-        m =>
-          !m.eligible
-      ).length;
-
-  $("updated")
-    .textContent=
-    new Date()
-      .toLocaleTimeString();
-
-  $("markets")
-    .innerHTML=
-      markets.length
-
-        ? markets
-            .map(
-              m =>
-                renderMarket(
-                  m,
-                  filters
-                )
-            )
-            .join("")
-
-        : `
-          <div class="card muted">
-            No market data returned.
-          </div>
-        `;
 }
 
 
@@ -1594,26 +1624,28 @@ REFRESH
 
 async function refresh(){
 
-  try{
+try{
 
-    await loadStatus();
+await loadStatus();
 
-    await loadBalance();
+await loadBalance();
 
-    await loadMarkets();
+await loadMarkets();
 
-  }
+}
 
-  catch(e){
+catch(e){
 
-    $("markets")
-      .innerHTML=
-        `
-        <div class="card">
-          ${esc(e.message)}
-        </div>
-        `;
-  }
+$("markets")
+.innerHTML=
+`
+<div class="card">
+${esc(e.message)}
+</div>
+`;
+
+}
+
 }
 
 
@@ -1621,69 +1653,75 @@ refresh();
 
 
 /*
-If the dashboard stays open and
-real trading is ON, trigger a run
+If the dashboard is open and
+trading is ON, trigger a Worker run
 every 10 seconds.
+
+The Worker also contains a scheduled()
+handler for dashboard-closed trading.
 */
 
 setInterval(
-  async () => {
+async()=>{
 
-    try{
+try{
 
-      const s=
-        await api(
-          "/api/auto-trade/status"
-        );
+const s=
+await api(
+"/api/auto-trade/status"
+);
 
-      if(
-        s.enabled
-      ){
-        await api(
-          "/api/auto-trade/run-now",
-          {
-            method:
-              "POST",
 
-            body:
-              "{}"
-          }
-        );
-      }
+if(
+s.enabled
+){
 
-    }
+await api(
+"/api/auto-trade/run-now",
+{
+  method:
+    "POST",
 
-    catch{}
+  body:
+    "{}"
+}
+);
 
-    await refresh();
+}
 
-  },
+}
 
-  10000
+catch{}
+
+
+await refresh();
+
+},
+10000
 );
 
 
 $("confirm")
-  .addEventListener(
-    "keydown",
-    e => {
+.addEventListener(
+"keydown",
+e=>{
 
-      if(
-        e.key===
-        "Enter"
-      ){
-        startTrading();
-      }
+if(
+e.key===
+"Enter"
+){
+startTrading();
+}
 
-      if(
-        e.key===
-        "Escape"
-      ){
-        closeStart();
-      }
+if(
+e.key===
+"Escape"
+){
+closeStart();
+}
 
-    }
-  );
+}
+);
 
 </script>
 
