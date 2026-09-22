@@ -1,1191 +1,765 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
->
-
-<title>
-Position Ledger — Kalshi Weather
-</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Position Ledger — Kalshi Weather Dashboard</title>
 
 <style>
-
-* {
-box-sizing: border-box;
+:root{
+--bg:#07090d;
+--panel:#0d1118;
+--panel2:#111722;
+--border:#202936;
+--text:#f2f5f8;
+--muted:#8c98a8;
+--green:#39e58c;
+--red:#ff5d6c;
+--yellow:#ffd166;
+--blue:#5ca9ff;
 }
 
-body {
+*{box-sizing:border-box}
 
-margin: 0;
-
-font-family:
-Inter,
-Arial,
-sans-serif;
-
-background:
-#0b0d10;
-
-color:
-#f5f5f5;
-
-padding:
-24px;
-
+body{
+margin:0;
+background:var(--bg);
+color:var(--text);
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
 }
 
-.container {
-
-max-width:
-1400px;
-
-margin:
-0 auto;
-
+.container{
+max-width:1200px;
+margin:auto;
+padding:18px;
 }
 
-h1 {
-
-margin:
-0 0 6px;
-
-font-size:
-30px;
-
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+margin-bottom:18px;
 }
 
-.subtitle {
-
-color:
-#8d939b;
-
-margin-bottom:
-24px;
-
+h1{
+margin:0;
+font-size:25px;
 }
 
-.topbar {
-
-display:
-flex;
-
-justify-content:
-space-between;
-
-align-items:
-center;
-
-gap:
-12px;
-
-flex-wrap:
-wrap;
-
-margin-bottom:
-20px;
-
+.subtitle{
+color:var(--muted);
+font-size:13px;
+margin-top:5px;
 }
 
-.status {
-
-padding:
-10px 16px;
-
-border-radius:
-999px;
-
-font-weight:
-700;
-
-font-size:
-13px;
-
+.status-pill{
+padding:9px 13px;
+border-radius:999px;
+background:#151b24;
+border:1px solid var(--border);
+font-size:12px;
+white-space:nowrap;
 }
 
-.status.off {
-
-background:
-#321519;
-
-color:
-#ff7d87;
-
+.status-pill.on{
+color:var(--green);
+border-color:#205c42;
 }
 
-.status.on {
-
-background:
-#12351f;
-
-color:
-#66e08a;
-
+.status-pill.off{
+color:var(--red);
+border-color:#632b33;
 }
 
-.cards {
-
-display:
-grid;
-
-grid-template-columns:
-repeat(
-4,
-1fr
-);
-
-gap:
-14px;
-
-margin-bottom:
-20px;
-
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+margin-bottom:18px;
 }
 
-.card {
-
-background:
-#12161b;
-
-border:
-1px solid #252b33;
-
-border-radius:
-14px;
-
-padding:
-18px;
-
+.card{
+background:var(--panel);
+border:1px solid var(--border);
+border-radius:14px;
+padding:15px;
 }
 
-.card-label {
-
-font-size:
-12px;
-
-color:
-#8d939b;
-
-text-transform:
-uppercase;
-
-margin-bottom:
-8px;
-
+.card-label{
+color:var(--muted);
+font-size:11px;
+text-transform:uppercase;
+letter-spacing:.08em;
 }
 
-.card-value {
-
-font-size:
-25px;
-
-font-weight:
-800;
-
+.card-value{
+margin-top:7px;
+font-size:23px;
+font-weight:700;
 }
 
-.settings {
-
-display:
-grid;
-
-grid-template-columns:
-repeat(
-3,
-1fr
-);
-
-gap:
-14px;
-
-margin-bottom:
-20px;
-
+.settings{
+margin-bottom:18px;
 }
 
-.field {
-
-display:
-flex;
-
-flex-direction:
-column;
-
-gap:
-7px;
-
+.settings-grid{
+display:grid;
+grid-template-columns:repeat(6,1fr);
+gap:10px;
+margin-top:12px;
 }
 
-.field label {
-
-font-size:
-12px;
-
-color:
-#8d939b;
-
+label{
+display:block;
+color:var(--muted);
+font-size:11px;
+margin-bottom:5px;
 }
 
-.field input {
-
-background:
-#0b0d10;
-
-color:
-#fff;
-
-border:
-1px solid #303740;
-
-border-radius:
-9px;
-
-padding:
-11px;
-
-font-size:
-15px;
-
+input{
+width:100%;
+background:#080c12;
+border:1px solid #293340;
+color:white;
+border-radius:9px;
+padding:10px;
+outline:none;
 }
 
-.buttons {
-
-display:
-flex;
-
-gap:
-10px;
-
-flex-wrap:
-wrap;
-
-margin-bottom:
-25px;
-
+input:focus{
+border-color:var(--blue);
 }
 
-button {
-
-border:
-0;
-
-border-radius:
-9px;
-
-padding:
-11px 16px;
-
-font-weight:
-800;
-
-cursor:
-pointer;
-
-background:
-#e9edf2;
-
-color:
-#0b0d10;
-
+button{
+border:0;
+border-radius:9px;
+padding:11px 14px;
+font-weight:700;
+cursor:pointer;
+color:#fff;
+background:#202936;
 }
 
-button.danger {
-
-background:
-#8d2631;
-
-color:
-#fff;
-
+button:hover{
+filter:brightness(1.15);
 }
 
-button.success {
-
-background:
-#246b3a;
-
-color:
-#fff;
-
+button.green{
+background:#176b45;
 }
 
-button.secondary {
-
-background:
-#252b33;
-
-color:
-#fff;
-
+button.red{
+background:#7b2835;
 }
 
-.section {
-
-margin-top:
-25px;
-
+button.blue{
+background:#245a91;
 }
 
-.section-header {
-
-display:
-flex;
-
-justify-content:
-space-between;
-
-align-items:
-center;
-
-margin-bottom:
-12px;
-
+.actions{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-top:12px;
 }
 
-.section-header h2 {
-
-margin:
-0;
-
-font-size:
-20px;
-
+.message{
+margin-top:10px;
+padding:10px 12px;
+border-radius:9px;
+background:#0a0f15;
+color:var(--muted);
+font-size:13px;
+display:none;
 }
 
-.small {
-
-font-size:
-12px;
-
-color:
-#8d939b;
-
+.message.show{
+display:block;
 }
 
-.markets {
-
-display:
-grid;
-
-grid-template-columns:
-repeat(
-auto-fit,
-minmax(
-320px,
-1fr
-)
-);
-
-gap:
-14px;
-
+.message.error{
+color:#ff8791;
+border:1px solid #54242b;
 }
 
-.market {
-
-background:
-#12161b;
-
-border:
-1px solid #252b33;
-
-border-radius:
-14px;
-
-padding:
-18px;
-
+.message.success{
+color:var(--green);
+border:1px solid #205c42;
 }
 
-.market-header {
-
-display:
-flex;
-
-justify-content:
-space-between;
-
-gap:
-12px;
-
-margin-bottom:
-15px;
-
+.section-title{
+font-size:20px;
+font-weight:700;
+margin:24px 0 10px;
 }
 
-.market-title {
-
-font-size:
-18px;
-
-font-weight:
-800;
-
+.summary{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+margin-bottom:12px;
 }
 
-.market-subtitle {
-
-font-size:
-12px;
-
-color:
-#8d939b;
-
-margin-top:
-4px;
-
+.badge{
+background:#111720;
+border:1px solid var(--border);
+padding:7px 10px;
+border-radius:8px;
+color:var(--muted);
+font-size:12px;
 }
 
-.side {
-
-font-size:
-12px;
-
-font-weight:
-800;
-
-padding:
-6px 9px;
-
-border-radius:
-7px;
-
-background:
-#252b33;
-
+.badge strong{
+color:white;
 }
 
-.metrics {
-
-display:
-grid;
-
-grid-template-columns:
-repeat(
-5,
-1fr
-);
-
-gap:
-8px;
-
+.market{
+background:var(--panel);
+border:1px solid var(--border);
+border-radius:15px;
+margin-bottom:12px;
+overflow:hidden;
 }
 
-.metric {
-
-background:
-#0d1014;
-
-border-radius:
-9px;
-
-padding:
-10px;
-
+.market-head{
+padding:15px;
+display:flex;
+justify-content:space-between;
+gap:12px;
+align-items:flex-start;
 }
 
-.metric-label {
-
-font-size:
-10px;
-
-color:
-#777f89;
-
-text-transform:
-uppercase;
-
-margin-bottom:
-5px;
-
+.market-title{
+font-weight:700;
+font-size:15px;
+line-height:1.4;
 }
 
-.metric-value {
-
-font-size:
-17px;
-
-font-weight:
-800;
-
+.market-meta{
+color:var(--muted);
+font-size:12px;
+margin-top:5px;
 }
 
-.good {
-
-color:
-#65d987;
-
+.decision{
+padding:7px 10px;
+border-radius:8px;
+font-size:12px;
+font-weight:800;
+white-space:nowrap;
 }
 
-.bad {
-
-color:
-#ff737d;
-
+.decision.buy{
+background:#123c29;
+color:var(--green);
 }
 
-.empty {
-
-background:
-#12161b;
-
-border:
-1px solid #252b33;
-
-border-radius:
-14px;
-
-padding:
-30px;
-
-text-align:
-center;
-
-color:
-#8d939b;
-
+.decision.wait{
+background:#29230f;
+color:var(--yellow);
 }
 
-.position {
-
-background:
-#12161b;
-
-border:
-1px solid #252b33;
-
-border-radius:
-14px;
-
-padding:
-15px;
-
-margin-bottom:
-10px;
-
+.decision.no{
+background:#2a1519;
+color:var(--red);
 }
 
-.message {
-
-position:
-fixed;
-
-right:
-20px;
-
-bottom:
-20px;
-
-background:
-#171c22;
-
-border:
-1px solid #303740;
-
-padding:
-13px 17px;
-
-border-radius:
-10px;
-
-display:
-none;
-
+.metrics{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:8px;
+padding:0 15px 15px;
 }
 
-@media (
-max-width: 900px
-) {
-
-.cards {
-
-grid-template-columns:
-repeat(
-2,
-1fr
-);
-
+.metric{
+background:var(--panel2);
+border-radius:9px;
+padding:10px;
 }
 
-.settings {
-
-grid-template-columns:
-1fr;
-
+.metric-label{
+color:var(--muted);
+font-size:10px;
+text-transform:uppercase;
 }
 
-.metrics {
-
-grid-template-columns:
-repeat(
-2,
-1fr
-);
-
+.metric-value{
+margin-top:4px;
+font-size:15px;
+font-weight:700;
 }
 
+.good{color:var(--green)}
+.bad{color:var(--red)}
+.warn{color:var(--yellow)}
+
+.diagnostics{
+border-top:1px solid var(--border);
+padding:13px 15px 15px;
 }
 
+.diag-title{
+font-size:12px;
+font-weight:800;
+text-transform:uppercase;
+letter-spacing:.06em;
+margin-bottom:9px;
+}
+
+.checks{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:7px;
+}
+
+.check{
+padding:9px 10px;
+border-radius:8px;
+background:#0a0f15;
+border:1px solid #1d2631;
+font-size:12px;
+}
+
+.check.pass{
+border-color:#205c42;
+}
+
+.check.fail{
+border-color:#632b33;
+}
+
+.check .top{
+display:flex;
+justify-content:space-between;
+gap:8px;
+font-weight:700;
+}
+
+.check .detail{
+color:var(--muted);
+margin-top:3px;
+line-height:1.35;
+}
+
+.reason{
+margin-top:9px;
+padding:10px;
+border-radius:8px;
+background:#0b1017;
+border:1px solid #2a3440;
+font-size:12px;
+}
+
+.reason strong{
+color:white;
+}
+
+.eligible{
+margin-top:9px;
+padding:11px;
+border-radius:9px;
+background:#0c2419;
+border:1px solid #205c42;
+color:var(--green);
+font-weight:800;
+}
+
+.ineligible{
+margin-top:9px;
+padding:11px;
+border-radius:9px;
+background:#251115;
+border:1px solid #632b33;
+color:#ff8791;
+font-weight:800;
+}
+
+.empty{
+padding:25px;
+text-align:center;
+color:var(--muted);
+background:var(--panel);
+border:1px solid var(--border);
+border-radius:14px;
+}
+
+.small{
+color:var(--muted);
+font-size:11px;
+}
+
+@media(max-width:900px){
+.grid{grid-template-columns:repeat(2,1fr)}
+.settings-grid{grid-template-columns:repeat(3,1fr)}
+.metrics{grid-template-columns:repeat(3,1fr)}
+}
+
+@media(max-width:600px){
+.container{padding:12px}
+header{align-items:flex-start}
+h1{font-size:21px}
+.grid{grid-template-columns:repeat(2,1fr)}
+.settings-grid{grid-template-columns:repeat(2,1fr)}
+.metrics{grid-template-columns:repeat(2,1fr)}
+.checks{grid-template-columns:1fr}
+.market-head{flex-direction:column}
+}
+
+/* confirmation modal */
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.78);
+display:none;
+align-items:center;
+justify-content:center;
+padding:20px;
+z-index:100;
+}
+
+.modal.show{
+display:flex;
+}
+
+.modal-box{
+width:min(430px,100%);
+background:#0d1118;
+border:1px solid #293340;
+border-radius:15px;
+padding:20px;
+}
+
+.modal-box h2{
+margin-top:0;
+}
+
+.modal-box p{
+color:var(--muted);
+font-size:13px;
+line-height:1.5;
+}
+
+.modal-actions{
+display:flex;
+gap:8px;
+margin-top:12px;
+}
 </style>
-
 </head>
-
 
 <body>
 
 <div class="container">
 
-
-<div class="topbar">
-
+<header>
 <div>
-
-<h1>
-Position Ledger — Kalshi Weather
-</h1>
-
+<h1>Position Ledger — Kalshi Weather</h1>
 <div class="subtitle">
-Weather auto-trader dashboard
+Weather-model BUY signals • Kalshi-only SELL logic
+</div>
 </div>
 
-</div>
-
-<div
-id="status"
-class="status off"
->
+<div id="tradingStatus" class="status-pill off">
 REAL TRADING OFF
 </div>
+</header>
 
-</div>
-
-
-<div class="cards">
+<div class="grid">
 
 <div class="card">
-
-<div class="card-label">
-Max / Trade
+<div class="card-label">Max / Trade</div>
+<div class="card-value" id="maxTradeDisplay">$5</div>
 </div>
-
-<div
-id="maxTradeCard"
-class="card-value"
->
-$5
-</div>
-
-</div>
-
 
 <div class="card">
-
-<div class="card-label">
-Max / Day
+<div class="card-label">Max / Day</div>
+<div class="card-value" id="maxDayDisplay">$20</div>
 </div>
-
-<div
-id="maxDayCard"
-class="card-value"
->
-$20
-</div>
-
-</div>
-
 
 <div class="card">
-
-<div class="card-label">
-Spent Today
+<div class="card-label">Spent Today</div>
+<div class="card-value" id="spentDisplay">$0.00</div>
 </div>
-
-<div
-id="spentCard"
-class="card-value"
->
-$0
-</div>
-
-</div>
-
 
 <div class="card">
-
-<div class="card-label">
-Open Positions
-</div>
-
-<div
-id="positionsCard"
-class="card-value"
->
-0
+<div class="card-label">Open Positions</div>
+<div class="card-value" id="positionsDisplay">0</div>
 </div>
 
 </div>
 
+<div class="card settings">
+
+<div class="card-label">AUTO-TRADER SETTINGS</div>
+
+<div class="settings-grid">
+
+<div>
+<label>Max $ / Trade</label>
+<input id="maxTrade" type="number" min="1" step="1" value="5">
 </div>
 
-
-<div class="card">
-
-<h2>
-Settings
-</h2>
-
-
-<div class="settings">
-
-
-<div class="field">
-
-<label>
-Max $ / Trade
-</label>
-
-<input
-id="maxTrade"
-type="number"
-step="0.01"
-min="1"
->
-
+<div>
+<label>Max $ / Day</label>
+<input id="maxDay" type="number" min="1" step="1" value="20">
 </div>
 
-
-<div class="field">
-
-<label>
-Max $ / Day
-</label>
-
-<input
-id="maxDay"
-type="number"
-step="0.01"
-min="1"
->
-
+<div>
+<label>Take Profit %</label>
+<input id="takeProfit" type="number" min="1" step="1" value="25">
 </div>
 
-
-<div class="field">
-
-<label>
-Take Profit %
-</label>
-
-<input
-id="takeProfit"
-type="number"
-step="1"
-min="1"
->
-
+<div>
+<label>Min Minutes Until Close</label>
+<input id="minMinutes" type="number" min="0" step="15" value="180">
 </div>
 
-
-<div class="field">
-
-<label>
-Min Minutes Until Close
-</label>
-
-<input
-id="minMinutes"
-type="number"
-step="1"
-min="0"
->
-
+<div>
+<label>Min Weather Edge %</label>
+<input id="minEdge" type="number" min="0" step="1" value="10">
 </div>
 
-
-<div class="field">
-
-<label>
-Min Weather Edge %
-</label>
-
-<input
-id="minEdge"
-type="number"
-step="0.1"
-min="0"
->
-
-</div>
-
-
-<div class="field">
-
-<label>
-Min Expected Move ¢
-</label>
-
-<input
-id="minMove"
-type="number"
-step="1"
-min="0"
->
-
+<div>
+<label>Min Expected Move ¢</label>
+<input id="minMove" type="number" min="0" step="0.1" value="1">
 </div>
 
 </div>
 
+<div class="actions">
 
-<div class="buttons">
-
-<button
-class="secondary"
-onclick="saveSettings()"
->
+<button class="blue" onclick="saveSettings()">
 SAVE SETTINGS
 </button>
 
-<button
-class="success"
-onclick="startTrading()"
->
+<button class="green" onclick="openStartModal()">
 START REAL TRADING
 </button>
 
-<button
-class="danger"
-onclick="stopTrading()"
->
+<button class="red" onclick="stopTrading()">
 STOP REAL TRADING
 </button>
 
-<button
-class="secondary"
-onclick="refreshAll()"
->
+<button onclick="refreshAll()">
 REFRESH
 </button>
 
 </div>
 
-</div>
-
-
-<div class="section">
-
-<div class="section-header">
-
-<h2>
-Today's Weather Markets
-</h2>
-
-<div class="small">
-Last update:
-<span id="lastUpdate">
-—
-</span>
-</div>
+<div id="settingsMessage" class="message"></div>
 
 </div>
 
-<div
-id="markets"
-class="markets"
+<div class="section-title">Today's Weather Markets</div>
+
+<div class="summary">
+<div class="badge">
+Markets: <strong id="marketCount">0</strong>
+</div>
+
+<div class="badge">
+Eligible: <strong id="eligibleCount">0</strong>
+</div>
+
+<div class="badge">
+Rejected: <strong id="rejectedCount">0</strong>
+</div>
+
+<div class="badge">
+Last update: <strong id="lastUpdate">—</strong>
+</div>
+</div>
+
+<div id="markets">
+<div class="empty">Loading markets...</div>
+</div>
+
+</div>
+
+<!-- START CONFIRMATION -->
+<div id="startModal" class="modal">
+
+<div class="modal-box">
+
+<h2>Start Real Trading</h2>
+
+<p>
+This enables the Worker to place real Kalshi orders.
+Type the exact confirmation below.
+</p>
+
+<p>
+<strong>ENABLE REAL TRADING</strong>
+</p>
+
+<input
+id="confirmation"
+type="text"
+autocomplete="off"
+placeholder="ENABLE REAL TRADING"
 >
 
-<div class="empty">
-Loading markets...
-</div>
+<div class="modal-actions">
+
+<button class="green" onclick="startTrading()">
+CONFIRM & START
+</button>
+
+<button onclick="closeStartModal()">
+CANCEL
+</button>
 
 </div>
 
 </div>
 
-
-<div class="section">
-
-<div class="section-header">
-
-<h2>
-Open Positions
-</h2>
-
 </div>
-
-<div id="positions">
-
-<div class="empty">
-No positions loaded.
-</div>
-
-</div>
-
-</div>
-
-
-</div>
-
-
-<div
-id="message"
-class="message"
-></div>
-
 
 <script>
 
+/* ============================================================
+CONFIG
+============================================================ */
 
-/* =========================================================
-WORKER URL
-========================================================= */
-
-const WORKER_URL =
+const WORKER =
 "https://worker1.ryderolinger1.workers.dev";
 
 
-/* =========================================================
+/* ============================================================
 HELPERS
-========================================================= */
+============================================================ */
 
-function $(id) {
+function $(id){
+return document.getElementById(id);
+}
 
-return document.getElementById(
-id
-);
+function money(v){
+const n = Number(v || 0);
+return "$" + n.toFixed(2);
+}
 
+function pct(v){
+return Number(v || 0).toFixed(1) + "%";
+}
+
+function cents(v){
+return Number(v || 0).toFixed(1) + "¢";
+}
+
+function escapeHtml(value){
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+}
+
+function showMessage(text,type=""){
+const el = $("settingsMessage");
+el.textContent = text;
+el.className = "message show " + type;
 }
 
 
-function showMessage(
-message
-) {
+/* ============================================================
+FETCH
+============================================================ */
 
-const box =
-$("message");
+async function api(path, options = {}){
 
-box.textContent =
-message;
-
-box.style.display =
-"block";
-
-setTimeout(
-() => {
-
-box.style.display =
-"none";
-
-},
-3000
-);
-
-}
-
-
-/* =========================================================
-API
-========================================================= */
-
-async function api(
-path,
-options = {}
-) {
-
-const response =
-await fetch(
-WORKER_URL + path,
-{
-cache:
-"no-store",
-
+const response = await fetch(WORKER + path, {
 ...options,
-
-headers: {
-
-"Content-Type":
-"application/json",
-
+headers:{
+"Content-Type":"application/json",
 ...(options.headers || {})
-
 }
-
-}
-);
-
-const text =
-await response.text();
+});
 
 let data;
 
-try {
-
-data =
-text
-? JSON.parse(text)
-: {};
-
+try{
+data = await response.json();
+}catch{
+throw new Error("Worker returned invalid JSON.");
 }
 
-catch {
-
-data =
-{
-raw:
-text
-};
-
-}
-
-if (
-!response.ok
-) {
-
+if(!response.ok){
 throw new Error(
 data.error ||
 data.message ||
-`HTTP ${response.status}`
+`Worker error ${response.status}`
 );
-
 }
 
 return data;
-
 }
 
 
-/* =========================================================
-STATUS
-========================================================= */
+/* ============================================================
+SETTINGS
+============================================================ */
 
-async function loadStatus() {
+async function loadStatus(){
 
-try {
+try{
 
-const status =
-await api(
-"/api/auto-trade/status"
-);
-
-
-$("status").textContent =
-status.enabled
-? "REAL TRADING ON"
-: "REAL TRADING OFF";
-
-
-$("status").className =
-status.enabled
-? "status on"
-: "status off";
-
-
-$("maxTradeCard").textContent =
-"$" +
-Number(
-status.maxTrade ??
-5
-).toFixed(2);
-
-
-$("maxDayCard").textContent =
-"$" +
-Number(
-status.maxDay ??
-20
-).toFixed(2);
-
-
-$("spentCard").textContent =
-"$" +
-Number(
-status.spentToday ??
-0
-).toFixed(2);
-
-
-const entries =
-status.entries ||
-status.openPositions ||
-[];
-
-
-$("positionsCard").textContent =
-entries.length;
-
-
-const filters =
-status.filters ||
-{};
-
+const s = await api("/api/auto-trade/status");
 
 $("maxTrade").value =
-Number(
-status.maxTrade ??
-5
-);
-
+Number(s.maxTrade ?? 5);
 
 $("maxDay").value =
-Number(
-status.maxDay ??
-20
-);
-
+Number(s.maxDay ?? 20);
 
 $("takeProfit").value =
-(
-Number(
-status.takeProfit ??
-0.25
-) *
-100
-).toFixed(0);
+Number(s.takeProfit ?? .25) * 100;
 
+const f = s.filters || {};
 
 $("minMinutes").value =
-Number(
-filters.minMinutesToClose ??
-180
-);
-
+Number(f.minMinutesToClose ?? 180);
 
 $("minEdge").value =
-(
-Number(
-filters.minEdge ??
-0.10
-) *
-100
-).toFixed(1);
-
+Number(f.minEdge ?? .10) * 100;
 
 $("minMove").value =
-(
-Number(
-filters.minExpectedPriceMove ??
-0.01
-) *
-100
-).toFixed(0);
+Number(f.minExpectedPriceMove ?? .01) * 100;
 
+$("maxTradeDisplay").textContent =
+money(s.maxTrade);
 
-renderPositions(
-entries
-);
+$("maxDayDisplay").textContent =
+money(s.maxDay);
+
+$("spentDisplay").textContent =
+money(s.spentToday);
+
+$("positionsDisplay").textContent =
+Array.isArray(s.entries)
+? s.entries.length
+: 0;
+
+const status = $("tradingStatus");
+
+if(s.enabled){
+
+status.textContent = "REAL TRADING ON";
+status.className = "status-pill on";
+
+}else{
+
+status.textContent = "REAL TRADING OFF";
+status.className = "status-pill off";
 
 }
-catch (
-error
-) {
+
+}catch(err){
 
 showMessage(
-"Status error: " +
-error.message
+"Could not load auto-trader status: " + err.message,
+"error"
 );
 
 }
@@ -1193,74 +767,49 @@ error.message
 }
 
 
-/* =========================================================
-SAVE SETTINGS
-========================================================= */
+async function saveSettings(){
 
-async function saveSettings() {
+try{
 
-try {
-
-await api(
-"/api/auto-trade/settings",
-{
-
-method:
-"POST",
-
-body:
-JSON.stringify({
+const body = {
 
 maxTrade:
-Number(
-$("maxTrade").value
-),
+Number($("maxTrade").value),
 
 maxDay:
-Number(
-$("maxDay").value
-),
+Number($("maxDay").value),
 
 takeProfit:
-Number(
-$("takeProfit").value
-) / 100,
+Number($("takeProfit").value) / 100,
 
 minMinutesToClose:
-Number(
-$("minMinutes").value
-),
+Number($("minMinutes").value),
 
 minEdge:
-Number(
-$("minEdge").value
-) / 100,
+Number($("minEdge").value) / 100,
 
 minExpectedPriceMove:
-Number(
-$("minMove").value
-) / 100
+Number($("minMove").value) / 100
 
-})
+};
 
-}
-);
-
+await api("/api/auto-trade/settings",{
+method:"POST",
+body:JSON.stringify(body)
+});
 
 showMessage(
-"Settings saved."
+"Settings saved successfully.",
+"success"
 );
 
 await refreshAll();
 
-}
-catch (
-error
-) {
+}catch(err){
 
 showMessage(
-"Could not save settings: " +
-error.message
+"Could not save settings: " + err.message,
+"error"
 );
 
 }
@@ -1268,64 +817,64 @@ error.message
 }
 
 
-/* =========================================================
-START TRADING
-========================================================= */
+/* ============================================================
+REAL TRADING
+============================================================ */
 
-async function startTrading() {
+function openStartModal(){
+
+$("confirmation").value = "";
+$("startModal").classList.add("show");
+
+setTimeout(()=>{
+$("confirmation").focus();
+},100);
+
+}
+
+function closeStartModal(){
+$("startModal").classList.remove("show");
+}
+
+
+async function startTrading(){
 
 const confirmation =
-prompt(
-'Type exactly: ENABLE REAL TRADING'
-);
+$("confirmation").value.trim();
 
-if (
-confirmation !==
-"ENABLE REAL TRADING"
-) {
+if(confirmation !== "ENABLE REAL TRADING"){
 
-showMessage(
-"Trading was not enabled."
+alert(
+"You must type exactly:\n\nENABLE REAL TRADING"
 );
 
 return;
-
 }
 
-try {
+try{
 
-await api(
-"/api/auto-trade/start",
-{
-
-method:
-"POST",
-
-body:
-JSON.stringify({
-
+await api("/api/auto-trade/start",{
+method:"POST",
+body:JSON.stringify({
+confirmation:
 confirmation
-
 })
+});
 
-}
-);
-
+closeStartModal();
 
 showMessage(
-"REAL TRADING ENABLED"
+"REAL TRADING IS NOW ON.",
+"success"
 );
 
 await refreshAll();
 
-}
-catch (
-error
-) {
+}catch(err){
 
-showMessage(
-"Could not start trading: " +
-error.message
+alert(
+"Could not start real trading:\n\n" +
+err.message
 );
 
 }
@@ -1333,39 +882,27 @@ error.message
 }
 
 
-/* =========================================================
-STOP TRADING
-========================================================= */
+async function stopTrading(){
 
-async function stopTrading() {
+try{
 
-try {
-
-await api(
-"/api/auto-trade/stop",
-{
-
-method:
-"POST"
-
-}
-);
-
+await api("/api/auto-trade/stop",{
+method:"POST",
+body:JSON.stringify({})
+});
 
 showMessage(
-"REAL TRADING STOPPED"
+"Real trading stopped.",
+"success"
 );
 
 await refreshAll();
 
-}
-catch (
-error
-) {
+}catch(err){
 
 showMessage(
-"Could not stop trading: " +
-error.message
+"Could not stop trading: " + err.message,
+"error"
 );
 
 }
@@ -1373,484 +910,579 @@ error.message
 }
 
 
-/* =========================================================
-NUMBER HELPERS
-========================================================= */
+/* ============================================================
+DIAGNOSTICS
+============================================================ */
 
-function getNumber(
-obj,
-...keys
-) {
+function getNumber(obj,...keys){
 
-for (
-const key of keys
-) {
+for(const key of keys){
 
-if (
+if(
 obj &&
 obj[key] !== undefined &&
 obj[key] !== null &&
 obj[key] !== ""
-) {
+){
 
-const n =
-Number(
-obj[key]
-);
+const n = Number(obj[key]);
 
-if (
-Number.isFinite(n)
-) {
-
+if(Number.isFinite(n))
 return n;
 
 }
 
 }
 
-}
-
 return null;
-
 }
 
 
-/* =========================================================
-MARKET VALUES
-
-THE WORKER ALREADY REVERSES THESE.
-
-HTML DOES NOT REVERSE THEM.
-========================================================= */
-
-function getEdge(
-market
-) {
-
-const value =
-Number(
-market?.edge
-);
-
-return Number.isFinite(
-value
-)
-? value * 100
-: null;
-
-}
-
-
-function getExpectedMove(
-market
-) {
-
-const value =
-Number(
-market?.expectedMove
-);
-
-return Number.isFinite(
-value
-)
-? value * 100
-: null;
-
-}
-
-
-function getModelProbability(
-market
-) {
-
-const value =
-Number(
-market?.modelProbability
-);
-
-return Number.isFinite(
-value
-)
-? value * 100
-: null;
-
-}
-
-
-function getMinutes(
-market
-) {
+function getMinutes(market){
 
 return getNumber(
 market,
 "minutesToClose",
 "minutes_to_close"
 );
-
 }
 
 
-function getPrice(
-market
-) {
+function getEdge(market){
 
 const value =
-Number(
-market?.entryPrice
+Number(market?.edge);
+
+if(!Number.isFinite(value))
+return null;
+
+return Math.abs(value) <= 1
+? value * 100
+: value;
+
+}
+
+
+
+function getExpectedMove(market){
+
+const value =
+Number(market?.expectedMove);
+
+if(!Number.isFinite(value))
+return null;
+
+return Math.abs(value) <= 1
+? value * 100
+: value;
+
+}
+
+
+
+function getSettlementText(market){
+
+if(market.winningRule)
+return market.winningRule;
+
+if(market.exactWinningTemperatures)
+return market.exactWinningTemperatures;
+
+const type =
+market.settlementType ||
+market.settlement?.type;
+
+const min =
+market.minTemp ??
+market.settlement?.minTemp;
+
+const max =
+market.maxTemp ??
+market.settlement?.maxTemp;
+
+if(type === "range" && min != null && max != null)
+return `${min}° to ${max}°`;
+
+if(type === "below" && max != null)
+return `${max}° or lower`;
+
+if(type === "above" && min != null)
+return `${min}° or higher`;
+
+return "Settlement rule recognized";
+}
+
+
+function hasSettlementRule(market){
+
+return Boolean(
+market.winningRule ||
+market.exactWinningTemperatures ||
+market.settlement ||
+market.settlementType
 );
 
-return Number.isFinite(
-value
-)
-? value
-: null;
-
 }
 
 
-/* =========================================================
-SETTLEMENT
-========================================================= */
+function hasOrderBook(market){
 
-function getSettlementText(
-market
-) {
-
-if (
-market?.settlement?.label
-) {
-
-return market.settlement.label;
-
-}
-
-if (
-market?.settlement
-) {
-
-if (
-typeof market.settlement ===
-"string"
-) {
-
-return market.settlement;
-
-}
-
-}
-
-if (
-market?.title
-) {
-
-return market.title;
-
-}
-
-return "Unknown";
-
-}
-
-
-/* =========================================================
-DIAGNOSTICS
-
-USES THE EXACT SAME VALUES AS AUTO-BUYER.
-========================================================= */
-
-function buildDiagnostics(
+const yesBid = getNumber(
 market,
-filters
-) {
+"yesBid",
+"yes_bid"
+);
+
+const yesAsk = getNumber(
+market,
+"yesAsk",
+"yes_ask"
+);
+
+const noBid = getNumber(
+market,
+"noBid",
+"no_bid"
+);
+
+const noAsk = getNumber(
+market,
+"noAsk",
+"no_ask"
+);
+
+return (
+yesBid != null ||
+yesAsk != null ||
+noBid != null ||
+noAsk != null ||
+market.orderbook
+);
+
+}
+
+
+function getOrderBookDetail(market){
+
+const yesBid = getNumber(
+market,
+"yesBid",
+"yes_bid"
+);
+
+const yesAsk = getNumber(
+market,
+"yesAsk",
+"yes_ask"
+);
+
+const noBid = getNumber(
+market,
+"noBid",
+"no_bid"
+);
+
+const noAsk = getNumber(
+market,
+"noAsk",
+"no_ask"
+);
+
+const parts = [];
+
+if(yesBid != null)
+parts.push(`YES bid ${cents(yesBid * (yesBid <= 1 ? 100 : 1))}`);
+
+if(yesAsk != null)
+parts.push(`YES ask ${cents(yesAsk * (yesAsk <= 1 ? 100 : 1))}`);
+
+if(noBid != null)
+parts.push(`NO bid ${cents(noBid * (noBid <= 1 ? 100 : 1))}`);
+
+if(noAsk != null)
+parts.push(`NO ask ${cents(noAsk * (noAsk <= 1 ? 100 : 1))}`);
+
+return parts.length
+? parts.join(" • ")
+: "Order book data available";
+}
+
+
+function getTitle(market){
+
+const city =
+market.city ||
+market.location ||
+market.cityName ||
+market.rawMarket?.city ||
+market.rawMarket?.location ||
+market.rawMarket?.cityName ||
+"";
+
+const question =
+market.title ||
+market.question ||
+market.name ||
+market.subtitle ||
+"Weather market";
+
+if(city)
+return `${city} — ${question}`;
+
+return question;
+
+}
+
+
+function getDecision(market){
+
+return (
+market.decision ||
+market.signal ||
+market.action ||
+"WAIT"
+).toString().toUpperCase();
+
+}
+
+
+function getPrice(market){
+
+let p = getNumber(
+market,
+"entryPrice",
+"price",
+"buyPrice",
+"priceCents",
+"yesAsk",
+"noAsk"
+);
+
+if(p === null)
+return null;
+
+if(p < 1)
+p *= 100;
+
+return p;
+
+}
+
+
+function getModelProbability(market){
+
+const value =
+Number(market?.modelProbability);
+
+if(!Number.isFinite(value))
+return null;
+
+return Math.abs(value) <= 1
+? value * 100
+: value;
+
+}
+
+
+
+/* ============================================================
+BUILD CHECKS
+============================================================ */
+
+function buildDiagnostics(market, filters){
 
 const checks = [];
 
-
 const minMinutes =
-Number(
-filters.minMinutesToClose ??
-180
-);
-
+Number(filters.minMinutesToClose ?? 180);
 
 const minEdge =
-Number(
-filters.minEdge ??
-0.10
-) * 100;
-
+Number(filters.minEdge ?? .10) * 100;
 
 const minMove =
-Number(
-filters.minExpectedPriceMove ??
-0.01
-) * 100;
+Number(filters.minExpectedPriceMove ?? .01) * 100;
 
 
-/*
-TIME
-*/
+/* TIME */
 
 const minutes =
-getMinutes(
-market
-);
+getMinutes(market);
 
-let timePass =
-false;
+let timePass = false;
+let timeDetail = "";
 
-let timeDetail =
-"";
-
-
-if (
-minutes === null
-) {
+if(minutes === null){
 
 timeDetail =
-"No close-time information.";
+"No close-time information returned.";
 
-}
-else {
+}else{
 
 timePass =
-minutes >=
-minMinutes;
+minutes >= minMinutes;
 
 timeDetail =
 `${minutes.toFixed(0)} min remaining • required ${minMinutes} min`;
 
 }
 
-
 checks.push({
-
-name:
-"Time until close",
-
-pass:
-timePass,
-
-detail:
-timeDetail
-
+name:"Time until close",
+pass:timePass,
+detail:timeDetail
 });
 
 
-/*
-EDGE
-*/
+/* EDGE */
+
+const rawEdge =
+getEdge(market);
 
 const edge =
-getEdge(
-market
-);
+rawEdge;
 
-let edgePass =
-false;
+let edgePass = false;
+let edgeDetail = "";
 
-let edgeDetail =
-"";
-
-
-if (
-edge === null
-) {
+if(edge === null){
 
 edgeDetail =
 "Weather-model edge unavailable.";
 
-}
-else {
+}else{
 
 edgePass =
-edge >=
-minEdge;
+edge >= minEdge;
 
 edgeDetail =
 `${edge >= 0 ? "+" : ""}${edge.toFixed(1)}% • required +${minEdge.toFixed(1)}%`;
 
 }
 
-
 checks.push({
-
-name:
-"Weather model edge",
-
-pass:
-edgePass,
-
-detail:
-edgeDetail
-
+name:"Weather model edge",
+pass:edgePass,
+detail:edgeDetail
 });
 
 
-/*
-EXPECTED MOVE
-*/
+/* PRICE MOVE */
 
 const move =
-getExpectedMove(
-market
-);
+getExpectedMove(market);
 
-let movePass =
-false;
+let movePass = false;
+let moveDetail = "";
 
-let moveDetail =
-"";
-
-
-if (
-move === null
-) {
+if(move === null){
 
 moveDetail =
-"Expected move unavailable.";
+"Expected price movement unavailable.";
 
-}
-else {
+}else{
 
 movePass =
-move >=
-minMove;
+move >= minMove;
 
 moveDetail =
-`${move.toFixed(0)}¢ expected • required ${minMove.toFixed(0)}¢`;
+`${move.toFixed(1)}¢ expected • required ${minMove.toFixed(1)}¢`;
 
 }
 
+checks.push({
+name:"Expected price move",
+pass:movePass,
+detail:moveDetail
+});
+
+
+/* SETTLEMENT */
+
+const settlementPass =
+hasSettlementRule(market);
 
 checks.push({
+name:"Settlement rule",
+pass:settlementPass,
+detail:settlementPass
+? getSettlementText(market)
+: "Could not identify the temperature settlement rule."
+});
 
-name:
-"Expected price move",
 
-pass:
-movePass,
+/* ORDER BOOK */
 
-detail:
-moveDetail
+const orderBookPass =
+hasOrderBook(market);
 
+checks.push({
+name:"Kalshi order book",
+pass:orderBookPass,
+detail:orderBookPass
+? getOrderBookDetail(market)
+: "No usable bid/ask information returned."
 });
 
 
 /*
-OVERALL
+Some Worker versions already provide their own
+eligibility result. If available, respect an explicit
+false result as an additional failure.
 */
 
+if(
+market.eligibleByTime === false &&
+!checks[0].pass
+){
+// already represented by time check
+}
+
+
 const failed =
-checks.filter(
-x =>
-!x.pass
-);
+checks.filter(x => !x.pass);
+
+
+let reason = "";
+
+if(failed.length){
+
+reason =
+failed
+.map(x => `${x.name}: ${x.detail}`)
+.join(" | ");
+
+}else{
+
+reason =
+"Every auto-trader filter currently passes.";
+
+}
 
 
 return {
-
 checks,
-
-eligible:
-failed.length === 0,
-
-reason:
-failed.length
-? failed
-.map(
-x =>
-`${x.name}: ${x.detail}`
-)
-.join(" | ")
-: "Every auto-trader filter passes."
-
+eligible:failed.length === 0,
+reason
 };
 
 }
 
 
-/* =========================================================
-RENDER MARKET
-========================================================= */
+/* ============================================================
+MARKET CARD
+============================================================ */
 
-function renderMarket(
-market,
-filters
-) {
-
-const edge =
-getEdge(
-market
-);
-
-const move =
-getExpectedMove(
-market
-);
-
-const model =
-getModelProbability(
-market
-);
-
-const price =
-getPrice(
-market
-);
-
-const minutes =
-getMinutes(
-market
-);
+function renderMarket(market, filters){
 
 const diagnostics =
-buildDiagnostics(
-market,
-filters
-);
+buildDiagnostics(market, filters);
 
-const side =
-String(
-market?.side ??
-""
-).toUpperCase();
+const title =
+getTitle(market);
+
+const decision =
+getDecision(market);
+
+const price =
+getPrice(market);
+
+const model =
+getModelProbability(market);
+
+const edge =
+getEdge(market);
+
+const move =
+getExpectedMove(market);
+
+const minutes =
+getMinutes(market);
+
+const settlement =
+getSettlementText(market);
+
+
+let decisionClass = "wait";
+
+if(
+diagnostics.eligible &&
+decision.includes("BUY")
+){
+decisionClass = "buy";
+}
+
+if(
+decision.includes("NO") &&
+!diagnostics.eligible
+){
+decisionClass = "no";
+}
+
+
+const checksHtml =
+diagnostics.checks.map(check => {
+
+const icon =
+check.pass ? "✓" : "✗";
+
+return `
+<div class="check ${check.pass ? "pass" : "fail"}">
+
+<div class="top">
+
+<span>
+${icon} ${escapeHtml(check.name)}
+</span>
+
+<span class="${check.pass ? "good" : "bad"}">
+${check.pass ? "PASS" : "FAIL"}
+</span>
+
+</div>
+
+<div class="detail">
+${escapeHtml(check.detail)}
+</div>
+
+</div>
+`;
+
+}).join("");
+
+
+const eligibleHtml =
+diagnostics.eligible
+
+? `
+<div class="eligible">
+🟢 ELIGIBLE — BOT CAN TRADE THIS MARKET
+</div>
+`
+
+: `
+<div class="ineligible">
+🔴 NOT ELIGIBLE — ${escapeHtml(diagnostics.reason)}
+</div>
+`;
 
 
 return `
 
 <div class="market">
 
-<div class="market-header">
+<div class="market-head">
 
 <div>
 
 <div class="market-title">
-
-${
-market?.city ??
-"Unknown City"
-}
-
+${escapeHtml(title)}
 </div>
 
-<div class="market-subtitle">
-
-${
-market?.title ??
-market?.ticker ??
-""
-}
-
-</div>
-
-<div class="market-subtitle">
+<div class="market-meta">
 
 Settlement:
 <strong>
-${getSettlementText(
-market
-)}
+${escapeHtml(settlement)}
 </strong>
 
 ${
@@ -1863,11 +1495,8 @@ minutes !== null
 
 </div>
 
-
-<div class="side">
-
-${side}
-
+<div class="decision ${decisionClass}">
+${escapeHtml(decision)}
 </div>
 
 </div>
@@ -1875,21 +1504,18 @@ ${side}
 
 <div class="metrics">
 
-
 <div class="metric">
 
 <div class="metric-label">
-Kalshi
+Kalshi ${market.side ? String(market.side).toUpperCase() : ""}
 </div>
 
 <div class="metric-value">
-
 ${
 price !== null
-? price.toFixed(0) + "¢"
+? cents(price)
 : "—"
 }
-
 </div>
 
 </div>
@@ -1902,13 +1528,11 @@ Model
 </div>
 
 <div class="metric-value">
-
 ${
 model !== null
-? model.toFixed(1) + "%"
+? pct(model)
 : "—"
 }
-
 </div>
 
 </div>
@@ -1920,11 +1544,15 @@ model !== null
 Edge
 </div>
 
-<div class="metric-value">
+<div class="metric-value ${
+edge !== null && edge >= 0
+? "good"
+: "bad"
+}">
 
 ${
 edge !== null
-? edge.toFixed(1) + "%"
+? `${edge >= 0 ? "+" : ""}${edge.toFixed(1)}%`
 : "—"
 }
 
@@ -1943,7 +1571,7 @@ Expected Move
 
 ${
 move !== null
-? move.toFixed(0) + "¢"
+? cents(move)
 : "—"
 }
 
@@ -1961,67 +1589,31 @@ Take Profit
 <div class="metric-value">
 
 ${
-(
-Number(
-filters.takeProfit ??
-0.25
-) *
-100
-).toFixed(0)
-}%
-
-</div>
-
-</div>
-
-
-</div>
-
-
-<div
-style="
-margin-top:15px;
-font-size:12px;
-color:#8d939b;
-"
->
-
-<strong>
-AUTO-TRADER CHECKS
-</strong>
-
-<br><br>
-
-${
-diagnostics.checks
-.map(
-check =>
-`
-
-<div
-style="
-margin-bottom:5px;
-"
->
-
-${
-check.pass
-? "✓"
-: "✕"
-}
-
-${check.name}:
-${check.detail}
-
-</div>
-
-`
-)
-.join("")
+Number.isFinite(Number(filters.takeProfit))
+? `${(Number(filters.takeProfit ?? .25) * 100).toFixed(0)}%`
+: "—"
 }
 
 </div>
 
+</div>
+
+</div>
+
+
+<div class="diagnostics">
+
+<div class="diag-title">
+AUTO-TRADER ELIGIBILITY
+</div>
+
+<div class="checks">
+${checksHtml}
+</div>
+
+${eligibleHtml}
+
+</div>
 
 </div>
 
@@ -2030,294 +1622,199 @@ ${check.detail}
 }
 
 
-/* =========================================================
+/* ============================================================
 LOAD MARKETS
-========================================================= */
+============================================================ */
 
-async function loadMarkets() {
+async function loadMarkets(){
 
-try {
+try{
 
 const [
 weather,
 status
-] =
-await Promise.all([
+] = await Promise.all([
 
-api(
-"/api/weather"
-),
+api("/api/weather"),
 
-api(
-"/api/auto-trade/status"
-)
+api("/api/auto-trade/status")
 
 ]);
 
 
 const filters =
-status.filters ||
-{
+status.filters || {
 
-minMinutesToClose:
-180,
-
-minEdge:
-0.10,
-
-minExpectedPriceMove:
-0.01,
-
+minMinutesToClose:180,
+minEdge:.10,
+minExpectedPriceMove:.01,
 takeProfit:
-Number(
-status.takeProfit ??
-0.25
-)
+Number(status.takeProfit ?? .25)
 
 };
 
 
 let markets = [];
 
+/*
+Support multiple Worker response shapes.
+*/
 
-if (
-Array.isArray(
-weather
-)
-) {
+if(Array.isArray(weather))
+markets = weather;
 
-markets =
-weather;
+else if(Array.isArray(weather.opportunities))
+markets = weather.opportunities;
 
-}
+else if(Array.isArray(weather.markets))
+markets = weather.markets;
 
-else if (
-Array.isArray(
-weather.opportunities
-)
-) {
+else if(Array.isArray(weather.data))
+markets = weather.data;
 
-markets =
-weather.opportunities;
 
-}
+/*
+Today-only filtering.
 
-else if (
-Array.isArray(
-weather.markets
-)
-) {
+The Worker is already responsible for its primary
+today-only market filtering. This frontend does not
+invent dates or locations.
+*/
 
-markets =
-weather.markets;
+$("marketCount").textContent =
+markets.length;
 
-}
 
-else if (
-Array.isArray(
-weather.data
-)
-) {
+let eligibleCount = 0;
+let rejectedCount = 0;
 
-markets =
-weather.data;
 
-}
+const html =
+markets.map(market => {
+
+const d =
+buildDiagnostics(
+market,
+filters
+);
+
+if(d.eligible)
+eligibleCount++;
+else
+rejectedCount++;
+
+return renderMarket(
+market,
+filters
+);
+
+}).join("");
+
+
+$("eligibleCount").textContent =
+eligibleCount;
+
+$("rejectedCount").textContent =
+rejectedCount;
 
 
 $("lastUpdate").textContent =
 new Date().toLocaleTimeString();
 
 
-if (
-!markets.length
-) {
+if(!markets.length){
 
 $("markets").innerHTML = `
 
 <div class="empty">
 
-No today's weather markets
-were returned.
-
-</div>
-
-`;
-
-return;
-
-}
-
-
-$("markets").innerHTML =
-markets
-.map(
-market =>
-renderMarket(
-market,
-filters
-)
-)
-.join("");
-
-
-}
-catch (
-error
-) {
-
-$("markets").innerHTML = `
-
-<div class="empty">
-
-<strong>
-Could not load weather markets.
-</strong>
+No today's weather markets were returned.
 
 <br><br>
 
-${error.message}
+<span class="small">
+The Worker may currently be waiting for
+qualifying Kalshi weather markets.
+</span>
 
 </div>
 
 `;
 
-}
+}else{
+
+$("markets").innerHTML = html;
 
 }
 
 
-/* =========================================================
-POSITIONS
-========================================================= */
+}catch(err){
 
-function renderPositions(
-entries
-) {
-
-if (
-!entries ||
-!entries.length
-) {
-
-$("positions").innerHTML = `
+$("markets").innerHTML = `
 
 <div class="empty">
 
-No open positions.
+<strong>Could not load weather markets.</strong>
+
+<br><br>
+
+${escapeHtml(err.message)}
 
 </div>
 
 `;
 
-return;
+}
 
 }
 
 
-$("positions").innerHTML =
-entries
-.map(
-entry =>
-`
-
-<div class="position">
-
-<strong>
-${entry.city ?? ""}
-</strong>
-
-<br>
-
-Ticker:
-${entry.ticker ?? "—"}
-
-<br>
-
-Side:
-${String(
-entry.side ?? ""
-).toUpperCase()}
-
-<br>
-
-Contracts:
-${entry.contracts ?? "—"}
-
-<br>
-
-Entry:
-${
-entry.entryPrice != null
-? Number(
-entry.entryPrice
-).toFixed(0) + "¢"
-: "—"
-}
-
-<br>
-
-Take Profit:
-${
-entry.targetPrice != null
-? Number(
-entry.targetPrice
-).toFixed(0) + "¢"
-: "—"
-}
-
-<br>
-
-Cost:
-${
-entry.cost != null
-? "$" +
-Number(
-entry.cost
-).toFixed(2)
-: "—"
-}
-
-</div>
-
-`
-)
-.join("");
-
-}
-
-
-/* =========================================================
+/* ============================================================
 REFRESH
-========================================================= */
+============================================================ */
 
-async function refreshAll() {
+async function refreshAll(){
 
 await loadStatus();
-
 await loadMarkets();
 
 }
 
 
-/* =========================================================
+/* ============================================================
 INITIAL LOAD
-========================================================= */
+============================================================ */
 
 refreshAll();
 
 
 /*
-REFRESH EVERY 10 SECONDS
+Refresh automatically every 30 seconds so the dashboard
+keeps showing changing Kalshi prices and eligibility.
 */
 
-setInterval(
-refreshAll,
-10000
+setInterval(refreshAll,10000);
+
+
+/*
+Allow Enter key inside confirmation box.
+*/
+
+$("confirmation").addEventListener(
+"keydown",
+function(event){
+
+if(event.key === "Enter"){
+startTrading();
+}
+
+if(event.key === "Escape"){
+closeStartModal();
+}
+
+}
 );
 
 </script>
 
 </body>
-
-</html>
