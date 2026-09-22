@@ -3,2884 +3,1740 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Position Ledger — Kalshi Dashboard</title>
 
 <style>
-*{
-  box-sizing:border-box;
+* {
+  box-sizing: border-box;
 }
 
-html,body{
-  margin:0;
-  padding:0;
-  background:#080a0f;
-  color:#f3f5f7;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+body {
+  margin: 0;
+  background: #080a0f;
+  color: #f5f7fa;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-body{
-  min-height:100vh;
+.container {
+  width: min(1200px, 94%);
+  margin: auto;
+  padding: 28px 0 50px;
 }
 
-.container{
-  width:min(1100px,94%);
-  margin:auto;
-  padding:28px 0 60px;
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 15px;
 }
 
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  margin-bottom:28px;
+h1 {
+  margin: 0;
+  font-size: 25px;
 }
 
-.title{
-  font-size:28px;
-  font-weight:800;
+.subtitle {
+  color: #8c94a4;
+  margin-top: 6px;
+  font-size: 13px;
 }
 
-.subtitle{
-  color:#858d9b;
-  margin-top:5px;
-  font-size:14px;
+.status {
+  color: #65d98b;
+  font-size: 12px;
+  white-space: nowrap;
 }
 
-.live{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  color:#38d996;
-  font-size:13px;
-  font-weight:600;
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
-.live-dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#38d996;
-  box-shadow:0 0 10px #38d996;
+.card {
+  background: #10131a;
+  border: 1px solid #202631;
+  border-radius: 14px;
+  padding: 17px;
 }
 
-.cards{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-bottom:24px;
+.label {
+  color: #89919f;
+  font-size: 12px;
+  margin-bottom: 8px;
 }
 
-.card{
-  background:#11151c;
-  border:1px solid #202630;
-  border-radius:14px;
+.amount {
+  font-size: 23px;
+  font-weight: 700;
 }
 
-.stat-card{
-  padding:18px;
-  min-height:105px;
+.green {
+  color: #65d98b;
 }
 
-.stat-label{
-  color:#7f8795;
-  font-size:12px;
-  margin-bottom:10px;
-  text-transform:uppercase;
-  letter-spacing:.5px;
+.red {
+  color: #ff6b6b;
 }
 
-.stat-value{
-  font-size:24px;
-  font-weight:800;
+.panel {
+  background: #10131a;
+  border: 1px solid #202631;
+  border-radius: 15px;
+  padding: 18px;
+  margin-bottom: 18px;
 }
 
-.green{
-  color:#38d996;
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
 }
 
-.red{
-  color:#ff6575;
+.panel-title {
+  font-weight: 700;
+  font-size: 16px;
 }
 
-
-/* ================================
-   SECTIONS
-================================ */
-
-.section{
-  margin-top:24px;
+.periods {
+  display: flex;
+  gap: 6px;
 }
 
-.section-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin-bottom:11px;
+.period-btn {
+  border: 1px solid #303642;
+  background: #171b23;
+  color: #aeb5c1;
+  border-radius: 8px;
+  padding: 7px 11px;
+  font-size: 12px;
+  cursor: pointer;
 }
 
-.section-title{
-  font-size:18px;
-  font-weight:800;
+.period-btn.active {
+  background: #252b36;
+  color: white;
+  border-color: #596272;
 }
 
-.section-count{
-  color:#707887;
-  font-size:12px;
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 360px;
+  background: #0c0f15;
+  border-radius: 12px;
+  overflow: hidden;
+  touch-action: none;
 }
 
-
-/* ================================
-   CHART CONTROLS
-================================ */
-
-.chart-header-right{
-  display:flex;
-  align-items:center;
-  gap:10px;
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-.period-buttons{
-  display:flex;
-  border:1px solid #303744;
-  background:#11151c;
-  border-radius:10px;
-  overflow:hidden;
+.chart-info {
+  margin-top: 12px;
+  min-height: 55px;
+  background: #0c0f15;
+  border: 1px solid #202631;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: #9ba3b0;
 }
 
-.period-button{
-  border:0;
-  background:transparent;
-  color:#858d9b;
-  padding:7px 13px;
-  font-size:12px;
-  font-weight:700;
-  cursor:pointer;
+.chart-info strong {
+  color: white;
 }
 
-.period-button + .period-button{
-  border-left:1px solid #303744;
+.slider-area {
+  margin-top: 13px;
 }
 
-.period-button.active{
-  background:#38d996;
-  color:#06100c;
+.slider {
+  width: 100%;
+  accent-color: #ffffff;
+  cursor: pointer;
+  touch-action: none;
 }
 
-
-/* ================================
-   CHART
-================================ */
-
-.chart-card{
-  position:relative;
-  height:290px;
-  padding:12px;
-  overflow:hidden;
-  touch-action:none;
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  color: #727b89;
+  font-size: 10px;
+  margin-top: 5px;
 }
 
-#plChart{
-  width:100%;
-  height:100%;
-  display:block;
-  touch-action:none;
-  cursor:crosshair;
+.slider-current {
+  text-align: center;
+  color: #c8ced8;
+  font-size: 11px;
+  margin-top: 5px;
 }
 
-#chartTooltip{
-  display:none;
-  position:absolute;
-  pointer-events:none;
-  z-index:20;
-
-  background:#171c24;
-  border:1px solid #303744;
-  border-radius:10px;
-
-  padding:9px 12px;
-
-  font-size:12px;
-  line-height:1.5;
-
-  box-shadow:0 10px 30px rgba(0,0,0,.45);
-
-  white-space:nowrap;
-
-  min-width:150px;
+.nfl-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
-.tooltip-time{
-  color:#8d95a3;
-  margin-bottom:2px;
+.game {
+  background: #0c0f15;
+  border: 1px solid #202631;
+  border-radius: 12px;
+  padding: 15px;
 }
 
-.tooltip-value{
-  font-size:15px;
-  font-weight:800;
+.game-title {
+  font-weight: 700;
+  margin-bottom: 12px;
 }
 
-.tooltip-pnl{
-  font-weight:700;
-  margin-top:2px;
+.team-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid #1d222b;
 }
 
-
-/* ================================
-   TABLE
-================================ */
-
-.table-card{
-  overflow:hidden;
+.team {
+  color: #d9dee6;
 }
 
-.table-wrap{
-  overflow-x:auto;
+.percent {
+  font-weight: 700;
 }
 
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:700px;
+.loading,
+.empty,
+.error {
+  color: #777f8d;
+  font-size: 13px;
+  padding: 15px 0;
 }
 
-th{
-  text-align:left;
-  color:#717a89;
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.5px;
-  padding:14px 16px;
-  border-bottom:1px solid #202630;
+.error {
+  color: #ff7272;
 }
 
-td{
-  padding:15px 16px;
-  border-bottom:1px solid #191e26;
-  font-size:13px;
-}
-
-tr:last-child td{
-  border-bottom:0;
-}
-
-.position-name{
-  font-weight:700;
-}
-
-
-/* ================================
-   NFL
-================================ */
-
-.nfl-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
-
-.game-card{
-  background:#11151c;
-  border:1px solid #202630;
-  border-radius:14px;
-  padding:17px;
-}
-
-.game-top{
-  margin-bottom:14px;
-}
-
-.game-title{
-  font-size:17px;
-  font-weight:800;
-}
-
-.game-date{
-  color:#7f8795;
-  font-size:12px;
-  margin-top:4px;
-}
-
-.team-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:11px 0;
-  border-top:1px solid #202630;
-}
-
-.team-name{
-  font-weight:650;
-}
-
-.odds{
-  display:flex;
-  gap:8px;
-  font-size:13px;
-}
-
-.odds span{
-  background:#191e27;
-  border-radius:7px;
-  padding:5px 7px;
-}
-
-.loading{
-  color:#777f8d;
-  padding:20px;
-  text-align:center;
-}
-
-.error{
-  color:#ff6575;
-  padding:15px;
-  background:#171116;
-  border:1px solid #332027;
-  border-radius:10px;
-}
-
-.empty{
-  color:#777f8d;
-  text-align:center;
-  padding:25px;
-}
-
-.refresh{
-  color:#697281;
-  font-size:11px;
-  text-align:right;
-  margin-top:8px;
-}
-
-
-/* ================================
-   MOBILE
-================================ */
-
-@media(max-width:850px){
-
-  .cards{
-    grid-template-columns:repeat(2,1fr);
+@media (max-width: 800px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .nfl-grid{
-    grid-template-columns:1fr;
+  .nfl-grid {
+    grid-template-columns: 1fr;
   }
-
 }
 
-@media(max-width:600px){
-
-  .container{
-    width:94%;
-    padding-top:20px;
+@media (max-width: 520px) {
+  .container {
+    width: 92%;
+    padding-top: 20px;
   }
 
-  .title{
-    font-size:23px;
+  header {
+    align-items: flex-start;
   }
 
-  .cards{
-    gap:9px;
+  .cards {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .stat-card{
-    padding:14px;
+  .amount {
+    font-size: 19px;
   }
 
-  .stat-value{
-    font-size:20px;
+  .panel-header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
-  .section-header{
-    align-items:flex-end;
+  .periods {
+    width: 100%;
   }
 
-  .chart-header-right{
-    flex-direction:column;
-    align-items:flex-end;
-    gap:6px;
+  .period-btn {
+    flex: 1;
   }
 
-  .period-button{
-    padding:7px 11px;
+  .chart-wrap {
+    height: 300px;
   }
-
-  .chart-card{
-    height:270px;
-  }
-
 }
 </style>
 </head>
-
 
 <body>
 
 <div class="container">
 
-
-  <!-- ================================
-       HEADER
-  ================================= -->
-
-  <div class="header">
-
+  <header>
     <div>
-
-      <div class="title">
-        Position Ledger
-      </div>
-
-      <div class="subtitle">
-        Kalshi Trading Dashboard
-      </div>
-
+      <h1>Position Ledger</h1>
+      <div class="subtitle">Kalshi Dashboard</div>
     </div>
-
-    <div class="live">
-
-      <span class="live-dot"></span>
-
-      LIVE
-
-    </div>
-
-  </div>
-
-
-  <!-- ================================
-       ACCOUNT CARDS
-  ================================= -->
+    <div class="status" id="status">Connecting...</div>
+  </header>
 
   <div class="cards">
 
-    <div class="card stat-card">
-
-      <div class="stat-label">
-        Available Balance
-      </div>
-
-      <div
-        id="balance"
-        class="stat-value"
-      >
-        $0.00
-      </div>
-
+    <div class="card">
+      <div class="label">Available Balance</div>
+      <div class="amount" id="balance">$0.00</div>
     </div>
 
-
-    <div class="card stat-card">
-
-      <div class="stat-label">
-        Portfolio Value
-      </div>
-
-      <div
-        id="portfolioValue"
-        class="stat-value"
-      >
-        $0.00
-      </div>
-
+    <div class="card">
+      <div class="label">Portfolio Value</div>
+      <div class="amount" id="portfolio">$0.00</div>
     </div>
 
-
-    <div class="card stat-card">
-
-      <div class="stat-label">
-        Total Account Value
-      </div>
-
-      <div
-        id="totalValue"
-        class="stat-value"
-      >
-        $0.00
-      </div>
-
+    <div class="card">
+      <div class="label">Total Account Value</div>
+      <div class="amount" id="total">$0.00</div>
     </div>
 
-
-    <div class="card stat-card">
-
-      <div class="stat-label">
-        Live P/L
-      </div>
-
-      <div
-        id="livePL"
-        class="stat-value"
-      >
-        +$0.00
-      </div>
-
+    <div class="card">
+      <div class="label">Live P/L</div>
+      <div class="amount" id="pnl">$0.00</div>
     </div>
 
   </div>
 
+  <div class="panel">
 
-  <!-- ================================
-       PERFORMANCE
-  ================================= -->
+    <div class="panel-header">
 
-  <div class="section">
-
-    <div class="section-header">
-
-      <div class="section-title">
-        Account Performance
-      </div>
-
-
-      <div class="chart-header-right">
-
-        <div class="period-buttons">
-
-          <button
-            class="period-button active"
-            data-period="day"
-          >
-            Day
-          </button>
-
-          <button
-            class="period-button"
-            data-period="week"
-          >
-            Week
-          </button>
-
-          <button
-            class="period-button"
-            data-period="month"
-          >
-            Month
-          </button>
-
+      <div>
+        <div class="panel-title">Account Performance</div>
+        <div class="subtitle" id="chartSubtitle">
+          Day — 1 minute intervals
         </div>
+      </div>
 
+      <div class="periods">
+        <button class="period-btn active" data-period="day">Day</button>
+        <button class="period-btn" data-period="week">Week</button>
+        <button class="period-btn" data-period="month">Month</button>
       </div>
 
     </div>
 
-
-    <div
-      id="chartContainer"
-      class="card chart-card"
-    >
-
-      <canvas id="plChart"></canvas>
-
-      <div id="chartTooltip">
-
-        <div
-          id="tooltipTime"
-          class="tooltip-time"
-        ></div>
-
-        <div
-          id="tooltipValue"
-          class="tooltip-value"
-        ></div>
-
-        <div
-          id="tooltipPnl"
-          class="tooltip-pnl"
-        ></div>
-
-      </div>
-
+    <div class="chart-wrap" id="chartWrap">
+      <canvas id="chart"></canvas>
     </div>
 
-  </div>
+    <div class="chart-info" id="chartInfo">
+      Move your finger across the graph or use the slider to inspect a timestamp.
+    </div>
 
+    <div class="slider-area">
 
-  <!-- ================================
-       OPEN POSITIONS
-  ================================= -->
-
-  <div class="section">
-
-    <div class="section-header">
-
-      <div class="section-title">
-        Open Positions
-      </div>
-
-      <div
-        id="positionCount"
-        class="section-count"
+      <input
+        type="range"
+        id="historySlider"
+        class="slider"
+        min="0"
+        max="0"
+        value="0"
       >
-        0 positions
+
+      <div class="slider-labels">
+        <span id="sliderStart">--</span>
+        <span id="sliderEnd">--</span>
       </div>
 
-    </div>
-
-
-    <div class="card table-card">
-
-      <div class="table-wrap">
-
-        <table>
-
-          <thead>
-
-            <tr>
-
-              <th>Market</th>
-
-              <th>Side</th>
-
-              <th>Contracts</th>
-
-              <th>Avg Price</th>
-
-              <th>Current</th>
-
-              <th>P/L</th>
-
-            </tr>
-
-          </thead>
-
-
-          <tbody id="positionsBody">
-
-            <tr>
-
-              <td
-                colspan="6"
-                class="empty"
-              >
-                Loading positions...
-              </td>
-
-            </tr>
-
-          </tbody>
-
-        </table>
-
+      <div class="slider-current" id="sliderCurrent">
+        --
       </div>
 
     </div>
 
   </div>
 
+  <div class="panel">
 
-  <!-- ================================
-       NFL
-  ================================= -->
-
-  <div class="section">
-
-    <div class="section-header">
-
-      <div class="section-title">
-        NFL Markets
-      </div>
-
-      <div
-        id="nflCount"
-        class="section-count"
-      >
-        Loading...
-      </div>
-
+    <div class="panel-header">
+      <div class="panel-title">NFL Markets</div>
+      <div class="subtitle" id="nflUpdated">Updating...</div>
     </div>
 
-
-    <div
-      id="nflGrid"
-      class="nfl-grid"
-    >
-
-      <div class="loading">
-        Loading NFL markets...
-      </div>
-
+    <div id="nflGrid" class="nfl-grid">
+      <div class="loading">Loading NFL markets...</div>
     </div>
 
-  </div>
-
-
-  <div
-    id="refreshText"
-    class="refresh"
-  >
-    Updating...
   </div>
 
 </div>
 
-
 <script>
 
-/* ========================================================
-   CONFIG
-======================================================== */
+const WORKER_URL = "https://worker1.ryderolinger1.workers.dev";
 
-const WORKER_URL =
-  "https://worker1.ryderolinger1.workers.dev";
-
-const PORTFOLIO_URL =
-  WORKER_URL + "/api/portfolio";
-
-const NFL_URL =
-  WORKER_URL + "/api/nfl";
-
-const HISTORY_KEY =
-  "kalshi_pl_history_v2";
-
-
-/* ========================================================
-   CHART SETTINGS
-======================================================== */
+const HISTORY_KEY = "kalshi_pl_history_v1";
 
 let currentPeriod = "day";
+let rawHistory = [];
+let visibleHistory = [];
+let activeChartIndex = null;
 
-let chartHistory = [];
+let canvas;
+let ctx;
 
-let chartWidth = 0;
+let currentAccountValue = 0;
+let currentPnL = 0;
 
-let chartHeight = 0;
-
-let chartDpr = 1;
-
-let chartDragging = false;
+let draggingChart = false;
 
 
-/* ========================================================
-   HELPERS
-======================================================== */
+/* =========================================================
+   TIME / PERIOD SETTINGS
+========================================================= */
 
-function money(value){
+const PERIOD_CONFIG = {
 
-  const n =
-    Number(value || 0);
+  day: {
+    duration: 24 * 60 * 60 * 1000,
+    interval: 60 * 1000,
+    label: "Day — 1 minute intervals"
+  },
 
-  return n.toLocaleString(
-    "en-US",
-    {
-      style:"currency",
-      currency:"USD"
-    }
-  );
+  week: {
+    duration: 7 * 24 * 60 * 60 * 1000,
+    interval: 10 * 60 * 1000,
+    label: "Week — 10 minute intervals"
+  },
+
+  month: {
+    duration: 30 * 24 * 60 * 60 * 1000,
+    interval: 60 * 60 * 1000,
+    label: "Month — 1 hour intervals"
+  }
+
+};
+
+
+/* =========================================================
+   TIME FORMAT
+========================================================= */
+
+function formatTime(timestamp) {
+
+  const date = new Date(timestamp);
+
+  return date.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit"
+  });
 
 }
 
 
-function number(value){
+function formatDateTime(timestamp) {
 
-  const n =
-    Number(value || 0);
+  const date = new Date(timestamp);
 
-  return n.toLocaleString(
-    "en-US",
-    {
-      maximumFractionDigits:2
-    }
-  );
-
-}
-
-
-function escapeHTML(value){
-
-  return String(
-    value ?? ""
-  )
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;")
-  .replace(/'/g,"&#039;");
-
-}
-
-
-function dollarPriceToPercent(value){
-
-  if(
-    value === undefined ||
-    value === null ||
-    value === ""
-  ){
-
-    return null;
-
-  }
-
-  const n =
-    Number(value);
-
-  if(
-    Number.isNaN(n)
-  ){
-
-    return null;
-
-  }
-
-  if(
-    Math.abs(n) > 1
-  ){
-
-    return n;
-
-  }
-
-  return n * 100;
-
-}
-
-
-/* ========================================================
-   HISTORY
-======================================================== */
-
-function getHistory(){
-
-  try{
-
-    const history =
-      JSON.parse(
-        localStorage.getItem(
-          HISTORY_KEY
-        ) || "[]"
-      );
-
-    return Array.isArray(history)
-      ? history
-      : [];
-
-  }catch(error){
-
-    console.error(
-      "History error:",
-      error
-    );
-
-    return [];
-
-  }
+  return date.toLocaleString([], {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  });
 
 }
 
 
 /*
-  History is kept at high resolution
-  for the last 24 hours.
-
-  Older history is reduced to one
-  point per hour so Week/Month can
-  work without filling localStorage.
+  This makes timestamps use the user's local clock instead
+  of UTC.
 */
+function localTimeLabel(timestamp, period) {
 
-function cleanHistory(history){
+  const date = new Date(timestamp);
 
-  const now =
-    Date.now();
+  if (period === "month") {
 
-  const oneDay =
-    24 * 60 * 60 * 1000;
+    return date.toLocaleString([], {
+      month: "short",
+      day: "numeric",
+      hour: "numeric"
+    });
 
-  const oneMonth =
-    31 * oneDay;
+  }
 
+  if (period === "week") {
 
-  history =
-    history.filter(
-      point =>
-        Number(point.time) >
-        now - oneMonth
-    );
+    return date.toLocaleString([], {
+      weekday: "short",
+      hour: "numeric",
+      minute: "2-digit"
+    });
 
+  }
 
-  const recent = [];
-
-  const old = [];
-
-  history.forEach(
-    point => {
-
-      if(
-        Number(point.time) >
-        now - oneDay
-      ){
-
-        recent.push(point);
-
-      }else{
-
-        old.push(point);
-
-      }
-
-    }
-  );
-
-
-  /*
-    One point per hour for
-    history older than 24 hours.
-  */
-
-  const hourly = new Map();
-
-
-  old.forEach(
-    point => {
-
-      const hour =
-        Math.floor(
-          Number(point.time) /
-          3600000
-        );
-
-
-      hourly.set(
-        hour,
-        point
-      );
-
-    }
-  );
-
-
-  const result =
-    [
-      ...Array.from(
-        hourly.values()
-      ),
-      ...recent
-    ]
-    .sort(
-      (a,b) =>
-        Number(a.time) -
-        Number(b.time)
-    );
-
-
-  return result;
+  return date.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit"
+  });
 
 }
 
 
-function savePLHistory(
-  total,
-  livePL
-){
+/* =========================================================
+   HISTORY
+========================================================= */
 
-  try{
+function loadHistory() {
 
-    let history =
-      getHistory();
+  try {
 
+    const saved = localStorage.getItem(HISTORY_KEY);
 
-    const now =
-      Date.now();
+    if (!saved) {
+      rawHistory = [];
+      return;
+    }
 
+    const parsed = JSON.parse(saved);
 
-    /*
-      Don't save duplicate points
-      faster than every 8 seconds.
-    */
+    if (Array.isArray(parsed)) {
 
-    if(
-      history.length
-    ){
-
-      const last =
-        history[
-          history.length - 1
-        ];
-
-
-      if(
-        now -
-        Number(last.time || 0)
-        < 8000
-      ){
-
-        return;
-
-      }
+      rawHistory = parsed
+        .filter(x =>
+          x &&
+          Number.isFinite(Number(x.time)) &&
+          Number.isFinite(Number(x.value))
+        )
+        .map(x => ({
+          time: Number(x.time),
+          value: Number(x.value),
+          pnl: Number.isFinite(Number(x.pnl))
+            ? Number(x.pnl)
+            : null
+        }))
+        .sort((a, b) => a.time - b.time);
 
     }
 
+  } catch {
 
-    history.push({
+    rawHistory = [];
 
-      time:now,
+  }
 
-      value:Number(
-        total || 0
-      ),
-
-      pnl:Number(
-        livePL || 0
-      )
-
-    });
+}
 
 
-    history =
-      cleanHistory(
-        history
-      );
+function saveHistory() {
 
+  /*
+    Keep 31 days of raw data.
+
+    Raw data is saved every refresh so we can later
+    create exact 1-minute / 10-minute / 1-hour views.
+  */
+
+  const cutoff =
+    Date.now() - (31 * 24 * 60 * 60 * 1000);
+
+  rawHistory = rawHistory.filter(x => x.time >= cutoff);
+
+  try {
 
     localStorage.setItem(
       HISTORY_KEY,
-      JSON.stringify(history)
+      JSON.stringify(rawHistory)
     );
 
-
-  }catch(error){
-
-    console.error(
-      "Save history error:",
-      error
-    );
-
-  }
+  } catch {}
 
 }
 
 
-/* ========================================================
-   PERIOD
-======================================================== */
+let lastHistorySave = 0;
 
-function getPeriodStart(){
+function addHistoryPoint(value, pnl) {
 
-  const now =
-    Date.now();
+  const now = Date.now();
 
+  /*
+    Don't save every single 10-second refresh.
+    Save approximately every 10 seconds.
+  */
 
-  if(
-    currentPeriod === "day"
-  ){
-
-    return now -
-      24 *
-      60 *
-      60 *
-      1000;
-
+  if (
+    lastHistorySave !== 0 &&
+    now - lastHistorySave < 9000
+  ) {
+    return;
   }
 
+  lastHistorySave = now;
 
-  if(
-    currentPeriod === "week"
-  ){
+  rawHistory.push({
+    time: now,
+    value: Number(value) || 0,
+    pnl: Number.isFinite(Number(pnl))
+      ? Number(pnl)
+      : null
+  });
 
-    return now -
-      7 *
-      24 *
-      60 *
-      60 *
-      1000;
-
-  }
-
-
-  return now -
-    30 *
-    24 *
-    60 *
-    60 *
-    1000;
+  saveHistory();
 
 }
 
 
-function getVisibleHistory(){
+/* =========================================================
+   CREATE PERIOD DATA
+========================================================= */
+
+function buildVisibleHistory() {
+
+  const config = PERIOD_CONFIG[currentPeriod];
+
+  const now = Date.now();
 
   const start =
-    getPeriodStart();
+    now - config.duration;
+
+  const source = rawHistory
+    .filter(x =>
+      x.time >= start &&
+      x.time <= now
+    )
+    .sort((a, b) => a.time - b.time);
+
+  if (!source.length) {
+
+    visibleHistory = [];
+
+    return;
+
+  }
 
 
-  const all =
-    getHistory();
+  /*
+    IMPORTANT:
+
+    The graph is NOT simply showing every raw 10-second point.
+
+    Instead it creates buckets:
+
+      Day   = every 1 minute
+      Week  = every 10 minutes
+      Month = every 1 hour
+
+    This fixes the timestamp spacing.
+  */
+
+  const buckets = new Map();
+
+  for (const point of source) {
+
+    const bucket =
+      Math.floor(point.time / config.interval) *
+      config.interval;
+
+    /*
+      Keep the newest point inside each bucket.
+      This means the timestamp represents the most
+      recent account value during that interval.
+    */
+
+    buckets.set(bucket, {
+      time: bucket,
+      value: point.value,
+      pnl: point.pnl
+    });
+
+  }
 
 
-  return all.filter(
-    point =>
-      Number(point.time) >=
-      start
-  );
+  visibleHistory =
+    Array.from(buckets.values())
+      .sort((a, b) => a.time - b.time);
+
+
+  /*
+    If there is a current point after the final bucket,
+    use it as the latest displayed point so the live graph
+    doesn't appear frozen.
+  */
+
+  const latest = source[source.length - 1];
+
+  if (latest) {
+
+    const lastBucket =
+      visibleHistory[visibleHistory.length - 1];
+
+    if (
+      !lastBucket ||
+      latest.time - lastBucket.time >
+      config.interval * 0.5
+    ) {
+
+      visibleHistory.push({
+        time: latest.time,
+        value: latest.value,
+        pnl: latest.pnl
+      });
+
+    }
+
+  }
 
 }
 
 
-/* ========================================================
-   CHART DRAW
-======================================================== */
+/* =========================================================
+   CHART
+========================================================= */
 
-function drawChart(){
-
-  const canvas =
-    document.getElementById(
-      "plChart"
-    );
-
-
-  if(!canvas)
-    return;
-
-
-  const ctx =
-    canvas.getContext(
-      "2d"
-    );
-
+function resizeCanvas() {
 
   const rect =
     canvas.getBoundingClientRect();
 
-
-  chartWidth =
-    rect.width;
-
-
-  chartHeight =
-    rect.height;
-
-
-  chartDpr =
-    window.devicePixelRatio ||
-    1;
-
+  const dpr =
+    window.devicePixelRatio || 1;
 
   canvas.width =
-    chartWidth *
-    chartDpr;
-
+    rect.width * dpr;
 
   canvas.height =
-    chartHeight *
-    chartDpr;
-
+    rect.height * dpr;
 
   ctx.setTransform(
-    chartDpr,
+    dpr,
     0,
     0,
-    chartDpr,
+    dpr,
     0,
     0
   );
 
+}
 
-  chartHistory =
-    getVisibleHistory();
 
+function drawChart() {
+
+  resizeCanvas();
+
+  const rect =
+    canvas.getBoundingClientRect();
+
+  const width = rect.width;
+  const height = rect.height;
 
   ctx.clearRect(
     0,
     0,
-    chartWidth,
-    chartHeight
+    width,
+    height
   );
 
+  if (!visibleHistory.length) {
 
-  if(
-    chartHistory.length < 2
-  ){
-
-    ctx.fillStyle =
-      "#59616e";
-
-    ctx.font =
-      "13px sans-serif";
-
-
-    const label =
-      currentPeriod === "day"
-        ? "Waiting for today's history..."
-        : currentPeriod === "week"
-          ? "Waiting for weekly history..."
-          : "Waiting for monthly history...";
-
+    ctx.fillStyle = "#777f8d";
+    ctx.font = "13px Arial";
+    ctx.textAlign = "center";
 
     ctx.fillText(
-      label,
-      15,
-      30
+      "No history recorded for this period yet.",
+      width / 2,
+      height / 2
     );
-
 
     return;
 
   }
 
 
-  const values =
-    chartHistory.map(
-      point =>
-        Number(
-          point.value || 0
-        )
-    );
+  const padding = {
+    left: 58,
+    right: 20,
+    top: 20,
+    bottom: 42
+  };
 
+  const chartWidth =
+    width - padding.left - padding.right;
+
+  const chartHeight =
+    height - padding.top - padding.bottom;
+
+
+  const values =
+    visibleHistory.map(x => x.value);
 
   let min =
-    Math.min(
-      ...values
-    );
-
+    Math.min(...values);
 
   let max =
-    Math.max(
-      ...values
-    );
+    Math.max(...values);
 
 
-  /*
-    Prevent a completely flat
-    $0 chart from collapsing.
-  */
-
-  if(
-    min === max
-  ){
+  if (min === max) {
 
     min -= 1;
-
     max += 1;
 
   }
 
 
-  const range =
-    max - min;
+  const extra =
+    (max - min) * 0.12;
+
+  min -= extra;
+  max += extra;
 
 
-  const paddingLeft =
-    48;
+  function xPosition(index) {
 
-  const paddingRight =
-    10;
+    if (visibleHistory.length === 1) {
+      return padding.left + chartWidth / 2;
+    }
 
-  const paddingTop =
-    15;
+    return padding.left +
+      (index / (visibleHistory.length - 1)) *
+      chartWidth;
 
-  const paddingBottom =
-    30;
-
-
-  const plotWidth =
-    chartWidth -
-    paddingLeft -
-    paddingRight;
+  }
 
 
-  const plotHeight =
-    chartHeight -
-    paddingTop -
-    paddingBottom;
+  function yPosition(value) {
+
+    return padding.top +
+      (1 - ((value - min) / (max - min))) *
+      chartHeight;
+
+  }
 
 
-  /*
-    Horizontal grid lines.
-  */
+  /* horizontal grid lines */
 
-  ctx.strokeStyle =
-    "#202630";
+  ctx.strokeStyle = "#202631";
+  ctx.lineWidth = 1;
 
-  ctx.lineWidth =
-    1;
-
-
-  ctx.fillStyle =
-    "#697281";
-
-  ctx.font =
-    "10px sans-serif";
-
-
-  for(
-    let i = 0;
-    i <= 4;
-    i++
-  ){
-
-    const ratio =
-      i / 4;
-
+  for (let i = 0; i <= 4; i++) {
 
     const y =
-      paddingTop +
-      ratio *
-      plotHeight;
-
+      padding.top +
+      (i / 4) * chartHeight;
 
     ctx.beginPath();
-
-    ctx.moveTo(
-      paddingLeft,
-      y
-    );
-
+    ctx.moveTo(padding.left, y);
     ctx.lineTo(
-      chartWidth -
-      paddingRight,
+      width - padding.right,
       y
     );
-
     ctx.stroke();
 
 
     const value =
       max -
-      ratio *
-      range;
+      (i / 4) * (max - min);
 
+    ctx.fillStyle = "#6f7784";
+    ctx.font = "10px Arial";
+    ctx.textAlign = "right";
 
     ctx.fillText(
-      money(value),
-      4,
+      "$" + value.toFixed(2),
+      padding.left - 8,
       y + 3
     );
 
   }
 
 
-  /*
-    Vertical time grid.
-  */
+  /* line */
 
-  const verticalLines =
-    5;
+  ctx.beginPath();
+
+  visibleHistory.forEach((point, index) => {
+
+    const x = xPosition(index);
+    const y = yPosition(point.value);
+
+    if (index === 0) {
+      ctx.moveTo(x, y);
+    } else {
+      ctx.lineTo(x, y);
+    }
+
+  });
+
+  ctx.strokeStyle = "#e8edf3";
+  ctx.lineWidth = 2;
+  ctx.stroke();
 
 
-  for(
-    let i = 0;
-    i <= verticalLines;
-    i++
-  ){
+  /* selected point */
 
-    const ratio =
-      i / verticalLines;
+  if (
+    activeChartIndex !== null &&
+    visibleHistory[activeChartIndex]
+  ) {
 
+    const point =
+      visibleHistory[activeChartIndex];
 
     const x =
-      paddingLeft +
-      ratio *
-      plotWidth;
+      xPosition(activeChartIndex);
 
+    const y =
+      yPosition(point.value);
+
+
+    /*
+      EXACTLY ONE vertical inspection line.
+    */
+
+    ctx.beginPath();
+    ctx.setLineDash([4, 5]);
+    ctx.moveTo(x, padding.top);
+    ctx.lineTo(
+      x,
+      height - padding.bottom
+    );
+
+    ctx.strokeStyle = "#697381";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+
+    /* selected dot */
 
     ctx.beginPath();
 
-    ctx.moveTo(
+    ctx.arc(
       x,
-      paddingTop
+      y,
+      5,
+      0,
+      Math.PI * 2
     );
 
-    ctx.lineTo(
-      x,
-      paddingTop +
-      plotHeight
-    );
-
-    ctx.stroke();
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
 
   }
 
 
-  /*
-    Fill area below line.
-  */
+  /* bottom time labels */
 
-  ctx.beginPath();
+  if (visibleHistory.length > 0) {
 
+    const labelIndexes = [];
 
-  chartHistory.forEach(
-    (point,index) => {
+    if (visibleHistory.length <= 5) {
 
-      const x =
-        paddingLeft +
-        (
-          index /
-          (chartHistory.length - 1)
-        ) *
-        plotWidth;
-
-
-      const y =
-        paddingTop +
-        (
-          1 -
-          (
-            Number(point.value || 0) -
-            min
-          ) /
-          range
-        ) *
-        plotHeight;
-
-
-      if(index === 0){
-
-        ctx.moveTo(
-          x,
-          y
-        );
-
-      }else{
-
-        ctx.lineTo(
-          x,
-          y
-        );
-
+      for (
+        let i = 0;
+        i < visibleHistory.length;
+        i++
+      ) {
+        labelIndexes.push(i);
       }
 
-    }
-  );
+    } else {
 
+      labelIndexes.push(0);
 
-  ctx.lineTo(
-    paddingLeft +
-    plotWidth,
-    paddingTop +
-    plotHeight
-  );
-
-
-  ctx.lineTo(
-    paddingLeft,
-    paddingTop +
-    plotHeight
-  );
-
-
-  ctx.closePath();
-
-
-  const gradient =
-    ctx.createLinearGradient(
-      0,
-      paddingTop,
-      0,
-      paddingTop +
-      plotHeight
-    );
-
-
-  gradient.addColorStop(
-    0,
-    "rgba(56,217,150,.18)"
-  );
-
-
-  gradient.addColorStop(
-    1,
-    "rgba(56,217,150,0)"
-  );
-
-
-  ctx.fillStyle =
-    gradient;
-
-  ctx.fill();
-
-
-  /*
-    Main line.
-  */
-
-  ctx.beginPath();
-
-
-  chartHistory.forEach(
-    (point,index) => {
-
-      const x =
-        paddingLeft +
-        (
-          index /
-          (chartHistory.length - 1)
-        ) *
-        plotWidth;
-
-
-      const y =
-        paddingTop +
-        (
-          1 -
-          (
-            Number(point.value || 0) -
-            min
-          ) /
-          range
-        ) *
-        plotHeight;
-
-
-      if(index === 0){
-
-        ctx.moveTo(
-          x,
-          y
-        );
-
-      }else{
-
-        ctx.lineTo(
-          x,
-          y
-        );
-
-      }
-
-    }
-  );
-
-
-  ctx.strokeStyle =
-    "#38d996";
-
-  ctx.lineWidth =
-    2.5;
-
-  ctx.stroke();
-
-
-  /*
-    Time labels.
-  */
-
-  ctx.fillStyle =
-    "#697281";
-
-  ctx.font =
-    "10px sans-serif";
-
-
-  for(
-    let i = 0;
-    i <= verticalLines;
-    i++
-  ){
-
-    const index =
-      Math.round(
-        (
-          i /
-          verticalLines
-        ) *
-        (
-          chartHistory.length - 1
+      labelIndexes.push(
+        Math.floor(
+          (visibleHistory.length - 1) * 0.25
         )
       );
 
-
-    const point =
-      chartHistory[index];
-
-
-    if(!point)
-      continue;
-
-
-    const x =
-      paddingLeft +
-      (
-        index /
-        (chartHistory.length - 1)
-      ) *
-      plotWidth;
-
-
-    const date =
-      new Date(
-        Number(point.time)
+      labelIndexes.push(
+        Math.floor(
+          (visibleHistory.length - 1) * 0.5
+        )
       );
 
+      labelIndexes.push(
+        Math.floor(
+          (visibleHistory.length - 1) * 0.75
+        )
+      );
 
-    let label;
-
-
-    if(
-      currentPeriod === "day"
-    ){
-
-      label =
-        date.toLocaleTimeString(
-          "en-US",
-          {
-            hour:"numeric"
-          }
-        );
-
-    }else{
-
-      label =
-        date.toLocaleDateString(
-          "en-US",
-          {
-            month:"short",
-            day:"numeric"
-          }
-        );
+      labelIndexes.push(
+        visibleHistory.length - 1
+      );
 
     }
 
 
-    ctx.fillText(
-      label,
-      Math.max(
-        0,
-        Math.min(
-          chartWidth - 35,
-          x - 15
-        )
-      ),
-      chartHeight - 8
-    );
+    ctx.fillStyle = "#6f7784";
+    ctx.font = "10px Arial";
+    ctx.textAlign = "center";
+
+    labelIndexes.forEach(index => {
+
+      const point =
+        visibleHistory[index];
+
+      const x =
+        xPosition(index);
+
+      ctx.fillText(
+        localTimeLabel(
+          point.time,
+          currentPeriod
+        ),
+        x,
+        height - 14
+      );
+
+    });
 
   }
 
 }
 
 
-/* ========================================================
-   FIND CHART POINT
-======================================================== */
+/* =========================================================
+   CHART INSPECTION
+========================================================= */
 
-function getChartPointFromX(
-  clientX
-){
+function inspectChartAtIndex(index) {
 
-  if(
-    chartHistory.length < 2
-  ){
+  if (!visibleHistory.length) {
+    return;
+  }
 
-    return null;
+  index = Math.max(
+    0,
+    Math.min(
+      visibleHistory.length - 1,
+      Math.round(index)
+    )
+  );
+
+  activeChartIndex = index;
+
+  drawChart();
+
+  updateSliderPosition();
+
+  const point =
+    visibleHistory[index];
+
+  const pnlText =
+    point.pnl === null
+      ? "P/L not recorded"
+      : formatMoney(point.pnl);
+
+  document.getElementById("chartInfo").innerHTML = `
+    <strong>${formatDateTime(point.time)}</strong>
+    &nbsp; • &nbsp;
+    Account Value: <strong>${formatMoney(point.value)}</strong>
+    &nbsp; • &nbsp;
+    Live P/L:
+    <strong class="${point.pnl >= 0 ? "green" : "red"}">
+      ${pnlText}
+    </strong>
+  `;
+
+}
+
+
+function updateSliderPosition() {
+
+  const slider =
+    document.getElementById("historySlider");
+
+  if (!visibleHistory.length) {
+
+    slider.max = 0;
+    slider.value = 0;
+
+    document.getElementById("sliderStart").textContent = "--";
+    document.getElementById("sliderEnd").textContent = "--";
+    document.getElementById("sliderCurrent").textContent = "--";
+
+    return;
 
   }
 
 
-  const canvas =
-    document.getElementById(
-      "plChart"
+  slider.max =
+    Math.max(0, visibleHistory.length - 1);
+
+
+  const selected =
+    activeChartIndex === null
+      ? visibleHistory.length - 1
+      : activeChartIndex;
+
+
+  slider.value = selected;
+
+
+  document.getElementById("sliderStart").textContent =
+    localTimeLabel(
+      visibleHistory[0].time,
+      currentPeriod
     );
 
+
+  document.getElementById("sliderEnd").textContent =
+    localTimeLabel(
+      visibleHistory[visibleHistory.length - 1].time,
+      currentPeriod
+    );
+
+
+  document.getElementById("sliderCurrent").textContent =
+    formatDateTime(
+      visibleHistory[selected].time
+    );
+
+}
+
+
+/* =========================================================
+   CHART DRAGGING
+========================================================= */
+
+function chartIndexFromPointer(event) {
 
   const rect =
     canvas.getBoundingClientRect();
 
+  const x =
+    event.clientX - rect.left;
 
-  const paddingLeft =
-    48;
+  const paddingLeft = 58;
+  const paddingRight = 20;
 
-
-  const paddingRight =
-    10;
-
-
-  const plotWidth =
+  const usableWidth =
     rect.width -
     paddingLeft -
     paddingRight;
 
+  let ratio =
+    (x - paddingLeft) /
+    usableWidth;
 
-  let x =
-    clientX -
-    rect.left;
+  ratio =
+    Math.max(0, Math.min(1, ratio));
 
-
-  x =
-    Math.max(
-      paddingLeft,
-      Math.min(
-        rect.width -
-        paddingRight,
-        x
-      )
-    );
-
-
-  const ratio =
-    (
-      x -
-      paddingLeft
-    ) /
-    plotWidth;
-
-
-  let index =
-    Math.round(
-      ratio *
-      (
-        chartHistory.length - 1
-      )
-    );
-
-
-  index =
+  return ratio *
     Math.max(
       0,
-      Math.min(
-        chartHistory.length - 1,
-        index
-      )
+      visibleHistory.length - 1
     );
-
-
-  return {
-    index,
-    x
-  };
 
 }
 
 
-/* ========================================================
-   SHOW TOOLTIP
-======================================================== */
+canvas = document.getElementById("chart");
+ctx = canvas.getContext("2d");
 
-function showChartTooltip(
-  clientX
-){
 
-  const result =
-    getChartPointFromX(
-      clientX
+canvas.addEventListener(
+  "pointerdown",
+  event => {
+
+    if (!visibleHistory.length) {
+      return;
+    }
+
+    draggingChart = true;
+
+    canvas.setPointerCapture(
+      event.pointerId
     );
 
-
-  if(!result)
-    return;
-
-
-  const point =
-    chartHistory[
-      result.index
-    ];
-
-
-  if(!point)
-    return;
-
-
-  const tooltip =
-    document.getElementById(
-      "chartTooltip"
+    inspectChartAtIndex(
+      chartIndexFromPointer(event)
     );
-
-
-  const tooltipTime =
-    document.getElementById(
-      "tooltipTime"
-    );
-
-
-  const tooltipValue =
-    document.getElementById(
-      "tooltipValue"
-    );
-
-
-  const tooltipPnl =
-    document.getElementById(
-      "tooltipPnl"
-    );
-
-
-  const date =
-    new Date(
-      Number(point.time)
-    );
-
-
-  const value =
-    Number(
-      point.value || 0
-    );
-
-
-  const pnl =
-    point.pnl !== undefined &&
-    point.pnl !== null
-      ? Number(point.pnl)
-      : null;
-
-
-  tooltipTime.textContent =
-    date.toLocaleDateString(
-      "en-US",
-      {
-        month:"short",
-        day:"numeric",
-        year:"numeric"
-      }
-    ) +
-    " • " +
-    date.toLocaleTimeString(
-      "en-US",
-      {
-        hour:"numeric",
-        minute:"2-digit",
-        second:"2-digit"
-      }
-    );
-
-
-  tooltipValue.textContent =
-    "Account Value  " +
-    money(value);
-
-
-  if(pnl !== null){
-
-    tooltipPnl.textContent =
-      "P/L  " +
-      (
-        pnl >= 0
-          ? "+"
-          : ""
-      ) +
-      money(pnl);
-
-
-    tooltipPnl.style.color =
-      pnl >= 0
-        ? "#38d996"
-        : "#ff6575";
-
-  }else{
-
-    tooltipPnl.textContent =
-      "";
 
   }
+);
 
 
-  const container =
-    document.getElementById(
-      "chartContainer"
+canvas.addEventListener(
+  "pointermove",
+  event => {
+
+    if (!draggingChart) {
+      return;
+    }
+
+    inspectChartAtIndex(
+      chartIndexFromPointer(event)
     );
-
-
-  const containerRect =
-    container.getBoundingClientRect();
-
-
-  let tooltipX =
-    result.x + 10;
-
-
-  /*
-    Keep tooltip on screen.
-  */
-
-  const tooltipWidth =
-    165;
-
-
-  if(
-    tooltipX +
-    tooltipWidth >
-    containerRect.width
-  ){
-
-    tooltipX =
-      result.x -
-      tooltipWidth -
-      10;
 
   }
+);
 
 
-  tooltipX =
-    Math.max(
-      5,
-      tooltipX
-    );
+canvas.addEventListener(
+  "pointerup",
+  () => {
+    draggingChart = false;
+  }
+);
 
 
-  tooltip.style.left =
-    tooltipX +
-    "px";
+canvas.addEventListener(
+  "pointercancel",
+  () => {
+    draggingChart = false;
+  }
+);
 
 
-  tooltip.style.top =
-    "12px";
+/* =========================================================
+   SLIDER
+========================================================= */
 
+document
+  .getElementById("historySlider")
+  .addEventListener(
+    "input",
+    event => {
 
-  tooltip.style.display =
-    "block";
+      inspectChartAtIndex(
+        Number(event.target.value)
+      );
 
-
-  drawChartIndicator(
-    result.index
+    }
   );
 
-}
 
+function refreshChart() {
 
-/* ========================================================
-   CROSSHAIR
-======================================================== */
-
-function drawChartIndicator(
-  index
-){
-
-  if(
-    chartHistory.length < 2
-  )
-    return;
-
-
-  const canvas =
-    document.getElementById(
-      "plChart"
-    );
-
-
-  const ctx =
-    canvas.getContext(
-      "2d"
-    );
-
+  buildVisibleHistory();
 
   /*
-    Redraw the normal chart first.
+    Keep the selected point only if it still exists.
   */
+
+  if (
+    activeChartIndex !== null &&
+    activeChartIndex >= visibleHistory.length
+  ) {
+
+    activeChartIndex =
+      visibleHistory.length
+        ? visibleHistory.length - 1
+        : null;
+
+  }
 
   drawChart();
 
-
-  const values =
-    chartHistory.map(
-      point =>
-        Number(
-          point.value || 0
-        )
-    );
-
-
-  let min =
-    Math.min(
-      ...values
-    );
-
-
-  let max =
-    Math.max(
-      ...values
-    );
-
-
-  if(
-    min === max
-  ){
-
-    min -= 1;
-
-    max += 1;
-
-  }
-
-
-  const range =
-    max - min;
-
-
-  const paddingLeft =
-    48;
-
-  const paddingRight =
-    10;
-
-  const paddingTop =
-    15;
-
-  const paddingBottom =
-    30;
-
-
-  const plotWidth =
-    chartWidth -
-    paddingLeft -
-    paddingRight;
-
-
-  const plotHeight =
-    chartHeight -
-    paddingTop -
-    paddingBottom;
-
-
-  const x =
-    paddingLeft +
-    (
-      index /
-      (chartHistory.length - 1)
-    ) *
-    plotWidth;
-
-
-  const y =
-    paddingTop +
-    (
-      1 -
-      (
-        values[index] -
-        min
-      ) /
-      range
-    ) *
-    plotHeight;
-
-
-  /*
-    Finger-following vertical line.
-  */
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    x,
-    paddingTop
-  );
-
-  ctx.lineTo(
-    x,
-    paddingTop +
-    plotHeight
-  );
-
-
-  ctx.strokeStyle =
-    "#8a94a3";
-
-  ctx.lineWidth =
-    1;
-
-  ctx.setLineDash([
-    4,
-    4
-  ]);
-
-  ctx.stroke();
-
-  ctx.setLineDash([]);
-
-
-  /*
-    Selected point.
-  */
-
-  ctx.beginPath();
-
-  ctx.arc(
-    x,
-    y,
-    6,
-    0,
-    Math.PI * 2
-  );
-
-
-  ctx.fillStyle =
-    "#38d996";
-
-  ctx.fill();
-
-
-  ctx.beginPath();
-
-  ctx.arc(
-    x,
-    y,
-    9,
-    0,
-    Math.PI * 2
-  );
-
-
-  ctx.strokeStyle =
-    "#080a0f";
-
-  ctx.lineWidth =
-    3;
-
-  ctx.stroke();
+  updateSliderPosition();
 
 }
 
 
-/* ========================================================
-   CHART TOUCH / MOUSE
-======================================================== */
-
-const chartCanvas =
-  document.getElementById(
-    "plChart"
-  );
-
-
-if(chartCanvas){
-
-  /*
-    iPhone touch start.
-  */
-
-  chartCanvas.addEventListener(
-    "touchstart",
-    event => {
-
-      chartDragging =
-        true;
-
-
-      const touch =
-        event.touches[0];
-
-
-      showChartTooltip(
-        touch.clientX
-      );
-
-
-      event.preventDefault();
-
-    },
-    {
-      passive:false
-    }
-  );
-
-
-  /*
-    Move finger across chart.
-  */
-
-  chartCanvas.addEventListener(
-    "touchmove",
-    event => {
-
-      if(!chartDragging)
-        return;
-
-
-      const touch =
-        event.touches[0];
-
-
-      showChartTooltip(
-        touch.clientX
-      );
-
-
-      event.preventDefault();
-
-    },
-    {
-      passive:false
-    }
-  );
-
-
-  chartCanvas.addEventListener(
-    "touchend",
-    () => {
-
-      chartDragging =
-        false;
-
-    }
-  );
-
-
-  chartCanvas.addEventListener(
-    "touchcancel",
-    () => {
-
-      chartDragging =
-        false;
-
-    }
-  );
-
-
-  /*
-    Desktop mouse.
-  */
-
-  chartCanvas.addEventListener(
-    "mousedown",
-    event => {
-
-      chartDragging =
-        true;
-
-
-      showChartTooltip(
-        event.clientX
-      );
-
-    }
-  );
-
-
-  chartCanvas.addEventListener(
-    "mousemove",
-    event => {
-
-      if(!chartDragging)
-        return;
-
-
-      showChartTooltip(
-        event.clientX
-      );
-
-    }
-  );
-
-
-  window.addEventListener(
-    "mouseup",
-    () => {
-
-      chartDragging =
-        false;
-
-    }
-  );
-
-}
-
-
-/* ========================================================
+/* =========================================================
    PERIOD BUTTONS
-======================================================== */
+========================================================= */
 
 document
-  .querySelectorAll(
-    ".period-button"
-  )
-  .forEach(
-    button => {
+  .querySelectorAll(".period-btn")
+  .forEach(button => {
 
-      button.addEventListener(
-        "click",
-        () => {
+    button.addEventListener(
+      "click",
+      () => {
 
-          currentPeriod =
-            button.dataset.period;
+        currentPeriod =
+          button.dataset.period;
 
+        document
+          .querySelectorAll(".period-btn")
+          .forEach(x =>
+            x.classList.remove("active")
+          );
 
-          document
-            .querySelectorAll(
-              ".period-button"
-            )
-            .forEach(
-              other => {
+        button.classList.add("active");
 
-                other.classList.toggle(
-                  "active",
-                  other === button
-                );
+        activeChartIndex = null;
 
-              }
-            );
+        document.getElementById(
+          "chartSubtitle"
+        ).textContent =
+          PERIOD_CONFIG[currentPeriod].label;
 
+        refreshChart();
 
-          /*
-            Hide old tooltip when
-            changing periods.
-          */
+      }
+    );
 
-          document.getElementById(
-            "chartTooltip"
-          ).style.display =
-            "none";
+  });
 
 
-          drawChart();
+/* =========================================================
+   MONEY
+========================================================= */
 
-        }
-      );
+function formatMoney(value) {
 
+  const number =
+    Number(value) || 0;
+
+  return new Intl.NumberFormat(
+    "en-US",
+    {
+      style: "currency",
+      currency: "USD"
     }
-  );
+  ).format(number);
+
+}
 
 
-/* ========================================================
+/* =========================================================
    PORTFOLIO
-======================================================== */
+========================================================= */
 
-async function loadPortfolio(){
+async function loadPortfolio() {
 
-  try{
+  try {
 
     const response =
       await fetch(
-        PORTFOLIO_URL +
-        "?t=" +
-        Date.now()
+        WORKER_URL + "/api/portfolio",
+        {
+          cache: "no-store"
+        }
       );
-
-
-    if(!response.ok){
-
-      throw new Error(
-        "Portfolio HTTP " +
-        response.status
-      );
-
-    }
-
 
     const data =
       await response.json();
 
 
-    if(!data.ok){
+    if (!response.ok || !data.ok) {
 
       throw new Error(
-        "Portfolio error"
+        data.error
+          ? JSON.stringify(data.error)
+          : "Portfolio request failed"
       );
 
     }
 
 
     const balanceRaw =
-      data.balance?.balance ??
-      data.balance?.available_balance ??
-      0;
+      Number(
+        data.balance?.balance ??
+        data.balance?.available_balance ??
+        0
+      );
 
 
     const balance =
-      Number(
-        balanceRaw
-      ) / 100;
+      balanceRaw / 100;
+
+
+    let portfolioValue = 0;
 
 
     const positions =
-      Array.isArray(
-        data.positions?.market_positions
-      )
+      Array.isArray(data.positions?.market_positions)
         ? data.positions.market_positions
-        : Array.isArray(
-            data.positions?.positions
-          )
-            ? data.positions.positions
-            : [];
+        : Array.isArray(data.positions?.positions)
+          ? data.positions.positions
+          : [];
 
 
-    let portfolioValue =
-      0;
+    for (const position of positions) {
 
+      const marketValue =
+        Number(
+          position.market_value ??
+          position.market_value_cents ??
+          0
+        );
 
-    let totalPL =
-      0;
-
-
-    const rows = [];
-
-
-    positions.forEach(
-      position => {
-
-        const rawPosition =
-          Number(
-            position.position ??
-            position.quantity ??
-            position.count ??
-            0
-          );
-
-
-        const yesPosition =
-          Number(
-            position.yes_position ??
-            0
-          );
-
-
-        const noPosition =
-          Number(
-            position.no_position ??
-            0
-          );
-
-
-        let contracts =
-          Math.abs(
-            rawPosition
-          );
-
-
-        let side =
-          rawPosition >= 0
-            ? "YES"
-            : "NO";
-
-
-        if(
-          yesPosition !== 0
-        ){
-
-          contracts =
-            Math.abs(
-              yesPosition
-            );
-
-          side =
-            yesPosition >= 0
-              ? "YES"
-              : "NO";
-
-        }
-
-
-        if(
-          noPosition !== 0 &&
-          yesPosition === 0
-        ){
-
-          contracts =
-            Math.abs(
-              noPosition
-            );
-
-          side =
-            noPosition >= 0
-              ? "NO"
-              : "YES";
-
-        }
-
-
-        if(
-          contracts === 0
-        ){
-
-          return;
-
-        }
-
-
-        const totalCost =
-          Number(
-            position.total_cost ??
-            position.cost ??
-            0
-          ) / 100;
-
-
-        const marketValueRaw =
-          Number(
-            position.market_value ??
-            position.market_value_dollars ??
-            0
-          );
-
-
-        const marketValue =
-          Math.abs(
-            marketValueRaw
-          ) > 10
-            ? marketValueRaw / 100
-            : marketValueRaw;
-
-
-        const realized =
-          Number(
-            position.realized_pnl ??
-            0
-          ) / 100;
-
-
-        const unrealized =
-          Number(
-            position.unrealized_pnl ??
-            0
-          ) / 100;
-
-
-        let positionPL =
-          unrealized;
-
-
-        if(
-          positionPL === 0 &&
-          marketValue !== 0
-        ){
-
-          positionPL =
-            marketValue -
-            Math.abs(
-              totalCost
-            );
-
-        }
-
+      if (
+        Number.isFinite(marketValue)
+      ) {
 
         portfolioValue +=
-          Math.abs(
-            marketValue
-          );
-
-
-        totalPL +=
-          positionPL +
-          realized;
-
-
-        rows.push({
-
-          ticker:
-            position.ticker ??
-            position.market_ticker ??
-            "Unknown",
-
-          side,
-
-          contracts,
-
-          avg:
-            contracts
-              ? Math.abs(
-                  totalCost /
-                  contracts
-                )
-              : 0,
-
-          current:
-            contracts
-              ? Math.abs(
-                  marketValue /
-                  contracts
-                )
-              : 0,
-
-          pl:
-            positionPL +
-            realized
-
-        });
+          marketValue / 100;
 
       }
-    );
+
+    }
+
+
+    /*
+      If the API provides total market value directly,
+      use it when available.
+    */
+
+    if (
+      Number.isFinite(
+        Number(data.positions?.market_value)
+      )
+    ) {
+
+      portfolioValue =
+        Number(data.positions.market_value) / 100;
+
+    }
 
 
     const total =
-      balance +
-      portfolioValue;
+      balance + portfolioValue;
+
+
+    /*
+      Live P/L.
+
+      If Kalshi gives a portfolio P/L field, use it.
+      Otherwise compare current account value against
+      the earliest recorded account value.
+    */
+
+    let pnl = null;
+
+
+    const possiblePnL = [
+      data.positions?.total_pnl,
+      data.positions?.pnl,
+      data.positions?.profit_loss,
+      data.balance?.pnl
+    ];
+
+
+    for (const candidate of possiblePnL) {
+
+      if (
+        candidate !== undefined &&
+        candidate !== null &&
+        Number.isFinite(Number(candidate))
+      ) {
+
+        let n = Number(candidate);
+
+        /*
+          API values may be cents.
+        */
+
+        if (Math.abs(n) > 10000) {
+          n /= 100;
+        }
+
+        pnl = n;
+        break;
+
+      }
+
+    }
+
+
+    /*
+      Fallback: change from first account value
+      we've actually recorded.
+    */
+
+    if (pnl === null) {
+
+      if (rawHistory.length) {
+
+        pnl =
+          total -
+          rawHistory[0].value;
+
+      } else {
+
+        pnl = 0;
+
+      }
+
+    }
+
+
+    currentAccountValue = total;
+    currentPnL = pnl;
 
 
     document.getElementById(
       "balance"
     ).textContent =
-      money(balance);
+      formatMoney(balance);
 
 
     document.getElementById(
-      "portfolioValue"
+      "portfolio"
     ).textContent =
-      money(portfolioValue);
+      formatMoney(portfolioValue);
 
 
     document.getElementById(
-      "totalValue"
+      "total"
     ).textContent =
-      money(total);
+      formatMoney(total);
 
 
-    const livePL =
-      totalPL;
+    const pnlElement =
+      document.getElementById("pnl");
+
+    pnlElement.textContent =
+      formatMoney(pnl);
+
+    pnlElement.classList.remove(
+      "green",
+      "red"
+    );
+
+    pnlElement.classList.add(
+      pnl >= 0 ? "green" : "red"
+    );
 
 
-    const livePLElement =
-      document.getElementById(
-        "livePL"
-      );
-
-
-    livePLElement.textContent =
-      (
-        livePL >= 0
-          ? "+"
-          : ""
-      ) +
-      money(livePL);
-
-
-    livePLElement.className =
-      "stat-value " +
-      (
-        livePL > 0
-          ? "green"
-          : livePL < 0
-            ? "red"
-            : ""
-      );
-
-
-    savePLHistory(
+    addHistoryPoint(
       total,
-      livePL
+      pnl
     );
 
 
-    drawChart();
+    /*
+      Rebuild the graph using the new history.
 
+      This is what creates:
+      Day = 1 minute
+      Week = 10 minutes
+      Month = 1 hour
+    */
 
-    renderPositions(
-      rows
-    );
+    refreshChart();
 
 
     document.getElementById(
-      "refreshText"
+      "status"
     ).textContent =
-      "Updated " +
-      new Date().toLocaleTimeString(
-        "en-US",
-        {
-          hour:"numeric",
-          minute:"2-digit",
-          second:"2-digit"
-        }
+      "Live • " +
+      new Date().toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit"
+      });
+
+  } catch (error) {
+
+    console.error(error);
+
+    document.getElementById(
+      "status"
+    ).textContent =
+      "Connection error";
+
+  }
+
+}
+
+
+/* =========================================================
+   NFL ODDS
+========================================================= */
+
+function priceToPercent(value) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+    return null;
+  }
+
+
+  if (
+    typeof value === "object" &&
+    value !== null
+  ) {
+
+    value =
+      value.value ??
+      value.price ??
+      value.amount ??
+      value.dollars;
+
+  }
+
+
+  let text =
+    String(value)
+      .trim()
+      .replace("$", "")
+      .replace("%", "");
+
+
+  if (!text) {
+    return null;
+  }
+
+
+  let n =
+    Number(text);
+
+
+  if (!Number.isFinite(n)) {
+    return null;
+  }
+
+
+  /*
+    Handle:
+      0.52     -> 52%
+      52       -> 52%
+      52%      -> 52%
+      $0.52    -> 52%
+  */
+
+  if (n >= 0 && n <= 1) {
+    n *= 100;
+  }
+
+
+  if (n > 100) {
+    n = 100;
+  }
+
+
+  if (n < 0) {
+    n = 0;
+  }
+
+
+  return n;
+
+}
+
+
+function getNFLOdds(market) {
+
+  /*
+    Prefer last traded price.
+
+    If unavailable, use midpoint of bid/ask,
+    then ask, then bid.
+  */
+
+  const lastCandidates = [
+    market.last_price_dollars,
+    market.last_price,
+    market.yes_last_price_dollars,
+    market.yes_last_price,
+    market.last_trade_price_dollars,
+    market.last_trade_price
+  ];
+
+
+  let yes = null;
+
+
+  for (const candidate of lastCandidates) {
+
+    yes = priceToPercent(candidate);
+
+    if (yes !== null) {
+      break;
+    }
+
+  }
+
+
+  if (yes === null) {
+
+    const bid =
+      priceToPercent(
+        market.yes_bid_dollars ??
+        market.yes_bid ??
+        market.yes_bid_price
+      );
+
+    const ask =
+      priceToPercent(
+        market.yes_ask_dollars ??
+        market.yes_ask ??
+        market.yes_ask_price
       );
 
 
-  }catch(error){
+    if (
+      bid !== null &&
+      ask !== null
+    ) {
 
-    console.error(
-      "Portfolio error:",
-      error
-    );
+      yes = (bid + ask) / 2;
 
+    } else if (ask !== null) {
 
-    document.getElementById(
-      "refreshText"
-    ).textContent =
-      "Portfolio update failed";
+      yes = ask;
 
-  }
+    } else if (bid !== null) {
 
-}
+      yes = bid;
 
-
-/* ========================================================
-   POSITIONS
-======================================================== */
-
-function renderPositions(
-  positions
-){
-
-  const body =
-    document.getElementById(
-      "positionsBody"
-    );
-
-
-  document.getElementById(
-    "positionCount"
-  ).textContent =
-    positions.length +
-    (
-      positions.length === 1
-        ? " position"
-        : " positions"
-    );
-
-
-  if(!positions.length){
-
-    body.innerHTML = `
-
-      <tr>
-
-        <td
-          colspan="6"
-          class="empty"
-        >
-          No open positions
-        </td>
-
-      </tr>
-
-    `;
-
-    return;
+    }
 
   }
 
 
-  body.innerHTML =
-    positions.map(
-      position => `
+  /*
+    Older Kalshi field names.
+  */
 
-        <tr>
+  if (yes === null) {
 
-          <td class="position-name">
-            ${escapeHTML(
-              position.ticker
-            )}
-          </td>
-
-          <td>
-            ${position.side}
-          </td>
-
-          <td>
-            ${number(
-              position.contracts
-            )}
-          </td>
-
-          <td>
-            ${money(
-              position.avg
-            )}
-          </td>
-
-          <td>
-            ${money(
-              position.current
-            )}
-          </td>
-
-          <td class="${
-            position.pl >= 0
-              ? "green"
-              : "red"
-          }">
-
-            ${
-              position.pl >= 0
-                ? "+"
-                : ""
-            }
-
-            ${money(
-              position.pl
-            )}
-
-          </td>
-
-        </tr>
-
-      `
-    )
-    .join("");
-
-}
+    const candidates = [
+      market.yes_price,
+      market.yes_price_dollars,
+      market.price
+    ];
 
 
-/* ========================================================
-   NFL
-======================================================== */
+    for (const candidate of candidates) {
 
-function getNFLPrice(
-  market
-){
+      yes =
+        priceToPercent(candidate);
 
-  const yesBid =
-    dollarPriceToPercent(
-      market.yes_bid_dollars
-    );
+      if (yes !== null) {
+        break;
+      }
 
+    }
 
-  const noBid =
-    dollarPriceToPercent(
-      market.no_bid_dollars
-    );
-
-
-  const yesAsk =
-    dollarPriceToPercent(
-      market.yes_ask_dollars
-    );
-
-
-  const noAsk =
-    dollarPriceToPercent(
-      market.no_ask_dollars
-    );
-
-
-  const last =
-    dollarPriceToPercent(
-      market.last_price_dollars
-    );
-
-
-  const oldYesBid =
-    market.yes_bid !== undefined
-      ? Number(
-          market.yes_bid
-        )
-      : null;
-
-
-  const oldNoBid =
-    market.no_bid !== undefined
-      ? Number(
-          market.no_bid
-        )
-      : null;
-
-
-  const oldLast =
-    market.last_price !== undefined
-      ? Number(
-          market.last_price
-        )
-      : null;
-
-
-  let yes =
-    yesBid ??
-    yesAsk ??
-    last;
+  }
 
 
   let no =
-    noBid ??
-    noAsk;
+    priceToPercent(
+      market.no_price_dollars ??
+      market.no_price ??
+      market.no_last_price_dollars ??
+      market.no_last_price
+    );
 
 
-  if(
-    yes === null ||
-    yes === undefined
-  ){
+  if (
+    no === null &&
+    yes !== null
+  ) {
 
-    yes =
-      oldYesBid !== null
-        ? oldYesBid
-        : oldLast;
-
-  }
-
-
-  if(
-    no === null ||
-    no === undefined
-  ){
-
-    no =
-      oldNoBid !== null
-        ? oldNoBid
-        : oldLast !== null
-          ? 100 - oldLast
-          : null;
+    no = 100 - yes;
 
   }
 
@@ -2893,557 +1749,304 @@ function getNFLPrice(
 }
 
 
-function getTeamName(
-  market
-){
+/* =========================================================
+   NFL GAME GROUPING
+========================================================= */
 
-  if(
-    market.yes_sub_title
-  ){
+function getGameKey(market) {
 
-    return market.yes_sub_title;
+  return String(
+    market.event_ticker ??
+    market.event_id ??
+    market.event ??
+    String(market.ticker || "")
+      .split("-")
+      .slice(0, -1)
+      .join("-")
+  );
 
-  }
-
-
-  if(
-    market.yes_title
-  ){
-
-    return market.yes_title.replace(
-      /^yes\s*/i,
-      ""
-    );
-
-  }
+}
 
 
-  if(
-    market.subtitle
-  ){
+function getTeamName(market) {
 
-    return market.subtitle;
+  const possible = [
+    market.yes_sub_title,
+    market.yes_title,
+    market.subtitle,
+    market.title
+  ];
+
+
+  for (const item of possible) {
+
+    if (
+      item &&
+      String(item).trim()
+    ) {
+
+      return String(item).trim();
+
+    }
 
   }
 
 
   const ticker =
-    String(
-      market.ticker || ""
-    );
+    String(market.ticker || "");
 
 
   const parts =
     ticker.split("-");
 
 
-  return parts[
-    parts.length - 1
-  ] || "Team";
+  return parts.length
+    ? parts[parts.length - 1]
+    : "Team";
 
 }
 
 
-function getNFLDate(
-  market
-){
-
-  const candidates = [
-
-    market.occurrence_datetime,
-
-    market.expected_expiration_time,
-
-    market.expiration_time,
-
-    market.latest_expiration_time,
-
-    market.close_time
-
-  ];
-
-
-  for(
-    const value of candidates
-  ){
-
-    if(!value)
-      continue;
-
-
-    const date =
-      new Date(value);
-
-
-    if(
-      !Number.isNaN(
-        date.getTime()
-      )
-    ){
-
-      return date;
-
-    }
-
-  }
-
-
-  return null;
-
-}
-
-
-function getGameKey(
-  market
-){
-
-  return String(
-
-    market.event_ticker ||
-
-    market.event_id ||
-
-    market.event ||
-
-    market.ticker
-      ?.split("-")
-      .slice(0,-1)
-      .join("-") ||
-
-    "unknown"
-
-  );
-
-}
-
-
-/* ========================================================
+/* =========================================================
    NFL LOAD
-======================================================== */
+========================================================= */
 
-async function loadNFL(){
+async function loadNFL() {
 
   const grid =
-    document.getElementById(
-      "nflGrid"
-    );
+    document.getElementById("nflGrid");
 
 
-  try{
+  try {
 
     const response =
       await fetch(
-        NFL_URL +
-        "?t=" +
-        Date.now()
+        WORKER_URL + "/api/nfl",
+        {
+          cache: "no-store"
+        }
       );
-
-
-    if(!response.ok){
-
-      throw new Error(
-        "NFL HTTP " +
-        response.status
-      );
-
-    }
 
 
     const data =
       await response.json();
 
 
-    if(!data.ok){
+    if (
+      !response.ok ||
+      !data.ok
+    ) {
 
       throw new Error(
-        "NFL feed error"
+        data.error
+          ? JSON.stringify(data.error)
+          : "NFL request failed"
       );
 
     }
 
 
-    let markets =
-      Array.isArray(
-        data.markets
-      )
+    const markets =
+      Array.isArray(data.markets)
         ? data.markets
         : [];
 
 
-    const now =
-      new Date();
+    if (!markets.length) {
 
-
-    const start =
-      new Date(now);
-
-
-    start.setHours(
-      0,0,0,0
-    );
-
-
-    const end =
-      new Date(start);
-
-
-    end.setDate(
-      end.getDate() + 7
-    );
-
-
-    markets =
-      markets.filter(
-        market => {
-
-          const date =
-            getNFLDate(
-              market
-            );
-
-
-          if(!date)
-            return true;
-
-
-          return (
-            date >= start &&
-            date < end
-          );
-
-        }
-      );
-
-
-    const games =
-      new Map();
-
-
-    markets.forEach(
-      market => {
-
-        const key =
-          getGameKey(
-            market
-          );
-
-
-        if(
-          !games.has(key)
-        ){
-
-          games.set(
-            key,
-            []
-          );
-
-        }
-
-
-        games.get(key).push(
-          market
-        );
-
-      }
-    );
-
-
-    const gameList =
-      Array.from(
-        games.entries()
-      )
-      .map(
-        ([key,markets]) => {
-
-          return {
-
-            key,
-
-            markets,
-
-            date:
-              getNFLDate(
-                markets[0]
-              )
-
-          };
-
-        }
-      )
-      .sort(
-        (a,b) => {
-
-          if(!a.date)
-            return 1;
-
-          if(!b.date)
-            return -1;
-
-          return a.date - b.date;
-
-        }
-      );
-
-
-    document.getElementById(
-      "nflCount"
-    ).textContent =
-      gameList.length +
-      (
-        gameList.length === 1
-          ? " game"
-          : " games"
-      );
-
-
-    if(!gameList.length){
-
-      grid.innerHTML = `
-
-        <div
-          class="empty"
-          style="grid-column:1/-1"
-        >
-          No NFL markets found.
-        </div>
-
-      `;
+      grid.innerHTML =
+        `<div class="empty">
+          No open NFL markets found.
+        </div>`;
 
       return;
 
     }
 
 
-    grid.innerHTML =
-      gameList.map(
-        game => {
-
-          const teams = [];
+    const games = new Map();
 
 
-          game.markets.forEach(
-            market => {
+    for (const market of markets) {
 
-              const team =
-                getTeamName(
-                  market
-                );
+      const key =
+        getGameKey(market);
 
 
-              const prices =
-                getNFLPrice(
-                  market
-                );
+      if (!games.has(key)) {
+
+        games.set(key, []);
+
+      }
 
 
-              if(
-                !teams.some(
-                  item =>
-                    item.name === team
-                )
-              ){
+      games
+        .get(key)
+        .push(market);
 
-                teams.push({
-
-                  name:team,
-
-                  yes:prices.yes,
-
-                  no:prices.no
-
-                });
-
-              }
-
-            }
-          );
+    }
 
 
-          const gameTeams =
-            teams.slice(
-              0,
-              2
-            );
+    grid.innerHTML = "";
 
 
-          const dateText =
-            game.date
-              ? game.date.toLocaleString(
-                  "en-US",
-                  {
-                    weekday:"short",
-                    month:"short",
-                    day:"numeric",
-                    hour:"numeric",
-                    minute:"2-digit"
-                  }
-                )
-              : "Date unavailable";
+    for (
+      const [gameKey, gameMarkets]
+      of games
+    ) {
+
+      const game =
+        document.createElement("div");
+
+      game.className = "game";
 
 
-          return `
+      const title =
+        document.createElement("div");
 
-            <div class="game-card">
-
-              <div class="game-top">
-
-                <div class="game-title">
-
-                  ${gameTeams
-                    .map(
-                      team =>
-                        escapeHTML(
-                          team.name
-                        )
-                    )
-                    .join(" vs. ")
-                  }
-
-                </div>
-
-                <div class="game-date">
-                  ${dateText}
-                </div>
-
-              </div>
+      title.className = "game-title";
 
 
-              ${
-                gameTeams
-                  .map(
-                    team => `
+      title.textContent =
+        gameKey
+          .replace(/^KXNFLGAME-/i, "")
+          .replaceAll("-", " ");
 
-                      <div class="team-row">
 
-                        <div class="team-name">
-                          ${escapeHTML(
-                            team.name
-                          )}
-                        </div>
+      game.appendChild(title);
 
-                        <div class="odds">
 
-                          <span
-                            style="
-                              color:#38d996;
-                            "
-                          >
-                            YES:
-                            ${
-                              team.yes !== null &&
-                              team.yes !== undefined
-                                ? Math.round(
-                                    team.yes
-                                  ) + "%"
-                                : "—"
-                            }
-                          </span>
+      const seenTeams = new Set();
 
-                          <span
-                            style="
-                              color:#858d9b;
-                            "
-                          >
-                            NO:
-                            ${
-                              team.no !== null &&
-                              team.no !== undefined
-                                ? Math.round(
-                                    team.no
-                                  ) + "%"
-                                : "—"
-                            }
-                          </span>
 
-                        </div>
+      for (const market of gameMarkets) {
 
-                      </div>
+        const team =
+          getTeamName(market);
 
-                    `
-                  )
-                  .join("")
-              }
 
-            </div>
+        if (
+          seenTeams.has(team)
+        ) {
+          continue;
+        }
 
-          `;
+
+        seenTeams.add(team);
+
+
+        const odds =
+          getNFLOdds(market);
+
+
+        const row =
+          document.createElement("div");
+
+        row.className = "team-row";
+
+
+        const teamElement =
+          document.createElement("div");
+
+        teamElement.className =
+          "team";
+
+        teamElement.textContent =
+          team;
+
+
+        const percent =
+          document.createElement("div");
+
+        percent.className =
+          "percent";
+
+
+        if (odds.yes !== null) {
+
+          percent.textContent =
+            odds.yes.toFixed(1) + "%";
+
+        } else {
+
+          percent.textContent =
+            "--";
 
         }
-      )
-      .join("");
 
 
-  }catch(error){
+        row.appendChild(teamElement);
+        row.appendChild(percent);
 
-    console.error(
-      "NFL error:",
-      error
-    );
+        game.appendChild(row);
+
+      }
+
+
+      grid.appendChild(game);
+
+    }
 
 
     document.getElementById(
-      "nflCount"
+      "nflUpdated"
     ).textContent =
-      "Error";
+      "Updated " +
+      new Date().toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit"
+      });
 
+  } catch (error) {
 
-    grid.innerHTML = `
+    console.error(error);
 
-      <div
-        class="error"
-        style="grid-column:1/-1"
-      >
-        NFL feed error:
-        ${escapeHTML(
-          error.message
-        )}
-      </div>
-
-    `;
+    grid.innerHTML =
+      `<div class="error">
+        NFL feed error
+      </div>`;
 
   }
 
 }
 
 
-/* ========================================================
-   INITIAL LOAD
-======================================================== */
+/* =========================================================
+   STARTUP
+========================================================= */
 
-drawChart();
+loadHistory();
+
+refreshChart();
 
 loadPortfolio();
 
 loadNFL();
 
 
-/* ========================================================
-   REFRESH
-======================================================== */
+/*
+  Portfolio updates every 10 seconds.
+*/
 
 setInterval(
-  () => {
-
-    loadPortfolio();
-
-  },
+  loadPortfolio,
   10000
 );
 
 
+/*
+  NFL updates every 30 seconds.
+*/
+
 setInterval(
-  () => {
-
-    loadNFL();
-
-  },
+  loadNFL,
   30000
 );
 
 
-/* ========================================================
-   RESIZE
-======================================================== */
+/*
+  Redraw correctly if phone rotates/resizes.
+*/
 
 window.addEventListener(
   "resize",
