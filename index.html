@@ -2,48 +2,51 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Position Ledger — Kalshi Dashboard</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
-  background:#080b10;
-  color:#f5f7fa;
-  font-family:Arial,Helvetica,sans-serif;
+  background:#080a0f;
+  color:#f2f4f8;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
 }
 
 .container{
   width:min(1200px,94%);
-  margin:auto;
+  margin:0 auto;
   padding:30px 0 60px;
 }
 
-header{
+.header{
   display:flex;
   justify-content:space-between;
-  align-items:center;
+  align-items:flex-end;
+  gap:20px;
   margin-bottom:25px;
 }
 
 h1{
   margin:0;
   font-size:30px;
+  letter-spacing:-1px;
 }
 
 .subtitle{
-  color:#8d96a5;
+  color:#8d95a3;
   margin-top:6px;
+  font-size:14px;
 }
 
 .status{
-  padding:8px 13px;
-  border-radius:20px;
-  background:#111722;
-  color:#72f5a5;
   font-size:13px;
+  color:#8d95a3;
 }
 
 .cards{
@@ -54,14 +57,14 @@ h1{
 }
 
 .card{
-  background:#10151d;
-  border:1px solid #202733;
+  background:#10131a;
+  border:1px solid #202631;
   border-radius:14px;
   padding:18px;
 }
 
 .label{
-  color:#8d96a5;
+  color:#8d95a3;
   font-size:13px;
   margin-bottom:8px;
 }
@@ -71,37 +74,43 @@ h1{
   font-weight:700;
 }
 
-.green{color:#4ade80}
-.red{color:#fb7185}
-
-.panel{
-  background:#10151d;
-  border:1px solid #202733;
-  border-radius:14px;
-  padding:20px;
-  margin-bottom:20px;
+.green{
+  color:#38d996;
 }
 
-.panel-header{
+.red{
+  color:#ff5f6d;
+}
+
+.section{
+  margin-top:20px;
+}
+
+.section-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:16px;
+  margin-bottom:12px;
 }
 
-.panel-title{
+.section-title{
   font-size:19px;
   font-weight:700;
 }
 
-.small{
-  color:#8d96a5;
-  font-size:12px;
+.section-count{
+  color:#8d95a3;
+  font-size:13px;
+}
+
+.chart-card{
+  height:260px;
+  position:relative;
 }
 
 canvas{
   width:100%;
-  height:240px;
+  height:210px;
   display:block;
 }
 
@@ -114,111 +123,119 @@ table{
   border-collapse:collapse;
 }
 
-th,td{
-  padding:13px 10px;
-  border-bottom:1px solid #202733;
-  text-align:left;
-  white-space:nowrap;
-}
-
 th{
-  color:#8d96a5;
+  text-align:left;
+  color:#747d8c;
   font-size:12px;
-  text-transform:uppercase;
+  font-weight:600;
+  padding:12px 14px;
+  border-bottom:1px solid #202631;
 }
 
 td{
+  padding:14px;
+  border-bottom:1px solid #171b23;
   font-size:14px;
+}
+
+.empty{
+  color:#737c8a;
+  padding:25px 5px;
 }
 
 .nfl-grid{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:14px;
 }
 
 .nfl-card{
-  background:#0b1017;
-  border:1px solid #202733;
-  border-radius:13px;
-  padding:16px;
+  background:#10131a;
+  border:1px solid #202631;
+  border-radius:14px;
+  padding:18px;
 }
 
 .nfl-title{
-  font-weight:700;
   font-size:16px;
-  margin-bottom:12px;
-  line-height:1.4;
+  font-weight:700;
+  margin-bottom:4px;
 }
 
 .nfl-date{
-  color:#8d96a5;
+  color:#737c8a;
   font-size:12px;
-  margin-bottom:12px;
+  margin-bottom:17px;
 }
 
-.odds{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:14px;
+.nfl-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:11px 0;
+  border-bottom:1px solid #1b2029;
 }
 
-.odds-box{
-  background:#111722;
-  border-radius:10px;
-  padding:12px;
+.nfl-row:last-of-type{
+  border-bottom:0;
 }
 
-.odds-label{
-  color:#8d96a5;
-  font-size:12px;
-  margin-bottom:5px;
+.nfl-team{
+  font-size:15px;
+  font-weight:600;
 }
 
-.odds-value{
-  font-size:24px;
-  font-weight:700;
+.nfl-price{
+  font-size:20px;
+  font-weight:800;
 }
 
-.yes{
-  color:#4ade80;
+.nfl-price.yes{
+  color:#38d996;
 }
 
-.no{
-  color:#fb7185;
+.nfl-price.no{
+  color:#ff7380;
 }
 
 .progress{
-  width:100%;
   height:7px;
-  background:#202733;
-  border-radius:10px;
+  width:100%;
+  background:#252a34;
+  border-radius:20px;
   overflow:hidden;
-  margin-top:14px;
   display:flex;
+  margin-top:15px;
 }
 
 .progress-yes{
   height:100%;
-  background:#4ade80;
+  background:#38d996;
 }
 
 .progress-no{
   height:100%;
-  background:#fb7185;
+  background:#ff5f6d;
+}
+
+.small{
+  color:#737c8a;
+  font-size:12px;
 }
 
 .error{
-  color:#fb7185;
-  font-size:14px;
+  color:#ff5f6d;
 }
 
-.loading{
-  color:#8d96a5;
+.footer{
+  text-align:center;
+  color:#59616e;
+  font-size:11px;
+  margin-top:35px;
 }
 
-@media(max-width:900px){
+@media(max-width:850px){
+
   .cards{
     grid-template-columns:repeat(2,1fr);
   }
@@ -226,16 +243,40 @@ td{
   .nfl-grid{
     grid-template-columns:1fr;
   }
+
 }
 
-@media(max-width:600px){
+@media(max-width:550px){
+
+  .container{
+    padding-top:20px;
+  }
+
+  .header{
+    display:block;
+  }
+
+  .header .status{
+    margin-top:10px;
+  }
+
   .cards{
-    grid-template-columns:1fr;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+  }
+
+  .card{
+    padding:14px;
+  }
+
+  .value{
+    font-size:20px;
   }
 
   h1{
-    font-size:24px;
+    font-size:25px;
   }
+
 }
 </style>
 </head>
@@ -244,200 +285,227 @@ td{
 
 <div class="container">
 
-<header>
-
-  <div>
-    <h1>Position Ledger</h1>
-
-    <div class="subtitle">
-      Kalshi trading dashboard
-    </div>
-  </div>
-
-  <div
-    class="status"
-    id="status"
-  >
-    Connecting...
-  </div>
-
-</header>
-
-
-<!-- ACCOUNT -->
-
-<div class="cards">
-
-  <div class="card">
-    <div class="label">
-      Available Balance
-    </div>
-
-    <div
-      class="value"
-      id="balance"
-    >
-      $0.00
-    </div>
-  </div>
-
-
-  <div class="card">
-    <div class="label">
-      Portfolio Value
-    </div>
-
-    <div
-      class="value"
-      id="portfolio"
-    >
-      $0.00
-    </div>
-  </div>
-
-
-  <div class="card">
-    <div class="label">
-      Total Account Value
-    </div>
-
-    <div
-      class="value"
-      id="total"
-    >
-      $0.00
-    </div>
-  </div>
-
-
-  <div class="card">
-    <div class="label">
-      Live P/L
-    </div>
-
-    <div
-      class="value"
-      id="pnl"
-    >
-      $0.00
-    </div>
-  </div>
-
-</div>
-
-
-<!-- CHART -->
-
-<div class="panel">
-
-  <div class="panel-header">
-
-    <div class="panel-title">
-      Live P/L
-    </div>
-
-    <div
-      class="small"
-      id="lastUpdated"
-    >
-      Waiting for data...
-    </div>
-
-  </div>
-
-  <canvas id="pnlChart"></canvas>
-
-</div>
-
-
-<!-- POSITIONS -->
-
-<div class="panel">
-
-  <div class="panel-header">
-
-    <div class="panel-title">
-      Open Positions
-    </div>
-
-  </div>
-
-  <div class="table-wrap">
-
-    <table>
-
-      <thead>
-
-        <tr>
-          <th>Market</th>
-          <th>Position</th>
-          <th>Quantity</th>
-          <th>Avg Price</th>
-          <th>Current</th>
-          <th>P/L</th>
-        </tr>
-
-      </thead>
-
-      <tbody id="positionsBody">
-
-        <tr>
-          <td colspan="6" class="loading">
-            Loading positions...
-          </td>
-        </tr>
-
-      </tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
-
-<!-- NFL -->
-
-<div class="panel">
-
-  <div class="panel-header">
+  <div class="header">
 
     <div>
+      <h1>Position Ledger</h1>
 
-      <div class="panel-title">
-        NFL Markets
+      <div class="subtitle">
+        Kalshi Dashboard
       </div>
-
-      <div class="small">
-        Today through the next 6 days
-      </div>
-
     </div>
 
     <div
-      class="small"
-      id="nflCount"
+      id="connectionStatus"
+      class="status"
     >
-      Loading...
+      Connecting...
     </div>
 
   </div>
 
 
-  <div
-    id="nflStatus"
-    class="loading"
-  >
-    Loading NFL markets...
+  <!-- ACCOUNT -->
+
+  <div class="cards">
+
+    <div class="card">
+
+      <div class="label">
+        Available Balance
+      </div>
+
+      <div
+        id="balance"
+        class="value"
+      >
+        $0.00
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="label">
+        Portfolio Value
+      </div>
+
+      <div
+        id="portfolioValue"
+        class="value"
+      >
+        $0.00
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="label">
+        Total Account Value
+      </div>
+
+      <div
+        id="totalValue"
+        class="value"
+      >
+        $0.00
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="label">
+        Live P/L
+      </div>
+
+      <div
+        id="livePL"
+        class="value"
+      >
+        $0.00
+      </div>
+
+    </div>
+
   </div>
 
 
-  <div
-    id="nflGrid"
-    class="nfl-grid"
-  ></div>
+  <!-- CHART -->
 
-</div>
+  <div class="section">
+
+    <div class="section-header">
+
+      <div class="section-title">
+        Account Performance
+      </div>
+
+      <div
+        id="chartStatus"
+        class="section-count"
+      >
+        Live
+      </div>
+
+    </div>
+
+
+    <div class="card chart-card">
+
+      <canvas
+        id="plChart"
+      ></canvas>
+
+    </div>
+
+  </div>
+
+
+  <!-- POSITIONS -->
+
+  <div class="section">
+
+    <div class="section-header">
+
+      <div class="section-title">
+        Open Positions
+      </div>
+
+      <div
+        id="positionCount"
+        class="section-count"
+      >
+        0 positions
+      </div>
+
+    </div>
+
+
+    <div class="card table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Market</th>
+            <th>Side</th>
+            <th>Position</th>
+            <th>Value</th>
+            <th>P/L</th>
+          </tr>
+
+        </thead>
+
+
+        <tbody id="positionsBody">
+
+          <tr>
+            <td
+              colspan="5"
+              class="empty"
+            >
+              Loading positions...
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- NFL -->
+
+  <div class="section">
+
+    <div class="section-header">
+
+      <div>
+
+        <div class="section-title">
+          NFL Markets
+        </div>
+
+        <div
+          id="nflStatus"
+          class="section-count"
+        >
+          Loading...
+        </div>
+
+      </div>
+
+
+      <div
+        id="nflCount"
+        class="section-count"
+      >
+        0 games
+      </div>
+
+    </div>
+
+
+    <div
+      id="nflGrid"
+      class="nfl-grid"
+    ></div>
+
+  </div>
+
+
+  <div class="footer">
+    Position Ledger • Kalshi
+  </div>
 
 </div>
 
@@ -445,65 +513,43 @@ td{
 <script>
 
 /* ========================================================
-   WORKER
+   CONFIG
 ======================================================== */
 
-const WORKER_BASE =
+const WORKER_URL =
   "https://worker1.ryderolinger1.workers.dev";
 
 const PORTFOLIO_URL =
-  WORKER_BASE + "/api/portfolio";
+  WORKER_URL +
+  "/api/portfolio";
 
 const NFL_URL =
-  WORKER_BASE + "/api/nfl";
-
-
-/* ========================================================
-   STORAGE
-======================================================== */
-
-const HISTORY_KEY =
-  "kalshi_pl_history_v1";
-
-
-function getHistory(){
-
-  try{
-
-    return JSON.parse(
-      localStorage.getItem(
-        HISTORY_KEY
-      ) || "[]"
-    );
-
-  }catch{
-
-    return [];
-
-  }
-
-}
-
-
-function saveHistory(history){
-
-  localStorage.setItem(
-    HISTORY_KEY,
-    JSON.stringify(history)
-  );
-
-}
+  WORKER_URL +
+  "/api/nfl";
 
 
 /* ========================================================
    HELPERS
 ======================================================== */
 
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
 function money(value){
 
-  return Number(
-    value || 0
-  ).toLocaleString(
+  const n =
+    Number(value || 0);
+
+  return n.toLocaleString(
     "en-US",
     {
       style:"currency",
@@ -514,45 +560,12 @@ function money(value){
 }
 
 
-function cents(value){
+function formatDate(date){
 
-  return Number(
-    value || 0
-  ) / 100;
+  if(!date)
+    return "";
 
-}
-
-
-function escapeHtml(value){
-
-  return String(
-    value ?? ""
-  )
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;")
-  .replace(/'/g,"&#039;");
-
-}
-
-
-function formatDate(value){
-
-  if(!value)
-    return "—";
-
-  const d =
-    new Date(value);
-
-  if(
-    Number.isNaN(
-      d.getTime()
-    )
-  )
-    return "—";
-
-  return d.toLocaleString(
+  return date.toLocaleString(
     "en-US",
     {
       weekday:"short",
@@ -562,450 +575,6 @@ function formatDate(value){
       minute:"2-digit"
     }
   );
-
-}
-
-
-/* ========================================================
-   PORTFOLIO
-======================================================== */
-
-async function loadPortfolio(){
-
-  try{
-
-    const response =
-      await fetch(
-        PORTFOLIO_URL +
-        "?t=" +
-        Date.now(),
-        {
-          cache:"no-store"
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(
-      !response.ok ||
-      !data.ok
-    ){
-
-      throw new Error(
-        JSON.stringify(data)
-      );
-
-    }
-
-
-    const balance =
-      cents(
-        data.balance?.balance || 0
-      );
-
-
-    const positions =
-      Array.isArray(
-        data.positions?.market_positions
-      )
-      ? data.positions.market_positions
-      : [];
-
-
-    let portfolioValue = 0;
-
-    let totalPnl = 0;
-
-
-    positions.forEach(
-      p => {
-
-        const marketValue =
-          Number(
-            p.market_value ||
-            p.market_value_cents ||
-            p.market_exposure ||
-            0
-          );
-
-
-        const pnl =
-          Number(
-            p.unrealized_pnl ??
-            p.realized_pnl ??
-            p.pnl ??
-            0
-          );
-
-
-        portfolioValue +=
-          cents(marketValue);
-
-
-        totalPnl +=
-          cents(pnl);
-
-      }
-    );
-
-
-    const total =
-      balance +
-      portfolioValue;
-
-
-    document.getElementById(
-      "balance"
-    ).textContent =
-      money(balance);
-
-
-    document.getElementById(
-      "portfolio"
-    ).textContent =
-      money(portfolioValue);
-
-
-    document.getElementById(
-      "total"
-    ).textContent =
-      money(total);
-
-
-    const pnlElement =
-      document.getElementById(
-        "pnl"
-      );
-
-
-    pnlElement.textContent =
-      money(totalPnl);
-
-
-    pnlElement.className =
-      "value " +
-      (
-        totalPnl >= 0
-          ? "green"
-          : "red"
-      );
-
-
-    const history =
-      getHistory();
-
-
-    history.push({
-      time:Date.now(),
-      value:totalPnl
-    });
-
-
-    saveHistory(
-      history.slice(-100)
-    );
-
-
-    drawChart(
-      history.slice(-100)
-    );
-
-
-    renderPositions(
-      positions
-    );
-
-
-    document.getElementById(
-      "status"
-    ).textContent =
-      "Live";
-
-
-    document.getElementById(
-      "lastUpdated"
-    ).textContent =
-      "Updated " +
-      new Date().toLocaleTimeString();
-
-
-  }catch(error){
-
-    console.error(
-      "Portfolio error:",
-      error
-    );
-
-    document.getElementById(
-      "status"
-    ).textContent =
-      "Error";
-
-  }
-
-}
-
-
-/* ========================================================
-   POSITIONS
-======================================================== */
-
-function renderPositions(
-  positions
-){
-
-  const body =
-    document.getElementById(
-      "positionsBody"
-    );
-
-
-  if(!positions.length){
-
-    body.innerHTML = `
-      <tr>
-        <td colspan="6">
-          No open positions
-        </td>
-      </tr>
-    `;
-
-    return;
-
-  }
-
-
-  body.innerHTML =
-    positions.map(
-      p => {
-
-        const ticker =
-          p.ticker ||
-          p.market_ticker ||
-          "—";
-
-
-        const side =
-          p.side ||
-          "—";
-
-
-        const quantity =
-          Number(
-            p.position ??
-            p.quantity ??
-            0
-          );
-
-
-        const avg =
-          cents(
-            p.average_price ??
-            p.avg_price ??
-            0
-          );
-
-
-        const current =
-          cents(
-            p.current_price ??
-            p.market_price ??
-            p.last_price ??
-            0
-          );
-
-
-        const pnl =
-          cents(
-            p.unrealized_pnl ??
-            p.realized_pnl ??
-            p.pnl ??
-            0
-          );
-
-
-        return `
-          <tr>
-
-            <td>
-              ${escapeHtml(ticker)}
-            </td>
-
-            <td>
-              ${escapeHtml(side)}
-            </td>
-
-            <td>
-              ${quantity}
-            </td>
-
-            <td>
-              ${money(avg)}
-            </td>
-
-            <td>
-              ${money(current)}
-            </td>
-
-            <td class="${
-              pnl >= 0
-                ? "green"
-                : "red"
-            }">
-              ${money(pnl)}
-            </td>
-
-          </tr>
-        `;
-
-      }
-    ).join("");
-
-}
-
-
-/* ========================================================
-   CHART
-======================================================== */
-
-function drawChart(history){
-
-  const canvas =
-    document.getElementById(
-      "pnlChart"
-    );
-
-
-  const rect =
-    canvas.getBoundingClientRect();
-
-
-  const dpr =
-    window.devicePixelRatio || 1;
-
-
-  canvas.width =
-    rect.width * dpr;
-
-  canvas.height =
-    rect.height * dpr;
-
-
-  const ctx =
-    canvas.getContext("2d");
-
-
-  ctx.scale(dpr,dpr);
-
-
-  const width =
-    rect.width;
-
-  const height =
-    rect.height;
-
-
-  ctx.clearRect(
-    0,
-    0,
-    width,
-    height
-  );
-
-
-  if(history.length < 2){
-
-    ctx.fillStyle =
-      "#8d96a5";
-
-    ctx.font =
-      "14px Arial";
-
-    ctx.fillText(
-      "Waiting for P/L history...",
-      20,
-      30
-    );
-
-    return;
-
-  }
-
-
-  const values =
-    history.map(
-      x =>
-        Number(
-          x.value || 0
-        )
-    );
-
-
-  const min =
-    Math.min(...values);
-
-
-  const max =
-    Math.max(...values);
-
-
-  const range =
-    max - min || 1;
-
-
-  const padding = 25;
-
-
-  ctx.beginPath();
-
-
-  values.forEach(
-    (value,i) => {
-
-      const x =
-        padding +
-        (
-          i /
-          (values.length - 1)
-        ) *
-        (
-          width -
-          padding * 2
-        );
-
-
-      const y =
-        height -
-        padding -
-        (
-          (value - min) /
-          range
-        ) *
-        (
-          height -
-          padding * 2
-        );
-
-
-      if(i === 0)
-        ctx.moveTo(x,y);
-      else
-        ctx.lineTo(x,y);
-
-    }
-  );
-
-
-  ctx.strokeStyle =
-    "#4ade80";
-
-  ctx.lineWidth =
-    2.5;
-
-  ctx.stroke();
 
 }
 
@@ -1062,29 +631,10 @@ function getNFLDate(market){
 
 
 /* ========================================================
-   KALSHI PRICE → PERCENT
+   NFL PRICE
 ======================================================== */
 
-/*
-   CURRENT KALSHI API:
-
-   yes_bid_dollars = "0.63"
-   yes_ask_dollars = "0.65"
-   no_bid_dollars  = "0.37"
-   no_ask_dollars  = "0.39"
-   last_price_dollars = "0.64"
-
-   Therefore:
-
-   0.63 × 100 = 63%
-
-   We also support the older integer fields
-   just in case.
-*/
-
-function dollarPriceToPercent(
-  value
-){
+function priceToPercent(value){
 
   if(
     value === undefined ||
@@ -1101,100 +651,70 @@ function dollarPriceToPercent(
     Number(value);
 
 
-  if(
-    Number.isNaN(n)
-  ){
-
+  if(Number.isNaN(n))
     return null;
-
-  }
 
 
   /*
-    If value is already in cents,
-    such as 63, use 63%.
-
-    If value is dollars,
-    such as 0.63, convert to 63%.
+    0.63 = 63%
+    63 = 63%
   */
 
   if(
-    Math.abs(n) > 1
+    Math.abs(n) <= 1
   ){
 
-    return n;
+    return n * 100;
 
   }
 
 
-  return n * 100;
+  return n;
 
 }
 
 
-/* ========================================================
-   GET NFL ODDS
-======================================================== */
+function getMarketProbability(market){
 
-function getNFLOdds(
-  market
-){
-
-  let yes = null;
-
-  let no = null;
+  let price = null;
 
 
   /*
-   CURRENT KALSHI FIELDS
+    Current Kalshi fields
   */
 
-  yes =
-    dollarPriceToPercent(
-      market.yes_bid_dollars
-    );
+  if(
+    market.yes_bid_dollars != null
+  ){
+
+    price =
+      priceToPercent(
+        market.yes_bid_dollars
+      );
+
+  }
 
 
-  no =
-    dollarPriceToPercent(
-      market.no_bid_dollars
-    );
+  if(
+    price === null &&
+    market.yes_ask_dollars != null
+  ){
 
-
-  /*
-   If bid doesn't exist,
-   use ask.
-  */
-
-  if(yes === null){
-
-    yes =
-      dollarPriceToPercent(
+    price =
+      priceToPercent(
         market.yes_ask_dollars
       );
 
   }
 
 
-  if(no === null){
+  if(
+    price === null &&
+    market.last_price_dollars != null
+  ){
 
-    no =
-      dollarPriceToPercent(
-        market.no_ask_dollars
-      );
-
-  }
-
-
-  /*
-   If there are no bid/ask values,
-   use last traded price.
-  */
-
-  if(yes === null){
-
-    yes =
-      dollarPriceToPercent(
+    price =
+      priceToPercent(
         market.last_price_dollars
       );
 
@@ -1202,105 +722,486 @@ function getNFLOdds(
 
 
   /*
-   OLD KALSHI FIELDS
+    Older fields
   */
 
-  if(yes === null){
+  if(
+    price === null &&
+    market.yes_bid != null
+  ){
 
-    yes =
-      dollarPriceToPercent(
+    price =
+      priceToPercent(
         market.yes_bid
       );
 
   }
 
 
-  if(no === null){
+  if(
+    price === null &&
+    market.yes_ask != null
+  ){
 
-    no =
-      dollarPriceToPercent(
-        market.no_bid
+    price =
+      priceToPercent(
+        market.yes_ask
       );
 
   }
 
 
-  /*
-   Old last_price fallback.
-  */
+  if(
+    price === null &&
+    market.last_price != null
+  ){
 
-  if(yes === null){
-
-    yes =
-      dollarPriceToPercent(
+    price =
+      priceToPercent(
         market.last_price
       );
 
   }
 
 
-  /*
-   Calculate missing side.
-
-   YES + NO = 100%
-  */
-
-  if(
-    yes !== null &&
-    no === null
-  ){
-
-    no =
-      100 - yes;
-
-  }
+  if(price === null)
+    return 0;
 
 
-  if(
-    no !== null &&
-    yes === null
-  ){
-
-    yes =
-      100 - no;
-
-  }
-
-
-  /*
-   Final safety.
-  */
-
-  yes =
-    Math.max(
-      0,
-      Math.min(
-        100,
-        Number(yes || 0)
-      )
-    );
-
-
-  no =
-    Math.max(
-      0,
-      Math.min(
-        100,
-        Number(no || 0)
-      )
-    );
-
-
-  return {
-    yes,
-    no
-  };
+  return Math.max(
+    0,
+    Math.min(
+      100,
+      price
+    )
+  );
 
 }
 
 
 /* ========================================================
-   NFL
+   TEAM NAME
+======================================================== */
+
+function getTeamName(market){
+
+  let title =
+    String(
+      market.subtitle ||
+      market.title ||
+      ""
+    ).trim();
+
+
+  /*
+    Clean common Kalshi wording.
+  */
+
+  title =
+    title
+      .replace(
+        /^will\s+/i,
+        ""
+      )
+      .replace(
+        /\s+win\s+the\s+game\??$/i,
+        ""
+      )
+      .replace(
+        /\s+win\??$/i,
+        ""
+      )
+      .replace(
+        /\s+to\s+win.*$/i,
+        ""
+      )
+      .replace(
+        /\?$/,
+        ""
+      )
+      .trim();
+
+
+  return title ||
+    String(
+      market.ticker ||
+      "Team"
+    );
+
+}
+
+
+/* ========================================================
+   GAME KEY
+======================================================== */
+
+function getGameKey(market){
+
+  /*
+    Best option:
+    Kalshi event ticker.
+  */
+
+  if(
+    market.event_ticker
+  ){
+
+    return String(
+      market.event_ticker
+    );
+
+  }
+
+
+  if(
+    market.event_id
+  ){
+
+    return String(
+      market.event_id
+    );
+
+  }
+
+
+  if(
+    market.event
+  ){
+
+    return String(
+      market.event
+    );
+
+  }
+
+
+  /*
+    Fallback.
+  */
+
+  const date =
+    getNFLDate(
+      market
+    );
+
+
+  const dateKey =
+    date
+      ? date.toISOString().slice(0,10)
+      : "unknown";
+
+
+  return (
+    dateKey +
+    "|" +
+    String(
+      market.title ||
+      market.subtitle ||
+      ""
+    )
+      .replace(/\s+/g," ")
+      .trim()
+      .toLowerCase()
+  );
+
+}
+
+
+/* ========================================================
+   GROUP MARKETS INTO GAMES
+======================================================== */
+
+function groupNFLGames(markets){
+
+  const groups =
+    new Map();
+
+
+  markets.forEach(
+    market => {
+
+      const key =
+        getGameKey(
+          market
+        );
+
+
+      if(
+        !groups.has(key)
+      ){
+
+        groups.set(
+          key,
+          []
+        );
+
+      }
+
+
+      groups
+        .get(key)
+        .push(market);
+
+    }
+  );
+
+
+  return Array.from(
+    groups.values()
+  );
+
+}
+
+
+/* ========================================================
+   GET TEAMS
+======================================================== */
+
+function getTeamsFromGame(
+  gameMarkets
+){
+
+  const teams = [];
+
+
+  gameMarkets.forEach(
+    market => {
+
+      const team =
+        getTeamName(
+          market
+        );
+
+
+      if(!team)
+        return;
+
+
+      const exists =
+        teams.some(
+          x =>
+            x.name.toLowerCase() ===
+            team.toLowerCase()
+        );
+
+
+      if(!exists){
+
+        teams.push({
+
+          name:team,
+
+          probability:
+            getMarketProbability(
+              market
+            ),
+
+          market:market
+
+        });
+
+      }
+
+    }
+  );
+
+
+  return teams.slice(
+    0,
+    2
+  );
+
+}
+
+
+/* ========================================================
+   NFL GAME CARD
+======================================================== */
+
+function renderNFLGame(
+  gameMarkets
+){
+
+  const teams =
+    getTeamsFromGame(
+      gameMarkets
+    );
+
+
+  if(
+    teams.length < 2
+  ){
+
+    return "";
+
+  }
+
+
+  let team1 =
+    teams[0];
+
+
+  let team2 =
+    teams[1];
+
+
+  /*
+    Normalize so both sides
+    represent the entire game.
+  */
+
+  const total =
+    team1.probability +
+    team2.probability;
+
+
+  if(
+    total > 0 &&
+    Math.abs(total - 100) > 0.5
+  ){
+
+    team1.probability =
+      (
+        team1.probability /
+        total
+      ) * 100;
+
+
+    team2.probability =
+      (
+        team2.probability /
+        total
+      ) * 100;
+
+  }
+
+
+  const date =
+    getNFLDate(
+      team1.market
+    ) ||
+    getNFLDate(
+      team2.market
+    );
+
+
+  const volume =
+    gameMarkets.reduce(
+      (
+        sum,
+        market
+      ) => {
+
+        return sum +
+          Number(
+            market.volume_fp ??
+            market.volume ??
+            0
+          );
+
+      },
+      0
+    );
+
+
+  return `
+
+    <div class="nfl-card">
+
+      <div class="nfl-title">
+        ${escapeHtml(
+          team1.name
+        )}
+        <span
+          style="color:#59616e"
+        >
+          vs
+        </span>
+        ${escapeHtml(
+          team2.name
+        )}
+      </div>
+
+
+      <div class="nfl-date">
+
+        ${
+          date
+            ? formatDate(date)
+            : "NFL game"
+        }
+
+      </div>
+
+
+      <div class="nfl-row">
+
+        <span class="nfl-team">
+          ${escapeHtml(
+            team1.name
+          )}
+        </span>
+
+        <span class="nfl-price yes">
+          ${team1.probability.toFixed(0)}%
+        </span>
+
+      </div>
+
+
+      <div class="nfl-row">
+
+        <span class="nfl-team">
+          ${escapeHtml(
+            team2.name
+          )}
+        </span>
+
+        <span class="nfl-price no">
+          ${team2.probability.toFixed(0)}%
+        </span>
+
+      </div>
+
+
+      <div class="progress">
+
+        <div
+          class="progress-yes"
+          style="
+            width:${team1.probability}%
+          "
+        ></div>
+
+        <div
+          class="progress-no"
+          style="
+            width:${team2.probability}%
+          "
+        ></div>
+
+      </div>
+
+
+      <div
+        class="small"
+        style="margin-top:13px"
+      >
+
+        Volume:
+        ${volume.toLocaleString()}
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ========================================================
+   LOAD NFL
 ======================================================== */
 
 async function loadNFL(){
@@ -1356,9 +1257,13 @@ async function loadNFL(){
       Array.isArray(
         data.markets
       )
-      ? data.markets
-      : [];
+        ? data.markets
+        : [];
 
+
+    /*
+      ONLY NFL GAME MARKETS
+    */
 
     markets =
       markets.filter(
@@ -1366,19 +1271,23 @@ async function loadNFL(){
 
           const ticker =
             String(
-              market.ticker || ""
+              market.ticker ||
+              ""
             ).toUpperCase();
 
 
           const series =
             String(
-              market.series_ticker || ""
+              market.series_ticker ||
+              ""
             ).toUpperCase();
 
 
           return (
             series === "KXNFLGAME" ||
-            ticker.includes("KXNFLGAME")
+            ticker.includes(
+              "KXNFLGAME"
+            )
           );
 
         }
@@ -1386,7 +1295,7 @@ async function loadNFL(){
 
 
     /*
-      Today through next 6 days.
+      TODAY THROUGH NEXT 7 DAYS
     */
 
     const now =
@@ -1402,7 +1311,9 @@ async function loadNFL(){
 
 
     const limit =
-      new Date(today);
+      new Date(
+        today
+      );
 
 
     limit.setDate(
@@ -1424,7 +1335,7 @@ async function loadNFL(){
             return false;
 
 
-          const day =
+          const gameDay =
             new Date(
               date.getFullYear(),
               date.getMonth(),
@@ -1433,50 +1344,77 @@ async function loadNFL(){
 
 
           return (
-            day >= today &&
-            day < limit
+            gameDay >= today &&
+            gameDay < limit
           );
 
         }
       );
 
 
-    markets.sort(
+    /*
+      GROUP THE TEAM MARKETS
+      INTO ONE GAME.
+    */
+
+    const games =
+      groupNFLGames(
+        markets
+      );
+
+
+    /*
+      SORT BY GAME DATE
+    */
+
+    games.sort(
       (a,b) => {
 
-        const aDate =
-          getNFLDate(a);
+        const dateA =
+          getNFLDate(
+            a[0]
+          );
 
-        const bDate =
-          getNFLDate(b);
+
+        const dateB =
+          getNFLDate(
+            b[0]
+          );
 
 
-        if(!aDate)
+        if(!dateA)
           return 1;
 
-        if(!bDate)
+
+        if(!dateB)
           return -1;
 
 
-        return aDate - bDate;
+        return dateA - dateB;
 
       }
     );
 
 
-    if(!markets.length){
+    if(
+      !games.length
+    ){
 
-      status.innerHTML = `
-        <span class="error">
-          No NFL markets found for the next 7 days.
-        </span>
-      `;
+      status.textContent =
+        "No NFL games found";
 
       count.textContent =
-        "0 markets";
+        "0 games";
 
       grid.innerHTML =
-        "";
+        `
+          <div class="card">
+            <div class="empty">
+              No NFL games found for
+              the next 7 days.
+            </div>
+          </div>
+        `;
 
       return;
 
@@ -1484,21 +1422,23 @@ async function loadNFL(){
 
 
     status.textContent =
-      "Showing NFL markets";
+      "Live Kalshi markets";
 
 
     count.textContent =
-      markets.length +
+      games.length +
       (
-        markets.length === 1
-          ? " market"
-          : " markets"
+        games.length === 1
+          ? " game"
+          : " games"
       );
 
 
     grid.innerHTML =
-      markets
-        .map(renderNFLMarket)
+      games
+        .map(
+          renderNFLGame
+        )
         .join("");
 
 
@@ -1510,11 +1450,12 @@ async function loadNFL(){
     );
 
 
-    status.innerHTML = `
-      <span class="error">
-        NFL feed error
-      </span>
-    `;
+    status.innerHTML =
+      `
+        <span class="error">
+          NFL feed error
+        </span>
+      `;
 
 
     count.textContent =
@@ -1530,126 +1471,634 @@ async function loadNFL(){
 
 
 /* ========================================================
-   NFL CARD
+   PORTFOLIO
 ======================================================== */
 
-function renderNFLMarket(
-  market
+async function loadPortfolio(){
+
+  const status =
+    document.getElementById(
+      "connectionStatus"
+    );
+
+
+  try{
+
+    const response =
+      await fetch(
+        PORTFOLIO_URL +
+        "?t=" +
+        Date.now(),
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(
+      !response.ok ||
+      !data.ok
+    ){
+
+      throw new Error(
+        JSON.stringify(data)
+      );
+
+    }
+
+
+    /*
+      BALANCE
+    */
+
+    const balanceData =
+      data.balance || {};
+
+
+    let balance =
+      Number(
+        balanceData.balance ??
+        balanceData.available_balance ??
+        0
+      );
+
+
+    /*
+      Kalshi balances can be
+      represented in cents.
+    */
+
+    if(
+      Math.abs(balance) > 100000
+    ){
+
+      balance =
+        balance / 100;
+
+    }
+
+
+    /*
+      POSITIONS
+    */
+
+    const positionData =
+      data.positions || {};
+
+
+    const positions =
+      Array.isArray(
+        positionData.positions
+      )
+        ? positionData.positions
+        : [];
+
+
+    let positionValue = 0;
+
+    let livePL = 0;
+
+
+    positions.forEach(
+      position => {
+
+        const qty =
+          Number(
+            position.position ||
+            position.quantity ||
+            0
+          );
+
+
+        const marketValue =
+          Number(
+            position.market_value ||
+            position.value ||
+            0
+          );
+
+
+        const pnl =
+          Number(
+            position.realized_pnl ||
+            position.unrealized_pnl ||
+            position.pnl ||
+            0
+          );
+
+
+        positionValue +=
+          marketValue;
+
+
+        livePL +=
+          pnl;
+
+      }
+    );
+
+
+    if(
+      Math.abs(positionValue) > 100000
+    ){
+
+      positionValue =
+        positionValue / 100;
+
+    }
+
+
+    if(
+      Math.abs(livePL) > 100000
+    ){
+
+      livePL =
+        livePL / 100;
+
+    }
+
+
+    const total =
+      balance +
+      positionValue;
+
+
+    document.getElementById(
+      "balance"
+    ).textContent =
+      money(balance);
+
+
+    document.getElementById(
+      "portfolioValue"
+    ).textContent =
+      money(positionValue);
+
+
+    document.getElementById(
+      "totalValue"
+    ).textContent =
+      money(total);
+
+
+    const plElement =
+      document.getElementById(
+        "livePL"
+      );
+
+
+    plElement.textContent =
+      money(livePL);
+
+
+    plElement.className =
+      "value " +
+      (
+        livePL > 0
+          ? "green"
+          : livePL < 0
+            ? "red"
+            : ""
+      );
+
+
+    status.textContent =
+      "Connected • " +
+      new Date()
+        .toLocaleTimeString();
+
+
+    renderPositions(
+      positions
+    );
+
+
+    savePLHistory(
+      total
+    );
+
+
+    drawChart();
+
+  }catch(error){
+
+    console.error(
+      "Portfolio error:",
+      error
+    );
+
+
+    status.textContent =
+      "Connection error";
+
+  }
+
+}
+
+
+/* ========================================================
+   POSITIONS TABLE
+======================================================== */
+
+function renderPositions(
+  positions
 ){
 
-  const title =
-    market.title ||
-    market.subtitle ||
-    market.ticker ||
-    "NFL Market";
-
-
-  const date =
-    getNFLDate(
-      market
+  const body =
+    document.getElementById(
+      "positionsBody"
     );
 
 
-  const odds =
-    getNFLOdds(
-      market
+  const count =
+    document.getElementById(
+      "positionCount"
     );
 
 
-  const yes =
-    odds.yes;
-
-
-  const no =
-    odds.no;
-
-
-  const volume =
-    Number(
-      market.volume_fp ??
-      market.volume ??
-      0
+  count.textContent =
+    positions.length +
+    (
+      positions.length === 1
+        ? " position"
+        : " positions"
     );
 
 
-  return `
+  if(!positions.length){
 
-    <div class="nfl-card">
+    body.innerHTML =
+      `
+        <tr>
+          <td
+            colspan="5"
+            class="empty"
+          >
+            No open positions.
+          </td>
+        </tr>
+      `;
 
-      <div class="nfl-title">
-        ${escapeHtml(title)}
-      </div>
+    return;
+
+  }
 
 
-      <div class="nfl-date">
+  body.innerHTML =
+    positions
+      .map(
+        position => {
 
-        ${
-          date
-            ? formatDate(date)
-            : "NFL game"
+          const ticker =
+            position.ticker ||
+            position.market_ticker ||
+            "Unknown";
+
+
+          const side =
+            Number(
+              position.position ||
+              0
+            ) >= 0
+              ? "YES"
+              : "NO";
+
+
+          const qty =
+            Math.abs(
+              Number(
+                position.position ||
+                position.quantity ||
+                0
+              )
+            );
+
+
+          const value =
+            Number(
+              position.market_value ||
+              position.value ||
+              0
+            );
+
+
+          const pnl =
+            Number(
+              position.unrealized_pnl ||
+              position.realized_pnl ||
+              position.pnl ||
+              0
+            );
+
+
+          return `
+
+            <tr>
+
+              <td>
+                ${escapeHtml(
+                  ticker
+                )}
+              </td>
+
+              <td>
+                ${side}
+              </td>
+
+              <td>
+                ${qty}
+              </td>
+
+              <td>
+                ${money(value)}
+              </td>
+
+              <td
+                class="${
+                  pnl > 0
+                    ? "green"
+                    : pnl < 0
+                      ? "red"
+                      : ""
+                }"
+              >
+                ${money(pnl)}
+              </td>
+
+            </tr>
+
+          `;
+
         }
+      )
+      .join("");
 
-      </div>
-
-
-      <div class="odds">
-
-        <div class="odds-box">
-
-          <div class="odds-label">
-            YES
-          </div>
-
-          <div class="odds-value yes">
-            ${yes.toFixed(0)}%
-          </div>
-
-        </div>
+}
 
 
-        <div class="odds-box">
+/* ========================================================
+   P/L HISTORY
+======================================================== */
 
-          <div class="odds-label">
-            NO
-          </div>
-
-          <div class="odds-value no">
-            ${no.toFixed(0)}%
-          </div>
-
-        </div>
-
-      </div>
+const HISTORY_KEY =
+  "kalshi_pl_history_v1";
 
 
-      <div class="progress">
+function savePLHistory(
+  total
+){
 
-        <div
-          class="progress-yes"
-          style="width:${yes}%"
-        ></div>
-
-        <div
-          class="progress-no"
-          style="width:${no}%"
-        ></div>
-
-      </div>
+  let history = [];
 
 
-      <div
-        class="small"
-        style="margin-top:13px"
-      >
+  try{
 
-        Volume:
-        ${volume.toLocaleString()}
+    history =
+      JSON.parse(
+        localStorage.getItem(
+          HISTORY_KEY
+        ) || "[]"
+      );
 
-      </div>
+  }catch{
 
-    </div>
+    history = [];
 
-  `;
+  }
+
+
+  history.push({
+
+    time:
+      Date.now(),
+
+    value:
+      Number(total || 0)
+
+  });
+
+
+  /*
+    Keep the latest 500 points.
+  */
+
+  if(
+    history.length > 500
+  ){
+
+    history =
+      history.slice(
+        -500
+      );
+
+  }
+
+
+  localStorage.setItem(
+    HISTORY_KEY,
+    JSON.stringify(history)
+  );
+
+}
+
+
+/* ========================================================
+   CHART
+======================================================== */
+
+function drawChart(){
+
+  const canvas =
+    document.getElementById(
+      "plChart"
+    );
+
+
+  const ctx =
+    canvas.getContext(
+      "2d"
+    );
+
+
+  const rect =
+    canvas.getBoundingClientRect();
+
+
+  const dpr =
+    window.devicePixelRatio ||
+    1;
+
+
+  canvas.width =
+    rect.width *
+    dpr;
+
+
+  canvas.height =
+    rect.height *
+    dpr;
+
+
+  ctx.setTransform(
+    dpr,
+    0,
+    0,
+    dpr,
+    0,
+    0
+  );
+
+
+  let history = [];
+
+
+  try{
+
+    history =
+      JSON.parse(
+        localStorage.getItem(
+          HISTORY_KEY
+        ) || "[]"
+      );
+
+  }catch{
+
+    history = [];
+
+  }
+
+
+  const width =
+    rect.width;
+
+
+  const height =
+    rect.height;
+
+
+  ctx.clearRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+
+  if(
+    history.length < 2
+  ){
+
+    ctx.fillStyle =
+      "#59616e";
+
+    ctx.font =
+      "13px sans-serif";
+
+    ctx.fillText(
+      "Waiting for performance history...",
+      15,
+      30
+    );
+
+    return;
+
+  }
+
+
+  const values =
+    history.map(
+      x =>
+        Number(
+          x.value || 0
+        )
+    );
+
+
+  const min =
+    Math.min(
+      ...values
+    );
+
+
+  const max =
+    Math.max(
+      ...values
+    );
+
+
+  const range =
+    max - min || 1;
+
+
+  const padding =
+    20;
+
+
+  ctx.beginPath();
+
+
+  values.forEach(
+    (value,index) => {
+
+      const x =
+        padding +
+        (
+          index /
+          (values.length - 1)
+        ) *
+        (
+          width -
+          padding * 2
+        );
+
+
+      const y =
+        height -
+        padding -
+        (
+          (
+            value - min
+          ) /
+          range
+        ) *
+        (
+          height -
+          padding * 2
+        );
+
+
+      if(index === 0){
+
+        ctx.moveTo(
+          x,
+          y
+        );
+
+      }else{
+
+        ctx.lineTo(
+          x,
+          y
+        );
+
+      }
+
+    }
+  );
+
+
+  ctx.strokeStyle =
+    "#38d996";
+
+  ctx.lineWidth =
+    2;
+
+
+  ctx.stroke();
 
 }
 
@@ -1658,32 +2107,40 @@ function renderNFLMarket(
    START
 ======================================================== */
 
-loadPortfolio();
+async function refresh(){
 
-loadNFL();
+  await Promise.all([
+    loadPortfolio(),
+    loadNFL()
+  ]);
 
+}
+
+
+/*
+  Initial load
+*/
+
+refresh();
+
+
+/*
+  Refresh every 10 seconds
+*/
 
 setInterval(
-  loadPortfolio,
+  refresh,
   10000
 );
 
 
-setInterval(
-  loadNFL,
-  10000
-);
-
+/*
+  Redraw chart when resized
+*/
 
 window.addEventListener(
   "resize",
-  () => {
-
-    drawChart(
-      getHistory()
-    );
-
-  }
+  drawChart
 );
 
 </script>
