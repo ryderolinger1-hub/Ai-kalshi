@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Position Ledger — Kalshi Weather X7</title>
+<title>Position Ledger — Kalshi Weather X9</title>
 
 <style>
 :root{
@@ -131,6 +131,41 @@ input{
 
 input:focus{
   border-color:var(--blue);
+}
+
+input[type="range"]{
+  padding:7px 0;
+  border:0;
+  background:transparent;
+  accent-color:var(--blue);
+  cursor:pointer;
+}
+
+.range-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.range-value{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  color:var(--text);
+  font-size:13px;
+  font-weight:700;
+}
+
+.range-value .range-current{
+  color:var(--blue);
+}
+
+.range-labels{
+  display:flex;
+  justify-content:space-between;
+  color:var(--muted);
+  font-size:10px;
 }
 
 button{
@@ -615,7 +650,7 @@ tr:last-child td{
   <div>
 
     <h1>
-      Position Ledger — Kalshi Weather
+      Position Ledger — Kalshi Weather X8
     </h1>
 
     <div class="subtitle">
@@ -781,16 +816,71 @@ SETTINGS
 
     <div>
       <label>
-        Min Weather Edge %
+        Minimum Weather Edge %
       </label>
 
-      <input
-        id="minEdge"
-        type="number"
-        min="0"
-        step="0.1"
-        value="1"
-      >
+      <div class="range-wrap">
+
+        <div class="range-value">
+          <span>Minimum Edge</span>
+          <span
+            id="minEdgeValue"
+            class="range-current"
+          >1.0%</span>
+        </div>
+
+        <input
+          id="minEdge"
+          type="range"
+          min="0"
+          max="100"
+          step="0.1"
+          value="1"
+          aria-label="Minimum weather edge percentage"
+          oninput="updateMinEdgeDisplay(this.value)"
+        >
+
+        <div class="range-labels">
+          <span>0%</span>
+          <span>100%</span>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div>
+      <label>
+        Maximum Weather Edge %
+      </label>
+
+      <div class="range-wrap">
+
+        <div class="range-value">
+          <span>Maximum Edge</span>
+          <span
+            id="maxEdgeValue"
+            class="range-current"
+          >100.0%</span>
+        </div>
+
+        <input
+          id="maxEdge"
+          type="range"
+          min="0"
+          max="100"
+          step="0.1"
+          value="100"
+          aria-label="Maximum weather edge percentage"
+          oninput="updateMaxEdgeDisplay(this.value)"
+        >
+
+        <div class="range-labels">
+          <span>0%</span>
+          <span>100%</span>
+        </div>
+
+      </div>
     </div>
 
 
@@ -1346,11 +1436,42 @@ async function loadStatus(){
 
 
     $("minEdge").value =
-      Number(
-        f.minEdge ??
-        s.minEdge ??
-        .01
-      ) * 100;
+      Math.max(
+        0,
+        Math.min(
+          100,
+          Number(
+            f.minEdge ??
+            s.minEdge ??
+            .01
+          ) * 100
+        )
+      );
+
+    updateMinEdgeDisplay(
+      $("minEdge").value
+    );
+
+
+    $("maxEdge").value =
+      Math.max(
+        0,
+        Math.min(
+          100,
+          Number(
+            f.maxEdge ??
+            s.maxEdge ??
+            1
+          ) * 100
+        )
+      );
+
+    updateMaxEdgeDisplay(
+      $("maxEdge").value
+    );
+
+
+    ensureEdgeRange();
 
 
     $("minMove").value =
@@ -1440,6 +1561,88 @@ async function loadStatus(){
 }
 
 
+function updateMinEdgeDisplay(value){
+
+  const n =
+    Number(value);
+
+  if(!Number.isFinite(n))
+    return;
+
+  const el =
+    $("minEdgeValue");
+
+  if(el){
+
+    el.textContent =
+      n.toFixed(1) + "%";
+
+  }
+
+  ensureEdgeRange();
+
+}
+
+
+function updateMaxEdgeDisplay(value){
+
+  const n =
+    Number(value);
+
+  if(!Number.isFinite(n))
+    return;
+
+  const el =
+    $("maxEdgeValue");
+
+  if(el){
+
+    el.textContent =
+      n.toFixed(1) + "%";
+
+  }
+
+  ensureEdgeRange();
+
+}
+
+
+function ensureEdgeRange(){
+
+  const minEl =
+    $("minEdge");
+
+  const maxEl =
+    $("maxEdge");
+
+  if(!minEl || !maxEl)
+    return;
+
+  const min =
+    Number(minEl.value);
+
+  const max =
+    Number(maxEl.value);
+
+  if(!Number.isFinite(min) || !Number.isFinite(max))
+    return;
+
+  if(min > max){
+
+    if(document.activeElement === minEl){
+      maxEl.value = String(min);
+      const label = $("maxEdgeValue");
+      if(label) label.textContent = min.toFixed(1) + "%";
+    }else{
+      minEl.value = String(max);
+      const label = $("minEdgeValue");
+      if(label) label.textContent = max.toFixed(1) + "%";
+    }
+  }
+
+}
+
+
 /* ============================================================
 SAVE SETTINGS
 ============================================================ */
@@ -1473,6 +1676,11 @@ async function saveSettings(){
       minEdge:
         Number(
           $("minEdge").value
+        ) / 100,
+
+      maxEdge:
+        Number(
+          $("maxEdge").value
         ) / 100,
 
       minExpectedPriceMove:
@@ -1744,6 +1952,33 @@ function getEdge(
   market
 ){
 
+  /*
+  The trading edge is the weather-model probability minus
+  the live Kalshi executable price for the selected side.
+
+  Worker returns this as rawEdge, where .01 = 1%.
+  Prefer rawEdge so the dashboard uses the actual trading edge.
+  Fall back to legacy edge fields only for older payloads.
+  */
+
+  const rawEdge =
+    getNumber(
+      market,
+      "rawEdge"
+    );
+
+
+  if(
+    rawEdge !== null
+  ){
+
+    return normalizePercent(
+      rawEdge
+    );
+
+  }
+
+
   return normalizePercent(
     getNumber(
       market,
@@ -1760,6 +1995,29 @@ function getEdge(
 function getExpectedMove(
   market
 ){
+
+  /*
+  Expected Price Move is intentionally the same metric as
+  the Kalshi-price vs weather-model edge, expressed as a percent.
+
+  Worker: .01 = 1% expected move.
+  Dashboard: 1.0 = 1% for display/comparison.
+  */
+
+  const edge =
+    getEdge(
+      market
+    );
+
+
+  if(
+    edge !== null
+  ){
+
+    return edge;
+
+  }
+
 
   const raw =
     getNumber(
@@ -1781,20 +2039,9 @@ function getExpectedMove(
   }
 
 
-  /*
-  Worker returns .01 for 1 cent.
-  */
-
-  if(
-    Math.abs(raw) < 1
-  ){
-
-    return raw * 100;
-
-  }
-
-
-  return raw;
+  return Math.abs(raw) <= 1
+    ? raw * 100
+    : raw;
 
 }
 
@@ -1868,8 +2115,36 @@ function getPrice(
       "price",
       "entryPrice",
       "buyPrice",
+      "priceDollars",
       "priceCents"
     );
+
+
+  if(
+    p === null
+  ){
+
+    const side =
+      String(
+        market?.recommendedSide ||
+        market?.side ||
+        ""
+      ).toUpperCase();
+
+    p =
+      side === "NO"
+        ? getNumber(
+            market,
+            "noAsk"
+          )
+        : side === "YES"
+          ? getNumber(
+              market,
+              "yesAsk"
+            )
+          : null;
+
+  }
 
 
   if(
@@ -1881,11 +2156,18 @@ function getPrice(
   }
 
 
+  /*
+  Kalshi contracts cost $0.01-$0.99 each.
+  Payloads may provide price as dollars (0.99) or cents (99).
+  Normalize to dollars so the dashboard shows the actual cost
+  of ONE contract.
+  */
+
   if(
-    p < 1
+    p > 1
   ){
 
-    p *= 100;
+    p /= 100;
 
   }
 
@@ -1899,13 +2181,44 @@ function getModelProbability(
   market
 ){
 
+  const side =
+    String(
+      market?.recommendedSide ||
+      market?.side ||
+      ""
+    ).toUpperCase();
+
   let p =
-    getNumber(
-      market,
-      "modelProbability",
-      "probability",
-      "modelProb"
-    );
+    side === "NO"
+      ? getNumber(
+          market,
+          "modelNo",
+          "noModelProbability",
+          "modelNoProbability"
+        )
+      : getNumber(
+          market,
+          "modelYes",
+          "yesModelProbability",
+          "modelProbability",
+          "probability",
+          "modelProb"
+        );
+
+
+  if(
+    p === null
+  ){
+
+    p =
+      getNumber(
+        market,
+        "modelProbability",
+        "probability",
+        "modelProb"
+      );
+
+  }
 
 
   if(
@@ -2492,6 +2805,13 @@ function buildDiagnostics(
     ) * 100;
 
 
+  const maxEdge =
+    Number(
+      filters.maxEdge ??
+      1
+    ) * 100;
+
+
   const minMove =
     Number(
       filters.minExpectedPriceMove ??
@@ -2582,8 +2902,8 @@ function buildDiagnostics(
   }else{
 
     edgePass =
-      edge >=
-      minEdge;
+      edge >= minEdge &&
+      edge <= maxEdge;
 
 
     edgeDetail =
@@ -2593,8 +2913,10 @@ function buildDiagnostics(
           : ""
       ) +
       edge.toFixed(1) +
-      "% • required +" +
+      "% • allowed " +
       minEdge.toFixed(1) +
+      "% to " +
+      maxEdge.toFixed(1) +
       "%";
 
   }
@@ -2647,10 +2969,15 @@ function buildDiagnostics(
 
 
     moveDetail =
+      (
+        move >= 0
+          ? "+"
+          : ""
+      ) +
       move.toFixed(1) +
-      "¢ expected • required " +
+      "% expected • required +" +
       minMove.toFixed(1) +
-      "¢";
+      "%";
 
   }
 
@@ -3072,14 +3399,14 @@ function renderMarket(
         <div class="metric">
 
           <div class="metric-label">
-            Kalshi
+            Kalshi Price / 1 Contract
           </div>
 
           <div class="metric-value">
 
             ${
               price !== null
-                ? cents(price)
+                ? money(price)
                 : "—"
             }
 
@@ -3146,14 +3473,22 @@ function renderMarket(
         <div class="metric">
 
           <div class="metric-label">
-            Expected Move
+            Expected Price Move = Edge
           </div>
 
           <div class="metric-value">
 
             ${
               move !== null
-                ? cents(move)
+                ? (
+                    (
+                      move >= 0
+                        ? "+"
+                        : ""
+                    ) +
+                    move.toFixed(1) +
+                    "%"
+                  )
                 : "—"
             }
 
@@ -3938,6 +4273,12 @@ async function loadMarkets(){
             .01
           ),
 
+        maxEdge:
+          Number(
+            status.maxEdge ??
+            1
+          ),
+
         minExpectedPriceMove:
           Number(
             status.minExpectedPriceMove ??
@@ -3951,6 +4292,11 @@ async function loadMarkets(){
           )
 
       };
+
+
+    if(filters.maxEdge == null){
+      filters.maxEdge = 1;
+    }
 
 
     /*
