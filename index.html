@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Position Ledger — Kalshi Weather X9</title>
+<title>Position Ledger — Kalshi Weather V32</title>
 
 <style>
 :root{
@@ -650,7 +650,7 @@ tr:last-child td{
   <div>
 
     <h1>
-      Position Ledger — Kalshi Weather X8
+      Position Ledger — Kalshi Weather V32
     </h1>
 
     <div class="subtitle">
@@ -786,7 +786,7 @@ SETTINGS
 
     <div>
       <label>
-        Take Profit + Odds Points
+        Take Profit %
       </label>
 
       <input
@@ -1982,10 +1982,10 @@ function getEdge(
   return normalizePercent(
     getNumber(
       market,
-      "edge",
       "edgePercent",
       "edgePct",
-      "edge_percent"
+      "edge_percent",
+      "edge"
     )
   );
 
@@ -2767,13 +2767,11 @@ function getDecision(
 
   return String(
     market?.decision ||
-    market?.signal ||
-    market?.action ||
-    (
-      market?.eligible === true
+    (market?.eligible === true && market?.recommendedSide
+      ? `BUY ${market.recommendedSide}`
+      : market?.eligible === true
         ? "BUY"
-        : "WAIT"
-    )
+        : "WAIT")
   ).toUpperCase();
 
 }
@@ -3500,12 +3498,16 @@ function renderMarket(
         <div class="metric">
 
           <div class="metric-label">
-            Take Profit
+            Take Profit %
           </div>
 
           <div class="metric-value">
 
-            +1 pt
+            ${
+              Number.isFinite(Number(filters.takeProfit))
+                ? "+" + (Number(filters.takeProfit) * 100).toFixed(1) + "%"
+                : "—"
+            }
 
           </div>
 
