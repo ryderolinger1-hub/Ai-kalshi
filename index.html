@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Position Ledger — Kalshi Weather V32</title>
+<title>Position Ledger — Kalshi Weather V43</title>
 
 <style>
 :root{
@@ -898,6 +898,22 @@ SETTINGS
       >
     </div>
 
+
+    <div>
+      <label>
+        Min Kalshi Price ¢
+      </label>
+
+      <input
+        id="minKalshiPrice"
+        type="number"
+        min="1"
+        max="99"
+        step="0.1"
+        value="15"
+      >
+    </div>
+
   </div>
 
 
@@ -1482,6 +1498,14 @@ async function loadStatus(){
       ) * 100;
 
 
+    $("minKalshiPrice").value =
+      Number(
+        f.minKalshiPrice ??
+        s.minKalshiPrice ??
+        .15
+      ) * 100;
+
+
     $("maxTradeDisplay").textContent =
       money(
         s.maxTrade
@@ -1686,6 +1710,11 @@ async function saveSettings(){
       minExpectedPriceMove:
         Number(
           $("minMove").value
+        ) / 100,
+
+      minKalshiPrice:
+        Number(
+          $("minKalshiPrice").value
         ) / 100
 
     };
@@ -2990,6 +3019,44 @@ function buildDiagnostics(
 
     detail:
       moveDetail
+
+  });
+
+
+  /*
+  MAX KALSHI PRICE
+  */
+
+  const minKalshiPrice =
+    Number(
+      filters.minKalshiPrice ??
+      .15
+    );
+
+  const price =
+    getPrice(
+      market
+    );
+
+  const pricePass =
+    price !== null &&
+    Number.isFinite(minKalshiPrice) &&
+    price >= minKalshiPrice;
+
+  checks.push({
+
+    name:
+      "Min Kalshi price",
+
+    pass:
+      pricePass,
+
+    detail:
+      price === null
+        ? "Kalshi entry price unavailable."
+        : cents(price) +
+          " • minimum " +
+          cents(minKalshiPrice)
 
   });
 
