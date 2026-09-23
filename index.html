@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Position Ledger — Kalshi Weather</title>
+<title>Position Ledger — Kalshi Weather X7</title>
 
 <style>
 :root{
@@ -1957,6 +1957,110 @@ function getSettlementText(
   }
 
 
+  /*
+     X7 / V25 market fields.
+
+     The Worker now exposes the Kalshi settlement contract as:
+       settlementLower
+       settlementUpper
+       strikeType / strike_type
+       strike
+
+     Use those fields before the older settlement object formats.
+  */
+
+  const strikeType =
+    String(
+      market?.strikeType ??
+      market?.strike_type ??
+      ""
+    ).toLowerCase();
+
+  const lower =
+    market?.settlementLower ??
+    market?.floor_strike ??
+    null;
+
+  const upper =
+    market?.settlementUpper ??
+    market?.cap_strike ??
+    null;
+
+  const strike =
+    market?.strike ??
+    null;
+
+
+  if(
+    strikeType === "between" &&
+    lower != null &&
+    upper != null
+  ){
+
+    return (
+      lower +
+      "° to " +
+      upper +
+      "°"
+    );
+
+  }
+
+
+  if(
+    strikeType === "greater" &&
+    strike != null
+  ){
+
+    return (
+      (Number(strike) + 1) +
+      "° or higher"
+    );
+
+  }
+
+
+  if(
+    strikeType === "greater_or_equal" &&
+    strike != null
+  ){
+
+    return (
+      Number(strike) +
+      "° or higher"
+    );
+
+  }
+
+
+  if(
+    strikeType === "less" &&
+    strike != null
+  ){
+
+    return (
+      (Number(strike) - 1) +
+      "° or lower"
+    );
+
+  }
+
+
+  if(
+    strikeType === "less_or_equal" &&
+    strike != null
+  ){
+
+    return (
+      Number(strike) +
+      "° or lower"
+    );
+
+  }
+
+
+  /* Older Worker formats. */
+
   const settlement =
     market?.settlement;
 
@@ -2077,11 +2181,48 @@ function hasSettlementRule(
   market
 ){
 
+  const strikeType =
+    String(
+      market?.strikeType ??
+      market?.strike_type ??
+      ""
+    ).toLowerCase();
+
+  const lower =
+    market?.settlementLower ??
+    market?.floor_strike ??
+    null;
+
+  const upper =
+    market?.settlementUpper ??
+    market?.cap_strike ??
+    null;
+
+  const strike =
+    market?.strike ??
+    null;
+
+  const x7Bracket =
+    strikeType === "between" &&
+    lower != null &&
+    upper != null;
+
+  const x7Threshold =
+    (
+      strikeType === "greater" ||
+      strikeType === "greater_or_equal" ||
+      strikeType === "less" ||
+      strikeType === "less_or_equal"
+    ) &&
+    strike != null;
+
   return Boolean(
     market?.winningRule ||
     market?.exactWinningTemperatures ||
     market?.settlement ||
-    market?.settlementType
+    market?.settlementType ||
+    x7Bracket ||
+    x7Threshold
   );
 
 }
